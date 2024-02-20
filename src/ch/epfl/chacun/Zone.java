@@ -2,7 +2,7 @@ package ch.epfl.chacun;
 
 import java.util.List;
 
-public interface Zone {
+public sealed interface Zone {
     public enum SpecialPower {
         SHAMAN,
         LOGBOAT,
@@ -36,7 +36,18 @@ public interface Zone {
         }
     }
 
-    public record Lake(int id, int fishCount, Zone.SpecialPower specialPower) implements Zone {
-
+    public sealed interface Water extends Zone { ////Check if this is correct
+        public int fishCount();
     }
+
+    public record Lake(int id, int fishCount, Zone.SpecialPower specialPower) implements Zone, Water {
+    }
+
+    public record River(int id, int fishCount, Lake lake) implements Zone, Water {
+        boolean hasLake() {
+            return this.lake != null;
+        }
+    }
+
+
 }

@@ -3,28 +3,57 @@ package ch.epfl.chacun;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the four possible rotations.
+ */
 public enum Rotation {
     NONE,
     RIGHT,
     HALF_TURN,
     LEFT;
 
+    /**
+     * The four possible rotations in the order they are declared.
+     */
     public static final List<Rotation> ALL = List.of(Rotation.values());
 
+
+    /**
+     * The number of possible rotations.
+     */
     public static final int COUNT = ALL.size();
 
+
+    /**
+     * Adds a certain rotation to this rotation.
+     *
+     * @param that the rotation to apply.
+     * @return the rotation obtained by adding the given rotation to this rotation.
+     */
     public Rotation add(Rotation that) {
         return Rotation.values()[(this.quarterTurnsCW() + that.quarterTurnsCW()) % COUNT];
     }
 
+
+    /**
+     * @return the rotation opposite to this rotation.
+     */
     public Rotation negated() {
         return Rotation.values()[(COUNT - this.quarterTurnsCW()) % COUNT];
     }
 
+
+    /**
+     * @return the number of quarter turns clockwise in this rotation.
+     */
     public int quarterTurnsCW() {
         return this.ordinal();
     }
 
+
+    /**
+     * @return the number of degrees clockwise in this rotation.
+     */
     public int degreesCW() {
         return this.quarterTurnsCW() * 90;
     }
