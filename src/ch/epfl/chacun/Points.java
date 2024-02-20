@@ -15,4 +15,8 @@ final public class Points {
         return (3 * mammothCount + 2 * aurochsCount + deerCount);
     }
 
+    static int forRiverSystem(int fishCount) {
+        return (2 * fishCount);
+    }
+
 }
