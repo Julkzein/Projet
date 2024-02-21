@@ -22,6 +22,18 @@ public sealed interface Zone {
     
     public abstract int id();
 
+    public default int tileId() {
+        return tileId(id());
+    }
+
+    public default int localId() {
+        return localId(id());
+    }
+
+    default SpecialPower specialPower() {
+        return null;
+    }
+
     public record Forest(int id, Kind kind) implements Zone {
         public enum Kind {
             PLAIN,
@@ -44,7 +56,7 @@ public sealed interface Zone {
     }
 
     public record River(int id, int fishCount, Lake lake) implements Zone, Water {
-        boolean hasLake() {
+        public boolean hasLake() {
             return this.lake != null;
         }
     }

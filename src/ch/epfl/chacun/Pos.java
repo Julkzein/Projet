@@ -8,7 +8,7 @@ public record Pos(int x, int y) {
     /**
      * The origin of the coordinate system.
      */
-    final static public Pos origin = new Pos(0,0);
+    final static public Pos ORIGIN = new Pos(0,0);
 
     /**
      * Returns the position translated by the given amounts.

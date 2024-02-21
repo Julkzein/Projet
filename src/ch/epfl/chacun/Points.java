@@ -17,7 +17,7 @@ final public class Points {
      * @return the number of points scored by the given occupant(s).
      * @throws NullPointerException if the occupant is null.
      */
-    static int forClosedForest(int tileCount, int mushroomGroupCount) {
+    public static int forClosedForest(int tileCount, int mushroomGroupCount) {
         checkArgument(tileCount > 1 && mushroomGroupCount >= 0);
         return (2 * tileCount + 3 * mushroomGroupCount);
     }
@@ -31,7 +31,7 @@ final public class Points {
      * @return the number of points scored by the given occupant(s).
      * @throws NullPointerException if the occupant is null.
      */
-    static int forClosedRiver(int tileCount, int fishCount) {
+    public static int forClosedRiver(int tileCount, int fishCount) {
         checkArgument(tileCount > 1 && fishCount >= 0);
         return (tileCount + fishCount);
     }
@@ -46,7 +46,7 @@ final public class Points {
      * @return the number of points scored by the given occupant(s).
      * @throws NullPointerException if the occupant is null.
      */
-    static int forMeadow(int mammothCount, int aurochsCount, int deerCount) {
+    public static int forMeadow(int mammothCount, int aurochsCount, int deerCount) {
         checkArgument(mammothCount >= 0 && aurochsCount >= 0 && deerCount >= 0);
         return (3 * mammothCount + 2 * aurochsCount + deerCount);
     }
@@ -58,7 +58,7 @@ final public class Points {
      * @return the number of points scored by the given occupant(s).
      * @throws NullPointerException if the occupant is null.
      */
-    static int forRiverSystem(int fishCount) {
+    public static int forRiverSystem(int fishCount) {
         checkArgument(fishCount >= 0);
         return fishCount;
     }
@@ -70,7 +70,7 @@ final public class Points {
      * @return the number of points scored by the given occupant(s).
      * @throws NullPointerException if the occupant is null.
      */
-    static int forLogboat(int lakeCount) {
+    public static int forLogboat(int lakeCount) {
         checkArgument(lakeCount > 0);
         return lakeCount;
     }
@@ -84,7 +84,7 @@ final public class Points {
      * @return the number of points scored by the given occupant(s).
      * @throws NullPointerException if the occupant is null.
      */
-    static int forRaft(int lakeCount) {
+    public static int forRaft(int lakeCount) {
         checkArgument(lakeCount > 0);
         return lakeCount;
     }

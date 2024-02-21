@@ -18,7 +18,6 @@ public record Animal(int id, Kind kind) {
      * @return the tile id of the animal.
      */
     public int tileId() {
-        return 3;
-        //faire une fois zone finie IOOKKNNLNLNNLNN
+        return id() / 10;
     }
 }
