@@ -5,6 +5,9 @@ import static java.util.Objects.requireNonNull;
 
 /**
  * Represents an occupant of a tile in the game.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
  */
 public record Occupant(Kind kind, int zoneId) {
     /**
@@ -12,7 +15,7 @@ public record Occupant(Kind kind, int zoneId) {
      */
     public enum Kind {
         PAWN,
-        HUT;
+        HUT
     }
 
     /**
@@ -30,25 +33,11 @@ public record Occupant(Kind kind, int zoneId) {
         }
     }
 
-    // vérifier si ça marche (2ème), sinon:
-
-    /**
-     * switch (kind) {
-     *             case PAWN:
-     *                 return 5;
-     *             case HUT:
-     *                 return 3;
-     *         }
-     *
-     * @param kind
-     * @return
-     */
-
 
     /**
      * Returns the number of occupants of the given kind.
-     * @param kind
-     * @return
+     * @param kind : kind of the occupant.
+     * @return the number of occupants of the given kind.
      */
     public static int occupantsCount(Kind kind) {
         return switch (kind) {

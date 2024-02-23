@@ -5,6 +5,9 @@ import static ch.epfl.chacun.Preconditions.checkArgument;
 
 /**
  * Represents the points that can be scored in the game.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
  */
 final public class Points {
     private Points() {}
@@ -88,5 +91,4 @@ final public class Points {
         checkArgument(lakeCount > 0);
         return lakeCount;
     }
-
 }

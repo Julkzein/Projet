@@ -4,6 +4,9 @@ import java.util.List;
 
 /**
  * Represents the four cardinal directions.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
  */
 public enum Direction {
     N,
@@ -12,7 +15,7 @@ public enum Direction {
     W;
 
     /**
-     * The four cardinal directions in the order they are declared.
+     * List of the four cardinal directions in the order they are declared.
      */
     public static final List<Direction> ALL = List.of(Direction.values());
 

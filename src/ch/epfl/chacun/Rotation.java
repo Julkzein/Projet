@@ -1,10 +1,12 @@
 package ch.epfl.chacun;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents the four possible rotations.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
  */
 public enum Rotation {
     NONE,

@@ -2,6 +2,9 @@ package ch.epfl.chacun;
 
 /**
  * Utility class for checking preconditions.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
  */
 public final class Preconditions {
     private Preconditions() {}

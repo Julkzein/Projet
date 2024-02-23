@@ -2,6 +2,9 @@ package ch.epfl.chacun;
 
 /**
  * Represents a position in the game.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
  */
 public record Pos(int x, int y) {
 
