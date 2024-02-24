@@ -2,6 +2,13 @@ package ch.epfl.chacun;
 
 import java.util.List;
 
+
+/**
+ * This module contains the TileSide interface and its implementations.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
+ */
 public sealed interface TileSide {
     public abstract List<Zone> zones();
     public abstract boolean isSameKindAs(TileSide that);

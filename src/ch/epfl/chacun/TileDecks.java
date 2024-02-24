@@ -3,6 +3,12 @@ package ch.epfl.chacun;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * Represents the three piles of tiles.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
+ */
 public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, List<Tile> menhirTiles) {
     //final redundant ?
 
@@ -55,7 +61,7 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
     /**
      *
      * @param kind the type of tile for which we would like the pile without the top tile
-     * @return The tileDecks without the top tile of the given type of tile 
+     * @return The tileDecks without the top tile of the given type of tile
      */
     public TileDecks withTopTileDrawn(Tile.Kind kind) {
         if (deckSize(kind) == 0) {

@@ -4,6 +4,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * This class represents a tile.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
+ */
 public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSide w) {
 
     /**
