@@ -27,6 +27,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
         }
     }
 
+    
     /**
      * Compact constructor with a given tile, placer, rotation and position.
      *
