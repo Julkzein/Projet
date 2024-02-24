@@ -19,17 +19,17 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      * @param rotation the rotation of the tile.
      * @param pos the position of the tile.
      * @param occupant the occupant of the tile.
-     * @throws IllegalArgumentException if the tile or rotation is null.
+     * @throws IllegalArgumentException if the tile, rotation or position is null.
      */
     public PlacedTile {
-        if (tile == null || rotation == null) {
+        if (tile == null || rotation == null || pos == null) {
             throw new IllegalArgumentException();
         }
     }
 
 
     /**
-     * Compact constructor with a given tile, placer, rotation and position.
+     * Constructor with a given tile, placer, rotation and position.
      *
      * @param tile the tile to place.
      * @param placer the player who placed the tile (null if first tile).
@@ -58,9 +58,10 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
 
     /**
+     * Returns the side corresponding to the direction after rotation
      *
-     * @param direction
-     * @return
+     * @param direction the direction we want to know the tile's side of
+     * @return the side of the tile in the given direction
      */
     public TileSide side(Direction direction) {
         Direction newDirection = direction.rotated(rotation.negated());
@@ -76,14 +77,14 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
             default:
                 return null;
         }
-
     }
 
 
     /**
+     * Returns the zone associated to the given id, or null if no zone is associated to such id
+     *
      * @param id the id of the zone we want
-     * @return the type of zone associated to the given id,
-     * null if no zone is associated to such id
+     * @return the type of zone associated to the given id
      */
     public Zone zoneWithId(int id) {
         for (Zone zone : tile.zones()) {
@@ -95,9 +96,8 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
     }
 
     /**
-     *
-     * @return the zone of the given tile with a superPower,
-     * null if no zone of the tile has a superPower
+     * Returns the zone with a special power, or null if no zone of the tile has a special power
+     * @return the zone of the given tile with a special power
      */
     public Zone specialPowerZone() {
         for (Zone zone : tile.zones()) {
@@ -109,9 +109,8 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
     }
 
     /**
-     *
-     * @return a set containing all the zones of the tile of
-     * the forest type
+     * Returns a set containing all the forest zones of the tile, or null if no zone of the tile is of type forest
+     * @return a set containing all the forest zones of the tile
      */
     public Set<Zone.Forest> forestZones() {
         Set<Zone.Forest> set = new HashSet<>();
@@ -124,9 +123,8 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
     }
 
     /**
-     *
-     * @return a set containing all the zones of the tile of
-     * the meadow type
+     * Returns a set containing all the meadow zones of the tile, or null if no zone of the tile is of type meadow
+     * @return a set containing all the meadow zones of the tile
      */
     public Set<Zone.Meadow> meadowZones() {
         Set<Zone.Meadow> set = new HashSet<>();
@@ -139,9 +137,8 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
     }
 
     /**
-     *
-     * @return a set containing all the zones of the tile of
-     * the river type
+     * Returns a set containing all the river zones of the tile, or null if no zone of the tile is of type river
+     * @return a set containing all the river zones of the tile
      */
     public Set<Zone.River> riversZones() {
         Set<Zone.River> set = new HashSet<>();
@@ -154,9 +151,8 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
     }
 
     /**
-     *
-     * @return a set containing all the possible occupants of a tile,
-     * null if said tile is the starting tile
+     * Returns a set containing all the possible occupants of a tile, or null if said tile is the starting tile
+     * @return a set containing all the possible occupants of a tile
      */
     public Set<Occupant> potentialOccupants() {
         Set<Occupant> potentialOccupantsSet = new HashSet<>();
@@ -167,17 +163,14 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
             for (Zone zone : tile.zones()) {
                 if (zone instanceof Zone.Meadow meadow) {
                     potentialOccupantsSet.add(new Occupant(Occupant.Kind.PAWN, id()));
-                }
-                else if(zone instanceof Zone.River river) {
+                } else if(zone instanceof Zone.River river) {
                     potentialOccupantsSet.add(new Occupant(Occupant.Kind.PAWN, id()));
                     if (!river.hasLake()) {
                         potentialOccupantsSet.add(new Occupant(Occupant.Kind.HUT, id()));
                     }
-                }
-                else if (zone instanceof Zone.Forest forest) {
+                } else if (zone instanceof Zone.Forest forest) {
                     potentialOccupantsSet.add(new Occupant(Occupant.Kind.PAWN, id()));
-                }
-                else if (zone instanceof Zone.Lake lake) {
+                } else if (zone instanceof Zone.Lake lake) {
                     potentialOccupantsSet.add(new Occupant(Occupant.Kind.HUT, id()));
                 }
             }
@@ -187,9 +180,9 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
 
     /**
-     *
      * @param occupant we desire to add to the tile
      * @return a tile identical to the given tile but with the given occupant
+     * @throws IllegalArgumentException if the tile already has an occupant
      */
     public PlacedTile withOccupant(Occupant occupant) {
         if (this.occupant != null) {
@@ -200,7 +193,6 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
 
     /**
-     *
      * @return a tile identical to the given tile but with no occupant
      */
     public PlacedTile withNoOccupant() {
@@ -214,12 +206,11 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      * -1 if no zone is occupied by an occupant of given kind
      */
     public int idOfZoneOccupiedBy(Occupant.Kind occupantKind) {
-        if (occupantKind != null ) {
+        if (this.occupant != null) {
             if (occupantKind == this.occupant.kind()) {
                 return this.occupant.zoneId();
             }
         }
         return -1;
     }
-
 }

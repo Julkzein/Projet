@@ -10,8 +10,8 @@ import java.util.List;
  * @author Jules Delforge (372325)
  */
 public sealed interface TileSide {
-    public abstract List<Zone> zones();
-    public abstract boolean isSameKindAs(TileSide that);
+    List<Zone> zones();
+    boolean isSameKindAs(TileSide that);
 
     record Forest(Zone.Forest forest) implements TileSide {
         public List<Zone> zones() {

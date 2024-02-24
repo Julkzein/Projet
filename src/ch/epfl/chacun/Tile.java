@@ -13,7 +13,7 @@ import java.util.Set;
 public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSide w) {
 
     /**
-     * The kind of a tile.
+     * The three possible kinds of a tile.
      */
     enum Kind {
         START,
@@ -34,7 +34,7 @@ public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSi
      * @return the zones of the sides of the tile.
      */
     public Set<Zone> sideZones() {
-        Set sideZonesSet = new HashSet<Zone>();
+        Set<Zone> sideZonesSet = new HashSet<>();
         for (TileSide side : sides()) {
             sideZonesSet.addAll(side.zones());
         }

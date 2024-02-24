@@ -50,10 +50,19 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
      */
     public Tile topTile(Tile.Kind kind) {
         if (kind == Tile.Kind.START) {
+            if (startTiles.isEmpty()) {
+                return null;
+            }
             return startTiles.get(0);
         } else if (kind == Tile.Kind.NORMAL) {
+            if (normalTiles.isEmpty()) {
+                return null;
+            }
             return normalTiles.get(0);
         } else {
+            if (menhirTiles.isEmpty()) {
+                return null;
+            }
             return menhirTiles.get(0);
         }
     }
@@ -62,10 +71,11 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
      *
      * @param kind the type of tile for which we would like the pile without the top tile
      * @return The tileDecks without the top tile of the given type of tile
+     * @throws IllegalArgumentException if the pile is empty
      */
     public TileDecks withTopTileDrawn(Tile.Kind kind) {
         if (deckSize(kind) == 0) {
-            throw new IllegalStateException();
+            throw new IllegalArgumentException();
         }
         if (kind == Tile.Kind.START) {
             return new TileDecks(startTiles.subList(1, startTiles.size()), normalTiles, menhirTiles);
@@ -77,7 +87,25 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
     }
 
     public TileDecks withTopTileDrawnUntil(Tile.Kind kind, Predicate<Tile> predicate) {
-        //louis à l'aide
+        if (kind == Tile.Kind.START) {
+            int firstPlayableTile = 0;
+            while(predicate.test(startTiles.get(firstPlayableTile))) { //verifier la condition, et créer si nécéssaire une classe
+                firstPlayableTile++;
+            }
+            return new TileDecks(startTiles.subList(firstPlayableTile, startTiles.size()), normalTiles, menhirTiles);
+        } else if (kind == Tile.Kind.NORMAL) {
+            int firstPlayableTile = 0;
+            while(predicate.test(startTiles.get(firstPlayableTile))) {
+                firstPlayableTile++;
+            }
+            return new TileDecks(startTiles, normalTiles.subList(firstPlayableTile, normalTiles.size()), menhirTiles);
+        } else {
+            int firstPlayableTile = 0;
+            while(predicate.test(startTiles.get(firstPlayableTile))) {
+                firstPlayableTile++;
+            }
+            return new TileDecks(startTiles, normalTiles, menhirTiles.subList(firstPlayableTile, menhirTiles.size()));
+        }
     }
 
 }
