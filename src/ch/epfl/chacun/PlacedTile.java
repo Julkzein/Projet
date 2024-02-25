@@ -92,7 +92,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
                 return zone;
             }
         }
-        return null;
+        throw new IllegalArgumentException();
     }
 
     /**
@@ -100,6 +100,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      * @return the zone of the given tile with a special power
      */
     public Zone specialPowerZone() {
+        //if two zones special power quesaco
         for (Zone zone : tile.zones()) {
             if (zone.specialPower() != null) {
                 return zone;
