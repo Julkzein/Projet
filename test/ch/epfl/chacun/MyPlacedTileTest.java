@@ -37,11 +37,13 @@ public class MyPlacedTileTest {
 
     public PlacedTile pt() {
         return new PlacedTile(
+
                 new Tile(78, Tile.Kind.NORMAL,
                         new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)),
                         new TileSide.Meadow(new Zone.Meadow(2, new ArrayList<>(), null)),
                         new TileSide.Meadow(new Zone.Meadow(3, new ArrayList<>(), Zone.SpecialPower.SHAMAN)),
-                        new TileSide.River(new Zone.Meadow(7, new ArrayList<>(), null), new Zone.River(4, 2, null), new Zone.Meadow(6, new ArrayList<>(), null))),
+                        new TileSide.River(new Zone.Meadow(7, new ArrayList<>(), null), new Zone.River(4, 2, null), new Zone.Meadow(6, new ArrayList<>(), null)))
+                ,
                 PlayerColor.RED, Rotation.NONE, new Pos(2, 2), null);
     }
 
@@ -188,7 +190,13 @@ public class MyPlacedTileTest {
         Set<Zone.Meadow> zoneMeadow = new HashSet<>();
         zoneMeadow.add(new Zone.Meadow(2, new ArrayList<>(), null));
         zoneMeadow.add(new Zone.Meadow(3, new ArrayList<>(), Zone.SpecialPower.SHAMAN));
-        assertEquals(zoneMeadow, pt().meadowZones());
+        assertEquals(zoneMeadow, new PlacedTile(
+                new Tile(78, Tile.Kind.NORMAL,
+                        new TileSide.Meadow(new Zone.Meadow(2, new ArrayList<>(), null)),
+                        new TileSide.Meadow(new Zone.Meadow(3, new ArrayList<>(), Zone.SpecialPower.SHAMAN)),
+                        new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)),
+                        new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN))),
+                PlayerColor.RED, Rotation.NONE, new Pos(2, 2), null).meadowZones());
     }
 
     @Test
@@ -199,9 +207,9 @@ public class MyPlacedTileTest {
                 new Tile(78, Tile.Kind.NORMAL,
                         new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)),
                         new TileSide.Forest(new Zone.Forest(4, Zone.Forest.Kind.PLAIN)),
-                        new TileSide.Meadow(new Zone.Meadow(3, new ArrayList<>(), null)),
+                        new TileSide.Meadow(new Zone.Meadow(2, new ArrayList<>(), null)),
                         new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN))),
-                PlayerColor.RED, Rotation.NONE, new Pos(2, 2), null));
+                PlayerColor.RED, Rotation.NONE, new Pos(2, 2), null).meadowZones());
     }
 
     @Test
@@ -213,7 +221,7 @@ public class MyPlacedTileTest {
                         new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)),
                         new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)),
                         new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN))),
-                PlayerColor.RED, Rotation.NONE, new Pos(2, 2), null).forestZones());
+                PlayerColor.RED, Rotation.NONE, new Pos(2, 2), null).meadowZones());
     }
 
     @Test
