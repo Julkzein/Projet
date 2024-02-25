@@ -3,6 +3,9 @@ import org.junit.jupiter.api.Test;
 
 import ch.epfl.chacun.Zone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MyTileSideTest {
@@ -48,8 +51,28 @@ public class MyTileSideTest {
         assertFalse(river.isSameKindAs(forest));
     }
 
+    @Test
+    void zonesListForest() {
+        TileSide forest = new TileSide.Forest(new Zone.Forest(10, Zone.Forest.Kind.PLAIN));
+        List<Zone.Forest> testList = new ArrayList<>();
+        testList.add(new Zone.Forest(10, Zone.Forest.Kind.PLAIN));
+        assertEquals(forest.zones(), testList);
+    }
 
+    @Test
+    void zonesListMeadow() {
+        TileSide meadow = new TileSide.Meadow(new Zone.Meadow(10, null, null));
+        List<Zone.Meadow> testList = new ArrayList<>();
+        testList.add(new Zone.Meadow(10, null, null));
+        assertEquals(meadow.zones(), testList);
+    }
 
-
+    @Test
+    void zonesListRiver() {
+        TileSide meadow = new TileSide.Meadow(new Zone.Meadow(10, null, null));
+        List<Zone.Meadow> testList = new ArrayList<>();
+        testList.add(new Zone.Meadow(10, null, null));
+        assertEquals(meadow.zones(), testList);
+    }
 
 }

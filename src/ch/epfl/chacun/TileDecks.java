@@ -107,5 +107,4 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
             return new TileDecks(startTiles, normalTiles, menhirTiles.subList(firstPlayableTile, menhirTiles.size()));
         }
     }
-
 }
