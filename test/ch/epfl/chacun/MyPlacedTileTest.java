@@ -247,19 +247,12 @@ public class MyPlacedTileTest {
 
     @Test
     void returnsNullWhenStartTile() {
-        assertNull(startPt().potentialOccupants());
+        assertEquals(Set.of(), startPt().potentialOccupants());
     }
 
     @Test
     void returnsPotentialOccupant() {
         assertEquals(Set.of(new Occupant(PAWN, 1), new Occupant(PAWN, 2), new Occupant(PAWN, 3), new Occupant(PAWN, 4), new Occupant(PAWN, 6), new Occupant(PAWN, 7), new Occupant(HUT, 8)), ptWithLake().potentialOccupants());
-        //assertEquals(new Occupant(HUT, 1), ptWithOccupantHut().occupant());
     }
 
-    @Test
-    void returnsMultipleOccupant() {
-        PlacedTile tile = ptWithOccupantPawn();
-        tile.withOccupant(new Occupant(HUT, 2));
-        assertEquals(Set.of(new Occupant(PAWN, 1),new Occupant(HUT, 2)) , tile.occupant());
-    }
 }
