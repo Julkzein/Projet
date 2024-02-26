@@ -1,5 +1,6 @@
 package ch.epfl.chacun;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -86,6 +87,7 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
         }
     }
 
+    /**
     public TileDecks withTopTileDrawnUntil(Tile.Kind kind, Predicate<Tile> predicate) {
         if (kind == Tile.Kind.START) {
             int firstPlayableTile = 0;
@@ -105,6 +107,43 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
                 firstPlayableTile++;
             }
             return new TileDecks(startTiles, normalTiles, menhirTiles.subList(firstPlayableTile, menhirTiles.size()));
+        }
+    }
+    */
+
+    public TileDecks withTopTileDrawnUntil(Tile.Kind kind, Predicate<Tile> predicate) {
+        switch (kind) {
+            case START -> {
+                int predicateTrue = 0;
+                for (Tile t : startTiles) {
+                    if (predicate.test(t)) {
+                        return new TileDecks(startTiles.subList(predicateTrue, startTiles.size()), normalTiles, menhirTiles);
+                    } else ++predicateTrue;
+                }
+            }
+            case NORMAL -> {
+                int predicateTrue = 0;
+                for (Tile t : normalTiles) {
+                    if (predicate.test(t)) {
+                        return new TileDecks(startTiles, normalTiles.subList(predicateTrue, normalTiles.size()), menhirTiles);
+                    } else ++predicateTrue;
+                }
+            }
+            case MENHIR -> {
+                int predicateTrue = 0;
+                for (Tile t : menhirTiles) {
+                    if (predicate.test(t)) {
+                        return new TileDecks(startTiles, normalTiles, menhirTiles.subList(predicateTrue, menhirTiles.size()));
+                    } else ++predicateTrue;
+                }
+            }
+        }
+        if (kind == Tile.Kind.START) {
+            return new TileDecks(new ArrayList<>(), normalTiles, menhirTiles);
+        } else if (kind == Tile.Kind.NORMAL) {
+            return new TileDecks(startTiles, new ArrayList<>(), menhirTiles);
+        } else {
+            return new TileDecks(startTiles, normalTiles, new ArrayList<>());
         }
     }
 }

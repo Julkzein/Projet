@@ -45,7 +45,7 @@ public class MyTileDecksTest {
     }
 
     @Test
-    void chekSizeOneElementOfEach() {
+    void checkSizeOneElementOfEach() {
         List<Tile> startTiles = new ArrayList<>();
         startTiles.add(td(78, Tile.Kind.START));
         List<Tile> normalTiles = new ArrayList<>();
@@ -91,6 +91,7 @@ public class MyTileDecksTest {
         assertThrows(IllegalArgumentException.class, ()-> tileDecks.withTopTileDrawn(Tile.Kind.MENHIR));
     }
 
+
     @Test
     void withTopTileDrawnOneElementOfEach() {
         List<Tile> startTiles = new ArrayList<>();
@@ -106,6 +107,25 @@ public class MyTileDecksTest {
         assertEquals(new TileDecks(List.of(td(90, Tile.Kind.START)), normalTiles, menhirTiles), tileDecks.withTopTileDrawn(Tile.Kind.START));
         assertEquals(new TileDecks(startTiles, List.of(td(90, Tile.Kind.NORMAL)), menhirTiles), tileDecks.withTopTileDrawn(Tile.Kind.NORMAL));
         assertEquals(new TileDecks(startTiles, normalTiles, List.of(td(90, Tile.Kind.MENHIR))), tileDecks.withTopTileDrawn(Tile.Kind.MENHIR));
+    }
 
+    @Test
+    void withTopDeckDrawnUntilTest() {
+        List<Tile> startTiles = new ArrayList<>();
+        startTiles.add(td(78, Tile.Kind.START));
+        startTiles.add(td(90, Tile.Kind.START));
+        startTiles.add(td(120, Tile.Kind.START));
+        List<Tile> normalTiles = new ArrayList<>();
+        normalTiles.add(td(78, Tile.Kind.NORMAL));
+        normalTiles.add(td(90, Tile.Kind.NORMAL));
+        normalTiles.add(td(120, Tile.Kind.NORMAL));
+        List<Tile> menhirTiles = new ArrayList<>();
+        menhirTiles.add(td(78, Tile.Kind.MENHIR));
+        menhirTiles.add(td(90, Tile.Kind.MENHIR));
+        menhirTiles.add(td(120, Tile.Kind.MENHIR));
+        TileDecks tileDecks = new TileDecks(startTiles, normalTiles, menhirTiles);
+        assertEquals(2, tileDecks.withTopTileDrawnUntil(Tile.Kind.NORMAL, tile -> tile.id() == 90).deckSize(Tile.Kind.NORMAL));
+        assertEquals(2, tileDecks.withTopTileDrawnUntil(Tile.Kind.MENHIR, tile -> tile.id() == 90).deckSize(Tile.Kind.MENHIR));
+        assertEquals(2, tileDecks.withTopTileDrawnUntil(Tile.Kind.START, tile -> tile.id() == 90).deckSize(Tile.Kind.START));
     }
 }

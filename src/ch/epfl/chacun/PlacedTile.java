@@ -163,16 +163,16 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
         else {
             for (Zone zone : tile.zones()) {
                 if (zone instanceof Zone.Meadow meadow) {
-                    potentialOccupantsSet.add(new Occupant(Occupant.Kind.PAWN, id()));
+                    potentialOccupantsSet.add(new Occupant(Occupant.Kind.PAWN, meadow.localId()));
                 } else if(zone instanceof Zone.River river) {
-                    potentialOccupantsSet.add(new Occupant(Occupant.Kind.PAWN, id()));
+                    potentialOccupantsSet.add(new Occupant(Occupant.Kind.PAWN, river.localId()));
                     if (!river.hasLake()) {
-                        potentialOccupantsSet.add(new Occupant(Occupant.Kind.HUT, id()));
+                        potentialOccupantsSet.add(new Occupant(Occupant.Kind.HUT, river.lake().localId()));
                     }
                 } else if (zone instanceof Zone.Forest forest) {
-                    potentialOccupantsSet.add(new Occupant(Occupant.Kind.PAWN, id()));
+                    potentialOccupantsSet.add(new Occupant(Occupant.Kind.PAWN, forest.localId()));
                 } else if (zone instanceof Zone.Lake lake) {
-                    potentialOccupantsSet.add(new Occupant(Occupant.Kind.HUT, id()));
+                    potentialOccupantsSet.add(new Occupant(Occupant.Kind.HUT, lake.localId()));
                 }
             }
         }

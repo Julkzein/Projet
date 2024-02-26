@@ -37,7 +37,6 @@ public class MyPlacedTileTest {
 
     public PlacedTile pt() {
         return new PlacedTile(
-
                 new Tile(78, Tile.Kind.NORMAL,
                         new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)),
                         new TileSide.Meadow(new Zone.Meadow(2, new ArrayList<>(), null)),
@@ -84,6 +83,28 @@ public class MyPlacedTileTest {
                         new TileSide.Meadow(new Zone.Meadow(2, new ArrayList<>(), null)),
                         new TileSide.Meadow(new Zone.Meadow(3, new ArrayList<>(), null)),
                         new TileSide.River(new Zone.Meadow(7, new ArrayList<>(), null), new Zone.River(4, 2, null), new Zone.Meadow(6, new ArrayList<>(), null))),
+                PlayerColor.RED, Rotation.NONE, new Pos(2, 2), null);
+    }
+
+    public PlacedTile startPt() {
+        return new PlacedTile(
+                new Tile(78, Tile.Kind.NORMAL,
+                        new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)),
+                        new TileSide.Meadow(new Zone.Meadow(2, new ArrayList<>(), null)),
+                        new TileSide.Meadow(new Zone.Meadow(3, new ArrayList<>(), Zone.SpecialPower.SHAMAN)),
+                        new TileSide.River(new Zone.Meadow(7, new ArrayList<>(), null), new Zone.River(4, 2, null), new Zone.Meadow(6, new ArrayList<>(), null)))
+                ,
+                null, Rotation.NONE, new Pos(0, 0), null);
+    }
+
+    public PlacedTile ptWithLake() {
+        return new PlacedTile(
+                new Tile(78, Tile.Kind.NORMAL,
+                        new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)),
+                        new TileSide.Meadow(new Zone.Meadow(2, new ArrayList<>(), null)),
+                        new TileSide.Meadow(new Zone.Meadow(3, new ArrayList<>(), Zone.SpecialPower.SHAMAN)),
+                        new TileSide.River(new Zone.Meadow(7, new ArrayList<>(), null), new Zone.River(4, 2, new Zone.Lake(8, 0, null)), new Zone.Meadow(6, new ArrayList<>(), null)))
+                ,
                 PlayerColor.RED, Rotation.NONE, new Pos(2, 2), null);
     }
 
@@ -225,15 +246,14 @@ public class MyPlacedTileTest {
     }
 
     @Test
-    void returnsNullWhenNoOccupant() {
-        assertNull(pt().occupant());
+    void returnsNullWhenStartTile() {
+        assertNull(startPt().potentialOccupants());
     }
 
-    /**
     @Test
-    void returnsOccupant() {
-        assertEquals(new Occupant(PAWN, 1), ptWithOccupantPawn().occupant());
-        assertEquals(new Occupant(HUT, 1), ptWithOccupantHut().occupant());
+    void returnsPotentialOccupant() {
+        assertEquals(Set.of(new Occupant(PAWN, 1), new Occupant(PAWN, 2), new Occupant(PAWN, 3), new Occupant(PAWN, 4), new Occupant(PAWN, 6), new Occupant(PAWN, 7), new Occupant(HUT, 8)), ptWithLake().potentialOccupants());
+        //assertEquals(new Occupant(HUT, 1), ptWithOccupantHut().occupant());
     }
 
     @Test
@@ -242,5 +262,4 @@ public class MyPlacedTileTest {
         tile.withOccupant(new Occupant(HUT, 2));
         assertEquals(Set.of(new Occupant(PAWN, 1),new Occupant(HUT, 2)) , tile.occupant());
     }
-    */
 }
