@@ -88,7 +88,7 @@ public class MyPlacedTileTest {
 
     public PlacedTile startPt() {
         return new PlacedTile(
-                new Tile(78, Tile.Kind.NORMAL,
+                new Tile(78, Tile.Kind.START,
                         new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)),
                         new TileSide.Meadow(new Zone.Meadow(2, new ArrayList<>(), null)),
                         new TileSide.Meadow(new Zone.Meadow(3, new ArrayList<>(), Zone.SpecialPower.SHAMAN)),
