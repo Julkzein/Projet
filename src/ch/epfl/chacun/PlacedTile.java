@@ -141,7 +141,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      * Returns a set containing all the river zones of the tile, or null if no zone of the tile is of type river
      * @return a set containing all the river zones of the tile
      */
-    public Set<Zone.River> riversZones() {
+    public Set<Zone.River> riverZones() {
         Set<Zone.River> set = new HashSet<>();
         for (Zone zone : tile.zones()) {
             if (zone instanceof Zone.River river) {

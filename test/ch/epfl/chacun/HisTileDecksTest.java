@@ -1,24 +1,16 @@
-package ch.epfl.chacun.etape2;
+package ch.epfl.chacun;
 
-
-
-import ch.epfl.chacun.Tile;
-import ch.epfl.chacun.TileDecks;
-import ch.epfl.chacun.TileSide;
-import ch.epfl.chacun.Zone;
+import ch.epfl.chacun.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * Test class for the TileDecks class
  * @author Adam Bekkar (379476)
  */
-class MyTileDecksTest {
+class HisTileDecksTest {
     private final TileSide[] sides = new TileSide[] {
             new TileSide.Forest(new Zone.Forest(0, Zone.Forest.Kind.WITH_MUSHROOMS)),
             new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.WITH_MENHIR)),

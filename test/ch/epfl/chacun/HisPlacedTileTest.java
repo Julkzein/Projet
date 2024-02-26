@@ -1,4 +1,4 @@
-package ch.epfl.chacun.etape2;
+package ch.epfl.chacun;
 
 import ch.epfl.chacun.*;
 import org.junit.jupiter.api.Test;
@@ -9,12 +9,12 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MyPlacedTileTest {
+class HisPlacedTileTest {
     private final Zone.Forest forest0 = new Zone.Forest(0, Zone.Forest.Kind.PLAIN);
     private final Zone.Forest forest1 = new Zone.Forest(1, Zone.Forest.Kind.PLAIN);
     private final Zone.Forest forest2 = new Zone.Forest(2, Zone.Forest.Kind.PLAIN);
     private final Zone.Meadow meadow4 = new Zone.Meadow(4, new ArrayList<>(), null);
-    private final Zone.Meadow meadow5 = new Zone.Meadow(5, new ArrayList<>(), Zone.SpecialPower.HUNTING_TRAP);
+    private final Zone.Meadow meadow5 = new Zone.Meadow(5, new ArrayList<>(), null);
     private final Zone.Lake lake8 = new Zone.Lake(8, 987654321, Zone.SpecialPower.LOGBOAT);
     private final Zone.River river3 = new Zone.River(3, 123456789, lake8);
     private final TileSide[] sides = new TileSide[] {

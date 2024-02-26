@@ -1,4 +1,4 @@
-package ch.epfl.chacun.etape2;
+package ch.epfl.chacun;
 
 import ch.epfl.chacun.Tile;
 import ch.epfl.chacun.TileSide;
@@ -6,13 +6,12 @@ import ch.epfl.chacun.Zone;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MyTileTest {
+class HisTileTest {
     private final Zone.Forest forest0 = new Zone.Forest(0, Zone.Forest.Kind.PLAIN);
     private final Zone.Forest forest1 = new Zone.Forest(1, Zone.Forest.Kind.PLAIN);
     private final Zone.Forest forest2 = new Zone.Forest(2, Zone.Forest.Kind.PLAIN);
