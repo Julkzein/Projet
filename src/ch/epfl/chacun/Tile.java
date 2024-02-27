@@ -15,7 +15,7 @@ public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSi
     /**
      * The three possible kinds of a tile.
      */
-    enum Kind {
+    public enum Kind {
         START,
         NORMAL,
         MENHIR;

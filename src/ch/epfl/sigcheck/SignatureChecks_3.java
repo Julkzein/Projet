@@ -8,6 +8,7 @@ package ch.epfl.sigcheck;
 final class SignatureChecks_3 {
     private SignatureChecks_3() {}
 
+    /**
     void checkArea() throws Exception {
         v01 = new ch.epfl.chacun.Area<>(v02, v03, v04);
         v06 = ch.epfl.chacun.Area.animals(v05, v06);
@@ -82,4 +83,5 @@ final class SignatureChecks_3 {
     ch.epfl.chacun.ZonePartition<ch.epfl.chacun.Zone> v26;
     ch.epfl.chacun.Zone v27;
     ch.epfl.chacun.Area<ch.epfl.chacun.Zone> v28;
+     */
 }

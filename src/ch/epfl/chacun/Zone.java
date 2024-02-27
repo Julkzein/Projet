@@ -13,7 +13,7 @@ public sealed interface Zone {
     /**
      * Represents the six possible special powers of a zone.
      */
-    enum SpecialPower {
+    public enum SpecialPower {
         SHAMAN,
         LOGBOAT,
         HUNTING_TRAP,
