@@ -126,7 +126,17 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
          * @param zone2 : the second zone to add to the area
          */
         void union(Z zone1, Z zone2) {
-            // créer des nouvelles aires avec les zones de zone1 et zone2 ?
+            for(Area<Z> area : areas) {
+                if(area.zones().contains(zone1)) {
+                    for(Area<Z> area2 : areas) {
+                        if(area2.zones().contains(zone2)) {
+                            area.connectTo(area2);
+                            return; //ça s'arrete bien ici ?
+                        }
+                    }
+                }
+            }
+            throw new IllegalArgumentException();
         }
 
         /**
