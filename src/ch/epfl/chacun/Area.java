@@ -9,6 +9,14 @@ import java.util.*;
  * @Author Jules Delforge (372325)
  */
 public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, int openConnections) {
+    /**
+     * This constructor creates an area with the given zones, occupants and open connections
+     *
+     * @param zones : the set of zones of the area
+     * @param occupants : the list of occupants of the area
+     * @param openConnections : the number of open connections of the area
+     * @throws IllegalArgumentException if the open connections is negative
+     */
     public Area {
         if (openConnections < 0) {
             throw new IllegalArgumentException();
@@ -17,6 +25,12 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         occupants = List.copyOf(occupants);
     }
 
+    /**
+     * This method returns true is the given forest has a menhir
+     *
+     * @param forest the forest to search in
+     * @return true if the given forest has a menhir
+     */
     public static boolean hasMenhir(Area<Zone.Forest> forest) {
         for (Zone.Forest zone : forest.zones) {
             if (zone.kind() == Zone.Forest.Kind.WITH_MENHIR) {
@@ -26,6 +40,12 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         return false;
     }
 
+    /**
+     * This method returns the number of mushroom groups in the given forest
+     *
+     * @param forest the forest to search in
+     * @return the number of mushroom groups in the given forest
+     */
     public static int mushroomGroupCount(Area<Zone.Forest> forest) {
         int i = 0;
         for (Zone.Forest zone : forest.zones) {
@@ -36,6 +56,14 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         return i;
     }
 
+    /**
+     * This method returns the number of animals in the given meadow not
+     * considering the animals in the given set of cancelled animals
+     *
+     * @param meadow the meadow to search in
+     * @param cancelledAnimals the set of animals to cancel
+     * @return the number of animals in the given meadow
+     */
     public static Set<Animal> animals(Area<Zone.Meadow> meadow, Set<Animal> cancelledAnimals) {
         Set<Animal> animals = new HashSet<>();
         for (Zone.Meadow meadows : meadow.zones) {
@@ -45,6 +73,14 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         return animals;
     }
 
+
+    /**
+     * This method returns the number fish in the given river and
+     * possible lakes attached to the river
+     * 
+     * @param river the river to search in
+     * @return the number of fish in the given river
+     */
     public static int riverFishCount(Area<Zone.River> river) {
         int i = 0;
         Set<Zone.Lake> lakes = new HashSet<>();
