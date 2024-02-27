@@ -101,7 +101,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
 
     public Set<PlayerColor> majorityOccupants() {
         int index = PlayerColor.values().length;
-        int occupantCount [] = new int[index];
+        int[] occupantCount = new int[index];
         for (PlayerColor occupant : occupants) {
             switch (occupant) {
                 case RED -> occupantCount[0] += 1;
@@ -135,14 +135,61 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
     }
 
     public Area<Z> connectTo(Area<Z> that) {
-        Set<Z> combinedZones = new HashSet<>(this.zones());
-        combinedZones.addAll(that.zones());
+        if (this == that) {
+            return new Area<>(this.zones, this.occupants, this.openConnections);
+        }
+        else {
+            Set<Z> combinedZones = new HashSet<>(this.zones);
+            combinedZones.addAll(that.zones);
 
-        List<Occupant> combinedOccupants = new ArrayList<>(this.occupants());
-        combinedOccupants.addAll(that.occupants());
+            List<PlayerColor> combinedOccupants = new ArrayList<>(this.occupants);
+            combinedOccupants.addAll(that.occupants);
 
-        int combinedOpenConnections = this.openConnections() + that.openConnections();
+            int combinedOpenConnections = this.openConnections + that.openConnections;
 
-        return new Area<>(combinedZones, combinedOccupants, combinedOpenConnections);
+            return new Area<>(combinedZones, combinedOccupants, combinedOpenConnections - 2);
+        }
+
+    }
+
+    public Area<Z> withInitialOccupants(PlayerColor occupant) {
+        if (this.isOccupied()) {
+            throw new IllegalArgumentException();
+        } else {
+            List<PlayerColor> newOccupants = new ArrayList<>(this.occupants);
+            newOccupants.add(occupant);
+            return new Area<>(this.zones, newOccupants, this.openConnections);
+        }
+    }
+
+    public Area<Z> withoutOccupant(PlayerColor occupant) {
+        if (!this.occupants.contains(occupant)) {
+            throw new IllegalArgumentException();
+        } else {
+            List<PlayerColor> newOccupants = new ArrayList<>(this.occupants);
+            newOccupants.remove(occupant);
+            return new Area<>(this.zones, newOccupants, this.openConnections);
+        }
+    }
+
+    public Area<Z> withoutOccupants() {
+        return new Area<>(this.zones, new ArrayList<>(), this.openConnections);
+    }
+
+    public Set<Integer> tileIds() {
+        Set<Integer> tileIds = new HashSet<>();
+        for (Zone zone : zones) {
+            tileIds.add(zone.tileId());
+        }
+        return tileIds;
+    }
+
+    public Zone zoneWithSpecialPower(Zone.SpecialPower specialPower) {
+        for (Zone zone : zones) {
+            if (zone.specialPower() == specialPower) {
+                return zone;
+            }
+        }
+        return null;
     }
 }
