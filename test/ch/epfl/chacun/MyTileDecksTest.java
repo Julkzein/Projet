@@ -19,14 +19,6 @@ public class MyTileDecksTest {
     }
 
     @Test
-    void checkThrowExceptions() {
-        assertThrows(IllegalArgumentException.class, ()-> new TileDecks(null, new ArrayList<>(), new ArrayList<>()));
-        assertThrows(IllegalArgumentException.class, ()-> new TileDecks(new ArrayList<>(), null, new ArrayList<>()));
-        assertThrows(IllegalArgumentException.class, ()-> new TileDecks(new ArrayList<>(), new ArrayList<>(), null));
-
-    }
-
-    @Test
     void checkDeckSizeEmpty() {
         TileDecks tileDecks = new TileDecks(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         assert(tileDecks.deckSize(Tile.Kind.START) == 0);

@@ -11,40 +11,37 @@ import java.util.function.Predicate;
  * @author Jules Delforge (372325)
  */
 public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, List<Tile> menhirTiles) {
-    //final redundant ?
 
     /**
      * Compact constructor with a given startTiles
+     *
      * @param startTiles pile containing only the starting tile
      * @param normalTiles pile containing the normal tiles
      * @param menhirTiles pile containing the menhir tiles
      */
     public TileDecks {
-        if (startTiles == null || normalTiles == null || menhirTiles == null) {
-            throw new IllegalArgumentException();
-        } //nécessaire?
-        startTiles = List.copyOf(startTiles); //bien ça ?
+        startTiles = List.copyOf(startTiles);
         normalTiles = List.copyOf(normalTiles);
         menhirTiles = List.copyOf(menhirTiles);
     }
 
 
     /**
+     * This method returns the size of the pile of the given type
      *
      * @param kind the type of tile for which we would like the size of the pile
      * @return the size of the pile of the given type of tile
      */
     public int deckSize(Tile.Kind kind) {
-        if (kind == Tile.Kind.START) {
-            return startTiles.size();
-        } else if (kind == Tile.Kind.NORMAL) {
-            return normalTiles.size();
-        } else {
-            return menhirTiles.size();
-        }
+        return switch(kind) {
+            case START -> startTiles.size();
+            case NORMAL -> normalTiles.size();
+            case MENHIR -> menhirTiles.size();
+        };
     }
 
     /**
+     * This method returns the top tile of the pile of the given type of tile
      *
      * @param kind the type of tile for which we would like the top tile
      * @return the top tile of the pile of the given type of tile
@@ -69,6 +66,8 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
     }
 
     /**
+     * This method returns the tile tileDecks without the top tile of the given type of tile
+     * and throws an IllegalArgumentException if the pile is empty
      *
      * @param kind the type of tile for which we would like the pile without the top tile
      * @return The tileDecks without the top tile of the given type of tile
@@ -78,39 +77,21 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
         if (deckSize(kind) == 0) {
             throw new IllegalArgumentException();
         }
-        if (kind == Tile.Kind.START) {
-            return new TileDecks(startTiles.subList(1, startTiles.size()), normalTiles, menhirTiles);
-        } else if (kind == Tile.Kind.NORMAL) {
-            return new TileDecks(startTiles, normalTiles.subList(1, normalTiles.size()), menhirTiles);
-        } else {
-            return new TileDecks(startTiles, normalTiles, menhirTiles.subList(1, menhirTiles.size()));
-        }
+        return switch (kind) {
+            case START -> new TileDecks(startTiles.subList(1, startTiles.size()), normalTiles, menhirTiles);
+            case NORMAL -> new TileDecks(startTiles, normalTiles.subList(1, normalTiles.size()), menhirTiles);
+            case MENHIR -> new TileDecks(startTiles, normalTiles, menhirTiles.subList(1, menhirTiles.size()));
+        };
     }
 
     /**
-    public TileDecks withTopTileDrawnUntil(Tile.Kind kind, Predicate<Tile> predicate) {
-        if (kind == Tile.Kind.START) {
-            int firstPlayableTile = 0;
-            while(predicate.test(startTiles.get(firstPlayableTile))) { //verifier la condition, et créer si nécéssaire une classe
-                firstPlayableTile++;
-            }
-            return new TileDecks(startTiles.subList(firstPlayableTile, startTiles.size()), normalTiles, menhirTiles);
-        } else if (kind == Tile.Kind.NORMAL) {
-            int firstPlayableTile = 0;
-            while(predicate.test(startTiles.get(firstPlayableTile))) {
-                firstPlayableTile++;
-            }
-            return new TileDecks(startTiles, normalTiles.subList(firstPlayableTile, normalTiles.size()), menhirTiles);
-        } else {
-            int firstPlayableTile = 0;
-            while(predicate.test(startTiles.get(firstPlayableTile))) {
-                firstPlayableTile++;
-            }
-            return new TileDecks(startTiles, normalTiles, menhirTiles.subList(firstPlayableTile, menhirTiles.size()));
-        }
-    }
-    */
-
+     * Returns the tileDecks without the top tile of the given type of tile, until the given predicate is true
+     *
+     * @param kind the type of tile for which we would like the pile without the top tile
+     * @param predicate the condition for which we would like to stop drawing the top tile
+     * @return The tileDecks without the top tile of the given type of tile
+     * @throws IllegalArgumentException if the pile is empty
+     */
     public TileDecks withTopTileDrawnUntil(Tile.Kind kind, Predicate<Tile> predicate) {
         switch (kind) {
             case START -> {
@@ -138,12 +119,10 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
                 }
             }
         }
-        if (kind == Tile.Kind.START) {
-            return new TileDecks(new ArrayList<>(), normalTiles, menhirTiles);
-        } else if (kind == Tile.Kind.NORMAL) {
-            return new TileDecks(startTiles, new ArrayList<>(), menhirTiles);
-        } else {
-            return new TileDecks(startTiles, normalTiles, new ArrayList<>());
-        }
+        return switch (kind) {
+            case START -> new TileDecks(new ArrayList<>(), normalTiles, menhirTiles);
+            case NORMAL -> new TileDecks(startTiles, new ArrayList<>(), menhirTiles);
+            case MENHIR -> new TileDecks(startTiles, normalTiles, new ArrayList<>());
+        };
     }
 }

@@ -23,6 +23,7 @@ public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSi
 
     /**
      * The four sides of the tile.
+     *
      * @return the four sides of the tile.
      */
     public List<TileSide> sides() {
@@ -31,6 +32,7 @@ public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSi
 
     /**
      * The zones of the sides of the tile.
+     *
      * @return the zones of the sides of the tile.
      */
     public Set<Zone> sideZones() {
@@ -43,6 +45,7 @@ public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSi
 
     /**
      * The zones of the tile.
+     * 
      * @return the zones of the tile.
      */
     public Set<Zone> zones() {

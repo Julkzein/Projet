@@ -14,12 +14,12 @@ public class MyPlacedTileTest {
 
     @Test
     void placedTileWithNullTile(){
-        assertThrows(IllegalArgumentException.class, ()-> new PlacedTile(null, PlayerColor.RED, Rotation.NONE, new Pos(2, 2), null));
+        assertThrows(NullPointerException.class, ()-> new PlacedTile(null, PlayerColor.RED, Rotation.NONE, new Pos(2, 2), null));
     }
 
     @Test
     void placedTileWithNullRotation(){
-        assertThrows(IllegalArgumentException.class, ()-> new PlacedTile(new Tile(78, Tile.Kind.NORMAL,
+        assertThrows(NullPointerException.class, ()-> new PlacedTile(new Tile(78, Tile.Kind.NORMAL,
                 new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)),
                 new TileSide.Meadow(new Zone.Meadow(2, new ArrayList<>(), null)),
                 new TileSide.Meadow(new Zone.Meadow(3, new ArrayList<>(), Zone.SpecialPower.SHAMAN)),
@@ -28,7 +28,7 @@ public class MyPlacedTileTest {
 
     @Test
     void placedTileWithNullPos(){
-        assertThrows(IllegalArgumentException.class, ()-> new PlacedTile(new Tile(78, Tile.Kind.NORMAL,
+        assertThrows(NullPointerException.class, ()-> new PlacedTile(new Tile(78, Tile.Kind.NORMAL,
                 new TileSide.Forest(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)),
                 new TileSide.Meadow(new Zone.Meadow(2, new ArrayList<>(), null)),
                 new TileSide.Meadow(new Zone.Meadow(3, new ArrayList<>(), Zone.SpecialPower.SHAMAN)),
