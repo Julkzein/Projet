@@ -95,9 +95,13 @@ class HisPlacedTileTest {
 
     @Test
     void withOccupantIsCorrectlyDefined() {
+        Occupant occupant = new Occupant(Occupant.Kind.PAWN, tile.id());
+        assertEquals(new PlacedTile(tile, PlayerColor.RED, Rotation.NONE, new Pos(0, 0), null).withOccupant(occupant), placedTile);
+    }
+
+    @Test
+    void mabite() {
         assertThrows(IllegalArgumentException.class, () -> placedTile.withOccupant(null));
-        Occupant occupant = new Occupant(Occupant.Kind.HUT, tile.id());
-        assertEquals(new PlacedTile(tile, PlayerColor.RED, Rotation.NONE, new Pos(0, 0), occupant), placedTile.withOccupant(occupant));
     }
 
     @Test
