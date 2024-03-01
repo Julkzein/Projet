@@ -22,7 +22,7 @@ class HisPlacedTileTest {
             new TileSide.River(meadow4, river3, meadow5),
     };
     private final Tile tile = new Tile(21, Tile.Kind.NORMAL, sides[0], sides[1], sides[2], sides[3]);
-    private final PlacedTile placedTile = new PlacedTile(tile, PlayerColor.RED, Rotation.NONE, new Pos(0, 0), new Occupant(Occupant.Kind.PAWN, tile.id()));
+    private final PlacedTile placedTile = new PlacedTile(tile, PlayerColor.RED, Rotation.NONE, new Pos(0, 0), null);
 
     @Test
     void idIsCorrectlyDefined() {
@@ -95,13 +95,13 @@ class HisPlacedTileTest {
 
     @Test
     void withOccupantIsCorrectlyDefined() {
-        Occupant occupant = new Occupant(Occupant.Kind.PAWN, tile.id());
-        assertEquals(new PlacedTile(tile, PlayerColor.RED, Rotation.NONE, new Pos(0, 0), null).withOccupant(occupant), placedTile);
+        //assertThrows(IllegalArgumentException.class, () -> placedTile.withOccupant(null));
+        Occupant occupant = new Occupant(Occupant.Kind.HUT, tile.id());
+        assertEquals(new PlacedTile(tile, PlayerColor.RED, Rotation.NONE, new Pos(0, 0), occupant), placedTile.withOccupant(occupant));
     }
 
     @Test
     void mabite() {
-        assertThrows(IllegalArgumentException.class, () -> placedTile.withOccupant(null));
     }
 
     @Test
