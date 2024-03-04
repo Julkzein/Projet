@@ -44,8 +44,8 @@ public class MyAreaTest {
     @Test
     void areaMushroomCount() {
         Area area = new Area<>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MUSHROOMS)), new ArrayList<PlayerColor>(), 0);
-        Area area2 = new Area<>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MUSHROOMS), new Zone.Meadow(2, List.of(), null), new Zone.Forest(3, Zone.Forest.Kind.WITH_MUSHROOMS)), new ArrayList<PlayerColor>(), 0);
-        Area area3 = new Area<>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MUSHROOMS), new Zone.Meadow(2, List.of(), null), new Zone.Forest(3, Zone.Forest.Kind.WITH_MUSHROOMS), new Zone.Forest(4, Zone.Forest.Kind.WITH_MUSHROOMS)), new ArrayList<PlayerColor>(), 0);
+        Area area2 = new Area<>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MUSHROOMS), new Zone.Forest(3, Zone.Forest.Kind.WITH_MUSHROOMS)), new ArrayList<PlayerColor>(), 0);
+        Area area3 = new Area<>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MUSHROOMS), new Zone.Forest(3, Zone.Forest.Kind.WITH_MUSHROOMS), new Zone.Forest(4, Zone.Forest.Kind.WITH_MUSHROOMS)), new ArrayList<PlayerColor>(), 0);
         Area area4 = new Area<>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)), new ArrayList<PlayerColor>(), 0);
 
         assertEquals(1, mushroomGroupCount(area));
@@ -64,10 +64,10 @@ public class MyAreaTest {
         assertEquals(Set.of(), animals(area, Set.of(new Animal(87, Animal.Kind.DEER))));
         assertEquals(Set.of(), animals(area, Set.of(deer)));
         assertEquals(Set.of(deer), animals(area2, Set.of(new Animal(88, Animal.Kind.TIGER))));
-        assertEquals(Set., animals(area2, Set.of(new Animal(87, Animal.Kind.TIGER), new Animal(88, Animal.Kind.AUROCHS))));
-        //assertEquals(2, animals(area3, Set.of(new Animal(87, Animal.Kind.TIGER), new Animal(88, Animal.Kind.AUROCHS))));
-        //assertEquals(2, animals(area3, Set.of(new Animal(89, Animal.Kind.AUROCHS))));
-
-
+        assertEquals(Set.of(deer), animals(area2, Set.of(new Animal(88, Animal.Kind.TIGER), new Animal(89, Animal.Kind.AUROCHS))));
+        assertEquals(Set.of(deer, new Animal(89, Animal.Kind.AUROCHS)), animals(area3, Set.of(new Animal(88, Animal.Kind.TIGER))));
+        assertEquals(Set.of(deer, new Animal(88, Animal.Kind.TIGER), new Animal(89, Animal.Kind.AUROCHS)), animals(area3, Set.of()));
     }
+
+    
 }
