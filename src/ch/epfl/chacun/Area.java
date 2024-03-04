@@ -140,14 +140,31 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
     }
 
 
+    /**
+     * This method checks if the area is closed
+     *
+     * @return true if and only if th area is
+     * closed (it doesn't have any open connections)
+     */
     public boolean isClosed() {
         return openConnections == 0;
     }
 
+    /**
+     * This method checks if the area is occupied
+     *
+     * @return true if and only if the area has at least one occupied
+     */
     public boolean isOccupied() {
-        return occupants.size() > 0;
+        return !occupants.isEmpty();
     }
 
+    /**
+     * This method returns the set containing the occupants of the
+     * color majority
+     *
+     * @return a set containing the occupants of the color majority
+     */
     public Set<PlayerColor> majorityOccupants() {
         int index = PlayerColor.values().length;
         int[] occupantCount = new int[index];
@@ -169,6 +186,12 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         return majorityOccupantsSet;
     }
 
+    /**
+     * This method connects two areas together
+     *
+     * @param that the area we want to connect this area to
+     * @return the new area resulting of the connection between the two areas
+     */
     public Area<Z> connectTo(Area<Z> that) {
         if (this == that) {
             return new Area<>(this.zones, this.occupants, this.openConnections);
@@ -176,17 +199,19 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         else {
             Set<Z> combinedZones = new HashSet<>(this.zones);
             combinedZones.addAll(that.zones);
-
             List<PlayerColor> combinedOccupants = new ArrayList<>(this.occupants);
             combinedOccupants.addAll(that.occupants);
-
             int combinedOpenConnections = this.openConnections + that.openConnections;
-
             return new Area<>(combinedZones, combinedOccupants, combinedOpenConnections - 2);
         }
-
     }
 
+    /**
+     * This method adds an occupant to the current area
+     *
+     * @param occupant the occupant we desire to add to the current area
+     * @return and identical area to the current one but with the given occupant
+     */
     public Area<Z> withInitialOccupants(PlayerColor occupant) {
         if (this.isOccupied()) {
             throw new IllegalArgumentException();
@@ -197,6 +222,14 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         }
     }
 
+    /**
+     * This method removes an occupant of the given color in the current area
+     * throws an IllegalArgumentException if the area does not contain an occupant
+     * of the given color
+     *
+     * @param occupant the occupant we desire to remove
+     * @return an identical area to the current one but with the given occupant removed
+     */
     public Area<Z> withoutOccupant(PlayerColor occupant) {
         if (!this.occupants.contains(occupant)) {
             throw new IllegalArgumentException();
@@ -207,10 +240,20 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         }
     }
 
+    /**
+     * This method removes all the occupants of the current zone 
+     * 
+     * @return an identical area to the current one but without any occupants
+     */
     public Area<Z> withoutOccupants() {
         return new Area<>(this.zones, new ArrayList<>(), this.openConnections);
     }
 
+    /**
+     * This method returns a set containing the id of the zones composed of the area
+     *
+     * @return a set of all the ids of the different zones containing the area
+     */
     public Set<Integer> tileIds() {
         Set<Integer> tileIds = new HashSet<>();
         for (Zone zone : zones) {
@@ -219,6 +262,13 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         return tileIds;
     }
 
+    /**
+     * This method returns the zone of the area containing the given special
+     * power or null if no zone contains this special power
+     *
+     * @param specialPower the special power of the zone we desire
+     * @return the zone of the area that posesses the special power
+     */
     public Zone zoneWithSpecialPower(Zone.SpecialPower specialPower) {
         for (Zone zone : zones) {
             if (zone.specialPower() == specialPower) {
