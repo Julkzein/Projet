@@ -89,7 +89,9 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
             for (Area<Z> area : areas) {
                 if (area.zones().contains(zone)) {
                     if (area.occupants().isEmpty()) {
-                        area.occupants().add(color);
+                        areas.add(area.withInitialOccupants(color));
+                        areas.remove(area);
+                        return;
                     }
                     throw new IllegalArgumentException();
                     //ajouterl le player à la zone => area ou zone?
@@ -98,7 +100,7 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
             throw new IllegalArgumentException();
         }
 
-/**
+        /**
          * This method removes the occupant of the given color from the given zone
          *
          * @param zone : the zone from which to remove the occupant
@@ -110,9 +112,28 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
             for (Area<Z> area : areas) {
                 if (area.zones().contains(zone)) {
                     if (area.occupants().contains(color)) {
-                        area.occupants().remove(color);
+                        areas.add(area.withoutOccupant(color));
+                        areas.remove(area);
+                        return;
                     }
                     throw new IllegalArgumentException();
+                }
+            }
+            throw new IllegalArgumentException();
+        }
+
+        /**
+         * This method removes all the occupants from the given zone
+         *
+         * @param area: the area from which to remove all the occupants
+         * @throws IllegalArgumentException if the zone is not in any area
+         */
+        void removeAllOccupants(Area<Z> area) {
+            for (Area<Z> area1 : areas) {
+                if (area1.equals(area)) {
+                    areas.add(area.withoutOccupants());
+                    areas.remove(area);
+                    return;
                 }
             }
             throw new IllegalArgumentException();
@@ -130,8 +151,9 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
                 if(area.zones().contains(zone1)) {
                     for(Area<Z> area2 : areas) {
                         if(area2.zones().contains(zone2)) {
-                            area.connectTo(area2);
-                            return; //ça s'arrete bien ici ?
+                            areas.add(area.connectTo(area2));
+                            areas.removeAll(Set.of(area, area2));
+                            return;
                         }
                     }
                 }
