@@ -93,6 +93,13 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         return i;
     }
 
+    /**
+     * This method returns the number fish in the given river system and
+     * possible lakes attached to the river
+     *
+     * @param riverSystem the river system to search in
+     * @return the number of fish in the given river system
+     */
     public static int riverSystemFishCount(Area<Zone.Water> riverSystem) {
         int i = 0;
         Set<Zone.Lake> lakes = new HashSet<>();
@@ -110,6 +117,12 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         return i;
     }
 
+    /**
+     * This method returns the number of lakes in the given hydrographic system
+     *
+     * @param riverSystem the river system to search in
+     * @return the number of lakes in the given river system
+     */
     public int lakeCount(Area<Zone.Water> riverSystem) {
         int i = 0;
         Set<Zone.Lake> lakes = new HashSet<>();
@@ -139,32 +152,18 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         int index = PlayerColor.values().length;
         int[] occupantCount = new int[index];
         for (PlayerColor occupant : occupants) {
-            switch (occupant) {
-                case RED -> occupantCount[0] += 1;
-                case BLUE -> occupantCount[1] += 1;
-                case GREEN -> occupantCount[2] += 1;
-                case YELLOW -> occupantCount[3] += 1;
-                case PURPLE -> occupantCount[4] += 1;
-            }
+            occupantCount[occupant.ordinal()] += 1;
         }
-
         int max = 0;
         for (int i = 0; i < index; i++) {
             if (occupantCount[i] > max) {
                 max = occupantCount[i];
             }
         }
-
         Set<PlayerColor> majorityOccupantsSet = new HashSet<>();
-        for (int i = 0; i < index; i++) {
-            if (occupantCount[i] == max) {
-                switch (i) {
-                    case 0 -> majorityOccupantsSet.add(PlayerColor.RED);
-                    case 1 -> majorityOccupantsSet.add(PlayerColor.BLUE);
-                    case 2 -> majorityOccupantsSet.add(PlayerColor.GREEN);
-                    case 3 -> majorityOccupantsSet.add(PlayerColor.YELLOW);
-                    case 4 -> majorityOccupantsSet.add(PlayerColor.PURPLE);
-                }
+        for (PlayerColor occupant : PlayerColor.ALL) {
+            if (occupantCount[occupant.ordinal()] == max) {
+                majorityOccupantsSet.add(occupant);
             }
         }
         return majorityOccupantsSet;
