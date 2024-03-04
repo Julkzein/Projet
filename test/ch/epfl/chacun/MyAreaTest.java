@@ -78,6 +78,6 @@ public class MyAreaTest {
 
         assertEquals(2, riverFishCount(area));
         assertEquals(4, riverFishCount(area2));
-        assertEquals(6, riverFishCount(area3)); 
+        assertEquals(6, riverFishCount(area3));
     }
 }
