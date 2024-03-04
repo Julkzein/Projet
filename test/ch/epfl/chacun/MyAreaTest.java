@@ -69,5 +69,15 @@ public class MyAreaTest {
         assertEquals(Set.of(deer, new Animal(88, Animal.Kind.TIGER), new Animal(89, Animal.Kind.AUROCHS)), animals(area3, Set.of()));
     }
 
-    
+    @Test
+    void areaFishCount() {
+        Area area = new Area<>(Set.of(new Zone.River(1, 2, null)), new ArrayList<PlayerColor>(), 0);
+        Area area2 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 2, null))), new ArrayList<PlayerColor>(), 0);
+        Zone.Lake lake = new Zone.Lake(2, 3, null);
+        Area area3 = new Area<>(Set.of(new Zone.River(1, 2, lake), new Zone.River(2, 1, lake)), new ArrayList<PlayerColor>(), 0);
+
+        assertEquals(2, riverFishCount(area));
+        assertEquals(4, riverFishCount(area2));
+        assertEquals(6, riverFishCount(area3)); 
+    }
 }
