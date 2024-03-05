@@ -109,7 +109,7 @@ public class MyZonePartitionTest {
     @Test
     void removeAllOccupantsOf() {
         Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(2, new ArrayList<>(), null));
-        Set<Zone> zones2 = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(2, new ArrayList<>(), null));
+        Set<Zone> zones2 = Set.of(new Zone.Forest(3, Zone.Forest.Kind.PLAIN), new Zone.Meadow(4, new ArrayList<>(), null));
         Area area = new Area<>(zones, new ArrayList<>(), 3);
         Area area2 = new Area<>(zones2, List.of(PlayerColor.RED), 3);
         ZonePartition.Builder<Zone> builder = new ZonePartition.Builder(new ZonePartition(Set.of(area, area2)));
@@ -120,7 +120,58 @@ public class MyZonePartitionTest {
 
         assertEquals(builder, new ZonePartition.Builder(new ZonePartition(Set.of(new Area<>(zones, new ArrayList<>(), 3), area2))));
     }
-    
 
+    @Test
+    void removeAllOccupantsOfThrowsIfNoSuchArea() {
+        Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(2, new ArrayList<>(), null));
+        Set<Zone> zones2 = Set.of(new Zone.Forest(3, Zone.Forest.Kind.PLAIN), new Zone.Meadow(4, new ArrayList<>(), null));
+        Area area = new Area<>(zones, List.of(PlayerColor.RED), 3);
+        Area area2 = new Area<>(zones2, List.of(PlayerColor.RED, PlayerColor.GREEN), 3);
+        ZonePartition.Builder<Zone> builder = new ZonePartition.Builder(new ZonePartition(Set.of(area, area2)));
+        builder.addInitialOccupant(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), PlayerColor.RED);
+        //builder.addInitialOccupant(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), PlayerColor.GREEN);
 
+        assertThrows(IllegalArgumentException.class, () -> builder.removeAllOccupantsOf(new Area<>(Set.of(new Zone.Forest(5, Zone.Forest.Kind.PLAIN)), new ArrayList<>(), 3)));
+        assertThrows(IllegalArgumentException.class, () -> builder.removeAllOccupantsOf(new Area<>(zones, List.of(PlayerColor.RED), 3)));
+        assertThrows(IllegalArgumentException.class, () -> builder.removeAllOccupantsOf(new Area<>(zones, new ArrayList<>(), 2)));
+    }
+
+    @Test
+    void unionWorksCorreclty() {
+        Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(2, new ArrayList<>(), null));
+        Set<Zone> zones2 = Set.of(new Zone.Forest(3, Zone.Forest.Kind.PLAIN), new Zone.Meadow(4, new ArrayList<>(), null));
+        Area area = new Area<>(zones, List.of(PlayerColor.RED), 3);
+        Area area2 = new Area<>(zones2, List.of(PlayerColor.RED, PlayerColor.GREEN), 3);
+        ZonePartition.Builder<Zone> builder = new ZonePartition.Builder(new ZonePartition(Set.of(area, area2)));
+
+        builder.union(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(4, new ArrayList<>(), null));
+
+        //pb car areas est private
+        //assertEquals(builder.areas(), List.of(new Area<>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(4, new ArrayList<>(), null)), List.of(PlayerColor.RED, PlayerColor.RED, PlayerColor.GREEN), 4)));
+    }
+
+    @Test
+    void unionThrowsIfNoSuchArea() {
+        Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(2, new ArrayList<>(), null));
+        Set<Zone> zones2 = Set.of(new Zone.Forest(3, Zone.Forest.Kind.PLAIN), new Zone.Meadow(4, new ArrayList<>(), null));
+        Area area = new Area<>(zones, List.of(PlayerColor.RED), 3);
+        Area area2 = new Area<>(zones2, List.of(PlayerColor.RED, PlayerColor.GREEN), 3);
+        ZonePartition.Builder<Zone> builder = new ZonePartition.Builder(new ZonePartition(Set.of(area, area2)));
+
+        assertThrows(IllegalArgumentException.class, () -> builder.union(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(5, new ArrayList<>(), null)));
+    }
+
+    @Test
+    void buildsCorrectly() {
+        Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(2, new ArrayList<>(), null));
+        Set<Zone> zones2 = Set.of(new Zone.Forest(3, Zone.Forest.Kind.PLAIN), new Zone.Meadow(4, new ArrayList<>(), null));
+        Area area = new Area<>(zones, List.of(PlayerColor.RED), 3);
+        Area area2 = new Area<>(zones2, List.of(PlayerColor.RED, PlayerColor.GREEN), 3);
+        ZonePartition.Builder<Zone> builder = new ZonePartition.Builder(new ZonePartition(Set.of(area, area2)));
+
+        ZonePartition zonePartition = builder.build();
+        ZonePartition zonePartition2 = new ZonePartition(Set.of(area, area2));
+
+        assertEquals(zonePartition, zonePartition2);
+    }
 }
