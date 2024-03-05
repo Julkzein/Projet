@@ -58,7 +58,7 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
         /**
          * The set of areas of the zone partition
          */
-        private Set<Area<Z>> areas = new HashSet<>();
+        private Set<Area<Z>> areas = new HashSet<Area<Z>>();
 
         /**
          * This constructor creates a builder with the given zone partition
@@ -128,7 +128,7 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
          * @param area: the area from which to remove all the occupants
          * @throws IllegalArgumentException if the zone is not in any area
          */
-        void removeAllOccupants(Area<Z> area) {
+        void removeAllOccupantsOf(Area<Z> area) {
             for (Area<Z> area1 : areas) {
                 if (area1.equals(area)) {
                     areas.add(area.withoutOccupants());
