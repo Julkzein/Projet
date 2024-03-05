@@ -16,7 +16,7 @@ import java.util.Set;
 public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
 
     /**
-     * This cosntructor creates a copy of the zone partition
+     * This constructor creates a copy of the zone partition
      * with the given areas in order to make it immutable
      */
     public ZonePartition {

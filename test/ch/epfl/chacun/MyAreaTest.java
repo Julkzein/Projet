@@ -132,7 +132,19 @@ public class MyAreaTest {
         maj3.add(PlayerColor.GREEN);
         assertEquals(maj3, area3.majorityOccupants());
         Area area4 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), List.of(PlayerColor.RED, PlayerColor.GREEN, PlayerColor.RED), 0);
-        assertEquals(List.of(PlayerColor.RED, PlayerColor.RED), area4.majorityOccupants());
+        assertEquals(new HashSet<>(Collections.singleton(PlayerColor.RED)), area4.majorityOccupants());
+    }
+
+    @Test
+    void areaConnectTo() {
+        Area area1 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), new ArrayList<PlayerColor>(Collections.singleton(PlayerColor.GREEN)), 1);
+        assertEquals(area1, area1.connectTo(area1));
+        Area area2 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), new ArrayList<PlayerColor>(Collections.singleton(PlayerColor.RED)), 1);
+        List<PlayerColor> expectedOccu = new ArrayList<>();
+        expectedOccu.add(PlayerColor.GREEN);
+        expectedOccu.add(PlayerColor.RED);
+        Area expectedArea = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null)),new Zone.River(1, 2, null), new Zone.River(2, 1, null)), expectedOccu, 0);
+        assertEquals(expectedArea, area1.connectTo(area2));
     }
 
 }

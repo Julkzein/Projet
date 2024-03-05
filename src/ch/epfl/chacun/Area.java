@@ -181,7 +181,6 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         if (max == 0) {
             return new HashSet<>();
         }
-        System.out.println(max);
         Set<PlayerColor> majorityOccupantsSet = new HashSet<>();
         for (PlayerColor occupant : PlayerColor.ALL) {
             if (occupantCount[occupant.ordinal()] == max) {
