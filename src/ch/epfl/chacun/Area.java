@@ -219,7 +219,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      * @param occupant the occupant we desire to add to the current area
      * @return and identical area to the current one but with the given occupant
      */
-    public Area<Z> withInitialOccupants(PlayerColor occupant) {
+    public Area<Z> withInitialOccupant(PlayerColor occupant) {
         if (this.isOccupied()) {
             throw new IllegalArgumentException();
         } else {

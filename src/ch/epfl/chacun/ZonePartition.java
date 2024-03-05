@@ -89,7 +89,7 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
             for (Area<Z> area : areas) {
                 if (area.zones().contains(zone)) {
                     if (area.occupants().isEmpty()) {
-                        areas.add(area.withInitialOccupants(color));
+                        areas.add(area.withInitialOccupant(color));
                         areas.remove(area);
                         return;
                     }
