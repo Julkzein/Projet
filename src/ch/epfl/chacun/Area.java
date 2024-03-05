@@ -3,7 +3,7 @@ package ch.epfl.chacun;
 import java.util.*;
 
 /**
- * Represent the area that are composed of several zones 
+ * Represent an area that are composed of several zones
  *
  * @Author Louis Bernard (379724)
  * @Author Jules Delforge (372325)
@@ -24,6 +24,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         List<PlayerColor> sortedOccupants = new ArrayList<>(occupants);
         Collections.sort(sortedOccupants);
         occupants = List.copyOf(sortedOccupants);
+        zones = Set.copyOf(zones);
     }
 
     /**
@@ -201,7 +202,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      */
     public Area<Z> connectTo(Area<Z> that) {
         if (this == that) {
-            return new Area<>(this.zones, this.occupants, this.openConnections);
+            return new Area<>(this.zones, this.occupants, this.openConnections - 2);
         }
         else {
             Set<Z> combinedZones = new HashSet<>(this.zones);

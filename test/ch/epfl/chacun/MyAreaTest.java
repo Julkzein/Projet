@@ -137,13 +137,14 @@ public class MyAreaTest {
 
     @Test
     void areaConnectTo() {
-        Area area1 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), new ArrayList<PlayerColor>(Collections.singleton(PlayerColor.GREEN)), 1);
-        assertEquals(area1, area1.connectTo(area1));
-        Area area2 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), new ArrayList<PlayerColor>(Collections.singleton(PlayerColor.RED)), 1);
+        Area area1 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), new ArrayList<PlayerColor>(Collections.singleton(PlayerColor.GREEN)), 2);
+        Area area = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), new ArrayList<PlayerColor>(Collections.singleton(PlayerColor.GREEN)), 0);
+        assertEquals(area, area1.connectTo(area1));
+        Area area2 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), new ArrayList<PlayerColor>(Collections.singleton(PlayerColor.RED)), 2);
         List<PlayerColor> expectedOccu = new ArrayList<>();
         expectedOccu.add(PlayerColor.GREEN);
         expectedOccu.add(PlayerColor.RED);
-        Area expectedArea = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null)),new Zone.River(1, 2, null), new Zone.River(2, 1, null)), expectedOccu, 0);
+        Area expectedArea = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null)),new Zone.River(1, 2, null), new Zone.River(2, 1, null)), expectedOccu, 2);
         assertEquals(expectedArea, area1.connectTo(area2));
     }
 
