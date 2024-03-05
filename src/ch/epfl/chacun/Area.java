@@ -21,8 +21,9 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         if (openConnections < 0) {
             throw new IllegalArgumentException();
         }
-        Collections.sort(occupants);
-        occupants = List.copyOf(occupants);
+        List<PlayerColor> sortedOccupants = new ArrayList<>(occupants);
+        Collections.sort(sortedOccupants);
+        occupants = List.copyOf(sortedOccupants);
     }
 
     /**
@@ -177,10 +178,17 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
                 max = occupantCount[i];
             }
         }
+        if (max == 0) {
+            return new HashSet<>();
+        }
+        System.out.println(max);
         Set<PlayerColor> majorityOccupantsSet = new HashSet<>();
         for (PlayerColor occupant : PlayerColor.ALL) {
             if (occupantCount[occupant.ordinal()] == max) {
-                majorityOccupantsSet.add(occupant);
+                for (int i = 0; i < max; i++) {
+                    majorityOccupantsSet.add(occupant);
+                }
+
             }
         }
         return majorityOccupantsSet;

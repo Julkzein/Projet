@@ -2,10 +2,7 @@ package ch.epfl.chacun;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static ch.epfl.chacun.Area.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,21 +21,27 @@ public class MyAreaTest {
     }
 
     @Test
+    void sortOccupants() {
+        Area area = new Area<>(Set.of(), List.of(PlayerColor.GREEN, PlayerColor.RED), 0);
+        assertEquals(List.of(PlayerColor.RED, PlayerColor.GREEN), area.occupants());
+    }
+
+    @Test
     void areaHasMenhir() {
         Area area = new Area<>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MENHIR)), new ArrayList<PlayerColor>(), 0);
-        assertEquals(true, hasMenhir(area));
+        assertTrue(hasMenhir(area));
     }
 
     @Test
     void areaHasMultipleMenhirs() {
         Area area = new Area<>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MENHIR), new Zone.Forest(2, Zone.Forest.Kind.WITH_MENHIR)), new ArrayList<PlayerColor>(), 0);
-        assertEquals(true, hasMenhir(area));
+        assertTrue(hasMenhir(area));
     }
 
     @Test
-    void areaHasntMenhir() {
+    void areaWithNoMenhir() {
         Area area = new Area<>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)), new ArrayList<PlayerColor>(), 0);
-        assertEquals(false, hasMenhir(area));
+        assertFalse(hasMenhir(area));
     }
 
     @Test
@@ -70,7 +73,7 @@ public class MyAreaTest {
     }
 
     @Test
-    void areaFishCount() {
+    void areaRiverFishCount() {
         Area area = new Area<>(Set.of(new Zone.River(1, 2, null)), new ArrayList<PlayerColor>(), 0);
         Area area2 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 2, null))), new ArrayList<PlayerColor>(), 0);
         Zone.Lake lake = new Zone.Lake(2, 3, null);
@@ -80,4 +83,56 @@ public class MyAreaTest {
         assertEquals(4, riverFishCount(area2));
         assertEquals(6, riverFishCount(area3));
     }
+
+    @Test
+    void areaRiverSystemFishCount() {
+        Zone.Lake lake = new Zone.Lake(2, 3, null);
+        Area areaLoop = new Area<>(Set.of(new Zone.River(1, 2, lake), new Zone.River(2, 1, lake)), new ArrayList<PlayerColor>(), 0);
+        assertEquals(6, riverSystemFishCount(areaLoop));
+
+        Area areaNotLoop = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, lake)), new ArrayList<PlayerColor>(), 0);
+        assertEquals(6, riverSystemFishCount(areaNotLoop));
+    }
+
+    @Test
+    void areLakeCount() {
+        Area areaLoop = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), new ArrayList<PlayerColor>(), 0);
+        assertEquals(1, areaLoop.lakeCount(areaLoop));
+        Area areaNotLoop = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(8, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), new ArrayList<PlayerColor>(), 0);
+        assertEquals(2, areaNotLoop.lakeCount(areaNotLoop));
+    }
+
+    @Test
+    void areaIsClosed() {
+        Area area1 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), new ArrayList<PlayerColor>(), 0);
+        assertTrue(area1.isClosed());
+        Area area2 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), new ArrayList<PlayerColor>(), 1);
+        assertFalse(area2.isClosed());
+    }
+
+    @Test
+    void areaIsOccupied() {
+        Area area1 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), new ArrayList<PlayerColor>(), 0);
+        assertFalse(area1.isOccupied());
+        Area area2 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), List.of(PlayerColor.RED), 0);
+        assertTrue(area2.isOccupied());
+        Area area3 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), List.of(PlayerColor.RED, PlayerColor.GREEN), 0);
+        assertTrue(area3.isOccupied());
+    }
+
+    @Test
+    void areaMajorityOccupants() {
+        Area area1 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), new ArrayList<PlayerColor>(), 0);
+        assertEquals(new HashSet<>(), area1.majorityOccupants());
+        Area area2 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), List.of(PlayerColor.RED), 0);
+        assertEquals(new HashSet<>(Collections.singleton(PlayerColor.RED)), area2.majorityOccupants());
+        Area area3 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), List.of(PlayerColor.RED, PlayerColor.GREEN), 0);
+        Set<PlayerColor> maj3 = new HashSet<>();
+        maj3.add(PlayerColor.RED);
+        maj3.add(PlayerColor.GREEN);
+        assertEquals(maj3, area3.majorityOccupants());
+        Area area4 = new Area<>(Set.of(new Zone.River(1, 2, new Zone.Lake(2, 3, null)), new Zone.River(2, 1, new Zone.Lake(2, 3, null))), List.of(PlayerColor.RED, PlayerColor.GREEN, PlayerColor.RED), 0);
+        assertEquals(List.of(PlayerColor.RED, PlayerColor.RED), area4.majorityOccupants());
+    }
+
 }
