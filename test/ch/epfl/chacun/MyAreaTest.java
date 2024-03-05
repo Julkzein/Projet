@@ -147,4 +147,50 @@ public class MyAreaTest {
         assertEquals(expectedArea, area1.connectTo(area2));
     }
 
+    @Test
+    void areaWithInitialOccupant() {
+        Area area1 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), new ArrayList<PlayerColor>(Collections.singleton(PlayerColor.RED)), 1);
+        assertThrows(IllegalArgumentException.class, () -> area1.withInitialOccupant(PlayerColor.RED));
+        Area area2 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), new ArrayList<PlayerColor>(), 1);
+        assertEquals(area1, area2.withInitialOccupant(PlayerColor.RED));
+    }
+
+    @Test
+    void areaWithoutOccupant() {
+        Area area1 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), new ArrayList<PlayerColor>(Collections.singleton(PlayerColor.RED)), 1);
+        Area area2 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), new ArrayList<PlayerColor>(), 1);
+        List<PlayerColor> occu3 = new ArrayList<>();
+        occu3.add(PlayerColor.RED);
+        occu3.add(PlayerColor.RED);
+        Area area3 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), occu3, 1);
+        assertThrows(IllegalArgumentException.class, () -> area2.withoutOccupant(PlayerColor.RED));
+        assertEquals(area2, area1.withoutOccupant(PlayerColor.RED));
+    }
+
+    @Test
+    void areaWithoutAllOccupant() {
+        List<PlayerColor> occu3 = new ArrayList<>();
+        occu3.add(PlayerColor.RED);
+        occu3.add(PlayerColor.RED);
+        Area area3 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), occu3, 1);
+        Area area2 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), new ArrayList<PlayerColor>(), 1);
+        assertEquals(area2, area3.withoutOccupants());
+    }
+
+    @Test
+    void areaTileIds() {
+        Area area3 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), new ArrayList<>(), 1);
+        Set<Integer> expected = new HashSet<>();
+        expected.add(0);
+        assertEquals(expected, area3.tileIds());
+    }
+
+    @Test
+    void areaZoneWithSpecialPower() {
+        Area area3 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null), new Zone.Lake(4, 2, Zone.SpecialPower.LOGBOAT)), new ArrayList<>(), 1);
+        assertEquals(new Zone.Lake(4, 2, Zone.SpecialPower.LOGBOAT), area3.zoneWithSpecialPower(Zone.SpecialPower.LOGBOAT));
+        Area area2 = new Area<>(Set.of(new Zone.River(1, 2, null), new Zone.River(2, 1, null)), new ArrayList<>(), 1);
+        assertEquals(null, area2.zoneWithSpecialPower(Zone.SpecialPower.LOGBOAT));
+    }
+
 }

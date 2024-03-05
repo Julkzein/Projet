@@ -124,7 +124,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      * @param riverSystem the river system to search in
      * @return the number of lakes in the given river system
      */
-    public int lakeCount(Area<Zone.Water> riverSystem) {
+    public static int lakeCount(Area<Zone.Water> riverSystem) {
         int i = 0;
         Set<Zone.Lake> lakes = new HashSet<>();
         for (Zone.Water waterBody : riverSystem.zones) {

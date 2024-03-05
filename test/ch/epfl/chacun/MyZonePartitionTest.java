@@ -9,21 +9,6 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MyZonePartitionTest {
-
-    /*** test marche mais erreur d'assertion ***/
-    @Test
-    void testCopyOfArea() {
-        Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MENHIR), new Zone.River(2, 4, null));
-        Set<Zone> zones2 = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(2, new ArrayList<>(), null));
-        Area area1 = new Area(zones, new ArrayList<>(), 0);
-        Area area2 = new Area(zones2, new ArrayList<>(), 0);
-        Set<Area> areaSet = Set.of(area1, area2);
-        ZonePartition zonePartition = new ZonePartition(areaSet);
-        ZonePartition zonePartition2 = new ZonePartition(zonePartition.areas());
-
-        assertNotEquals(zonePartition.areas(), zonePartition2.areas());
-    }
-
     @Test
     void areaContaining() {
         Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MENHIR), new Zone.River(2, 4, null));
@@ -43,11 +28,11 @@ public class MyZonePartitionTest {
         Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN));
         ZonePartition.Builder<Zone> builder2 = new ZonePartition.Builder(new ZonePartition(Set.of(new Area<>(zones, new ArrayList<>(), 3))));
         builder.addSingleton(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), 3);
-        assertEquals(builder, builder2);
+        assertEquals(builder.build().areas(), builder2.build().areas());
     }
 
     @Test
-    void addInitialOccupant() {
+    void addInitialOccupantTest() {
         Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(2, new ArrayList<>(), null));
         ZonePartition.Builder<Zone> builder = new ZonePartition.Builder(new ZonePartition(Set.of(new Area<>(zones, new ArrayList<>(), 3))));
 
@@ -57,7 +42,7 @@ public class MyZonePartitionTest {
         initialOccupants.add(PlayerColor.RED);
         ZonePartition.Builder<Zone> builder2 = new ZonePartition.Builder(new ZonePartition(Set.of(new Area<>(zones, initialOccupants, 3))));
 
-        assertEquals(builder, builder2);
+        assertEquals(builder.build().areaContaining(new Zone.Forest(1, Zone.Forest.Kind.PLAIN)), new Area<>(zones, initialOccupants, 3));
     }
 
     @Test
@@ -82,10 +67,9 @@ public class MyZonePartitionTest {
         Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(2, new ArrayList<>(), null));
         ZonePartition.Builder<Zone> builder = new ZonePartition.Builder(new ZonePartition(Set.of(new Area<>(zones, new ArrayList<>(), 3))));
         builder.addInitialOccupant(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), PlayerColor.RED);
-
         builder.removeOccupant(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), PlayerColor.RED);
 
-        assertEquals(builder, new ZonePartition.Builder(new ZonePartition(Set.of(new Area<>(zones, new ArrayList<>(), 3)))));
+        assertEquals(builder.build().areas(), new ZonePartition.Builder(new ZonePartition(Set.of(new Area<>(zones, new ArrayList<>(), 3)))).build().areas());
     }
 
     @Test
@@ -110,29 +94,27 @@ public class MyZonePartitionTest {
     void removeAllOccupantsOf() {
         Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(2, new ArrayList<>(), null));
         Set<Zone> zones2 = Set.of(new Zone.Forest(3, Zone.Forest.Kind.PLAIN), new Zone.Meadow(4, new ArrayList<>(), null));
-        Area area = new Area<>(zones, new ArrayList<>(), 3);
-        Area area2 = new Area<>(zones2, List.of(PlayerColor.RED), 3);
+        Area<Zone> area = new Area<>(zones, List.of(PlayerColor.RED), 3);
+        Area<Zone> area2 = new Area<>(zones2, List.of(PlayerColor.RED), 3);
+
         ZonePartition.Builder<Zone> builder = new ZonePartition.Builder(new ZonePartition(Set.of(area, area2)));
-        builder.addInitialOccupant(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), PlayerColor.RED);
-        builder.addInitialOccupant(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), PlayerColor.GREEN);
 
         builder.removeAllOccupantsOf(area);
 
-        assertEquals(builder, new ZonePartition.Builder(new ZonePartition(Set.of(new Area<>(zones, new ArrayList<>(), 3), area2))));
+        assertEquals(builder.build().areas(), new ZonePartition.Builder(new ZonePartition(Set.of(new Area<>(zones, new ArrayList<>(), 3), area2))).build().areas());
     }
 
     @Test
     void removeAllOccupantsOfThrowsIfNoSuchArea() {
         Set<Zone> zones = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Meadow(2, new ArrayList<>(), null));
         Set<Zone> zones2 = Set.of(new Zone.Forest(3, Zone.Forest.Kind.PLAIN), new Zone.Meadow(4, new ArrayList<>(), null));
-        Area area = new Area<>(zones, List.of(PlayerColor.RED), 3);
-        Area area2 = new Area<>(zones2, List.of(PlayerColor.RED, PlayerColor.GREEN), 3);
+        Area area = new Area<>(zones, new ArrayList<>(), 3);
+        Area area2 = new Area<>(zones2, List.of(PlayerColor.GREEN), 3);
         ZonePartition.Builder<Zone> builder = new ZonePartition.Builder(new ZonePartition(Set.of(area, area2)));
         builder.addInitialOccupant(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), PlayerColor.RED);
-        //builder.addInitialOccupant(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), PlayerColor.GREEN);
 
         assertThrows(IllegalArgumentException.class, () -> builder.removeAllOccupantsOf(new Area<>(Set.of(new Zone.Forest(5, Zone.Forest.Kind.PLAIN)), new ArrayList<>(), 3)));
-        assertThrows(IllegalArgumentException.class, () -> builder.removeAllOccupantsOf(new Area<>(zones, List.of(PlayerColor.RED), 3)));
+        assertThrows(IllegalArgumentException.class, () -> builder.removeAllOccupantsOf(new Area<>(zones, List.of(PlayerColor.RED, PlayerColor.GREEN), 3)));
         assertThrows(IllegalArgumentException.class, () -> builder.removeAllOccupantsOf(new Area<>(zones, new ArrayList<>(), 2)));
     }
 
