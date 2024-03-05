@@ -9,7 +9,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MyAreaTest {
+class HisAreaTest {
     List<Animal> animals = List.of(
             new Animal(0, Animal.Kind.DEER),
             new Animal(1, Animal.Kind.AUROCHS),

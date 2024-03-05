@@ -12,7 +12,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MyZonePartitionTest {
+class HisZonePartitionTest {
     private final Zone.Forest forest0 = new Zone.Forest(0, Zone.Forest.Kind.PLAIN);
     private final Zone.Forest forest1 = new Zone.Forest(1, Zone.Forest.Kind.PLAIN);
     private final Zone.Forest forest2 = new Zone.Forest(2, Zone.Forest.Kind.PLAIN);
