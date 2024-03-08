@@ -15,7 +15,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MyAreaTest {
+public class MaxAreaTest {
     //TODO a faire plus de test pour le constructor
     @Test
     void areaCompactConstructorListCorrectSorted(){
