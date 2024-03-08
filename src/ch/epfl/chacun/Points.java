@@ -22,7 +22,7 @@ final public class Points {
      */
     public static int forClosedForest(int tileCount, int mushroomGroupCount) {
         checkArgument(tileCount > 1 && mushroomGroupCount >= 0);
-        return (2 * tileCount + 3 * mushroomGroupCount);
+        return 2 * tileCount + 3 * mushroomGroupCount;
     }
 
 
@@ -36,7 +36,7 @@ final public class Points {
      */
     public static int forClosedRiver(int tileCount, int fishCount) {
         checkArgument(tileCount > 1 && fishCount >= 0);
-        return (tileCount + fishCount);
+        return tileCount + fishCount;
     }
 
 
@@ -51,7 +51,7 @@ final public class Points {
      */
     public static int forMeadow(int mammothCount, int aurochsCount, int deerCount) {
         checkArgument(mammothCount >= 0 && aurochsCount >= 0 && deerCount >= 0);
-        return (3 * mammothCount + 2 * aurochsCount + deerCount);
+        return 3 * mammothCount + 2 * aurochsCount + deerCount;
     }
 
     /**
@@ -75,7 +75,7 @@ final public class Points {
      */
     public static int forLogboat(int lakeCount) {
         checkArgument(lakeCount > 0);
-        return lakeCount;
+        return 2 * lakeCount;
     }
 
 
