@@ -10,7 +10,7 @@ import static ch.epfl.chacun.Points.*;
 
 public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     public MessageBoard(TextMaker textMaker, List<Message> messages) {
-        messages = List.copyOf(messages);
+        this(textMaker, List.copyOf(messages));
     }
 
     public Map<PlayerColor, Integer> points() {
@@ -49,7 +49,30 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
         }
         return this;
     }
-    
+
+    MessageBoard withScoredHuntingTrap(PlayerColor scorer, Area<Zone.Meadow> adjacentMeadow) {
+        Set<Animal> animals = Area.animals(adjacentMeadow, Set.of());
+        Map<Animal.Kind, Integer> animalMap = new HashMap<>();
+        for (Animal.Kind kind : Animal.Kind.values()) {
+            animalMap.put(kind, 0);
+        }
+        for (Animal animal : animals) {
+            animalMap.put(animal.kind(), animalMap.get(animal.kind()) + 1);
+        }
+        for (Animal animal : animals) {
+           if (animalMap.get(Animal.Kind.TIGER) == 0) {
+               break;
+           } else if (animal.kind() == Animal.Kind.DEER) {
+               animalMap.put(Animal.Kind.DEER, animalMap.get(Animal.Kind.DEER) - 1);
+               animalMap.put(Animal.Kind.TIGER, animalMap.get(Animal.Kind.TIGER) - 1);
+           }
+        }
+
+        
+    }
+
+
+
 
 
 
