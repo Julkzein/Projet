@@ -258,8 +258,8 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * This nested record represents a message that will be displayed on the MessageBoard
      * @param text the text of the message
      * @param points the points associated to the message
-     * @param scorers the set of players that have won 
-     * @param tiledIds
+     * @param scorers the set of players that have won the given points
+     * @param tiledIds the ids of the concerned tiles or an empty set if the message does not concern any tile
      */
     record Message(String text, int points, Set<PlayerColor> scorers, Set<Integer> tiledIds) {
         public Message {
