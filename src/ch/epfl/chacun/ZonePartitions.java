@@ -26,7 +26,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
      * This class is a builder for zone partitions
      * @param <Z> the type of zone
      */
-    public final class Builder<Z extends Zone> {
+    public static final class Builder<Z extends Zone> {
         private ZonePartition.Builder<Zone.Forest> forests;
         private ZonePartition.Builder<Zone.River> rivers;
         private ZonePartition.Builder<Zone.Meadow> meadows;
