@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -91,7 +92,71 @@ public class MyMessageBoardTest {
     }
 
     @Test
-    void 
+    void scoredHuntingTrapWithUnoccupiedHuntingTrap() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
 
+        assertEquals(messageBoard, messageBoard.withScoredHuntingTrap(PlayerColor.RED, new Area<Zone.Meadow>(Set.of(), List.of(), 0)));
+    }
+
+
+    @Test
+    void scoredHuntingTrapWithOccupiedHuntingTrap() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
+                new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4)),
+                new MessageBoard.Message(textMaker.playerScoredHuntingTrap(PlayerColor.RED, 2, Map.of(Animal.Kind.DEER, 1, Animal.Kind.TIGER, 1, Animal.Kind.AUROCHS, 1, Animal.Kind.MAMMOTH, 0)), 2, Set.of(PlayerColor.RED), Set.of(81, 42)))),
+                messageBoard.withScoredHuntingTrap(PlayerColor.RED, new Area<Zone.Meadow>(Set.of(
+                        new Zone.Meadow(815, List.of(new Animal(20, Animal.Kind.DEER),
+                                                        new Animal(21, Animal.Kind.TIGER)), null),
+                        new Zone.Meadow(426, List.of(new Animal(22, Animal.Kind.AUROCHS)), null)), List.of(PlayerColor.RED), 0)));
+    }
+
+    @Test
+    void scoredLogboatTest1() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
+                new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4)),
+                new MessageBoard.Message(textMaker.playerScoredLogboat(PlayerColor.RED, 2, 1), 2, Set.of(PlayerColor.RED), Set.of(34, 75)))),
+                messageBoard.withScoredLogboat(PlayerColor.RED, new Area<Zone.Water>(Set.of(new Zone.River(341, 0, new Zone.Lake(754, 0, null))), List.of(), 0)));
+    }
+    @Test
+    void scoredLogboatTest2() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(new MessageBoard(textMaker, List.of(
+                        new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
+                        new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4)),
+                        new MessageBoard.Message(textMaker.playerScoredLogboat(PlayerColor.RED, 2, 2), 2, Set.of(PlayerColor.RED), Set.of(34, 76)))),
+                messageBoard.withScoredLogboat(PlayerColor.RED, new Area<Zone.Water>(Set.of(new Zone.River(341, 0, new Zone.Lake(754, 0, null)), new Zone.Lake(764, 0, null)), List.of(), 0)));
+    }
+
+    @Test
+    void scoredMeadowWithUnoccupiedMeadow() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(messageBoard, messageBoard.withScoredMeadow(new Area<Zone.Meadow>(Set.of(new Zone.Meadow(249, List.of(), null)), List.of(), 0), Set.of()));
+    }
+
+    @Test
+    void scoredMeadowWithOccupiedMeadow() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
+                new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4)),
+                new MessageBoard.Message(textMaker.playersScoredMeadow(Set.of(PlayerColor.RED, PlayerColor.GREEN), 3, Map.of(Animal.Kind.TIGER, 1, Animal.Kind.MAMMOTH, 0, Animal.Kind.DEER, 1, Animal.Kind.AUROCHS, 1)), 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(81, 42)))),
+                messageBoard.withScoredMeadow(new Area<Zone.Meadow>(Set.of(new Zone.Meadow(815, List.of(new Animal(20, Animal.Kind.DEER),new Animal(21, Animal.Kind.TIGER)),null),
+                        new Zone.Meadow(426, List.of(new Animal(22, Animal.Kind.AUROCHS)), null)), List.of(PlayerColor.RED, PlayerColor.GREEN), 0), Set.of()));
+    }
 
 }
