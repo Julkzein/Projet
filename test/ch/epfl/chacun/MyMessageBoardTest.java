@@ -37,9 +37,13 @@ public class MyMessageBoardTest {
     @Test
     void scoredForestWithOccupiedForest() {
         TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
-        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1)), new MessageBoard.Message(textMaker.playersScoredForest(Collections.singleton(PlayerColor.RED), 3, 1, 0), 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 1))));
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1)), new MessageBoard.Message("test2", 5, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(2, 4))));
 
-        assertEquals(messageBoard, messageBoard.withScoredForest(new Area<Zone.Forest>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MUSHROOMS), new Zone.Forest(1, Zone.Forest.Kind.PLAIN)), List.of(PlayerColor.RED), 0)));
+        assertEquals(new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1)),
+                new MessageBoard.Message("test2", 5, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(2, 4)),
+                new MessageBoard.Message(textMaker.playersScoredForest(Set.of(PlayerColor.RED, PlayerColor.GREEN), 7, 1, 2), 7, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(81, 42)))),
+                messageBoard.withScoredForest(new Area<Zone.Forest>(Set.of(new Zone.Forest(815, Zone.Forest.Kind.WITH_MUSHROOMS), new Zone.Forest(426, Zone.Forest.Kind.PLAIN)), List.of(PlayerColor.RED, PlayerColor.GREEN), 0)));
     }
 
     @Test
@@ -51,7 +55,16 @@ public class MyMessageBoardTest {
     }
 
 
+    @Test
+    void addMessageToMessageList() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1))));
+        MessageBoard.Message message = new MessageBoard.Message("test", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 1));
 
+        List<MessageBoard.Message> list = List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1)), new MessageBoard.Message("test", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 1)));
+
+        assertEquals(list, messageBoard.messagesWithNewMessage(message));
+    }
 
 
 }
