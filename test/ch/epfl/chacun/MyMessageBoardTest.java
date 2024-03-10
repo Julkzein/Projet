@@ -70,5 +70,28 @@ public class MyMessageBoardTest {
         assertEquals(list, messageBoard.messagesWithNewMessage(message));
     }
 
+    @Test
+    void scoredRiverWithUnoccupiedRiver() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(messageBoard, messageBoard.withScoredRiver(new Area<Zone.River>(Set.of(), List.of(), 0)));
+    }
+
+    @Test
+    void scoredRiverWithOccupiedRiver() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
+                new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4)),
+                new MessageBoard.Message(textMaker.playersScoredRiver(Set.of(PlayerColor.RED, PlayerColor.GREEN), 5, 5, 2), 5, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(81, 42)))),
+                messageBoard.withScoredRiver(new Area<Zone.River>(Set.of(new Zone.River(815, 3, null), new Zone.River(426, 2, null)), List.of(PlayerColor.RED, PlayerColor.GREEN), 0)));
+    }
+
+    @Test
+    void 
+
 
 }

@@ -26,6 +26,12 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
         messages = List.copyOf(messages);
     }
 
+    /**
+     * This method returns a new MessageBoard identical to the current one except that it contains a new message
+     *
+     * @param m the message we want to add to the MessageBoard
+     * @return the new MessageBoard with the additional message
+     */
     public List<Message> messagesWithNewMessage(Message m) {
         List<Message> newMessages = new ArrayList<>(messages);
         newMessages.add(m);
@@ -92,7 +98,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      */
     public MessageBoard withScoredRiver(Area<Zone.River> river) {
         if (river.isOccupied()) {
-            int addPoints = points().get(river.riverFishCount(river));
+            int addPoints = Area.riverFishCount(river);
             String addText = textMaker.playersScoredRiver(river.majorityOccupants(), addPoints, river.riverFishCount(river), river.zones().size());
             return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, addPoints, river.majorityOccupants(), river.tileIds())));
         }
