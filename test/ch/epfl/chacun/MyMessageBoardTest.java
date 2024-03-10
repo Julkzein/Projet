@@ -49,9 +49,13 @@ public class MyMessageBoardTest {
     @Test
     void closedForestWithMenhirCorrectlySendsMessage() {
         TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
-        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1))));
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1))));
 
-        assertEquals(messageBoard, messageBoard.withClosedForestWithMenhir(PlayerColor.RED, new Area<Zone.Forest>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MENHIR), new Zone.Forest(2, Zone.Forest.Kind.PLAIN)), List.of(), 0)));
+        assertEquals(new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1)),
+                new MessageBoard.Message(textMaker.playerClosedForestWithMenhir(PlayerColor.RED), 4, Set.of(), Set.of(42,53)))),
+                messageBoard.withClosedForestWithMenhir(PlayerColor.RED, new Area<Zone.Forest>(Set.of(new Zone.Forest(421, Zone.Forest.Kind.WITH_MENHIR), new Zone.Forest(532, Zone.Forest.Kind.PLAIN)), List.of(), 0)));
     }
 
 

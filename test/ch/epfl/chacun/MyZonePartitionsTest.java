@@ -193,6 +193,25 @@ public class MyZonePartitionsTest {
        assertEquals(zonePartitionsAct, partTest);
    }
 
+   @Test
+   void clearFishersTest() {
+       Set<Zone> zones = Set.of(new Zone.River(1, 1, null), new Zone.River(2, 1, null));
+       Set<Zone> zones2 = Set.of(new Zone.River(3, 1, null), new Zone.River(4, 1, null));
+       Area area = new Area<>(zones, List.of(PlayerColor.RED, PlayerColor.BLUE), 3);
+       Area area2 = new Area<>(zones2, List.of(), 3);
+       ZonePartition.Builder<Zone> builder = new ZonePartition.Builder(new ZonePartition(Set.of(area, area2)));
+       ZonePartition partiR = builder.build();
+       ZonePartitions zonePartitionsT = new ZonePartitions(buildZonePartitionForest(), partiR, buildZonePartitionMeadow(), buildZonePartitionWater());
+       ZonePartitions.Builder tester = new ZonePartitions.Builder(zonePartitionsT);
+       tester.clearFishers(area);
+       ZonePartitions partTest = tester.build();
+
+
+       ZonePartitions zonePartitionsAct = new ZonePartitions(buildZonePartitionForest(), buildZonePartitionRiver(), buildZonePartitionMeadow(), buildZonePartitionWater());
+
+       assertEquals(zonePartitionsAct, partTest);
+   }
+
 
 
 
