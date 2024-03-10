@@ -2,8 +2,11 @@ package ch.epfl.chacun;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MyMessageBoardTest {
 
@@ -12,6 +15,43 @@ public class MyMessageBoardTest {
         TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
         MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1)), new MessageBoard.Message("test", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 1))));
 
-        //assertEquals()
+        assertEquals("{GREEN=3, RED=5, BLUE=2}", messageBoard.points());
     }
+
+    @Test
+    void pointsCorrectlyReturnedWithNoMessages(){
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of());
+
+        assertEquals("{}", messageBoard.points().toString());
+    }
+
+    @Test
+    void scoredForestWithUnoccupiedForest() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1)), new MessageBoard.Message("test", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 1))));
+
+        assertEquals(messageBoard, messageBoard.withScoredForest(new Area<Zone.Forest>(Set.of(), List.of(), 0)));
+    }
+
+    @Test
+    void scoredForestWithOccupiedForest() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1)), new MessageBoard.Message(textMaker.playersScoredForest(Collections.singleton(PlayerColor.RED), 3, 1, 0), 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 1))));
+
+        assertEquals(messageBoard, messageBoard.withScoredForest(new Area<Zone.Forest>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MUSHROOMS), new Zone.Forest(1, Zone.Forest.Kind.PLAIN)), List.of(PlayerColor.RED), 0)));
+    }
+
+    @Test
+    void closedForestWithMenhirCorrectlySendsMessage() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1))));
+
+        assertEquals(messageBoard, messageBoard.withClosedForestWithMenhir(PlayerColor.RED, new Area<Zone.Forest>(Set.of(new Zone.Forest(1, Zone.Forest.Kind.WITH_MENHIR), new Zone.Forest(2, Zone.Forest.Kind.PLAIN)), List.of(), 0)));
+    }
+
+
+
+
+
 }
