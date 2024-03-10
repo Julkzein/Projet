@@ -139,7 +139,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
         public void addInitialOccupant(PlayerColor player, Occupant.Kind occupantKind, Zone occupiedZone) {
             switch(occupiedZone) {
                 case Zone.Forest forest when occupantKind == Occupant.Kind.PAWN-> {
-                    for (Area area : forests().areas()) {
+                    for (Area area : forests.build().areas()) {
                         if (area.zones().contains(forest)) {
                             forests.addInitialOccupant(forest, player);
                             return;
@@ -147,7 +147,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
                     }
                 }
                 case Zone.Meadow meadow when occupantKind == Occupant.Kind.PAWN-> {
-                    for (Area area : meadows().areas()) {
+                    for (Area area : meadows.build().areas()) {
                         if (area.zones().contains(meadow)) {
                             meadows.addInitialOccupant(meadow, player);
                             return;
@@ -155,7 +155,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
                     }
                 }
                 case Zone.River river when (occupantKind == Occupant.Kind.PAWN || occupantKind == Occupant.Kind.HUT) -> {
-                    for (Area area : rivers().areas()) {
+                    for (Area area : rivers.build().areas()) {
                         if (area.zones().contains(river)) {
                             rivers.addInitialOccupant(river, player);
                             return;
@@ -163,7 +163,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
                     }
                 }
                 case Zone.Lake lake when occupantKind == Occupant.Kind.HUT-> {
-                    for (Area area : riverSystems().areas()) {
+                    for (Area area : riverSystems.build().areas()) {
                         if (area.zones().contains(lake)) {
                             riverSystems.addInitialOccupant(lake, player);
                             return;
@@ -183,7 +183,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
         public void removePawn(PlayerColor player, Zone occupiedZone) {
             switch(occupiedZone) {
                 case Zone.Forest forest -> {
-                    for (Area area : forests().areas()) {
+                    for (Area area : forests.build().areas()) {
                         if (area.zones().contains(forest)) {
                             forests.removeOccupant(forest, player);
                             return;
@@ -191,7 +191,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
                     }
                 }
                 case Zone.Meadow meadow -> {
-                    for (Area area : meadows().areas()) {
+                    for (Area area : meadows.build().areas()) {
                         if (area.zones().contains(meadow)) {
                             meadows.removeOccupant(meadow, player);
                             return;
@@ -199,7 +199,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
                     }
                 }
                 case Zone.River river -> {
-                    for (Area area : rivers().areas()) {
+                    for (Area area : rivers.build().areas()) {
                         if (area.zones().contains(river)) {
                             rivers.removeOccupant(river, player);
                             return;

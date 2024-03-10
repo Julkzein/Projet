@@ -20,7 +20,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     /**
      * Compact constructor that guaranties the immutability
      *
-     * @param textMaker the class that creates the different messages displayed on the
+     * @param textMaker the interface that creates the different messages displayed on the
      *                  messageBoard
      * @param messages the messages that will be displayed on the messageBoard
      */
@@ -35,13 +35,13 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @return said map of the type <PlayerColor, Integer>
      */
     public Map<PlayerColor, Integer> points() {
-       Map<PlayerColor, Integer> scoarerMap = new HashMap<>();
-         for (Message message : messages) {
-              for (PlayerColor playerColor : message.scorers) {
+        Map<PlayerColor, Integer> scoarerMap = new HashMap<>();
+        for (Message message : messages) {
+            for (PlayerColor playerColor : message.scorers) {
                 scoarerMap.put(playerColor, message.points);
-              }
-         }
-         return scoarerMap;
+            }
+        }
+        return scoarerMap;
     }
 
     /**
@@ -104,7 +104,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @param adjacentMeadow all meadows in the range of the Hunting Trap
      * @return the MessageBoard with the possible new message
      */
-   public MessageBoard withScoredHuntingTrap(PlayerColor scorer, Area<Zone.Meadow> adjacentMeadow) {
+    public MessageBoard withScoredHuntingTrap(PlayerColor scorer, Area<Zone.Meadow> adjacentMeadow) {
         Set<Animal> animals = Area.animals(adjacentMeadow, Set.of());
         Map<Animal.Kind, Integer> animalMap = new HashMap<>();
         for (Animal.Kind kind : Animal.Kind.values()) {
@@ -264,8 +264,16 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     record Message(String text, int points, Set<PlayerColor> scorers, Set<Integer> tiledIds) {
         public Message {
             Preconditions.checkArgument(points >= 0);
-            scorers = Set.copyOf(scorers);
-            tiledIds = Set.copyOf(tiledIds);
+            if (scorers.equals(null)){
+                scorers = Set.of();
+            } else {
+                scorers = Set.copyOf(scorers);
+            }
+            if (tiledIds.equals(null)){
+                tiledIds = Set.of();
+            } else {
+                tiledIds = Set.copyOf(tiledIds);
+            }
         }
 
     }

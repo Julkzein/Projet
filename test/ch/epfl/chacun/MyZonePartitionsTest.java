@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MyZonePartitionsTest {
     public ZonePartition buildZonePartitionForest() {
@@ -46,5 +47,50 @@ public class MyZonePartitionsTest {
     public ZonePartitions buildZonePartitions() {
         return new ZonePartitions(buildZonePartitionForest(), buildZonePartitionRiver(), buildZonePartitionMeadow(), buildZonePartitionWater());
     }
+
+    public ZonePartitions.Builder builderZonePartitions() {
+        ZonePartitions partitions = new ZonePartitions(buildZonePartitionForest(), buildZonePartitionRiver(), buildZonePartitionMeadow(), buildZonePartitionWater());
+        return new ZonePartitions.Builder(partitions);
+    }
+
+    @Test
+    void testBuild() {
+        ZonePartitions partitions = new ZonePartitions(buildZonePartitionForest(), buildZonePartitionRiver(), buildZonePartitionMeadow(), buildZonePartitionWater());
+        ZonePartitions.Builder part = new ZonePartitions.Builder(partitions);
+        assertEquals(partitions, part.build());
+    }
+
+    @Test
+    void testAddTile() {
+        Zone.Forest forest1 = new Zone.Forest(1, Zone.Forest.Kind.PLAIN);
+        Zone.Meadow meadow1 = new Zone.Meadow(2, new ArrayList<>(), null);
+        Zone.Forest forest2 = new Zone.Forest(3, Zone.Forest.Kind.PLAIN);
+        Zone.Meadow meadow2 = new Zone.Meadow(4, new ArrayList<>(), null);
+        Tile tile = new Tile(78, Tile.Kind.NORMAL,
+                new TileSide.Forest(forest1),
+                new TileSide.Meadow(meadow1),
+                new TileSide.Forest(forest2),
+                new TileSide.Meadow(meadow2));
+
+        ZonePartitions.Builder builder = builderZonePartitions();
+        builder.addTile(tile);
+        ZonePartitions testos = builder.build();
+        Set<Zone> zonesF = Set.of(new Zone.Forest(1, Zone.Forest.Kind.PLAIN), new Zone.Forest(2, Zone.Forest.Kind.PLAIN));
+        Area areaF = new Area<>(zonesF, new ArrayList<>(), 0);
+        ZonePartition.Builder builderF = new ZonePartition.Builder(new ZonePartition(Set.of(areaF)));
+        ZonePartition f = builderF.build();
+        Set<Zone> zonesM = Set.of(new Zone.Meadow(2, new ArrayList<>(), null), new Zone.Meadow(4, new ArrayList<>(), null));
+        Area areaM = new Area<>(zonesM, new ArrayList<>(), 0);
+        ZonePartition.Builder builderM = new ZonePartition.Builder(new ZonePartition(Set.of(areaM)));
+        ZonePartition m = builderM.build();
+        ZonePartition.Builder builderR = new ZonePartition.Builder(new ZonePartition(Set.of()));
+        ZonePartition r = builderR.build();
+        ZonePartition.Builder builderW = new ZonePartition.Builder(new ZonePartition<>(Set.of()));
+        ZonePartition w = builderW.build();
+        assertEquals(testos, w);
+    }
+
+
+
 
 }
