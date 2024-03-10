@@ -18,9 +18,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      * @throws IllegalArgumentException if the open connections is negative
      */
     public Area {
-        if (openConnections < 0) {
-            throw new IllegalArgumentException();
-        }
+        Preconditions.checkArgument(openConnections >= 0);
         List<PlayerColor> sortedOccupants = new ArrayList<>(occupants);
         Collections.sort(sortedOccupants);
         occupants = List.copyOf(sortedOccupants);
@@ -221,13 +219,10 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      * @return and identical area to the current one but with the given occupant
      */
     public Area<Z> withInitialOccupant(PlayerColor occupant) {
-        if (this.isOccupied()) {
-            throw new IllegalArgumentException();
-        } else {
-            List<PlayerColor> newOccupants = new ArrayList<>(this.occupants);
-            newOccupants.add(occupant);
-            return new Area<>(this.zones, newOccupants, this.openConnections);
-        }
+        Preconditions.checkArgument(!this.isOccupied());
+        List<PlayerColor> newOccupants = new ArrayList<>(this.occupants);
+        newOccupants.add(occupant);
+        return new Area<>(this.zones, newOccupants, this.openConnections);
     }
 
     /**
@@ -239,13 +234,10 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      * @return an identical area to the current one but with the given occupant removed
      */
     public Area<Z> withoutOccupant(PlayerColor occupant) {
-        if (!this.occupants.contains(occupant)) {
-            throw new IllegalArgumentException();
-        } else {
-            List<PlayerColor> newOccupants = new ArrayList<>(this.occupants);
-            newOccupants.remove(occupant);
-            return new Area<>(this.zones, newOccupants, this.openConnections);
-        }
+        Preconditions.checkArgument(this.occupants.contains(occupant));
+        List<PlayerColor> newOccupants = new ArrayList<>(this.occupants);
+        newOccupants.remove(occupant);
+        return new Area<>(this.zones, newOccupants, this.openConnections);
     }
 
     /**

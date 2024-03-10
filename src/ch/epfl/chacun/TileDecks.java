@@ -74,9 +74,7 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
      * @throws IllegalArgumentException if the pile is empty
      */
     public TileDecks withTopTileDrawn(Tile.Kind kind) {
-        if (deckSize(kind) == 0) {
-            throw new IllegalArgumentException();
-        }
+        Preconditions.checkArgument(deckSize(kind) != 0);
         return switch (kind) {
             case START -> new TileDecks(startTiles.subList(1, startTiles.size()), normalTiles, menhirTiles);
             case NORMAL -> new TileDecks(startTiles, normalTiles.subList(1, normalTiles.size()), menhirTiles);

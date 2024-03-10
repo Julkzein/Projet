@@ -28,9 +28,7 @@ public record Occupant(Kind kind, int zoneId) {
      */
     public Occupant {
         requireNonNull(kind);
-        if (zoneId < 0) {
-            throw new IllegalArgumentException();
-        }
+        Preconditions.checkArgument(zoneId >= 0);
     }
 
 
