@@ -153,7 +153,8 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
                     for(Area<Z> area2 : areas) {
                         if(area2.zones().contains(zone2)) {
                             areas.add(area.connectTo(area2));
-                            areas.removeAll(Set.of(area, area2));
+                            areas.remove(area);
+                            areas.remove(area2);
                             return;
                         }
                     }
