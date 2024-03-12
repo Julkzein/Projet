@@ -1,4 +1,4 @@
-package ch.epfl.chacun.etape4;
+package ch.epfl.chacun;
 
 import ch.epfl.chacun.*;
 import org.junit.jupiter.api.Test;
@@ -8,9 +8,10 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class MessageBoardTest {
+class HisMessageBoardTest {
 
-    private final MyClassToTestMessageBoardTest myClassToTestMessageBoardTest = new MyClassToTestMessageBoardTest();
+
+    private final HisClassToTestMessageBoardTest myClassToTestMessageBoardTest = new HisClassToTestMessageBoardTest();
     private final Set<PlayerColor> scorers1 = Set.of(PlayerColor.RED, PlayerColor.BLUE, PlayerColor.GREEN);
     private final Set<PlayerColor> scorers2 = Set.of(PlayerColor.RED, PlayerColor.BLUE);
     private final Set<PlayerColor> scorers3 = Set.of(PlayerColor.RED);
