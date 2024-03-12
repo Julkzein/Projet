@@ -108,7 +108,7 @@ public class MyMessageBoardTest {
         assertEquals(new MessageBoard(textMaker, List.of(
                 new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
                 new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4)),
-                new MessageBoard.Message(textMaker.playerScoredHuntingTrap(PlayerColor.RED, 2, Map.of(Animal.Kind.DEER, 1, Animal.Kind.TIGER, 1, Animal.Kind.AUROCHS, 1, Animal.Kind.MAMMOTH, 0)), 2, Set.of(PlayerColor.RED), Set.of(81, 42)))),
+                new MessageBoard.Message(textMaker.playerScoredHuntingTrap(PlayerColor.RED, 2, Map.of(Animal.Kind.DEER, 0, Animal.Kind.TIGER, 0, Animal.Kind.AUROCHS, 1, Animal.Kind.MAMMOTH, 0)), 2, Set.of(PlayerColor.RED), Set.of(81, 42)))),
                 messageBoard.withScoredHuntingTrap(PlayerColor.RED, new Area<Zone.Meadow>(Set.of(
                         new Zone.Meadow(815, List.of(new Animal(20, Animal.Kind.DEER),
                                                         new Animal(21, Animal.Kind.TIGER)), null),
@@ -134,7 +134,7 @@ public class MyMessageBoardTest {
         assertEquals(new MessageBoard(textMaker, List.of(
                         new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
                         new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4)),
-                        new MessageBoard.Message(textMaker.playerScoredLogboat(PlayerColor.RED, 2, 2), 2, Set.of(PlayerColor.RED), Set.of(34, 76)))),
+                        new MessageBoard.Message(textMaker.playerScoredLogboat(PlayerColor.RED, 4, 2), 4, Set.of(PlayerColor.RED), Set.of(34, 76)))),
                 messageBoard.withScoredLogboat(PlayerColor.RED, new Area<Zone.Water>(Set.of(new Zone.River(341, 0, new Zone.Lake(754, 0, null)), new Zone.Lake(764, 0, null)), List.of(), 0)));
     }
 
@@ -157,6 +157,43 @@ public class MyMessageBoardTest {
                 new MessageBoard.Message(textMaker.playersScoredMeadow(Set.of(PlayerColor.RED, PlayerColor.GREEN), 3, Map.of(Animal.Kind.TIGER, 1, Animal.Kind.MAMMOTH, 0, Animal.Kind.DEER, 1, Animal.Kind.AUROCHS, 1)), 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(81, 42)))),
                 messageBoard.withScoredMeadow(new Area<Zone.Meadow>(Set.of(new Zone.Meadow(815, List.of(new Animal(20, Animal.Kind.DEER),new Animal(21, Animal.Kind.TIGER)),null),
                         new Zone.Meadow(426, List.of(new Animal(22, Animal.Kind.AUROCHS)), null)), List.of(PlayerColor.RED, PlayerColor.GREEN), 0), Set.of()));
+    }
+
+    @Test
+    void scoredMeadowWithOccupiedMeadowButNoPoints() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(messageBoard, messageBoard.withScoredMeadow(new Area<Zone.Meadow>(Set.of(new Zone.Meadow(815, List.of(),null),
+                        new Zone.Meadow(426, List.of(), null)), List.of(PlayerColor.RED, PlayerColor.GREEN), 0), Set.of()));
+    }
+
+    @Test
+    void scoredRiverSystemWithUnoccupiedRiverSystem() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(messageBoard, messageBoard.withScoredRiverSystem(new Area<Zone.Water>(Set.of(new Zone.River(548, 2, null)), List.of(), 0)));
+    }
+
+    @Test
+    void scoredRiverSystemNullPoints() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(messageBoard, messageBoard.withScoredRiverSystem(new Area<Zone.Water>(Set.of(new Zone.River(548, 0, null)), List.of(PlayerColor.RED), 0)));
+    }
+
+    @Test
+    void scoredRiverSystem() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)), new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
+                new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4)),
+                new MessageBoard.Message(textMaker.playersScoredRiverSystem(Set.of(PlayerColor.RED, PlayerColor.GREEN), 5, 5), 5, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(54, 76)))),
+                messageBoard.withScoredRiverSystem(new Area<Zone.Water>(Set.of(new Zone.River(548, 3, new Zone.Lake(754, 2, null)), new Zone.Lake(764, 0, null)), List.of(PlayerColor.RED, PlayerColor.GREEN), 0)));
     }
 
 }
