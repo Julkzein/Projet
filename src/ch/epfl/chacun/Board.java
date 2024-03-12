@@ -88,4 +88,8 @@ public class Board {
         }
         throw new IllegalArgumentException();
     }
+
+    public Set<Area<Zone.Meadow>> meadowAreas() {
+        return partition.meadows().areas();
+    }
 }
