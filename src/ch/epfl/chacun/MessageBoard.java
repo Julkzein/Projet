@@ -55,7 +55,6 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
         }
         return scoarerMap;
     }
-
     /**
      * This method returns a MessageBoard identical to the current one except if the given
      * forest is occupied in which case it adds a message to the MessageBoard that indicates that
