@@ -47,8 +47,10 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     public Map<PlayerColor, Integer> points() {
         Map<PlayerColor, Integer> scoarerMap = new HashMap<>();
         for (Message message : messages) {
-            for (PlayerColor playerColor : message.scorers) {
-                scoarerMap.put(playerColor, message.points);
+            if (message.points > 0) {
+                for (PlayerColor playerColor : message.scorers) {
+                    scoarerMap.put(playerColor, scoarerMap.getOrDefault(playerColor, 0) + message.points);
+                }
             }
         }
         return scoarerMap;
@@ -66,7 +68,6 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
         if (forest.isOccupied()) {
             int addPoints = forClosedForest(forest.zones().size(), forest.mushroomGroupCount(forest));
             String addText = textMaker.playersScoredForest(forest.majorityOccupants(), addPoints, forest.mushroomGroupCount(forest), forest.zones().size());
-            System.out.println(forest.tileIds());
             return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, addPoints, forest.majorityOccupants(), forest.tileIds())));
         }
         return this;
@@ -83,8 +84,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      */
     public MessageBoard withClosedForestWithMenhir(PlayerColor player, Area<Zone.Forest> forest) {
         String addText = textMaker.playerClosedForestWithMenhir(player);
-        int addPoints = forClosedForest(forest.zones().size(), forest.mushroomGroupCount(forest));
-        return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, addPoints, forest.majorityOccupants(), forest.tileIds())));
+        return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, 0, forest.majorityOccupants(), forest.tileIds())));
     }
 
 
@@ -150,7 +150,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      */
     public MessageBoard withScoredLogboat(PlayerColor scorer, Area<Zone.Water> riverSystem) {
         String addText = textMaker.playerScoredLogboat(scorer, forLogboat(riverSystem.lakeCount(riverSystem)), riverSystem.lakeCount(riverSystem));
-        return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, riverSystem.lakeCount(riverSystem), Set.of(scorer), riverSystem.tileIds())));
+        return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, forLogboat(riverSystem.lakeCount(riverSystem)), Set.of(scorer), riverSystem.tileIds())));
     }
 
 

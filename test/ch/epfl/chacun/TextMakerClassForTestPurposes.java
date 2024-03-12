@@ -3,6 +3,7 @@ package ch.epfl.chacun;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.TreeMap;
 
 public class TextMakerClassForTestPurposes implements TextMaker{
 
