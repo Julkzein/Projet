@@ -65,9 +65,12 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
             for (Zone zone : tile.zones()) {
                 switch(zone) {
                     case Zone.Forest forest -> forests.addSingleton(forest, connections[zone.localId()]);
-                    case Zone.River river -> rivers.addSingleton(river, (river.hasLake()) ? connections[zone.localId()] - 1 : connections[zone.localId()]);
+                    case Zone.River river -> {
+                        rivers.addSingleton(river, (river.hasLake()) ? connections[zone.localId()] - 1 : connections[zone.localId()]);
+                        riverSystems.addSingleton(river, (river.hasLake()) ? connections[zone.localId()] - 1 : connections[zone.localId()]);
+                    }
                     case Zone.Meadow meadow -> meadows.addSingleton(meadow, connections[zone.localId()]);
-                    case Zone.Water water -> riverSystems.addSingleton(water, connections[zone.localId()]);
+                    case Zone.Lake lake -> riverSystems.addSingleton(lake, connections[zone.localId()]);
                 }
             }
             for (Zone zone : tile.zones()) {
@@ -118,38 +121,10 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
          */
         public void addInitialOccupant(PlayerColor player, Occupant.Kind occupantKind, Zone occupiedZone) {
             switch(occupiedZone) {
-                case Zone.Forest forest when occupantKind == Occupant.Kind.PAWN-> {
-                    for (Area area : forests.build().areas()) {
-                        if (area.zones().contains(forest)) {
-                            forests.addInitialOccupant(forest, player);
-                            return;
-                        }
-                    }
-                }
-                case Zone.Meadow meadow when occupantKind == Occupant.Kind.PAWN-> {
-                    for (Area area : meadows.build().areas()) {
-                        if (area.zones().contains(meadow)) {
-                            meadows.addInitialOccupant(meadow, player);
-                            return;
-                        }
-                    }
-                }
-                case Zone.River river when (occupantKind == Occupant.Kind.PAWN || occupantKind == Occupant.Kind.HUT) -> {
-                    for (Area area : rivers.build().areas()) {
-                        if (area.zones().contains(river)) {
-                            rivers.addInitialOccupant(river, player);
-                            return;
-                        }
-                    }
-                }
-                case Zone.Lake lake when occupantKind == Occupant.Kind.HUT-> {
-                    for (Area area : riverSystems.build().areas()) {
-                        if (area.zones().contains(lake)) {
-                            riverSystems.addInitialOccupant(lake, player);
-                            return;
-                        }
-                    }
-                }
+                case Zone.Forest forest when occupantKind == Occupant.Kind.PAWN-> { forests.addInitialOccupant(forest, player); }
+                case Zone.Meadow meadow when occupantKind == Occupant.Kind.PAWN-> { meadows.addInitialOccupant(meadow, player); }
+                case Zone.River river when (occupantKind == Occupant.Kind.PAWN || occupantKind == Occupant.Kind.HUT) -> { rivers.addInitialOccupant(river, player); }
+                case Zone.Lake lake when occupantKind == Occupant.Kind.HUT-> { riverSystems.addInitialOccupant(lake, player); }
                 default -> throw new IllegalArgumentException();
             }
         }
@@ -162,30 +137,9 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
          */
         public void removePawn(PlayerColor player, Zone occupiedZone) {
             switch(occupiedZone) {
-                case Zone.Forest forest -> {
-                    for (Area area : forests.build().areas()) {
-                        if (area.zones().contains(forest)) {
-                            forests.removeOccupant(forest, player);
-                            return;
-                        }
-                    }
-                }
-                case Zone.Meadow meadow -> {
-                    for (Area area : meadows.build().areas()) {
-                        if (area.zones().contains(meadow)) {
-                            meadows.removeOccupant(meadow, player);
-                            return;
-                        }
-                    }
-                }
-                case Zone.River river -> {
-                    for (Area area : rivers.build().areas()) {
-                        if (area.zones().contains(river)) {
-                            rivers.removeOccupant(river, player);
-                            return;
-                        }
-                    }
-                }
+                case Zone.Forest forest -> { forests.removeOccupant(forest, player); }
+                case Zone.Meadow meadow -> { meadows.removeOccupant(meadow, player); }
+                case Zone.River river -> { rivers.removeOccupant(river, player); }
                 default -> throw new IllegalArgumentException();
             }
         }
@@ -210,9 +164,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
          * Builds the zone partitions
          * @return the set of the four zone partitions
          */
-        public ZonePartitions build() {
-            return new ZonePartitions(forests.build(), rivers.build(), meadows.build(), riverSystems.build());
-        }
+        public ZonePartitions build() { return new ZonePartitions(forests.build(), rivers.build(), meadows.build(), riverSystems.build()); }
 
     }
 }

@@ -148,9 +148,15 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
          * @param zone2 : the second zone to add to the area
          */
         public void union(Z zone1, Z zone2) {
+            System.out.println(areas);
+            System.out.println(zone1);
+            System.out.println(zone2);
+
             for(Area<Z> area : areas) {
+                System.out.println("area 1 zones : " + area.zones());
                 if(area.zones().contains(zone1)) {
                     for(Area<Z> area2 : areas) {
+                        System.out.println("area 2 zones : " + area2.zones());
                         if(area2.zones().contains(zone2)) {
                             areas.add(area.connectTo(area2));
                             areas.remove(area);
