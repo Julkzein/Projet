@@ -53,46 +53,26 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
          */
         public void addTile(Tile tile) {
             int[] connections = new int[10];
-            for (Zone zone : tile.zones()) {
-                if (zone instanceof Zone.River){
-                    connections[zone.localId()] += 2;
-                } else {
-                    if (tile.sideZones().contains(zone)) {
-                        for(TileSide t : tile.sides()) {
-                            for (Zone otherZone : t.zones()) {
-                                if (otherZone.equals(zone)) {
-                                    connections[zone.localId()] += 1;
-                                }
-                            }
-                        }
-                    }
-                }
-
-            }
-            for (Zone zone : tile.zones()) {
-                if (zone instanceof Zone.River river) {
-                    if (river.hasLake()) {
-                        connections[zone.localId()] -= 1;
+            for (TileSide side : tile.sides()) {
+                for (Zone zone : side.zones()) {
+                    connections[zone.localId()] += 1;
+                    if (zone instanceof Zone.River river && river.hasLake()) {
                         connections[river.lake().localId()] += 1;
+                        connections[zone.localId()] += 1;
                     }
                 }
             }
             for (Zone zone : tile.zones()) {
-                if (zone instanceof Zone.Forest forest) {
-                    forests.addSingleton(forest, connections[zone.localId()]);
-                } else if (zone instanceof Zone.River river) {
-                    rivers.addSingleton(river, connections[zone.localId()]);
-                } else if (zone instanceof Zone.Meadow meadow) {
-                    meadows.addSingleton(meadow, connections[zone.localId()]);
-                } else if (zone instanceof Zone.Water water) {
-                    riverSystems.addSingleton(water, connections[zone.localId()]);
+                switch(zone) {
+                    case Zone.Forest forest -> forests.addSingleton(forest, connections[zone.localId()]);
+                    case Zone.River river -> rivers.addSingleton(river, (river.hasLake()) ? connections[zone.localId()] - 1 : connections[zone.localId()]);
+                    case Zone.Meadow meadow -> meadows.addSingleton(meadow, connections[zone.localId()]);
+                    case Zone.Water water -> riverSystems.addSingleton(water, connections[zone.localId()]);
                 }
             }
             for (Zone zone : tile.zones()) {
-                if (zone instanceof Zone.River river) {
-                    if (river.hasLake()) {
-                        riverSystems.union(river.lake(), river);
-                    }
+                if (zone instanceof Zone.River river && river.hasLake()) {
+                    riverSystems.union(river.lake(), river);
                 }
             }
         }

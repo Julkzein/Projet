@@ -1,4 +1,4 @@
-package ch.epfl.chacun.etape4;
+package ch.epfl.chacun;
 
 import ch.epfl.chacun.Animal;
 import ch.epfl.chacun.PlayerColor;
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class MyClassToTestMessageBoardTest implements TextMaker {
+public class HisClassToTestMessageBoardTest implements TextMaker {
 
     @Override
     public String playerName(PlayerColor playerColor) {

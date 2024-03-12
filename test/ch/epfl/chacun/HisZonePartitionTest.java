@@ -1,4 +1,4 @@
-package ch.epfl.chacun.etape3;
+package ch.epfl.chacun;
 
 import ch.epfl.chacun.Area;
 import ch.epfl.chacun.PlayerColor;
