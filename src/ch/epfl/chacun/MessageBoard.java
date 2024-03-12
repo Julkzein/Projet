@@ -266,9 +266,9 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @param text the text of the message
      * @param points the points associated to the message
      * @param scorers the set of players that have won the given points
-     * @param tiledIds the ids of the concerned tiles or an empty set if the message does not concern any tile
+     * @param tileIds the ids of the concerned tiles or an empty set if the message does not concern any tile
      */
-    record Message(String text, int points, Set<PlayerColor> scorers, Set<Integer> tiledIds) {
+    public record Message(String text, int points, Set<PlayerColor> scorers, Set<Integer> tileIds) {
         public Message {
             Preconditions.checkArgument(points >= 0);
             if (scorers.equals(null)){
@@ -276,10 +276,10 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
             } else {
                 scorers = Set.copyOf(scorers);
             }
-            if (tiledIds.equals(null)){
-                tiledIds = Set.of();
+            if (tileIds.equals(null)){
+                tileIds = Set.of();
             } else {
-                tiledIds = Set.copyOf(tiledIds);
+                tileIds = Set.copyOf(tileIds);
             }
         }
 

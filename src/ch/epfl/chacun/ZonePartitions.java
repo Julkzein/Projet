@@ -10,7 +10,7 @@ import java.util.List;
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
  */
-public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Zone.River> rivers, ZonePartition<Zone.Meadow> meadows, ZonePartition<Zone.Water> riverSystems) {
+public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zone.Meadow> meadows, ZonePartition<Zone.River> rivers,  ZonePartition<Zone.Water> riverSystems) {
 
     /**
      * This constructor creates a set of empty zone partitions
@@ -18,8 +18,8 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
     public final static ZonePartitions EMPTY =
             new ZonePartitions(
                 new ZonePartition<Zone.Forest>(),
-                new ZonePartition<Zone.River>(),
                 new ZonePartition<Zone.Meadow>(),
+                new ZonePartition<Zone.River>(),
                 new ZonePartition<Zone.Water>());
 
     /**
@@ -164,7 +164,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests, ZonePartition<Z
          * Builds the zone partitions
          * @return the set of the four zone partitions
          */
-        public ZonePartitions build() { return new ZonePartitions(forests.build(), rivers.build(), meadows.build(), riverSystems.build()); }
+        public ZonePartitions build() { return new ZonePartitions(forests.build(), meadows.build(), rivers.build(), riverSystems.build()); }
 
     }
 }
