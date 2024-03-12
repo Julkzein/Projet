@@ -97,7 +97,7 @@ public class Board {
         return partition.riverSystems().areas();
     }
 
-   // public Area<Zone.Meadow> adjacentMeadow(Pos pos, Zone.Meadow meadowZone) {
+   public Area<Zone.Meadow> adjacentMeadow(Pos pos, Zone.Meadow meadowZone) {
 
-    //}
+    }
 }
