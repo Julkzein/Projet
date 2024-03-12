@@ -2,10 +2,7 @@ package ch.epfl.chacun;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -15,8 +12,11 @@ public class MyMessageBoardTest {
     void pointsCorrectlyReturned(){
         TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
         MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1)), new MessageBoard.Message("test", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 1))));
-
-        assertEquals("{GREEN=3, RED=5, BLUE=2}", messageBoard.points());
+        Map<PlayerColor, Integer> map = new HashMap<>();
+        map.put(PlayerColor.RED, 5);
+        map.put(PlayerColor.BLUE, 2);
+        map.put(PlayerColor.GREEN, 3);
+        assertEquals(map, messageBoard.points());
     }
 
     @Test
@@ -123,7 +123,7 @@ public class MyMessageBoardTest {
         assertEquals(new MessageBoard(textMaker, List.of(
                 new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
                 new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4)),
-                new MessageBoard.Message(textMaker.playerScoredLogboat(PlayerColor.RED, 2, 1), 2, Set.of(PlayerColor.RED), Set.of(34, 75)))),
+                new MessageBoard.Message(textMaker.playerScoredLogboat(PlayerColor.RED, 2, 1), 2, Set.of(PlayerColor.RED), Set.of(34)))),
                 messageBoard.withScoredLogboat(PlayerColor.RED, new Area<Zone.Water>(Set.of(new Zone.River(341, 0, new Zone.Lake(754, 0, null))), List.of(), 0)));
     }
     @Test
@@ -195,5 +195,43 @@ public class MyMessageBoardTest {
                 new MessageBoard.Message(textMaker.playersScoredRiverSystem(Set.of(PlayerColor.RED, PlayerColor.GREEN), 5, 5), 5, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(54, 76)))),
                 messageBoard.withScoredRiverSystem(new Area<Zone.Water>(Set.of(new Zone.River(548, 3, new Zone.Lake(754, 2, null)), new Zone.Lake(764, 0, null)), List.of(PlayerColor.RED, PlayerColor.GREEN), 0)));
     }
+
+    @Test
+    void scoredPitTrapWithUnoccupiedMeadow() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
+                new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(messageBoard, messageBoard.withScoredPitTrap(new Area<Zone.Meadow>(Set.of(), List.of(), 0), Set.of()));
+    }
+
+    @Test
+    void scoredPitTrapWithOccupiedMeadowButNoPoints() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
+                new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(messageBoard, messageBoard.withScoredPitTrap(new Area<Zone.Meadow>(Set.of(new Zone.Meadow(815, List.of(), null),
+                new Zone.Meadow(426, List.of(), null)), List.of(PlayerColor.RED, PlayerColor.GREEN), 0), Set.of()));
+    }
+
+    @Test
+    void scoredPitTrap() {
+        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
+        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
+                new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4))));
+
+        assertEquals(new MessageBoard(textMaker, List.of(
+                new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(1, 2)),
+                new MessageBoard.Message("test2", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 4)),
+                new MessageBoard.Message(textMaker.playersScoredPitTrap(Set.of(PlayerColor.RED, PlayerColor.GREEN), 3, Map.of(Animal.Kind.TIGER, 1, Animal.Kind.MAMMOTH, 0, Animal.Kind.DEER, 1, Animal.Kind.AUROCHS, 1)), 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(81, 42)))),
+                messageBoard.withScoredPitTrap(new Area<Zone.Meadow>(Set.of(new Zone.Meadow(815, List.of(new Animal(20, Animal.Kind.DEER),new Animal(21, Animal.Kind.TIGER)),null),
+                        new Zone.Meadow(426, List.of(new Animal(22, Animal.Kind.AUROCHS)), null)), List.of(PlayerColor.RED, PlayerColor.GREEN), 0), Set.of()));
+    }
+
+
 
 }
