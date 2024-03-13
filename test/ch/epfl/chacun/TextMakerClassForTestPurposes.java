@@ -47,7 +47,7 @@ public class TextMakerClassForTestPurposes implements TextMaker{
         return new StringJoiner(" ")
                 .add(scorer.toString())
                 .add(String.valueOf(points))
-                .add(String.valueOf(animals))
+                .add(String.valueOf(new TreeMap(animals)))
                 .toString();
     }
 
@@ -65,7 +65,7 @@ public class TextMakerClassForTestPurposes implements TextMaker{
         return new StringJoiner(" ")
                 .add(scorers.toString())
                 .add(String.valueOf(points))
-                .add(String.valueOf(animals))
+                .add(String.valueOf(new TreeMap(animals)))
                 .toString();
     }
 
@@ -83,7 +83,7 @@ public class TextMakerClassForTestPurposes implements TextMaker{
         return new StringJoiner(" ")
                 .add(scorers.toString())
                 .add(String.valueOf(points))
-                .add(String.valueOf(animals))
+                .add(String.valueOf(new TreeMap<>(animals)))
                 .toString();
     }
 
