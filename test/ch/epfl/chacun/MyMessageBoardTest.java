@@ -59,18 +59,6 @@ public class MyMessageBoardTest {
                 messageBoard.withClosedForestWithMenhir(PlayerColor.RED, new Area<Zone.Forest>(Set.of(new Zone.Forest(421, Zone.Forest.Kind.WITH_MENHIR), new Zone.Forest(532, Zone.Forest.Kind.PLAIN)), List.of(), 0)));
     }
 
-
-    @Test
-    void addMessageToMessageList() {
-        TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();
-        MessageBoard messageBoard = new MessageBoard(textMaker, List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1))));
-        MessageBoard.Message message = new MessageBoard.Message("test", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 1));
-
-        List<MessageBoard.Message> list = List.of(new MessageBoard.Message("test", 2, Set.of(PlayerColor.RED, PlayerColor.BLUE), Set.of(3, 1)), new MessageBoard.Message("test", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of(3, 1)));
-
-        assertEquals(list, messageBoard.messagesWithNewMessage(message));
-    }
-
     @Test
     void scoredRiverWithUnoccupiedRiver() {
         TextMakerClassForTestPurposes textMaker = new TextMakerClassForTestPurposes();

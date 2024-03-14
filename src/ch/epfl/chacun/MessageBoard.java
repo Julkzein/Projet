@@ -32,7 +32,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @param m the message we want to add to the MessageBoard
      * @return the new MessageBoard with the additional message
      */
-    public List<Message> messagesWithNewMessage(Message m) {
+    private List<Message> messagesWithNewMessage(Message m) {
         List<Message> newMessages = new ArrayList<>(messages);
         newMessages.add(m);
         return List.copyOf(newMessages);
