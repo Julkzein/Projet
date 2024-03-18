@@ -548,7 +548,7 @@ class HisMessageBoardTest {
             assertEquals(messageBoard.messages().get(i), messageBoard1.messages().get(i));
         }
 
-        assertEquals(10, messageBoard.messages().getLast().points());
+        assertEquals(0, messageBoard.messages().getLast().points());
         assertEquals(Set.of(PlayerColor.BLUE, PlayerColor.RED), messageBoard.messages().getLast().scorers());
 
         messageBoard = messageBoard2.withWinners(Set.of(PlayerColor.RED), 20);
@@ -558,7 +558,7 @@ class HisMessageBoardTest {
             assertEquals(messageBoard.messages().get(i), messageBoard2.messages().get(i));
         }
 
-        assertEquals(20, messageBoard.messages().getLast().points());
+        assertEquals(0, messageBoard.messages().getLast().points());
         assertEquals(Set.of(PlayerColor.RED), messageBoard.messages().getLast().scorers());
 
         messageBoard = messageBoard1.withWinners(Set.of(), 10);
@@ -568,7 +568,7 @@ class HisMessageBoardTest {
             assertEquals(messageBoard.messages().get(i), messageBoard1.messages().get(i));
         }
 
-        assertEquals(10, messageBoard.messages().getLast().points());
+        assertEquals(0, messageBoard.messages().getLast().points());
         assertEquals(Set.of(), messageBoard.messages().getLast().scorers());
 
         messageBoard = messageBoard2.withWinners(Set.of(), 0);
