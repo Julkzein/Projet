@@ -65,14 +65,15 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
             for (Zone zone : tile.zones()) {
                 switch(zone) {
                     case Zone.Forest forest -> forests.addSingleton(forest, connections[zone.localId()]);
-                    case Zone.River river -> {
-                        rivers.addSingleton(river, (river.hasLake()) ? connections[zone.localId()] - 1 : connections[zone.localId()]);
-                        riverSystems.addSingleton(river, (river.hasLake()) ? connections[zone.localId()] - 1 : connections[zone.localId()]);
-                    }
+                    case Zone.River river -> { rivers.addSingleton(river, (river.hasLake()) ? connections[zone.localId()] - 1 : connections[zone.localId()]); }
                     case Zone.Meadow meadow -> meadows.addSingleton(meadow, connections[zone.localId()]);
-                    case Zone.Lake lake -> riverSystems.addSingleton(lake, connections[zone.localId()]);
+                    default ->{}
+                }
+                if (zone instanceof Zone.Water) {
+                    riverSystems.addSingleton((Zone.Water) zone, connections[zone.localId()]);
                 }
             }
+
             for (Zone zone : tile.zones()) {
                 if (zone instanceof Zone.River river && river.hasLake()) {
                     riverSystems.union(river.lake(), river);
@@ -104,7 +105,10 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
                 }
                 case TileSide.River(Zone.Meadow rm1, Zone.River r1, Zone.Meadow rm2) -> {
                     if (s2 instanceof TileSide.River(Zone.Meadow rm3, Zone.River r2, Zone.Meadow rm4)) {
+                        meadows.union(rm1, rm4);
                         rivers.union(r1, r2);
+                        meadows.union(rm2, rm3);
+                        riverSystems.union(r1, r2);
                     } else {
                         throw new IllegalArgumentException();
                     }
@@ -123,7 +127,8 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
             switch(occupiedZone) {
                 case Zone.Forest forest when occupantKind == Occupant.Kind.PAWN-> { forests.addInitialOccupant(forest, player); }
                 case Zone.Meadow meadow when occupantKind == Occupant.Kind.PAWN-> { meadows.addInitialOccupant(meadow, player); }
-                case Zone.River river when (occupantKind == Occupant.Kind.PAWN || occupantKind == Occupant.Kind.HUT) -> { rivers.addInitialOccupant(river, player); }
+                case Zone.River river when occupantKind == Occupant.Kind.PAWN -> { rivers.addInitialOccupant(river, player); }
+                case Zone.River river when occupantKind == Occupant.Kind.HUT -> { riverSystems.addInitialOccupant(river, player); }
                 case Zone.Lake lake when occupantKind == Occupant.Kind.HUT-> { riverSystems.addInitialOccupant(lake, player); }
                 default -> throw new IllegalArgumentException();
             }

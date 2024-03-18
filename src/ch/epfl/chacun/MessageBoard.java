@@ -23,9 +23,6 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @param messages the messages that will be displayed on the messageBoard
      */
     public MessageBoard {
-        if (textMaker.equals(null)) {
-            throw new NullPointerException();
-        }
         messages = List.copyOf(messages);
     }
 
@@ -100,7 +97,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      */
     public MessageBoard withScoredRiver(Area<Zone.River> river) {
         if (river.isOccupied()) {
-            int addPoints = Area.riverFishCount(river);
+            int addPoints = Area.riverFishCount(river) + river.zones().size();
             String addText = textMaker.playersScoredRiver(river.majorityOccupants(), addPoints, river.riverFishCount(river), river.zones().size());
             return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, addPoints, river.majorityOccupants(), river.tileIds())));
         }
@@ -260,7 +257,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @return the MessageBoard with the possible additional message
      */
     public MessageBoard withWinners(Set<PlayerColor> winners, int points) {
-        return new MessageBoard(textMaker, messagesWithNewMessage(new Message(textMaker.playersWon(winners, points), points, winners, Set.of())));
+        return new MessageBoard(textMaker, messagesWithNewMessage(new Message(textMaker.playersWon(winners, points), 0, winners, Set.of())));
     }
 
 
@@ -274,6 +271,9 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     public record Message(String text, int points, Set<PlayerColor> scorers, Set<Integer> tileIds) {
         public Message {
             Preconditions.checkArgument(points >= 0);
+            if (text.equals(null)){
+                throw new NullPointerException();
+            }
             if (scorers.equals(null)){
                 scorers = Set.of();
             } else {
@@ -284,6 +284,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
             } else {
                 tileIds = Set.copyOf(tileIds);
             }
+
         }
 
     }
