@@ -23,6 +23,9 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @param messages the messages that will be displayed on the messageBoard
      */
     public MessageBoard {
+        if (textMaker.equals(null)) {
+            throw new NullPointerException();
+        }
         messages = List.copyOf(messages);
     }
 
