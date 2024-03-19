@@ -1,11 +1,10 @@
 package ch.epfl.chacun;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static ch.epfl.chacun.Zone.localId;
 import static java.lang.reflect.Array.get;
+import static java.util.List.copyOf;
 
 public class Board {
     private final PlacedTile[] placedTiles;
@@ -14,8 +13,8 @@ public class Board {
     private final Set<Animal> canceledAnimal;
     public static final int reach = 12;
     public static final Board EMPTY = new Board(new PlacedTile[625] , new int[0], ZonePartitions.EMPTY, Set.of());
-
-    private Board(PlacedTile[] placedTiles, int[] index, ZonePartitions partition, Set<Animal> canceledAnimal) {
+    /////////
+    public Board(PlacedTile[] placedTiles, int[] index, ZonePartitions partition, Set<Animal> canceledAnimal) {
         this.placedTiles = placedTiles;
         this.index = index;
         this.partition = partition;
@@ -24,12 +23,8 @@ public class Board {
 
     public PlacedTile tileAt(Pos pos) {
         int index = (pos.x() + reach) * 25 + (reach + pos.y());
-        for (int i = 0; i < this.index.length; i++) {
-            if (this.index[i] == index) {
-                return placedTiles[index];
-            }
-        }
-        return null;
+        return index < 0 || index >= placedTiles.length ? null : placedTiles[index];
+
     }
 
     public PlacedTile tileWithId(int tileId) {
@@ -99,11 +94,33 @@ public class Board {
         return partition.riverSystems().areas();
     }
 
-    /**
-    public Area<Zone.Meadow> adjacentMeadow(Pos pos, Zone.Meadow meadowZone) {
-
+    private boolean isAdjacent(Pos pos1, Pos pos2) {
+        return Math.abs(pos1.x() - pos2.x()) + Math.abs(pos1.y() - pos2.y()) == 1;
     }
-     */
+    public Area<Zone.Meadow> adjacentMeadow(Pos pos, Zone.Meadow meadowZone) {
+            Set<Zone.Meadow> meadowsInArea = new HashSet<>();
+            Set<Zone.Meadow> adjacentMeadows = new HashSet<>();
+            List<PlayerColor> occupants = new ArrayList<>();
+            for (Area area : meadowAreas()) {
+                if (area.zones().contains(meadowZone)) {
+                    Set<Zone.Meadow> zones = area.zones();
+                    occupants = area.occupants();
+                    for (Zone.Meadow zone : zones) {
+                        meadowsInArea.add(zone);
+                    }
+                }
+            }
+            for (PlacedTile placedTile : placedTiles) {
+                if (isAdjacent(placedTile.pos(), pos)) {
+                    for (Zone zone : placedTile.tile().zones()) {
+                        if (zone instanceof Zone.Meadow meadow && meadowsInArea.contains(zone)) {
+                            adjacentMeadows.add(meadow);
+                        }
+                    }
+                }
+            }
+            return new Area<>(adjacentMeadows, occupants, 0);
+    }
 
     public int occupantCount(PlayerColor player, Occupant.Kind occupantKind) {
         int count = 0;
@@ -264,7 +281,15 @@ public class Board {
     }
 
     @Override
-    public boolean equals(Object comparedBoard) {
-        
+    public boolean equals(Object that) {
+        if (that == null) return false;
+        if (!(that instanceof Board board)) return false;
+        return Arrays.equals(board.index, index) && Arrays.equals(board.placedTiles, placedTiles) &&  board.partition.equals(partition) && board.canceledAnimal.equals(canceledAnimal);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(Arrays.hashCode(index), Arrays.hashCode(placedTiles), partition, canceledAnimal);
+    }
+
 }
