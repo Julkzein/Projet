@@ -159,7 +159,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      */
     public Set<Occupant> potentialOccupants() {
         Set<Occupant> potentialOccupantsSet = new HashSet<>();
-        if(placer == null) {
+        if (placer == null) {
             return potentialOccupantsSet;
         }
         else {

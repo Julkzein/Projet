@@ -1,8 +1,10 @@
 package ch.epfl.chacun;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
+import static ch.epfl.chacun.Zone.localId;
 import static java.lang.reflect.Array.get;
 
 public class Board {
@@ -11,7 +13,7 @@ public class Board {
     private final ZonePartitions partition;
     private final Set<Animal> canceledAnimal;
     public static final int reach = 12;
-    public static final Board EMPTY = new Board(new PlacedTile[625] , new int[95], ZonePartitions.EMPTY, Set.of());
+    public static final Board EMPTY = new Board(new PlacedTile[625] , new int[0], ZonePartitions.EMPTY, Set.of());
 
     private Board(PlacedTile[] placedTiles, int[] index, ZonePartitions partition, Set<Animal> canceledAnimal) {
         this.placedTiles = placedTiles;
@@ -21,7 +23,7 @@ public class Board {
     }
 
     public PlacedTile tileAt(Pos pos) {
-        int index = (pos.x() + reach) * 25 + reach + pos.y();
+        int index = (pos.x() + reach) * 25 + (reach + pos.y());
         for (int i = 0; i < this.index.length; i++) {
             if (this.index[i] == index) {
                 return placedTiles[index];
@@ -137,10 +139,8 @@ public class Board {
     }
 
     public PlacedTile lastPlacedTile() {
-        for (int i = index.length - 1; i >= 0; i--) {
-            if(index[i] != 0) {
-                return placedTiles[index[i]];
-            }
+        if (index.length > 0) {
+            return placedTiles[index[index.length - 1]];
         }
         return null;
     }
@@ -188,7 +188,83 @@ public class Board {
                 && placedTile.tile().s().isSameKindAs(tileSouth.tile().n())) {
                 return true;
             }
+
         }
         return false;
+    }
+
+    public boolean couldPlaceTile(Tile tile) {
+        for (Pos position : insertionPositions()) {
+            for (Rotation rot : Rotation.ALL) {
+                if (canAddTile(new PlacedTile(tile, PlayerColor.RED, rot, position))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Board withNewTile(PlacedTile tile) {
+        if (placedTiles.length != 0 && !canAddTile(tile)) {
+            throw new IllegalArgumentException();
+        }
+
+        PlacedTile[] newPlacedTiles = new PlacedTile[placedTiles.length + 1];
+        int[] newIndex = new int[index.length + 1];
+        for (int i = 0; i < placedTiles.length; i++) {
+            newPlacedTiles[i] = placedTiles[i];
+            newIndex[i] = index[i];
+        }
+        newPlacedTiles[placedTiles.length] = tile;
+        newIndex[index.length] = (tile.pos().x() + reach) * 25 + (reach + tile.pos().y());
+
+        return new Board(newPlacedTiles, newIndex, partition, canceledAnimal);
+    }
+
+    public Board withOccupant(Occupant occupant) {
+        for (PlacedTile placedTile : placedTiles) {
+            if (occupant.zoneId() == placedTile.tile().id()) {
+                if (placedTile.occupant() == null) {
+                    throw new IllegalArgumentException();
+                } else {
+                    placedTile = placedTile.withOccupant(occupant);
+                }
+            }
+        }
+        return new Board(placedTiles, index, partition, canceledAnimal);
+    }
+
+    public Board withoutOccupant(Occupant occupant) {
+        for (PlacedTile placedTile : placedTiles) {
+            if (occupant.zoneId() == placedTile.tile().id()) {
+                if (placedTile.occupant() == occupant) {
+                    placedTile = placedTile.withNoOccupant();
+                }
+            }
+        }
+        return new Board(placedTiles, index, partition, canceledAnimal);
+    }
+
+    public Board withoutGatherersOrFishersIn(Set<Area<Zone.Forest>> forests, Set<Area<Zone.River>> rivers) {
+        ZonePartitions.Builder newBoardZonePartitionsBuilder = new ZonePartitions.Builder<>(partition);
+        for (Area<Zone.Forest> forestArea : forests) {
+            newBoardZonePartitionsBuilder.clearGatherers(forestArea);
+        }
+        for (Area<Zone.River> riverArea : rivers) {
+            newBoardZonePartitionsBuilder.clearFishers(riverArea);
+        }
+        ZonePartitions newBoardZonePartitions = newBoardZonePartitionsBuilder.build();
+        return new Board(placedTiles, index, newBoardZonePartitions, canceledAnimal);
+    }
+
+    public Board withMoreCancelledAnimals(Set<Animal> newlyCancelledAnimals) {
+        Set<Animal> newCancelledAnimals = Set.copyOf(newlyCancelledAnimals);
+        newCancelledAnimals.addAll(canceledAnimal);
+        return new Board(placedTiles, index, partition, newCancelledAnimals);
+    }
+
+    @Override
+    public boolean equals(Object comparedBoard) {
+        
     }
 }
