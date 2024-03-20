@@ -282,6 +282,9 @@ public class Board {
     }
 
     public Board withMoreCancelledAnimals(Set<Animal> newlyCancelledAnimals) {
+        //Set<Animal> newCancelledAnimals = new HashSet<>(canceledAnimal);
+       // newCancelledAnimals.addAll(newlyCancelledAnimals);
+        //return new Board(placedTiles, index, partition, Set.copyOf(newCancelledAnimals));
         Set<Animal> newCancelledAnimals = Set.copyOf(newlyCancelledAnimals);
         newCancelledAnimals.addAll(canceledAnimal);
         return new Board(placedTiles, index, partition, newCancelledAnimals);

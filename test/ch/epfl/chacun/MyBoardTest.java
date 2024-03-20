@@ -3,6 +3,7 @@ package ch.epfl.chacun;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -149,6 +150,18 @@ public class MyBoardTest {
         assertEquals(new PlacedTile(tile, PlayerColor.RED, Rotation.NONE, new Pos(0, 0), new Occupant(Occupant.Kind.PAWN, 0)), buildBoardWithTile32().lastPlacedTile());
     }
 
+
+    @Test
+    void insertionALaZeub() {
+        Set<Pos> positionOnTheFirstPos = new HashSet<>();
+
+        positionOnTheFirstPos.add(new Pos(0,1));
+        positionOnTheFirstPos.add(new Pos(0,-1));
+        positionOnTheFirstPos.add(new Pos(1,0));
+        positionOnTheFirstPos.add(new Pos(-1,0));
+
+        assertEquals(positionOnTheFirstPos, buildBoardWithTile32().insertionPositions());
+    }
 
 
 }
