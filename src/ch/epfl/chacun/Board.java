@@ -142,7 +142,7 @@ public class Board {
     public Set<Pos> insertionPositions() {
         Set<Pos> positions = new HashSet<>();
         for(PlacedTile placedTile : placedTiles) {
-            if(!(placedTile == null)) {
+            if(placedTile != null) {
                 int x = placedTile.pos().x();
                 int y = placedTile.pos().y();
                 if (tileAt(new Pos(x - 1, y)) == null) {
