@@ -6,7 +6,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MyBoardTest {
+public class TheirBoardTest {
 
     private Tile firstTile(){
         TileSide.Meadow meadow0 = new TileSide.Meadow(new Zone.Meadow(560, Collections.emptyList(), null));
@@ -114,8 +114,8 @@ public class MyBoardTest {
 
         PlacedTile[] placedTiles = new PlacedTile[625];
         int[] ints = new int[1];
-        ints[0]=312;
-        Board boardGame = new Board(ints, placedTiles, partitions.build());
+        ints[0] = 312;
+        Board boardGame = new Board(placedTiles, ints, partitions.build(), Set.of());
 
 
         assertNull(boardGame.tileAt(new Pos(12,12)));
@@ -750,7 +750,7 @@ public class MyBoardTest {
         cancelledAnimals.add(new Animal(5621, Animal.Kind.TIGER));
         cancelledAnimals.add(new Animal(1401, Animal.Kind.AUROCHS));
 
-        assertEquals(new Board(cancelledAnimals, ints, placedTiles, partitions.build()), boardGame.withMoreCancelledAnimals(cancelledAnimals));
+        assertEquals(new Board(placedTiles, ints, partitions.build(), cancelledAnimals), boardGame.withMoreCancelledAnimals(cancelledAnimals));
 
 
 

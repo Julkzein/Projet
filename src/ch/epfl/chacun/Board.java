@@ -21,6 +21,13 @@ public class Board {
         this.canceledAnimal = canceledAnimal;
     }
 
+    public Board(int[] index, PlacedTile[] placedTiles, ZonePartitions partition) {
+        this.placedTiles = placedTiles;
+        this.index = index;
+        this.partition = partition;
+        this.canceledAnimal = Set.of();
+    }
+
     public PlacedTile tileAt(Pos pos) {
         int index = (pos.x() + reach) * 25 + (reach + pos.y());
         return index < 0 || index >= placedTiles.length ? null : placedTiles[index];
