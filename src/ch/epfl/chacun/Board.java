@@ -1,5 +1,7 @@
 package ch.epfl.chacun;
 
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Copy;
+
 import java.util.*;
 
 import static ch.epfl.chacun.Zone.localId;
@@ -35,12 +37,9 @@ public class Board {
     }
 
     public PlacedTile tileWithId(int tileId) {
-        for (PlacedTile placedTile : placedTiles) {
-            if (placedTile == null) {
-                throw new IllegalArgumentException(); // TODO: check if this is the right way
-            }
-            if (placedTile.tile().id() == tileId) {
-                return placedTile;
+        for (int index : index) {
+            if (placedTiles[index].id() == tileId) {
+                return placedTiles[index];
             }
         }
         throw new IllegalArgumentException();
@@ -148,16 +147,16 @@ public class Board {
             if(placedTile != null) {
                 int x = placedTile.pos().x();
                 int y = placedTile.pos().y();
-                if (tileAt(new Pos(x - 1, y)) == null) {
+                if ((tileAt(new Pos(x - 1, y)) == null) && Math.abs(x-1) <= 12 && Math.abs(y) <= 12) {
                     positions.add(new Pos(x - 1, y));
                 }
-                if (tileAt(new Pos(x + 1, y)) == null) {
+                if (tileAt(new Pos(x + 1, y)) == null && Math.abs(x+1) <= 12 && Math.abs(y) <= 12) {
                     positions.add(new Pos(x + 1, y));
                 }
-                if (tileAt(new Pos(x, y - 1)) == null) {
+                if (tileAt(new Pos(x, y - 1)) == null && Math.abs(x) <= 12 && Math.abs(y-1) <= 12) {
                     positions.add(new Pos(x, y - 1));
                 }
-                if (tileAt(new Pos(x, y + 1)) == null) {
+                if (tileAt(new Pos(x, y + 1)) == null && Math.abs(x) <= 12 && Math.abs(y+1) <= 12) {
                     positions.add(new Pos(x, y + 1));
                 }
             }
@@ -204,18 +203,17 @@ public class Board {
 
     public boolean canAddTile(PlacedTile placedTile) {
         if (insertionPositions().contains(placedTile.pos())) {
-            PlacedTile tileEast = tileAt(new Pos(placedTile.pos().x() + 1, placedTile.pos().y()));
-            PlacedTile tileWest = tileAt(new Pos(placedTile.pos().x() - 1, placedTile.pos().y()));
-            PlacedTile tileNorth = tileAt(new Pos(placedTile.pos().x(), placedTile.pos().y() - 1));
-            PlacedTile tileSouth = tileAt(new Pos(placedTile.pos().x(), placedTile.pos().y() + 1));
+            PlacedTile tileEast = tileAt(placedTile.pos().neighbor(Direction.E));
+            PlacedTile tileWest = tileAt(placedTile.pos().neighbor(Direction.W));
+            PlacedTile tileNorth = tileAt(placedTile.pos().neighbor(Direction.N));
+            PlacedTile tileSouth = tileAt(placedTile.pos().neighbor(Direction.S));
 
-            if (placedTile.tile().e().isSameKindAs(tileEast.tile().w())
-                && placedTile.tile().w().isSameKindAs(tileWest.tile().e())
-                && placedTile.tile().n().isSameKindAs(tileNorth.tile().s())
-                && placedTile.tile().s().isSameKindAs(tileSouth.tile().n())) {
+            if ((tileEast == null || placedTile.tile().e().isSameKindAs(tileEast.tile().w()))
+                && (tileWest == null || placedTile.tile().w().isSameKindAs(tileWest.tile().e()))
+                && (tileNorth == null || placedTile.tile().n().isSameKindAs(tileNorth.tile().s()))
+                && (tileSouth == null || placedTile.tile().s().isSameKindAs(tileSouth.tile().n()))) {
                 return true;
             }
-
         }
         return false;
     }
@@ -232,9 +230,7 @@ public class Board {
     }
 
     public Board withNewTile(PlacedTile tile) {
-        if (placedTiles.length != 0 && !canAddTile(tile)) {
-            throw new IllegalArgumentException();
-        }
+        Preconditions.checkArgument(tileAt(tile.pos()) == null);
 
         PlacedTile[] newPlacedTiles = new PlacedTile[placedTiles.length + 1];
         int[] newIndex = new int[index.length + 1];
@@ -249,6 +245,16 @@ public class Board {
     }
 
     public Board withOccupant(Occupant occupant) {
+        int id = Zone.tileId(occupant.zoneId());
+        PlacedTile addTile = tileWithId(id).withOccupant(occupant);
+        if (addTile.occupant() != null) {
+            throw new IllegalArgumentException();
+        }
+        PlacedTile[] placedTiles1 = placedTiles.clone();
+        placedTiles1[id] = addTile;
+        return new Board(placedTiles1, index, partition, canceledAnimal);
+
+        /**
         for (PlacedTile placedTile : placedTiles) {
             if (occupant.zoneId() == placedTile.tile().id()) {
                 if (placedTile.occupant() == null) {
@@ -259,6 +265,7 @@ public class Board {
             }
         }
         return new Board(placedTiles, index, partition, canceledAnimal);
+         */
     }
 
     public Board withoutOccupant(Occupant occupant) {
@@ -300,6 +307,10 @@ public class Board {
     @Override
     public int hashCode() {
         return Objects.hash(Arrays.hashCode(index), Arrays.hashCode(placedTiles), partition, canceledAnimal);
+    }
+
+    private boolean isOnBoard(Pos pos) {
+        return Math.abs(pos.x()) <= 12 && Math.abs(pos.y()) <= 12;
     }
 
 }

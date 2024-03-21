@@ -114,6 +114,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
                     }
                 }
             }
+            System.out.println("Finished");
         }
 
         /**

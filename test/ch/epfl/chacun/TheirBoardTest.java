@@ -24,7 +24,6 @@ public class TheirBoardTest {
         TileSide.River river3Second = new TileSide.River(new Zone.Meadow(174, Collections.emptyList(), null), new Zone.River(173, 0, null), new Zone.Meadow(170,Collections.emptyList(), null));
 
         return new  Tile(17, Tile.Kind.NORMAL, river0Second, river1Second, river2Second, river3Second);
-
     }
 
     private Tile withOneRiverOnNorth(){
@@ -57,9 +56,7 @@ public class TheirBoardTest {
         TileSide.River river2Second = new TileSide.River(new Zone.Meadow(142, Collections.emptyList(), null), new Zone.River(143, 0, null), new Zone.Meadow(144,Collections.emptyList(), null));
         TileSide.River river3Second = new TileSide.River(new Zone.Meadow(144, Collections.emptyList(), null), new Zone.River(143, 0, null), new Zone.Meadow(142,Collections.emptyList(), null));
 
-        return new  Tile(17, Tile.Kind.NORMAL, meadow0, forest1, river2Second, river3Second);
-
-
+        return new Tile(17, Tile.Kind.NORMAL, meadow0, forest1, river2Second, river3Second);
     }
     private Tile firstTileWithAnimals(){
         List<Animal> animalSet = new ArrayList<>(List.of(new Animal(5601, Animal.Kind.TIGER), new Animal(5602, Animal.Kind.DEER)));
@@ -99,7 +96,7 @@ public class TheirBoardTest {
         TileSide.River river2Second = new TileSide.River(new Zone.Meadow(142, Collections.emptyList(), null), new Zone.River(143, 0, null), new Zone.Meadow(144,Collections.emptyList(), null));
         TileSide.River river3Second = new TileSide.River(new Zone.Meadow(144, Collections.emptyList(), null), new Zone.River(143, 0, null), new Zone.Meadow(142,Collections.emptyList(), null));
 
-        return new  Tile(17, Tile.Kind.NORMAL, meadow0, forest1, river2Second, river3Second);
+        return new Tile(17, Tile.Kind.NORMAL, meadow0, forest1, river2Second, river3Second);
 
 
     }
