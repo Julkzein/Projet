@@ -73,7 +73,6 @@ class OurBoardTest {
     @Test
     void tileAt() {
         assertEquals(Tile.Kind.START, Objects.requireNonNull(board1.withNewTile(placedTile56).tileAt(new Pos(0, 0))).tile().kind());
-
     }
     @Test
     void tileAtIsCorrectlyDefined() {

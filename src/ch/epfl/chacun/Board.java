@@ -1,21 +1,22 @@
 package ch.epfl.chacun;
 
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Copy;
-
 import java.util.*;
-
-import static ch.epfl.chacun.Zone.localId;
-import static java.lang.reflect.Array.get;
-import static java.util.List.copyOf;
 
 public class Board {
     private final PlacedTile[] placedTiles;
     private final int[] index;
     private final ZonePartitions partition;
     private final Set<Animal> canceledAnimal;
-    public static final int reach = 12;
-    public static final Board EMPTY = new Board(new PlacedTile[625] , new int[0], ZonePartitions.EMPTY, Set.of());
-    /////////
+    public static final int REACH = 12;
+    private static final int TOTAL_TILE_COUNT = 625;
+    public static final Board EMPTY = new Board(new PlacedTile[TOTAL_TILE_COUNT] , new int[0], ZonePartitions.EMPTY, Set.of());
+
+
+
+    ///////// ATTENTION BIEN REMETTRE EN PRIVATE !!!
+
+
+
     public Board(PlacedTile[] placedTiles, int[] index, ZonePartitions partition, Set<Animal> canceledAnimal) {
         this.placedTiles = placedTiles;
         this.index = index;
@@ -30,8 +31,12 @@ public class Board {
         this.canceledAnimal = Set.of();
     }
 
+    private int index(Pos pos) {
+        return (pos.x() + REACH) * 25 + (REACH + pos.y());
+    }
+
     public PlacedTile tileAt(Pos pos) {
-        int index = (pos.x() + reach) * 25 + (reach + pos.y());
+        int index = index(pos);
         return index < 0 || index >= placedTiles.length ? null : placedTiles[index];
 
     }
@@ -231,41 +236,24 @@ public class Board {
 
     public Board withNewTile(PlacedTile tile) {
         Preconditions.checkArgument(tileAt(tile.pos()) == null);
-
-        PlacedTile[] newPlacedTiles = new PlacedTile[placedTiles.length + 1];
-        int[] newIndex = new int[index.length + 1];
-        for (int i = 0; i < placedTiles.length; i++) {
-            newPlacedTiles[i] = placedTiles[i];
-            newIndex[i] = index[i];
-        }
-        newPlacedTiles[placedTiles.length] = tile;
-        newIndex[index.length] = (tile.pos().x() + reach) * 25 + (reach + tile.pos().y());
+        PlacedTile[] newPlacedTiles = Arrays.copyOf(placedTiles, placedTiles.length);
+        int[] newIndex = Arrays.copyOf(index, index.length + 1);
+        int index = index(tile.pos());
+        newPlacedTiles[index] = tile;
+        newIndex[newIndex.length - 1] = index;
 
         return new Board(newPlacedTiles, newIndex, partition, canceledAnimal);
     }
 
     public Board withOccupant(Occupant occupant) {
         int id = Zone.tileId(occupant.zoneId());
+        Preconditions.checkArgument(tileWithId(id).occupant() == null);
         PlacedTile addTile = tileWithId(id).withOccupant(occupant);
-        if (addTile.occupant() != null) {
-            throw new IllegalArgumentException();
-        }
-        PlacedTile[] placedTiles1 = placedTiles.clone();
-        placedTiles1[id] = addTile;
-        return new Board(placedTiles1, index, partition, canceledAnimal);
+        PlacedTile[] placedTiles1 = Arrays.copyOf(placedTiles, placedTiles.length);
 
-        /**
-        for (PlacedTile placedTile : placedTiles) {
-            if (occupant.zoneId() == placedTile.tile().id()) {
-                if (placedTile.occupant() == null) {
-                    throw new IllegalArgumentException();
-                } else {
-                    placedTile = placedTile.withOccupant(occupant);
-                }
-            }
-        }
-        return new Board(placedTiles, index, partition, canceledAnimal);
-         */
+        placedTiles1[index(tileWithId(id).pos())] = addTile;
+
+        return new Board(placedTiles1, index, partition, canceledAnimal);
     }
 
     public Board withoutOccupant(Occupant occupant) {
