@@ -142,9 +142,9 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
          */
         public void removePawn(PlayerColor player, Zone occupiedZone) {
             switch(occupiedZone) {
-                case Zone.Forest forest -> { forests.removeOccupant(forest, player); }
-                case Zone.Meadow meadow -> { meadows.removeOccupant(meadow, player); }
-                case Zone.River river -> { rivers.removeOccupant(river, player); }
+                case Zone.Forest forest -> forests.removeOccupant(forest, player);
+                case Zone.Meadow meadow -> meadows.removeOccupant(meadow, player);
+                case Zone.River river -> rivers.removeOccupant(river, player);
                 default -> throw new IllegalArgumentException();
             }
         }

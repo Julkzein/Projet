@@ -34,7 +34,8 @@ public class MyBoardTest {
         PlacedTile[] placedTiles = {placedTile32};
         int[] index = {32};
         Set<Animal> canceledAnimal = Set.of();
-        return new Board(placedTiles, index, partitions, canceledAnimal);
+        return null;
+        //return new Board(placedTiles, index, partitions, canceledAnimal);
     }
 
     public Tile buildTile83() {
@@ -103,7 +104,8 @@ public class MyBoardTest {
         PlacedTile[] placedTiles = {placedTile32, placedTile83};
         int[] index = {32, 83};
         Set<Animal> canceledAnimal = Set.of();
-        return new Board(placedTiles, index, partitions, canceledAnimal);
+        return null;
+        //return new Board(placedTiles, index, partitions, canceledAnimal);
     }
 
     @Test

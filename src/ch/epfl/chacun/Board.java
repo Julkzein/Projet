@@ -1,41 +1,39 @@
 package ch.epfl.chacun;
 
+import ch.epfl.chacun.ZonePartitions.Builder;
+
 import java.util.*;
 
-public class Board {
+public final class Board {
     private final PlacedTile[] placedTiles;
     public final int[] index; ///////// attention c private
     private final ZonePartitions partition;
-    private final Set<Animal> canceledAnimal;
+    private final Set<Animal> cancelledAnimals;
     public static final int REACH = 12;
     private static final int TOTAL_TILE_COUNT = 625;
+
     public static final Board EMPTY = new Board(new PlacedTile[TOTAL_TILE_COUNT] , new int[0], ZonePartitions.EMPTY, Set.of());
 
 
-
-    ///////// ATTENTION BIEN REMETTRE EN PRIVATE !!!
-
-
-
-    public Board(PlacedTile[] placedTiles, int[] index, ZonePartitions partition, Set<Animal> canceledAnimal) {
+    private Board(PlacedTile[] placedTiles, int[] index, ZonePartitions partition, Set<Animal> cancelledAnimals) {
         this.placedTiles = placedTiles;
         this.index = index;
         this.partition = partition;
-        this.canceledAnimal = Collections.unmodifiableSet(canceledAnimal);
+        this.cancelledAnimals = Collections.unmodifiableSet(cancelledAnimals);
     }
 
-    public Board(Set<Animal> canceledAnimal,  int[] index,PlacedTile[] placedTiles, ZonePartitions partition ) {
+    public Board(Set<Animal> cancelledAnimals,  int[] index,PlacedTile[] placedTiles, ZonePartitions partition ) {
         this.placedTiles = placedTiles;
         this.index = index;
         this.partition = partition;
-        this.canceledAnimal = Collections.unmodifiableSet(canceledAnimal);
+        this.cancelledAnimals = Collections.unmodifiableSet(cancelledAnimals);
     }
 
     public Board(int[] index, PlacedTile[] placedTiles, ZonePartitions partition) {
         this.placedTiles = placedTiles;
         this.index = index;
         this.partition = partition;
-        this.canceledAnimal = Set.of();
+        this.cancelledAnimals = Set.of();
     }
 
     private int index(Pos pos) {
@@ -56,8 +54,8 @@ public class Board {
         throw new IllegalArgumentException();
     }
 
-    public Set<Animal> canceledAnimal() {
-        return canceledAnimal;
+    public Set<Animal> cancelledAnimals() {
+        return cancelledAnimals;
     }
 
     public Set<Occupant> occupants() {
@@ -121,7 +119,7 @@ public class Board {
         Set<Zone.Meadow> meadowsInArea = new HashSet<>();
         Set<Zone.Meadow> adjacentMeadows = new HashSet<>();
         List<PlayerColor> occupants = new ArrayList<>();
-        for (Area area : meadowAreas()) {
+        for (Area<Zone.Meadow> area : meadowAreas()) {
             if (area.zones().contains(meadowZone)) {
                 Set<Zone.Meadow> zones = area.zones();
                 occupants = area.occupants();
@@ -242,20 +240,24 @@ public class Board {
     }
 
     public Board withNewTile(PlacedTile tile) {
-        Preconditions.checkArgument(index.length == 0 || canAddTile(tile) );
+        Preconditions.checkArgument(index.length == 0 || canAddTile(tile));
         PlacedTile[] newPlacedTiles = Arrays.copyOf(placedTiles, placedTiles.length);
+
         int[] newIndex = Arrays.copyOf(index, index.length + 1);
         int index = index(tile.pos());
+
         newPlacedTiles[index] = tile;
         newIndex[newIndex.length - 1] = index;
-        ZonePartitions.Builder newPartitions = new ZonePartitions.Builder(partition);
+        ZonePartitions.Builder<Zone> newPartitions = new ZonePartitions.Builder<>(partition);
         newPartitions.addTile(tile.tile());
+
         for (Direction dir : Direction.ALL) {
            if (tileAt(tile.pos().neighbor(dir)) != null) {
                newPartitions.connectSides(tile.side(dir), tileAt(tile.pos().neighbor(dir)).side(dir.opposite()));
            }
         }
-        return new Board(newPlacedTiles, newIndex, newPartitions.build(), canceledAnimal);
+
+        return new Board(newPlacedTiles, newIndex, newPartitions.build(), cancelledAnimals);
     }
 
     public Board withOccupant(Occupant occupant) {
@@ -265,7 +267,7 @@ public class Board {
         PlacedTile[] placedTiles1 = Arrays.copyOf(placedTiles, placedTiles.length);
         placedTiles1[index(addTile.pos())] = addTile;
 
-        ZonePartitions.Builder newPartition = new ZonePartitions.Builder(partition);
+        Builder<Zone> newPartition = new Builder<>(partition);
         for (Zone zone : addTile.tile().zones()) {
             if (zone.id() == occupant.zoneId()) {
                 newPartition.addInitialOccupant(addTile.placer(), occupant.kind(), zone);
@@ -273,36 +275,29 @@ public class Board {
             }
         }
 
-        return new Board(placedTiles1, index, partition, canceledAnimal);
+        return new Board(placedTiles1, index, newPartition.build(), cancelledAnimals);
     }
 
     public Board withoutOccupant(Occupant occupant) {
         int id = Zone.tileId(occupant.zoneId());
         PlacedTile tile = tileWithId(id);
-        boolean isOnBoard = false;
-        for (PlacedTile placedTile : placedTiles) {
-            if (tile == placedTile) {
-                isOnBoard = true;
+        Preconditions.checkArgument(tile != null);
+        ZonePartitions.Builder<Zone> newZonePartitionsBuilder = new ZonePartitions.Builder<>(partition);
+        PlacedTile[] placedTiles1 = Arrays.copyOf(placedTiles, placedTiles.length);
+        placedTiles1[index(tile.pos())] = tile.withNoOccupant();
+
+        for (Zone zone : tile.tile().zones()) {
+            if (occupant.zoneId() == zone.id()) {
+                newZonePartitionsBuilder.removePawn(tile.placer(), zone);
                 break;
             }
         }
-        if (!isOnBoard) {
-            throw new IllegalArgumentException();
-        }
-        ZonePartitions.Builder newZonePartitionsBuilder = new ZonePartitions.Builder<>(partition);
-        for (PlacedTile placedTile : placedTiles) {
-            if (placedTile != null && occupant.zoneId() == placedTile.tile().id()) {
-                if (placedTile.occupant() == occupant) {
-                    placedTile = placedTile.withNoOccupant();
-                    newZonePartitionsBuilder.removePawn(placedTile.placer(), placedTile.zoneWithId(occupant.zoneId()));
-                }
-            }
-        }
-        return new Board(placedTiles, index, newZonePartitionsBuilder.build(), canceledAnimal);
+
+        return new Board(placedTiles1, index, newZonePartitionsBuilder.build(), cancelledAnimals);
     }
 
     public Board withoutGatherersOrFishersIn(Set<Area<Zone.Forest>> forests, Set<Area<Zone.River>> rivers) {
-        ZonePartitions.Builder newBoardZonePartitionsBuilder = new ZonePartitions.Builder<>(partition);
+        ZonePartitions.Builder<Zone> newBoardZonePartitionsBuilder = new ZonePartitions.Builder<>(partition);
         PlacedTile[] newPlacedTile = placedTiles.clone();
         for (Area<Zone.Forest> forestArea : forests) {
             newBoardZonePartitionsBuilder.clearGatherers(forestArea);
@@ -317,11 +312,11 @@ public class Board {
             }
         }
         ZonePartitions newBoardZonePartitions = newBoardZonePartitionsBuilder.build();
-        return new Board(newPlacedTile, index, newBoardZonePartitions, canceledAnimal);
+        return new Board(newPlacedTile, index, newBoardZonePartitions, cancelledAnimals);
     }
 
     public Board withMoreCancelledAnimals(Set<Animal> newlyCancelledAnimals) {
-        Set<Animal> newCancelledAnimals = new HashSet<>(canceledAnimal);
+        Set<Animal> newCancelledAnimals = new HashSet<>(cancelledAnimals);
         newCancelledAnimals.addAll(newlyCancelledAnimals);
         return new Board(placedTiles, index, partition, newCancelledAnimals);
     }
@@ -330,12 +325,12 @@ public class Board {
     public boolean equals(Object that) {
         if (that == null) return false;
         if (!(that instanceof Board board)) return false;
-        return Arrays.equals(board.index, index) && Arrays.equals(board.placedTiles, placedTiles) &&  board.partition.equals(partition) && board.canceledAnimal.equals(canceledAnimal);
+        return Arrays.equals(board.index, index) && Arrays.equals(board.placedTiles, placedTiles) &&  board.partition.equals(partition) && board.cancelledAnimals.equals(cancelledAnimals);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(Arrays.hashCode(index), Arrays.hashCode(placedTiles), partition, canceledAnimal);
+        return Objects.hash(Arrays.hashCode(index), Arrays.hashCode(placedTiles), partition, cancelledAnimals);
     }
 
     private boolean isOnBoard(Pos pos) {

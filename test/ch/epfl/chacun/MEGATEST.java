@@ -7,7 +7,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BigNewBoardTest {
+class MEGATEST {
     private final Zone.Forest forest1 = new Zone.Forest(562, Zone.Forest.Kind.WITH_MENHIR);
     private final Zone.Forest forest2 = new Zone.Forest(422, Zone.Forest.Kind.PLAIN);
     private final Zone.Forest forest3 = new Zone.Forest(1, Zone.Forest.Kind.PLAIN);
@@ -121,7 +121,7 @@ class BigNewBoardTest {
     private final Tile tile72 = new Tile(72, Tile.Kind.NORMAL, sides72[0], sides72[1], sides72[2], sides72[3]);
     private final Tile tile73 = new Tile(73, Tile.Kind.NORMAL, sides73[0], sides73[1], sides73[2], sides73[3]);
     private final Tile withoudMeadowTile = new Tile(39, Tile.Kind.NORMAL, sides39[0], sides39[1], sides39[2], sides39[3]);
-    private final PlacedTile placedTile56 = new PlacedTile(tile56, null, Rotation.NONE, new Pos(0, 0), null);
+    private final PlacedTile placedTile56 = new PlacedTile(tile56, PlayerColor.RED, Rotation.NONE, new Pos(0, 0), null);
     private final PlacedTile UnaddablePlacedTile = new PlacedTile(UnaddableTile, PlayerColor.RED, Rotation.NONE, new Pos(1, 4), null);
     private final PlacedTile placedTile17 = new PlacedTile(tile17, PlayerColor.RED, Rotation.NONE, new Pos(-1, 0), null);
     private final PlacedTile placedTile27 = new PlacedTile(tile27, PlayerColor.BLUE, Rotation.NONE, new Pos(1, 0), null);

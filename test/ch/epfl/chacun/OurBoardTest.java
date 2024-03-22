@@ -98,22 +98,22 @@ class OurBoardTest {
 
     @Test
     void cancelledAnimalsIsCorrectlyDefined() {
-        assertEquals(0, board1.canceledAnimal().size());
-        assertEquals(0, board2.canceledAnimal().size());
+        assertEquals(0, board1.cancelledAnimals().size());
+        assertEquals(0, board2.cancelledAnimals().size());
 
         Set<Animal> cancelledAnimals = new HashSet<>(Set.of(new Animal(10, Animal.Kind.AUROCHS)));
         Board boardWithCancelledAnimals = board1.withNewTile(placedTile56).withMoreCancelledAnimals(cancelledAnimals);
 
-        assertEquals(cancelledAnimals, boardWithCancelledAnimals.canceledAnimal());
+        assertEquals(cancelledAnimals, boardWithCancelledAnimals.cancelledAnimals());
 
         assertNotEquals(cancelledAnimals, boardWithCancelledAnimals.withMoreCancelledAnimals(
                 Set.of(new Animal(20, Animal.Kind.DEER))
-        ).canceledAnimal());
+        ).cancelledAnimals());
 
         cancelledAnimals.add(new Animal(20, Animal.Kind.DEER));
         assertEquals(cancelledAnimals, boardWithCancelledAnimals.withMoreCancelledAnimals(
                 Set.of(new Animal(20, Animal.Kind.DEER))
-        ).canceledAnimal());
+        ).cancelledAnimals());
     }
 
     @Test

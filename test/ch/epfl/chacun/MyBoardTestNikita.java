@@ -88,7 +88,7 @@ public final class MyBoardTestNikita {
 
     @Test
     void cancelledAnimalsIsImmutable() {
-        Set<Animal> cancelledAnimals = emptyBoard.canceledAnimal();
+        Set<Animal> cancelledAnimals = emptyBoard.cancelledAnimals();
         assertThrows(UnsupportedOperationException.class, () -> cancelledAnimals.add(new Animal(0, Animal.Kind.DEER)));
     }
 
@@ -415,7 +415,7 @@ public final class MyBoardTestNikita {
         Board empty = Board.EMPTY;
         Board board = Board.EMPTY.withMoreCancelledAnimals(cancelledAnimals);
 
-        assertEquals(Set.of(), empty.canceledAnimal());
-        assertEquals(cancelledAnimals, board.canceledAnimal());
+        assertEquals(Set.of(), empty.cancelledAnimals());
+        assertEquals(cancelledAnimals, board.cancelledAnimals());
     }
 }

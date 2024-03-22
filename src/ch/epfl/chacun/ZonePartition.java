@@ -111,13 +111,10 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
          */
         public void removeOccupant(Z zone, PlayerColor color) {
             for (Area<Z> area : areas) {
-                if (area.zones().contains(zone)) {
-                    if (area.occupants().contains(color)) {
-                        areas.add(area.withoutOccupant(color));
-                        areas.remove(area);
-                        return;
-                    }
-                    throw new IllegalArgumentException();
+                if (area.zones().contains(zone) && area.isOccupied() && area.occupants().contains(color)) {
+                    areas.add(area.withoutOccupant(color));
+                    areas.remove(area);
+                    return;
                 }
             }
             throw new IllegalArgumentException();
@@ -130,6 +127,7 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
          * @throws IllegalArgumentException if the zone is not in any area
          */
         public void removeAllOccupantsOf(Area<Z> area) {
+
             for (Area<Z> area1 : areas) {
                 if (area1.equals(area)) {
                     areas.add(area.withoutOccupants());
@@ -138,7 +136,15 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
                 }
             }
             throw new IllegalArgumentException();
+            /**
+            Preconditions.checkArgument(areas.contains(area));
+            Area<Z> areaNoOccupant = new Area<>(area.zones(), new ArrayList<>(), area.openConnections());
+            areas.remove(area);
+            areas.add(areaNoOccupant);
+             */
+
         }
+
 
 
         /**
