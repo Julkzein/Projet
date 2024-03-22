@@ -58,7 +58,7 @@ public class Board {
         Set<Occupant> occupants = new HashSet<>();
         for (PlacedTile placedTile : placedTiles) {
             if (placedTile != null) {
-                occupants.addAll(Set.of(placedTile.occupant()));
+                occupants.add(placedTile.occupant());
             }
         }
         return occupants;
