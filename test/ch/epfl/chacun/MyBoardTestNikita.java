@@ -214,16 +214,16 @@ public final class MyBoardTestNikita {
     @Test
     void occupantCountWorksWithTrivialCases() {
         Board empty = Board.EMPTY;
-        Occupant occupant = new Occupant(Occupant.Kind.HUT, 32);
+        Occupant occupant = new Occupant(Occupant.Kind.PAWN, 32);
         Occupant occupant2 = new Occupant(Occupant.Kind.PAWN, 21);
 
         Board occ0 = empty.withNewTile(placedTile).withOccupant(occupant);
         Board occ1 = occ0.withNewTile(placedTile2).withOccupant(occupant2);
 
-        assertEquals(1, occ0.occupantCount(PlayerColor.RED, Occupant.Kind.HUT));
-        assertEquals(0, occ0.occupantCount(PlayerColor.GREEN, Occupant.Kind.HUT));
-        assertEquals(0, empty.occupantCount(PlayerColor.RED, Occupant.Kind.HUT));
-        assertEquals(1, occ1.occupantCount(PlayerColor.RED, Occupant.Kind.HUT));
+        assertEquals(1, occ0.occupantCount(PlayerColor.RED, Occupant.Kind.PAWN));
+        assertEquals(0, occ0.occupantCount(PlayerColor.GREEN, Occupant.Kind.PAWN));
+        assertEquals(0, empty.occupantCount(PlayerColor.RED, Occupant.Kind.PAWN));
+        assertEquals(1, occ1.occupantCount(PlayerColor.RED, Occupant.Kind.PAWN));
         assertEquals(1, occ1.occupantCount(PlayerColor.GREEN, Occupant.Kind.PAWN));
     }
 
@@ -276,7 +276,7 @@ public final class MyBoardTestNikita {
     void lastPlacedTileWorks() {
         Board empty = Board.EMPTY;
         PlacedTile placedTile = new PlacedTile(tile, PlayerColor.RED, Rotation.NONE, new Pos(0,0));
-        PlacedTile pt = new PlacedTile(tile2, PlayerColor.RED, Rotation.NONE, new Pos(0,1));
+        PlacedTile pt = new PlacedTile(tile2, PlayerColor.RED, Rotation.NONE, new Pos(1,1));
 
         Board b0 = empty.withNewTile(placedTile);
         Board b1 = b0.withNewTile(placedTile2);

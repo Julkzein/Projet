@@ -2,6 +2,7 @@ package ch.epfl.chacun;
 
 import org.junit.jupiter.api.Test;
 
+import javax.print.DocFlavor;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +18,15 @@ public class TheirBoardTest {
         return new Tile(56, Tile.Kind.NORMAL, meadow0, forest1, forest2, river3);
 
     }
+    private Tile firstTileWithoutLake(){
+        TileSide.Meadow meadow0 = new TileSide.Meadow(new Zone.Meadow(560, Collections.emptyList(), null));
+        TileSide.Forest forest1 =  new TileSide.Forest(new Zone.Forest(561, Zone.Forest.Kind.WITH_MENHIR));
+        TileSide.Forest forest2 =  new TileSide.Forest(new Zone.Forest(561, Zone.Forest.Kind.WITH_MENHIR));
+        TileSide.River river3 = new TileSide.River(new Zone.Meadow(562, Collections.emptyList(), null), new Zone.River(563, 0, new Zone.Lake(568,1,null)), new Zone.Meadow(560,Collections.emptyList(), null));
+
+        return new Tile(56, Tile.Kind.NORMAL, meadow0, forest1, forest2, river3);
+
+    }
     private Tile otherTile(){
         TileSide.River river0Second = new TileSide.River(new Zone.Meadow(170, Collections.emptyList(), null), new Zone.River(171, 0, null), new Zone.Meadow(172,Collections.emptyList(), null));
         TileSide.River river1Second = new TileSide.River(new Zone.Meadow(172, Collections.emptyList(), null), new Zone.River(171, 0, null), new Zone.Meadow(170,Collections.emptyList(), null));
@@ -24,6 +34,7 @@ public class TheirBoardTest {
         TileSide.River river3Second = new TileSide.River(new Zone.Meadow(174, Collections.emptyList(), null), new Zone.River(173, 0, null), new Zone.Meadow(170,Collections.emptyList(), null));
 
         return new  Tile(17, Tile.Kind.NORMAL, river0Second, river1Second, river2Second, river3Second);
+
     }
 
     private Tile withOneRiverOnNorth(){
@@ -43,11 +54,34 @@ public class TheirBoardTest {
 
     }
 
-    private Tile fullForestTile(){
+    private Tile withTranseversaleRiverNS(){
 
+        TileSide.River river = new TileSide.River(new Zone.Meadow(220, Collections.emptyList(), null), new Zone.River(221, 0, null), new Zone.Meadow(222,Collections.emptyList(), null));
+        TileSide.Forest forestALl =  new TileSide.Forest(new Zone.Forest(223, Zone.Forest.Kind.WITH_MENHIR));
+
+        return new Tile(22, Tile.Kind.NORMAL, river, forestALl, river, forestALl);
+
+    }
+
+    private Tile withRiverOnNAndS(){
+        TileSide.River riverN = new TileSide.River(new Zone.Meadow(120, Collections.emptyList(), null), new Zone.River(121, 0, null), new Zone.Meadow(120,Collections.emptyList(), null));
+        TileSide.River riverS = new TileSide.River(new Zone.Meadow(120, Collections.emptyList(), null), new Zone.River(122, 0, null), new Zone.Meadow(120,Collections.emptyList(), null));
+        TileSide.Meadow meadow = new TileSide.Meadow(new Zone.Meadow(120,Collections.emptyList(), null));
+
+        return new Tile(12, Tile.Kind.NORMAL, riverN, meadow, riverS, meadow);
+    }
+
+    private Tile fullForestTile(){
         TileSide.Forest forest1 =  new TileSide.Forest(new Zone.Forest(561, Zone.Forest.Kind.WITH_MENHIR));
         return new  Tile(17, Tile.Kind.NORMAL, forest1, forest1, forest1, forest1);
+    }
 
+    private Tile forestOnEAndW(){
+        TileSide.Forest forestE =  new TileSide.Forest(new Zone.Forest(781, Zone.Forest.Kind.WITH_MENHIR));
+        TileSide.Forest forestW =  new TileSide.Forest(new Zone.Forest(782, Zone.Forest.Kind.WITH_MENHIR));
+        TileSide.Meadow meadowSandN = new TileSide.Meadow(new Zone.Meadow(780, Collections.emptyList(), null));
+
+        return new  Tile(78, Tile.Kind.NORMAL, meadowSandN, forestE, meadowSandN, forestW);
     }
 
     private Tile tileWithAllSides(){
@@ -86,17 +120,17 @@ public class TheirBoardTest {
         TileSide.Meadow meadowW = new TileSide.Meadow(new Zone.Meadow(101, Collections.emptyList(), null));
         TileSide.Meadow meadowS = new TileSide.Meadow(new Zone.Meadow(101, Collections.emptyList(), null));
 
-        return new Tile(23, Tile.Kind.NORMAL, forestN, meadowE, meadowS, meadowW);
+        return new Tile(10, Tile.Kind.NORMAL, forestN, meadowE, meadowS, meadowW);
     }
 
     private Tile tileWithAllSidesWithAnimals(){
-        List<Animal> animalSet = new ArrayList<>(List.of(new Animal(1401, Animal.Kind.AUROCHS), new Animal(1402, Animal.Kind.MAMMOTH)));
-        TileSide.Meadow meadow0 = new TileSide.Meadow(new Zone.Meadow(140, animalSet, null));
-        TileSide.Forest forest1 =  new TileSide.Forest(new Zone.Forest(141, Zone.Forest.Kind.WITH_MENHIR));
-        TileSide.River river2Second = new TileSide.River(new Zone.Meadow(142, Collections.emptyList(), null), new Zone.River(143, 0, null), new Zone.Meadow(144,Collections.emptyList(), null));
-        TileSide.River river3Second = new TileSide.River(new Zone.Meadow(144, Collections.emptyList(), null), new Zone.River(143, 0, null), new Zone.Meadow(142,Collections.emptyList(), null));
+        List<Animal> animalSet = new ArrayList<>(List.of(new Animal(1701, Animal.Kind.AUROCHS), new Animal(1702, Animal.Kind.MAMMOTH)));
+        TileSide.Meadow meadow0 = new TileSide.Meadow(new Zone.Meadow(170, animalSet, null));
+        TileSide.Forest forest1 =  new TileSide.Forest(new Zone.Forest(171, Zone.Forest.Kind.WITH_MENHIR));
+        TileSide.River river2Second = new TileSide.River(new Zone.Meadow(172, Collections.emptyList(), null), new Zone.River(173, 0, null), new Zone.Meadow(174,Collections.emptyList(), null));
+        TileSide.River river3Second = new TileSide.River(new Zone.Meadow(174, Collections.emptyList(), null), new Zone.River(173, 0, null), new Zone.Meadow(172,Collections.emptyList(), null));
 
-        return new Tile(17, Tile.Kind.NORMAL, meadow0, forest1, river2Second, river3Second);
+        return new  Tile(17, Tile.Kind.NORMAL, meadow0, forest1, river2Second, river3Second);
 
 
     }
@@ -106,22 +140,34 @@ public class TheirBoardTest {
 
 
         PlacedTile firstTile = new PlacedTile(firstTile(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 560));
+        PlacedTile secondTile = new PlacedTile(otherTile(), PlayerColor.RED, Rotation.NONE, new Pos(-1,0), new Occupant(Occupant.Kind.PAWN, 170));
+        PlacedTile otherTile = new PlacedTile(withOneRiverOnSouth(), PlayerColor.RED, Rotation.NONE, new Pos(-11,-12), new Occupant(Occupant.Kind.PAWN, 170));
+
         ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
+
         partitions.addTile(firstTile());
+        partitions.addTile(otherTile());
+        partitions.connectSides(firstTile.side(Direction.W), secondTile.side(Direction.E));
 
         PlacedTile[] placedTiles = new PlacedTile[625];
-        int[] ints = new int[1];
-        ints[0] = 312;
-        Board boardGame = new Board(placedTiles, ints, partitions.build(), Set.of());
+        int[] ints = new int[3];
+        ints[0]=312;
+        placedTiles[312]=firstTile;
+        ints[1]=311;
+        placedTiles[311]=secondTile;
+        ints[2]=1;
+        placedTiles[1]=otherTile;
+        Board boardGame = new Board(ints, placedTiles, partitions.build());
 
 
         assertNull(boardGame.tileAt(new Pos(12,12)));
         assertNull(boardGame.tileAt(new Pos(0,1)));
         assertNull(boardGame.tileAt(new Pos(1,0)));
-        assertNull(boardGame.tileAt(new Pos(-1,0)));
         assertNull(boardGame.tileAt(new Pos(0,-1)));
 
         assertEquals(firstTile,boardGame.tileAt(new Pos(0,0)));
+        assertEquals(secondTile,boardGame.tileAt(new Pos(-1,0)));
+        assertEquals(otherTile,boardGame.tileAt(new Pos(-11,-12)));
 
     }
 
@@ -143,11 +189,8 @@ public class TheirBoardTest {
 
         //TODO ou lève IllegalArgumentException si le plateau n'est pas vide
 
-        Board boardGame = Board.EMPTY;
+        Board emptyBoard = Board.EMPTY;
         PlacedTile firstTile = new PlacedTile(firstTile(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 560));
-
-        assertThrows(IllegalArgumentException.class, ()-> boardGame.withNewTile(firstTile));
-
 
         ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
         partitions.addTile(firstTile());
@@ -155,9 +198,49 @@ public class TheirBoardTest {
         PlacedTile[] placedTiles = new PlacedTile[625];
         int[] ints = new int[1];
         ints[0]=312;
+        placedTiles[312] = firstTile;
         Board constructedBoard = new Board(ints, placedTiles, partitions.build());
 
-        assertEquals(constructedBoard, boardGame.withNewTile(firstTile));
+        assertTrue(constructedBoard.equals(emptyBoard.withNewTile(firstTile)));
+
+        assertThrows(IllegalArgumentException.class, ()-> constructedBoard.withNewTile(firstTile));
+
+
+    }
+
+    @Test
+    void withNewTileMorePrecisely(){
+
+        PlacedTile firstTile = new PlacedTile(pitTrapTileNW(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), null);
+        PlacedTile secondTile = new PlacedTile(meadowFromEtoWAndS(), PlayerColor.YELLOW, Rotation.NONE, new Pos(-1,0), null);
+        PlacedTile thirdTile = new PlacedTile(tileWithAllSides(), PlayerColor.RED, Rotation.RIGHT, new Pos(-2,0), null);
+        PlacedTile forthTile = new PlacedTile(firstTile(), PlayerColor.YELLOW, Rotation.NONE, new Pos(-1,1), null);
+
+        ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
+
+        partitions.addTile(pitTrapTileNW());
+        partitions.addTile(firstTile());
+        partitions.addTile(meadowFromEtoWAndS());
+        partitions.addTile(tileWithAllSides());
+        partitions.connectSides(firstTile.side(Direction.W), secondTile.side(Direction.E));
+        partitions.connectSides(secondTile.side(Direction.W), thirdTile.side(Direction.E));
+        partitions.connectSides(secondTile.side(Direction.S), forthTile.side(Direction.N));
+
+        PlacedTile[] placedTiles = new PlacedTile[625];
+        int[] ints = new int[4];
+        ints[0]=312;
+        placedTiles[312]=firstTile;
+        ints[1]=311;
+        placedTiles[311]=secondTile;
+        ints[2]=310;
+        placedTiles[310]=thirdTile;
+        ints[3]=336;
+        placedTiles[336]=forthTile;
+        Board boardGame = new Board(ints, placedTiles, partitions.build());
+
+        Board constructedBoard = Board.EMPTY;
+
+        assertTrue(boardGame.equals(constructedBoard.withNewTile(firstTile).withNewTile(secondTile).withNewTile(thirdTile).withNewTile(forthTile)));
 
     }
 
@@ -250,8 +333,13 @@ public class TheirBoardTest {
 
 
         Set<Pos> positions = new HashSet<>();
-        positions.add(new Pos(0,0));
-        positions.add(new Pos(-1,0));
+        positions.add(new Pos(-1,1));
+        positions.add(new Pos(-1,-1));
+        positions.add(new Pos(-2,0));
+        positions.add(new Pos(1,0));
+        positions.add(new Pos(0,1));
+        positions.add(new Pos(0,-1));
+
 
         assertEquals(positions, boardGame.insertionPositions());
 
@@ -285,7 +373,7 @@ public class TheirBoardTest {
         placedTiles[311]=secondTile;
         Board secondBoard = new Board(ints1, placedTiles, partitions.build());
 
-        assertEquals(startTile, secondBoard.lastPlacedTile());
+        assertEquals(secondTile, secondBoard.lastPlacedTile());
 
     }
 
@@ -487,6 +575,8 @@ public class TheirBoardTest {
         partitions.addTile(firstTile());
         partitions.addTile(otherTile());
         partitions.connectSides(firstTile.side(Direction.W), secondTile.side(Direction.E));
+        partitions.addInitialOccupant(PlayerColor.RED, Occupant.Kind.PAWN, new Zone.Meadow(170, Collections.emptyList(), null));
+        partitions.addInitialOccupant(PlayerColor.RED, Occupant.Kind.PAWN, new Zone.Meadow(560, Collections.emptyList(), null));
 
         PlacedTile[] placedTiles = new PlacedTile[625];
         int[] ints = new int[2];
@@ -519,6 +609,8 @@ public class TheirBoardTest {
         partitions.addTile(firstTile());
         partitions.addTile(otherTile());
         partitions.connectSides(firstTile.side(Direction.W), secondTile.side(Direction.E));
+        partitions.addInitialOccupant(PlayerColor.RED, Occupant.Kind.PAWN, new Zone.Meadow(560, Collections.emptyList(), null));
+        partitions.addInitialOccupant(PlayerColor.RED, Occupant.Kind.PAWN, new Zone.Meadow(170, Collections.emptyList(), null));
 
         PlacedTile[] placedTiles = new PlacedTile[625];
         int[] ints = new int[2];
@@ -531,8 +623,7 @@ public class TheirBoardTest {
 
         Set<Area<Zone.Water>> waterSet = new HashSet<>();
 
-        waterSet.add(new Area<>(new HashSet<>(List.of(new Zone.River(563, 0, new Zone.Lake(568,1,null)), new Zone.Lake(568,1,null))), List.of(), 1));
-        waterSet.add(new Area<>(new HashSet<>(List.of(new Zone.River(171, 0, null))), List.of(), 2));
+        waterSet.add(new Area<>(new HashSet<>(List.of(new Zone.River(563, 0, new Zone.Lake(568,1,null)), new Zone.Lake(568,1,null),new Zone.River(171, 0, null))), List.of(), 1));
         waterSet.add(new Area<>(new HashSet<>(List.of(new Zone.River(173, 0, null))), List.of(), 2));
 
         assertEquals(waterSet, boardGame.riverSystemAreas());
@@ -541,7 +632,7 @@ public class TheirBoardTest {
     }
 
     @Test
-    void canAddTileIsOk(){ //TODO les test ne font qu'avec un side à chaque fois attention à bien regarder si tous les sides se connectent bien
+    void canAddTileIsOk(){
 
         ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
         PlacedTile startTile = new PlacedTile(firstTile(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 560));
@@ -551,6 +642,8 @@ public class TheirBoardTest {
         PlacedTile canNotConnect = new PlacedTile(otherTile(), PlayerColor.RED, Rotation.NONE, new Pos(1,0), new Occupant(Occupant.Kind.PAWN, 170));
         PlacedTile cantConnect = new PlacedTile(otherTile(), PlayerColor.RED, Rotation.NONE, new Pos(0,1), new Occupant(Occupant.Kind.PAWN, 170));
         PlacedTile validPlacement = new PlacedTile(otherTile(), PlayerColor.RED, Rotation.NONE, new Pos(-1,0), new Occupant(Occupant.Kind.PAWN, 170));
+        PlacedTile outOfBoundOneSide = new PlacedTile(otherTile(), PlayerColor.RED, Rotation.NONE, new Pos(-11,-12), new Occupant(Occupant.Kind.PAWN, 170));
+        PlacedTile outOfBoundTwoSides = new PlacedTile(otherTile(), PlayerColor.RED, Rotation.NONE, new Pos(-12,-12), new Occupant(Occupant.Kind.PAWN, 170));
 
         PlacedTile allSidesTile = new PlacedTile(tileWithAllSides(), PlayerColor.RED, Rotation.NONE, new Pos(-1,0), new Occupant(Occupant.Kind.PAWN, 170));
         PlacedTile allSidesTileForestLeft = new PlacedTile(tileWithAllSides(), PlayerColor.RED, Rotation.HALF_TURN, new Pos(1,0), new Occupant(Occupant.Kind.PAWN, 170));
@@ -570,18 +663,48 @@ public class TheirBoardTest {
         assertFalse(boardGame.canAddTile(canNotConnect));
         assertFalse(boardGame.canAddTile(cantConnect));
         assertFalse(boardGame.canAddTile(allSidesTile));
+        assertFalse(boardGame.canAddTile(outOfBoundOneSide));
+        assertFalse(boardGame.canAddTile(outOfBoundTwoSides));
 
         assertTrue(boardGame.canAddTile(validPlacement));
         assertTrue(boardGame.canAddTile(allSidesTileForestLeft));
         assertTrue(boardGame.canAddTile(allSidesTileRiverRight));
+    }
 
+    @Test
+    void canAddTIleWithMultipleSides(){
+
+        PlacedTile firstTile = new PlacedTile(pitTrapTileNW(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), null);
+        PlacedTile secondTile = new PlacedTile(meadowFromEtoWAndS(), PlayerColor.YELLOW, Rotation.NONE, new Pos(-1,0), null);
+        PlacedTile thirdTile = new PlacedTile(tileWithAllSides(), PlayerColor.RED, Rotation.RIGHT, new Pos(-2,0), null);
+        PlacedTile forthTile = new PlacedTile(firstTile(), PlayerColor.YELLOW, Rotation.NONE, new Pos(-1,-1), null);
+
+        ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
+
+        partitions.addTile(pitTrapTileNW());
+        partitions.addTile(meadowFromEtoWAndS());
+        partitions.addTile(tileWithAllSides());
+        partitions.connectSides(firstTile.side(Direction.W), secondTile.side(Direction.E));
+        partitions.connectSides(secondTile.side(Direction.W), thirdTile.side(Direction.E));
+
+        PlacedTile[] placedTiles = new PlacedTile[625];
+        int[] ints = new int[3];
+        ints[0]=312;
+        placedTiles[312]=firstTile;
+        ints[1]=311;
+        placedTiles[311]=secondTile;
+        ints[2]=310;
+        placedTiles[310]=thirdTile;
+        Board boardGame = new Board(ints, placedTiles, partitions.build());
+
+        assertTrue(boardGame.canAddTile(forthTile));
     }
 
     @Test
     void couldPlaceTileTrueWithAllPossibilities(){
 
         ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
-        PlacedTile startTile = new PlacedTile(firstTile(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 560));
+        PlacedTile startTile = new PlacedTile(firstTile(), PlayerColor.RED, Rotation.LEFT, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 560));
         partitions.addTile(firstTile());
 
         PlacedTile[] placedTiles = new PlacedTile[625];
@@ -647,16 +770,17 @@ public class TheirBoardTest {
 
         ZonePartitions.Builder partitions1 = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
         PlacedTile startTile1 = new PlacedTile(firstTile(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 560));
-        partitions.addTile(firstTile());
+        partitions1.addTile(firstTile());
+        partitions1.addInitialOccupant(PlayerColor.RED, Occupant.Kind.PAWN, new Zone.Meadow(560, Collections.emptyList(), null));
 
         PlacedTile[] placedTiles1 = new PlacedTile[625];
         int[] ints1 = new int[1];
-        ints[0]=312;
-        placedTiles[312]=startTile1;
+        ints1[0]=312;
+        placedTiles1[312]=startTile1;
 
         Board boardGame = new Board(ints1, placedTiles1, partitions1.build());
 
-        assertEquals(boardGame, boardGameEmpty.withOccupant(new Occupant(Occupant.Kind.PAWN, 560)));
+        assertTrue(boardGame.equals(boardGameEmpty.withOccupant(new Occupant(Occupant.Kind.PAWN, 560))));
     }
 
     @Test
@@ -675,49 +799,123 @@ public class TheirBoardTest {
 
         ZonePartitions.Builder partitions1 = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
         PlacedTile startTile1 = new PlacedTile(firstTile(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 560));
-        partitions.addTile(firstTile());
+        partitions1.addTile(firstTile());
+        partitions1.addInitialOccupant(PlayerColor.RED, Occupant.Kind.PAWN, new Zone.Meadow(560, Collections.emptyList(), null));
 
         PlacedTile[] placedTiles1 = new PlacedTile[625];
         int[] ints1 = new int[1];
-        ints[0]=312;
-        placedTiles[312]=startTile1;
-
-        Board boardGame = new Board(ints1, placedTiles1, partitions1.build());
-
-        assertEquals(boardGameEmpty, boardGame.withoutOccupant(new Occupant(Occupant.Kind.PAWN, 560)));
-
-    }
-
-    @Test
-    void withoutForestRiver(){
-
-        ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
-        PlacedTile startTile = new PlacedTile(firstTile(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), null);
-        partitions.addTile(firstTile());
-
-        PlacedTile[] placedTiles = new PlacedTile[625];
-        int[] ints = new int[1];
-        ints[0]=312;
-        placedTiles[312]=startTile;
-
-        Board boardGameEmpty = new Board(ints, placedTiles, partitions.build());
-
-        ZonePartitions.Builder partitions1 = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
-        PlacedTile startTile1 = new PlacedTile(firstTile(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 560));
-        partitions.addTile(firstTile());
-
-        PlacedTile[] placedTiles1 = new PlacedTile[625];
-        int[] ints1 = new int[1];
-        ints[0]=312;
+        ints1[0]=312;
         placedTiles1[312]=startTile1;
 
         Board boardGame = new Board(ints1, placedTiles1, partitions1.build());
 
-        Set<Area<Zone.River>> riverSet = new HashSet<>();
-        riverSet.add(new Area<>(Set.of(new Zone.River(173, 0, null)), List.of(PlayerColor.RED), 2));
-        riverSet.add(new Area<>(Set.of(new Zone.River(563, 0, new Zone.Lake(568,1,null)), new Zone.River(171, 0, null)), List.of(PlayerColor.RED), 1));
+        assertTrue(boardGameEmpty.equals(boardGame.withoutOccupant(new Occupant(Occupant.Kind.PAWN, 560))));
+        //assertEquals(boardGameEmpty, boardGame.withoutOccupant(new Occupant(Occupant.Kind.PAWN, 560))); //TODO les contenus sont identiques mais les tests ne marchent pas
 
-        assertEquals(boardGameEmpty, boardGame.withoutGatherersOrFishersIn(Set.of(), riverSet));
+    }
+
+
+    @Test
+    void withoutForestAndRiver(){
+
+        ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
+        PlacedTile startTile = new PlacedTile(withOneRiverOnSouth(), PlayerColor.RED, Rotation.NONE, new Pos(0,1), null);
+        PlacedTile secondTile = new PlacedTile(withOneRiverOnNorth(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), null);
+
+        partitions.addTile(withOneRiverOnSouth());
+        partitions.addTile(withOneRiverOnNorth());
+        partitions.connectSides(startTile.side(Direction.S), secondTile.side(Direction.N));
+
+        PlacedTile[] placedTiles = new PlacedTile[625];
+        int[] ints = new int[2];
+        ints[0]=312;
+        ints[1]=287;
+        placedTiles[312]=secondTile;
+        placedTiles[287]=startTile;
+
+        Board boardGameEmpty = new Board(ints, placedTiles, partitions.build());
+
+        ZonePartitions.Builder occupiedPartition = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
+
+        PlacedTile occupiedStartTile = new PlacedTile(withOneRiverOnSouth(), PlayerColor.RED, Rotation.NONE, new Pos(0,1), new Occupant(Occupant.Kind.PAWN, 411));
+        PlacedTile occupiedSecondTile = new PlacedTile(withOneRiverOnNorth(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 403));
+
+        occupiedPartition.addTile(withOneRiverOnSouth());
+        occupiedPartition.addTile(withOneRiverOnNorth());
+        occupiedPartition.connectSides(occupiedStartTile.side(Direction.S), occupiedSecondTile.side(Direction.N));
+        occupiedPartition.addInitialOccupant(PlayerColor.RED, Occupant.Kind.PAWN, new Zone.River(411, 0, null));
+        occupiedPartition.addInitialOccupant(PlayerColor.RED, Occupant.Kind.PAWN, new Zone.Forest(403, Zone.Forest.Kind.WITH_MENHIR));
+
+        PlacedTile[] placedTiles1 = new PlacedTile[625];
+        int[] ints1 = new int[2];
+        ints1[0]=312;
+        ints1[1]=287;
+        placedTiles1[312]=occupiedSecondTile;
+        placedTiles1[287]=occupiedStartTile;
+
+        Board boardGame = new Board(ints1, placedTiles1, occupiedPartition.build());
+
+        Set<Area<Zone.Forest>> forestArea= new HashSet<>();
+        forestArea.add(new Area<>(Set.of(new Zone.Forest(403, Zone.Forest.Kind.WITH_MENHIR)), List.of(PlayerColor.RED), 3));
+
+        Set<Area<Zone.River>> riverArea = new HashSet<>();
+        riverArea.add(new Area<>(Set.of(new Zone.River(411, 0, null), new Zone.River(401, 0, null)), List.of(PlayerColor.RED), 0));
+
+        assertTrue(boardGameEmpty.equals(boardGame.withoutGatherersOrFishersIn(forestArea, riverArea)));
+
+
+
+    }
+
+
+    @Test
+    void withoutForestAndRiverWithFalseInfo(){
+        PlacedTile firstTile = new PlacedTile(firstTileWithoutLake(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 560));
+        PlacedTile secondTile = new PlacedTile(withOneRiverOnNorth(), PlayerColor.RED, Rotation.NONE, new Pos(1,0), new Occupant(Occupant.Kind.PAWN, 403));
+
+        ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
+
+        partitions.addTile(firstTileWithoutLake());
+        partitions.addTile(withOneRiverOnNorth());
+        partitions.connectSides(firstTile.side(Direction.E), secondTile.side(Direction.W));
+
+        partitions.addInitialOccupant(PlayerColor.RED, Occupant.Kind.PAWN, new Zone.Meadow(560, Collections.emptyList(), null));
+        partitions.addInitialOccupant(PlayerColor.RED, Occupant.Kind.PAWN, new Zone.Forest(403, Zone.Forest.Kind.WITH_MENHIR));
+
+        PlacedTile[] placedTiles = new PlacedTile[625];
+        int[] ints = new int[2];
+        ints[0]=312;
+        placedTiles[312]=firstTile;
+        ints[1]=313;
+        placedTiles[313]=secondTile;
+
+        Board boardGame = new Board(ints, placedTiles, partitions.build());
+
+        PlacedTile firstTile1 = new PlacedTile(firstTileWithoutLake(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 560));
+        PlacedTile secondTile1 = new PlacedTile(withOneRiverOnNorth(), PlayerColor.RED, Rotation.NONE, new Pos(1,0), null);
+
+        ZonePartitions.Builder partitions1 = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
+
+        partitions1.addTile(firstTileWithoutLake());
+        partitions1.addTile(withOneRiverOnNorth());
+        partitions1.connectSides(firstTile1.side(Direction.E), secondTile1.side(Direction.W));
+
+        partitions1.addInitialOccupant(PlayerColor.RED, Occupant.Kind.PAWN, new Zone.Meadow(560, Collections.emptyList(), null));
+
+        PlacedTile[] placedTiles1 = new PlacedTile[625];
+        int[] ints1 = new int[2];
+        ints1[0]=312;
+        placedTiles1[312]=firstTile1;
+        ints1[1]=313;
+        placedTiles1[313]=secondTile1;
+
+        Board finalBoard = new Board(ints1, placedTiles1, partitions1.build());
+
+
+        Set<Area<Zone.Forest>> forestSet = new HashSet<>();
+        forestSet.add(new Area<>(Set.of(new Zone.Forest(403, Zone.Forest.Kind.WITH_MENHIR), new Zone.Forest(561, Zone.Forest.Kind.WITH_MENHIR)), List.of(PlayerColor.RED), 3));
+
+        assertTrue(finalBoard.equals(boardGame.withoutGatherersOrFishersIn(forestSet, Set.of())));
 
     }
 
@@ -747,15 +945,18 @@ public class TheirBoardTest {
         cancelledAnimals.add(new Animal(5621, Animal.Kind.TIGER));
         cancelledAnimals.add(new Animal(1401, Animal.Kind.AUROCHS));
 
-        assertEquals(new Board(placedTiles, ints, partitions.build(), cancelledAnimals), boardGame.withMoreCancelledAnimals(cancelledAnimals));
+        assertTrue(new Board(cancelledAnimals, ints, placedTiles, partitions.build()).equals(boardGame.withMoreCancelledAnimals(cancelledAnimals)));
 
 
-
+    }
+    @Test
+    void emptySetForEmptyBoard(){
+        assertEquals(Set.of(), Board.EMPTY.riversClosedByLastTile());
+        assertEquals(Set.of(), Board.EMPTY.forestsClosedByLastTile());
     }
 
     @Test
     void forestClosedByLastTileWithNoClosing(){
-
 
         PlacedTile firstTile = new PlacedTile(firstTile(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), new Occupant(Occupant.Kind.PAWN, 560));
         PlacedTile secondTile = new PlacedTile(tileWithAllSides(), PlayerColor.RED, Rotation.HALF_TURN, new Pos(1,0), new Occupant(Occupant.Kind.PAWN, 170));
@@ -763,7 +964,7 @@ public class TheirBoardTest {
         ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
 
         partitions.addTile(firstTile());
-        partitions.addTile(otherTile());
+        partitions.addTile(tileWithAllSides());
         partitions.connectSides(firstTile.side(Direction.E), secondTile.side(Direction.W));
 
 
@@ -788,8 +989,8 @@ public class TheirBoardTest {
 
         ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
 
-        partitions.addTile(firstTile());
-        partitions.addTile(otherTile());
+        partitions.addTile(tileWithAllSidesWithAnimals());
+        partitions.addTile(tileWithAllSides());
         partitions.connectSides(tileSideEst.side(Direction.E), tileSideWest.side(Direction.W));
 
 
@@ -801,10 +1002,112 @@ public class TheirBoardTest {
         placedTilesClosed[313]=tileSideWest;
         Board boardGameClosed = new Board(intsClosed, placedTilesClosed, partitions.build());
 
-        Set<Area<Zone.Forest>> forestArea = new HashSet<>( Set.of(new Area<>(new HashSet<>(Set.of(new Zone.Forest(141, Zone.Forest.Kind.WITH_MENHIR), new Zone.Forest(141, Zone.Forest.Kind.WITH_MENHIR))), List.of(), 0)));
+        Set<Area<Zone.Forest>> forestArea = new HashSet<>( Set.of(new Area<>(new HashSet<>(Set.of(new Zone.Forest(141, Zone.Forest.Kind.WITH_MENHIR), new Zone.Forest(171, Zone.Forest.Kind.WITH_MENHIR))), List.of(), 0)));
         assertEquals(forestArea, boardGameClosed.forestsClosedByLastTile());
     }
 
+    @Test
+    void forestClosedWithMoreThanOneForest(){
+
+        PlacedTile tileSideEst = new PlacedTile(tileWithAllSides(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), null);
+        PlacedTile tileSideWest = new PlacedTile(tileWithAllSidesWithAnimals(), PlayerColor.RED, Rotation.HALF_TURN, new Pos(2,0), null);
+        PlacedTile middleTIle = new PlacedTile(forestOnEAndW(), PlayerColor.YELLOW, Rotation.NONE, new Pos(1,0), null);
+
+        ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
+
+        partitions.addTile(tileWithAllSidesWithAnimals());
+        partitions.addTile(tileWithAllSides());
+        partitions.addTile(forestOnEAndW());
+        partitions.connectSides(tileSideEst.side(Direction.E), middleTIle.side(Direction.W));
+        partitions.connectSides(tileSideWest.side(Direction.W), middleTIle.side(Direction.E));
+
+
+        PlacedTile[] placedTilesClosed = new PlacedTile[625];
+        int[] intsClosed = new int[3];
+        intsClosed[0]=312;
+        placedTilesClosed[312]=tileSideEst;
+        intsClosed[2]=313;
+        placedTilesClosed[313]=middleTIle;
+        intsClosed[1]=314;
+        placedTilesClosed[314]=tileSideWest;
+        Board boardGameClosed = new Board(intsClosed, placedTilesClosed, partitions.build());
+
+        Set<Area<Zone.Forest>> forestClosed = new HashSet<>();
+        forestClosed.add(new Area<>(Set.of(new Zone.Forest(781, Zone.Forest.Kind.WITH_MENHIR),new Zone.Forest(171, Zone.Forest.Kind.WITH_MENHIR)), List.of(), 0));
+        forestClosed.add(new Area<>(Set.of(new Zone.Forest(782, Zone.Forest.Kind.WITH_MENHIR),new Zone.Forest(141, Zone.Forest.Kind.WITH_MENHIR)), List.of(), 0));
+
+
+        assertEquals(forestClosed, boardGameClosed.forestsClosedByLastTile());
+
+    }
+
+    @Test
+    void riverClosedWithTransversaleRivers(){
+
+        PlacedTile firstTile = new PlacedTile(withOneRiverOnSouth(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), null);
+        PlacedTile secondTIle = new PlacedTile(withOneRiverOnNorth(), PlayerColor.RED, Rotation.NONE, new Pos(0,2), null);
+        PlacedTile thirdTIle = new PlacedTile(withTranseversaleRiverNS(), PlayerColor.RED, Rotation.NONE, new Pos(0,1), null);
+
+        ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
+
+        partitions.addTile(withTranseversaleRiverNS());
+        partitions.addTile(withOneRiverOnNorth());
+        partitions.addTile(withOneRiverOnSouth());
+        partitions.connectSides(firstTile.side(Direction.S), thirdTIle.side(Direction.N));
+        partitions.connectSides(secondTIle.side(Direction.N), thirdTIle.side(Direction.S));
+
+        PlacedTile[] placedTilesClosed = new PlacedTile[625];
+        int[] intsClosed = new int[3];
+        intsClosed[0]=312;
+        placedTilesClosed[312]=firstTile;
+        intsClosed[2]=362;
+        placedTilesClosed[362]=secondTIle;
+        intsClosed[1]=337;
+        placedTilesClosed[337]=thirdTIle;
+        Board boardGameClosed = new Board(intsClosed, placedTilesClosed, partitions.build());
+
+        Set<Area<Zone.River>> riverSet = new HashSet<>();
+        riverSet.add(new Area<>(Set.of(new Zone.River(411, 0, null),new Zone.River(401, 0, null), new Zone.River(221, 0, null)), List.of(), 0));
+
+        assertEquals(riverSet, boardGameClosed.riversClosedByLastTile());
+
+
+    }
+
+
+    @Test
+    void riverClosedWithTwoRivers(){
+
+        PlacedTile firstTile = new PlacedTile(withOneRiverOnSouth(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), null);
+        PlacedTile secondTIle = new PlacedTile(withOneRiverOnNorth(), PlayerColor.RED, Rotation.NONE, new Pos(0,2), null);
+        PlacedTile thirdTIle = new PlacedTile(withRiverOnNAndS(), PlayerColor.RED, Rotation.NONE, new Pos(0,1), null);
+
+        ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
+
+        partitions.addTile(withRiverOnNAndS());
+        partitions.addTile(withOneRiverOnNorth());
+        partitions.addTile(withOneRiverOnSouth());
+        partitions.connectSides(firstTile.side(Direction.S), thirdTIle.side(Direction.N));
+        partitions.connectSides(secondTIle.side(Direction.N), thirdTIle.side(Direction.S));
+
+        PlacedTile[] placedTilesClosed = new PlacedTile[625];
+        int[] intsClosed = new int[3];
+        intsClosed[0]=312;
+        placedTilesClosed[312]=firstTile;
+        intsClosed[1]=362;
+        placedTilesClosed[362]=secondTIle;
+        intsClosed[2]=337;
+        placedTilesClosed[337]=thirdTIle;
+        Board boardGameClosed = new Board(intsClosed, placedTilesClosed, partitions.build());
+
+        Set<Area<Zone.River>> riverSet = new HashSet<>();
+        riverSet.add(new Area<>(Set.of(new Zone.River(411, 0, null), new Zone.River(121, 0, null)), List.of(), 0));
+        riverSet.add(new Area<>(Set.of(new Zone.River(401, 0, null), new Zone.River(122, 0, null)), List.of(), 0));
+
+        assertEquals(riverSet, boardGameClosed.riversClosedByLastTile());
+
+
+    }
     @Test
     void riverClosedWithNoRiverClosed(){
 
@@ -850,7 +1153,6 @@ public class TheirBoardTest {
         ints[1]=287;
         placedTiles[287]=secondTile;
         Board boardGame = new Board(ints, placedTiles, partitions.build());
-
         Set<Area<Zone.River>> areas = Set.of( new Area<> (new HashSet<>(Set.of(new Zone.River(401, 0, null), new Zone.River(411, 0, null))), List.of(), 0));
 
         assertEquals(areas, boardGame.riversClosedByLastTile());
@@ -858,19 +1160,19 @@ public class TheirBoardTest {
     }
 
     @Test
-    void adjacentMeadow(){
+    void adjacentMeadow(){ //TODO si j'ai du temps complexifier les test de cette methode
 
         PlacedTile firstTile = new PlacedTile(pitTrapTileNW(), PlayerColor.RED, Rotation.NONE, new Pos(0,0), null);
         PlacedTile secondTile = new PlacedTile(meadowFromEtoWAndS(), PlayerColor.YELLOW, Rotation.NONE, new Pos(-1,0), null);
         PlacedTile thirdTile = new PlacedTile(tileWithAllSides(), PlayerColor.RED, Rotation.RIGHT, new Pos(-2,0), null);
-        PlacedTile forthTile = new PlacedTile(firstTile(), PlayerColor.YELLOW, Rotation.NONE, new Pos(-1,-1), null);
+        PlacedTile forthTile = new PlacedTile(firstTile(), PlayerColor.YELLOW, Rotation.NONE, new Pos(-1,1), null);
 
         ZonePartitions.Builder partitions = new ZonePartitions.Builder(new ZonePartitions( new ZonePartition<>() , new ZonePartition<>(), new ZonePartition<>(), new ZonePartition<>()));
 
+        partitions.addTile(pitTrapTileNW());
         partitions.addTile(firstTile());
         partitions.addTile(meadowFromEtoWAndS());
         partitions.addTile(tileWithAllSides());
-        partitions.addTile(firstTile());
         partitions.connectSides(firstTile.side(Direction.W), secondTile.side(Direction.E));
         partitions.connectSides(secondTile.side(Direction.W), thirdTile.side(Direction.E));
         partitions.connectSides(secondTile.side(Direction.S), forthTile.side(Direction.N));
@@ -890,7 +1192,7 @@ public class TheirBoardTest {
         Board boardGame = new Board(ints, placedTiles, partitions.build());
 
         Area<Zone.Meadow> meadowArea = new Area<>(Set.of(new Zone.Meadow(230, Collections.emptyList(), Zone.SpecialPower.PIT_TRAP), new Zone.Meadow(101, Collections.emptyList(), null), new Zone.Meadow(140, Collections.emptyList(), null), new Zone.Meadow(560, Collections.emptyList(), null)),
-                null, 1);
+                List.of(), 1);
 
         assertEquals(meadowArea, boardGame.adjacentMeadow(new Pos(0,0),new Zone.Meadow(230, Collections.emptyList(), Zone.SpecialPower.PIT_TRAP)));
     }

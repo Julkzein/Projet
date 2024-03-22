@@ -24,6 +24,13 @@ public class Board {
         this.canceledAnimal = Collections.unmodifiableSet(canceledAnimal);
     }
 
+    public Board(Set<Animal> canceledAnimal,  int[] index,PlacedTile[] placedTiles, ZonePartitions partition ) {
+        this.placedTiles = placedTiles;
+        this.index = index;
+        this.partition = partition;
+        this.canceledAnimal = Collections.unmodifiableSet(canceledAnimal);
+    }
+
     public Board(int[] index, PlacedTile[] placedTiles, ZonePartitions partition) {
         this.placedTiles = placedTiles;
         this.index = index;
@@ -38,7 +45,6 @@ public class Board {
     public PlacedTile tileAt(Pos pos) {
         int index = index(pos);
         return index < 0 || index >= placedTiles.length ? null : placedTiles[index];
-
     }
 
     public PlacedTile tileWithId(int tileId) {
@@ -213,7 +219,7 @@ public class Board {
             PlacedTile tileNorth = tileAt(placedTile.pos().neighbor(Direction.N));
             PlacedTile tileSouth = tileAt(placedTile.pos().neighbor(Direction.S));
 
-            if ((tileEast == null || placedTile.tile().e().isSameKindAs(tileEast.tile().w()))
+            if ((tileEast == null || placedTile.side(Direction.E).isSameKindAs(tileEast.tile().w()))
                 && (tileWest == null || placedTile.tile().w().isSameKindAs(tileWest.tile().e()))
                 && (tileNorth == null || placedTile.tile().n().isSameKindAs(tileNorth.tile().s()))
                 && (tileSouth == null || placedTile.tile().s().isSameKindAs(tileSouth.tile().n()))) {
@@ -243,8 +249,12 @@ public class Board {
         newIndex[newIndex.length - 1] = index;
         ZonePartitions.Builder newPartitions = new ZonePartitions.Builder(partition);
         newPartitions.addTile(tile.tile());
+        for (Direction dir : Direction.ALL) {
+           if (tileAt(tile.pos().neighbor(dir)) != null) {
+               newPartitions.connectSides(tile.side(dir), tileAt(tile.pos().neighbor(dir)).side(dir.opposite()));
+           }
+        }
         return new Board(newPlacedTiles, newIndex, newPartitions.build(), canceledAnimal);
-        //connect coté tuile
     }
 
     public Board withOccupant(Occupant occupant) {
@@ -255,6 +265,8 @@ public class Board {
         placedTiles1[index(tileWithId(id).pos())] = addTile;
 
         ZonePartitions.Builder newPartition = new ZonePartitions.Builder(partition);
+        System.out.println(occupant.zoneId());
+        System.out.println(addTile.zoneWithId(occupant.zoneId()));
         newPartition.addInitialOccupant(addTile.placer(), occupant.kind(), addTile.zoneWithId(occupant.zoneId()));
 
         return new Board(placedTiles1, index, newPartition.build(), canceledAnimal);
@@ -284,7 +296,7 @@ public class Board {
         }
         for (Area<Zone.River> riverArea : rivers) {
             newBoardZonePartitionsBuilder.clearFishers(riverArea);
-            for (Zone.River zoneRiver :  riverArea.zones()   ) {
+            for (Zone.River zoneRiver :  riverArea.zones()) {
                 newPlacedTile[index(tileWithId(Zone.tileId(zoneRiver.id())).pos())] = tileWithId(Zone.tileId(zoneRiver.id())).withNoOccupant();
             }
         }
