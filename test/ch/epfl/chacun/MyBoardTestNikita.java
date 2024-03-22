@@ -18,8 +18,8 @@ public final class MyBoardTestNikita {
 
     Board emptyBoard = Board.EMPTY;
 
-    Tile tile = new Tile(3, Tile.Kind.NORMAL, new TileSide.Forest(new Zone.Forest(2, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(2, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(2, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(2, Zone.Forest.Kind.WITH_MENHIR)));
-    Tile tile2 = new Tile(2, Tile.Kind.NORMAL, new TileSide.Forest(new Zone.Forest(2, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(2, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(2, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(2, Zone.Forest.Kind.WITH_MENHIR)));
+    Tile tile = new Tile(3, Tile.Kind.NORMAL, new TileSide.Forest(new Zone.Forest(32, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(31, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(30, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(34, Zone.Forest.Kind.WITH_MENHIR)));
+    Tile tile2 = new Tile(2, Tile.Kind.NORMAL, new TileSide.Forest(new Zone.Forest(22, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(21, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(20, Zone.Forest.Kind.WITH_MENHIR)), new TileSide.Forest(new Zone.Forest(24, Zone.Forest.Kind.WITH_MENHIR)));
     PlacedTile placedTile = new PlacedTile(tile, PlayerColor.RED, Rotation.NONE, new Pos(0,0));
     Board boardWithOneTile = Board.EMPTY.withNewTile(placedTile);
     PlacedTile placedTile2 = new PlacedTile(tile2, PlayerColor.GREEN, Rotation.RIGHT, new Pos(0,1));
@@ -88,7 +88,7 @@ public final class MyBoardTestNikita {
 
     @Test
     void cancelledAnimalsIsImmutable() {
-        Set<Animal> cancelledAnimals = emptyBoard.cancelledAnimals();
+        Set<Animal> cancelledAnimals = emptyBoard.canceledAnimal();
         assertThrows(UnsupportedOperationException.class, () -> cancelledAnimals.add(new Animal(0, Animal.Kind.DEER)));
     }
 
@@ -214,8 +214,8 @@ public final class MyBoardTestNikita {
     @Test
     void occupantCountWorksWithTrivialCases() {
         Board empty = Board.EMPTY;
-        Occupant occupant = new Occupant(Occupant.Kind.HUT, 3);
-        Occupant occupant2 = new Occupant(Occupant.Kind.PAWN, 4);
+        Occupant occupant = new Occupant(Occupant.Kind.HUT, 32);
+        Occupant occupant2 = new Occupant(Occupant.Kind.PAWN, 21);
 
         Board occ0 = empty.withNewTile(placedTile).withOccupant(occupant);
         Board occ1 = occ0.withNewTile(placedTile2).withOccupant(occupant2);
@@ -237,7 +237,6 @@ public final class MyBoardTestNikita {
     void insertionPositionsWorksOnBoardWithOneTile(){
         Board board = Board.EMPTY.withNewTile(new PlacedTile(tile, PlayerColor.RED, Rotation.NONE, new Pos(0,0)));
         assertEquals(Set.of(new Pos(0, -1), new Pos(0, 1), new Pos(-1, 0), new Pos(1, 0)), board.insertionPositions());
-
     }
 
     @Test
@@ -416,7 +415,7 @@ public final class MyBoardTestNikita {
         Board empty = Board.EMPTY;
         Board board = Board.EMPTY.withMoreCancelledAnimals(cancelledAnimals);
 
-        assertEquals(Set.of(), empty.cancelledAnimals());
-        assertEquals(cancelledAnimals, board.cancelledAnimals());
+        assertEquals(Set.of(), empty.canceledAnimal());
+        assertEquals(cancelledAnimals, board.canceledAnimal());
     }
 }

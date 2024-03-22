@@ -65,7 +65,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
             for (Zone zone : tile.zones()) {
                 switch(zone) {
                     case Zone.Forest forest -> forests.addSingleton(forest, connections[zone.localId()]);
-                    case Zone.River river -> { rivers.addSingleton(river, (river.hasLake()) ? connections[zone.localId()] - 1 : connections[zone.localId()]); }
+                    case Zone.River river -> rivers.addSingleton(river, (river.hasLake()) ? connections[zone.localId()] - 1 : connections[zone.localId()]);
                     case Zone.Meadow meadow -> meadows.addSingleton(meadow, connections[zone.localId()]);
                     default ->{}
                 }
@@ -114,7 +114,6 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
                     }
                 }
             }
-            System.out.println("Finished");
         }
 
         /**
