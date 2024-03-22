@@ -83,8 +83,8 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
         /**
          * This method adds an occupant of the given color in the given zone
          *
-         * @param zone : the zone in wich to add the occupant
-         * @param color : the color of the occupat to add
+         * @param zone : the zone in which to add the occupant
+         * @param color : the color of the occupant to add
          * @throws IllegalArgumentException if the zone is not in any area
          */
         public void addInitialOccupant(Z zone, PlayerColor color) {

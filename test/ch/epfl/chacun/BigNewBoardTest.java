@@ -1,4 +1,4 @@
-package ch.epfl.chacun.etape5;
+package ch.epfl.chacun;
 
 import ch.epfl.chacun.*;
 import org.junit.jupiter.api.Test;
@@ -7,7 +7,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BoardTest {
+class BigNewBoardTest {
     private final Zone.Forest forest1 = new Zone.Forest(562, Zone.Forest.Kind.WITH_MENHIR);
     private final Zone.Forest forest2 = new Zone.Forest(422, Zone.Forest.Kind.PLAIN);
     private final Zone.Forest forest3 = new Zone.Forest(1, Zone.Forest.Kind.PLAIN);
@@ -134,19 +134,19 @@ class BoardTest {
     private final PlacedTile placedTile73 = new PlacedTile(tile73, PlayerColor.GREEN, Rotation.NONE, new Pos(-1, 1), null);
     private final PlacedTile onlyForestPlacedTile = new PlacedTile(withoudMeadowTile, PlayerColor.BLUE, Rotation.NONE, new Pos(1, 0), null);
     private final PlacedTile[] placedTiles = new PlacedTile[625]; {{
-            placedTiles[311] = placedTile17;
-            placedTiles[312] = placedTile56;
-            placedTiles[313] = placedTile27;
-            placedTiles[314] = placedTile42;
-            placedTiles[315] = placedTile45;
+        placedTiles[311] = placedTile17;
+        placedTiles[312] = placedTile56;
+        placedTiles[313] = placedTile27;
+        placedTiles[314] = placedTile42;
+        placedTiles[315] = placedTile45;
     }}
 
     private final int[] id = new int[625]; {{
-            id[311] = 12;
-            id[312] = 56;
-            id[313] = 21;
-            id[314] = 42;
-            id[315] = 45;
+        id[311] = 12;
+        id[312] = 56;
+        id[313] = 21;
+        id[314] = 42;
+        id[315] = 45;
     }}
 
     private final Board board1 = Board.EMPTY;
@@ -181,22 +181,22 @@ class BoardTest {
 
     @Test
     void cancelledAnimalsIsCorrectlyDefined() {
-        assertEquals(0, board1.cancelledAnimals().size());
-        assertEquals(0, board2.cancelledAnimals().size());
+        assertEquals(0, board1.canceledAnimal().size());
+        assertEquals(0, board2.canceledAnimal().size());
 
         Set<Animal> cancelledAnimals = new HashSet<>(Set.of(new Animal(10, Animal.Kind.AUROCHS)));
         Board boardWithCancelledAnimals = board1.withNewTile(placedTile56).withMoreCancelledAnimals(cancelledAnimals);
 
-        assertEquals(cancelledAnimals, boardWithCancelledAnimals.cancelledAnimals());
+        assertEquals(cancelledAnimals, boardWithCancelledAnimals.canceledAnimal());
 
         assertNotEquals(cancelledAnimals, boardWithCancelledAnimals.withMoreCancelledAnimals(
                 Set.of(new Animal(20, Animal.Kind.DEER))
-        ).cancelledAnimals());
+        ).canceledAnimal());
 
         cancelledAnimals.add(new Animal(20, Animal.Kind.DEER));
         assertEquals(cancelledAnimals, boardWithCancelledAnimals.withMoreCancelledAnimals(
                 Set.of(new Animal(20, Animal.Kind.DEER))
-        ).cancelledAnimals());
+        ).canceledAnimal());
     }
 
     @Test
@@ -267,7 +267,7 @@ class BoardTest {
         assertThrows(IllegalArgumentException.class, () -> board1.withNewTile(placedTile56).withNewTile(placedTile17).withNewTile(placedTile27).forestArea(forest3));
         assertThrows(IllegalArgumentException.class, () -> board1.withNewTile(placedTile56).withNewTile(placedTile17).withNewTile(placedTile27).forestArea(forest4));
         assertEquals(forestArea1, board1.withNewTile(placedTile56).forestArea(forest1));
-}
+    }
 
     @Test
     void meadowAreaIsCorrectlyDefined() {
@@ -359,14 +359,14 @@ class BoardTest {
     @Test
     void riverSystemAreasIsCorrectlyDefined() {
         assertEquals(new HashSet<>(List.of(
-                new Area<>(Set.of(river3, lake6), List.of(), 1))),
+                        new Area<>(Set.of(river3, lake6), List.of(), 1))),
                 board1.withNewTile(placedTile56).riverSystemAreas());
         assertEquals(new HashSet<>(List.of(
-                new Area<>(Set.of(lake6, river3, river1), List.of(), 1),
+                        new Area<>(Set.of(lake6, river3, river1), List.of(), 1),
                         new Area<>(Set.of(river2), List.of(), 2))),
                 board1.withNewTile(placedTile56).withNewTile(placedTile17).riverSystemAreas());
         assertEquals(new HashSet<>(List.of(
-                new Area<>(Set.of(lake6, river3, river1), List.of(), 1),
+                        new Area<>(Set.of(lake6, river3, river1), List.of(), 1),
                         new Area<>(Set.of(river2), List.of(), 2),
                         new Area<>(Set.of(river5), List.of(), 2))),
                 board1.withNewTile(placedTile56).withNewTile(placedTile17).withNewTile(placedTile27).riverSystemAreas());
@@ -374,13 +374,13 @@ class BoardTest {
 
     @Test
     void adjacentMeadow() {
-         assertDoesNotThrow(() -> board1.withNewTile(placedTile56).adjacentMeadow(new Pos(0, 0), meadow8));
-       Area<Zone.Meadow> meadowArea = new Area<>(Set.of(meadow8, meadow5, meadow13), List.of(), 0);
-       assertEquals(meadowArea, board1.withNewTile(placedTile56).withNewTile(placedTile17).withNewTile(placedTile27)
-               .withNewTile(placedTile42).withNewTile(placedTile45).adjacentMeadow(new Pos(0, 0), meadow8));
+        assertDoesNotThrow(() -> board1.withNewTile(placedTile56).adjacentMeadow(new Pos(0, 0), meadow8));
+        Area<Zone.Meadow> meadowArea = new Area<>(Set.of(meadow8, meadow5, meadow13), List.of(), 0);
+        assertEquals(meadowArea, board1.withNewTile(placedTile56).withNewTile(placedTile17).withNewTile(placedTile27)
+                .withNewTile(placedTile42).withNewTile(placedTile45).adjacentMeadow(new Pos(0, 0), meadow8));
 
-       meadowArea = new Area<>(Set.of(meadow6), List.of(), 0);
-         assertEquals(meadowArea, board1.withNewTile(placedTile56).withNewTile(placedTile17).withNewTile(placedTile27)
+        meadowArea = new Area<>(Set.of(meadow6), List.of(), 0);
+        assertEquals(meadowArea, board1.withNewTile(placedTile56).withNewTile(placedTile17).withNewTile(placedTile27)
                 .withNewTile(placedTile42).withNewTile(placedTile45).adjacentMeadow(new Pos(0, 1), meadow6));
     }
 
@@ -495,11 +495,11 @@ class BoardTest {
                 .withNewTile(placedTile70).withNewTile(placedTile71).withNewTile(placedTile72).withNewTile(placedTile73).riverArea(river1).openConnections());
 
         assertEquals(Set.of(
-                new Area<>(Set.of(river1, river2, river3, river6, river7, river8, river9), List.of(), 0))
+                        new Area<>(Set.of(river1, river2, river3, river6, river7, river8, river9), List.of(), 0))
                 , board1.withNewTile(placedTile56).withNewTile(placedTile17).withNewTile(placedTile27).withNewTile(placedTile42).withNewTile(placedTile45)
-                .withNewTile(placedTile70).withNewTile(placedTile71).withNewTile(placedTile73).withNewTile(placedTile72).riversClosedByLastTile());
+                        .withNewTile(placedTile70).withNewTile(placedTile71).withNewTile(placedTile73).withNewTile(placedTile72).riversClosedByLastTile());
         assertEquals(Set.of(), board1.withNewTile(placedTile56).withNewTile(placedTile17).withNewTile(placedTile27).withNewTile(placedTile42).withNewTile(placedTile45)
-                        .withNewTile(placedTile70).withNewTile(placedTile71).withNewTile(placedTile72).riversClosedByLastTile());
+                .withNewTile(placedTile70).withNewTile(placedTile71).withNewTile(placedTile72).riversClosedByLastTile());
     }
 
     @Test
