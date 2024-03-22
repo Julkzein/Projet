@@ -125,11 +125,11 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
          */
         public void addInitialOccupant(PlayerColor player, Occupant.Kind occupantKind, Zone occupiedZone) {
             switch(occupiedZone) {
-                case Zone.Forest forest when occupantKind == Occupant.Kind.PAWN-> { forests.addInitialOccupant(forest, player); }
-                case Zone.Meadow meadow when occupantKind == Occupant.Kind.PAWN-> { meadows.addInitialOccupant(meadow, player); }
-                case Zone.River river when occupantKind == Occupant.Kind.PAWN -> { rivers.addInitialOccupant(river, player); }
-                case Zone.River river when occupantKind == Occupant.Kind.HUT -> { riverSystems.addInitialOccupant(river, player); }
-                case Zone.Lake lake when occupantKind == Occupant.Kind.HUT-> { riverSystems.addInitialOccupant(lake, player); }
+                case Zone.Forest forest when occupantKind == Occupant.Kind.PAWN-> forests.addInitialOccupant(forest, player);
+                case Zone.Meadow meadow when occupantKind == Occupant.Kind.PAWN-> meadows.addInitialOccupant(meadow, player);
+                case Zone.River river when occupantKind == Occupant.Kind.PAWN -> rivers.addInitialOccupant(river, player);
+                case Zone.River river when !river.hasLake() -> rivers.addInitialOccupant(river, player);
+                case Zone.Lake lake when occupantKind == Occupant.Kind.HUT-> riverSystems.addInitialOccupant(lake, player);
                 default -> throw new IllegalArgumentException();
             }
         }

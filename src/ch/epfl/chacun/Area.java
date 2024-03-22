@@ -217,9 +217,11 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      */
     public Area<Z> withInitialOccupant(PlayerColor occupant) {
         Preconditions.checkArgument(!this.isOccupied());
-        List<PlayerColor> newOccupants = new ArrayList<>(this.occupants);
-        newOccupants.add(occupant);
-        return new Area<>(this.zones, newOccupants, this.openConnections);
+        List<PlayerColor> returnedList = List.of();
+        if (occupant != null) {
+            returnedList = List.of(occupant);
+        }
+        return new Area<>(this.zones, returnedList, this.openConnections);
     }
 
     /**

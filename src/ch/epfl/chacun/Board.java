@@ -118,34 +118,35 @@ public class Board {
         return Math.abs(pos1.x() - pos2.x()) + Math.abs(pos1.y() - pos2.y()) == 1;
     }
     public Area<Zone.Meadow> adjacentMeadow(Pos pos, Zone.Meadow meadowZone) {
-            Set<Zone.Meadow> meadowsInArea = new HashSet<>();
-            Set<Zone.Meadow> adjacentMeadows = new HashSet<>();
-            List<PlayerColor> occupants = new ArrayList<>();
-            for (Area area : meadowAreas()) {
-                if (area.zones().contains(meadowZone)) {
-                    Set<Zone.Meadow> zones = area.zones();
-                    occupants = area.occupants();
-                    for (Zone.Meadow zone : zones) {
-                        meadowsInArea.add(zone);
+        Set<Zone.Meadow> meadowsInArea = new HashSet<>();
+        Set<Zone.Meadow> adjacentMeadows = new HashSet<>();
+        List<PlayerColor> occupants = new ArrayList<>();
+        for (Area area : meadowAreas()) {
+            if (area.zones().contains(meadowZone)) {
+                Set<Zone.Meadow> zones = area.zones();
+                occupants = area.occupants();
+                for (Zone.Meadow zone : zones) {
+                    meadowsInArea.add(zone);
+                }
+            }
+        }
+        for (PlacedTile placedTile : placedTiles) {
+            if (placedTile != null && isAdjacent(placedTile.pos(), pos)) {
+                for (Zone zone : placedTile.tile().zones()) {
+                    if (zone instanceof Zone.Meadow meadow && meadowsInArea.contains(zone)) {
+                        adjacentMeadows.add(meadow);
                     }
                 }
             }
-            for (PlacedTile placedTile : placedTiles) {
-                if (isAdjacent(placedTile.pos(), pos)) {
-                    for (Zone zone : placedTile.tile().zones()) {
-                        if (zone instanceof Zone.Meadow meadow && meadowsInArea.contains(zone)) {
-                            adjacentMeadows.add(meadow);
-                        }
-                    }
-                }
-            }
-            return new Area<>(adjacentMeadows, occupants, 0);
+        }
+        adjacentMeadows.add(meadowZone);
+        return new Area<>(adjacentMeadows, occupants, 0);
     }
 
     public int occupantCount(PlayerColor player, Occupant.Kind occupantKind) {
         int count = 0;
         for (PlacedTile tile : placedTiles) {
-            if (tile != null && tile.occupant().kind() == occupantKind && tile.placer() == player) {
+            if (tile != null && tile.occupant() != null && tile.occupant().kind() == occupantKind && tile.placer() == player) {
                 count++;
             }
         }
@@ -219,10 +220,10 @@ public class Board {
             PlacedTile tileNorth = tileAt(placedTile.pos().neighbor(Direction.N));
             PlacedTile tileSouth = tileAt(placedTile.pos().neighbor(Direction.S));
 
-            if ((tileEast == null || placedTile.side(Direction.E).isSameKindAs(tileEast.tile().w()))
-                && (tileWest == null || placedTile.tile().w().isSameKindAs(tileWest.tile().e()))
-                && (tileNorth == null || placedTile.tile().n().isSameKindAs(tileNorth.tile().s()))
-                && (tileSouth == null || placedTile.tile().s().isSameKindAs(tileSouth.tile().n()))) {
+            if ((tileEast == null || placedTile.side(Direction.E).isSameKindAs(tileEast.side(Direction.W)))
+                && (tileWest == null || placedTile.side(Direction.W).isSameKindAs(tileWest.side(Direction.E)))
+                && (tileNorth == null || placedTile.side(Direction.N).isSameKindAs(tileNorth.side(Direction.S)))
+                && (tileSouth == null || placedTile.side(Direction.S).isSameKindAs(tileSouth.side(Direction.N)))) {
                 return true;
             }
         }
@@ -241,7 +242,7 @@ public class Board {
     }
 
     public Board withNewTile(PlacedTile tile) {
-        Preconditions.checkArgument(tileAt(tile.pos()) == null);
+        Preconditions.checkArgument(index.length == 0 || canAddTile(tile) );
         PlacedTile[] newPlacedTiles = Arrays.copyOf(placedTiles, placedTiles.length);
         int[] newIndex = Arrays.copyOf(index, index.length + 1);
         int index = index(tile.pos());
@@ -262,17 +263,32 @@ public class Board {
         Preconditions.checkArgument(tileWithId(id).occupant() == null);
         PlacedTile addTile = tileWithId(id).withOccupant(occupant);
         PlacedTile[] placedTiles1 = Arrays.copyOf(placedTiles, placedTiles.length);
-        placedTiles1[index(tileWithId(id).pos())] = addTile;
+        placedTiles1[index(addTile.pos())] = addTile;
 
         ZonePartitions.Builder newPartition = new ZonePartitions.Builder(partition);
-        System.out.println(occupant.zoneId());
-        System.out.println(addTile.zoneWithId(occupant.zoneId()));
-        newPartition.addInitialOccupant(addTile.placer(), occupant.kind(), addTile.zoneWithId(occupant.zoneId()));
+        for (Zone zone : addTile.tile().zones()) {
+            if (zone.id() == occupant.zoneId()) {
+                newPartition.addInitialOccupant(addTile.placer(), occupant.kind(), zone);
+                break;
+            }
+        }
 
-        return new Board(placedTiles1, index, newPartition.build(), canceledAnimal);
+        return new Board(placedTiles1, index, partition, canceledAnimal);
     }
 
     public Board withoutOccupant(Occupant occupant) {
+        int id = Zone.tileId(occupant.zoneId());
+        PlacedTile tile = tileWithId(id);
+        boolean isOnBoard = false;
+        for (PlacedTile placedTile : placedTiles) {
+            if (tile == placedTile) {
+                isOnBoard = true;
+                break;
+            }
+        }
+        if (!isOnBoard) {
+            throw new IllegalArgumentException();
+        }
         ZonePartitions.Builder newZonePartitionsBuilder = new ZonePartitions.Builder<>(partition);
         for (PlacedTile placedTile : placedTiles) {
             if (placedTile != null && occupant.zoneId() == placedTile.tile().id()) {
