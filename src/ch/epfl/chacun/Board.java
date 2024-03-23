@@ -511,12 +511,25 @@ public final class Board {
         return new Board(newPlacedTile, index, newBoardZonePartitions, cancelledAnimals);
     }
 
+    /**
+     * This method returns a new board identical to the current one but with the additional cancelled animals.
+     *
+     * @param newlyCancelledAnimals the animals to be added to the cancelled animals
+     * @return a new board identical to the current one but with the additional cancelled animals.
+     */
     public Board withMoreCancelledAnimals(Set<Animal> newlyCancelledAnimals) {
         Set<Animal> newCancelledAnimals = new HashSet<>(cancelledAnimals);
         newCancelledAnimals.addAll(newlyCancelledAnimals);
         return new Board(placedTiles, index, partition, newCancelledAnimals);
     }
 
+    /**
+     * This method redfines the equals method for the Board class.
+     * It returns true if the given object is equal to the current board.
+     *
+     * @param that the object to be compared to the current board
+     * @return true if all of the attributes of the given object are equal to the current board
+     */
     @Override
     public boolean equals(Object that) {
         if (that == null) return false;
@@ -524,6 +537,12 @@ public final class Board {
         return Arrays.equals(board.index, index) && Arrays.equals(board.placedTiles, placedTiles) &&  board.partition.equals(partition) && board.cancelledAnimals.equals(cancelledAnimals);
     }
 
+    /**
+     * This method redfines the hashCode method for the Board class.
+     * It returns the hash code of the current board.
+     *
+     * @return the hash code of the current board
+     */
     @Override
     public int hashCode() {
         return Objects.hash(Arrays.hashCode(index), Arrays.hashCode(placedTiles), partition, cancelledAnimals);
