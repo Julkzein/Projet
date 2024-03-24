@@ -235,6 +235,7 @@ public final class Board {
         Set<Zone.Meadow> meadowsInArea = new HashSet<>();
         Set<Zone.Meadow> adjacentMeadows = new HashSet<>();
         List<PlayerColor> occupants = new ArrayList<>();
+
         for (Area<Zone.Meadow> area : meadowAreas()) {
             if (area.zones().contains(meadowZone)) {
                 Set<Zone.Meadow> zones = area.zones();
@@ -244,6 +245,7 @@ public final class Board {
                 }
             }
         }
+
         for (PlacedTile placedTile : placedTiles) {
             if (placedTile != null && isAdjacent(placedTile.pos(), pos)) {
                 for (Zone zone : placedTile.tile().zones()) {
@@ -253,6 +255,7 @@ public final class Board {
                 }
             }
         }
+
         adjacentMeadows.add(meadowZone);
         return new Area<>(adjacentMeadows, occupants, 0);
     }
