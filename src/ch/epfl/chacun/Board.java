@@ -219,7 +219,7 @@ public final class Board {
      * @return true if the two given positions are adjacent
      */
     private boolean isAdjacent(Pos pos1, Pos pos2) {
-        return Math.abs(pos1.x() - pos2.x()) + Math.abs(pos1.y() - pos2.y()) == 1;
+        return (Math.abs(pos1.x() - pos2.x()) == 1 && Math.abs(pos1.y() - pos2.y()) == 1) || Math.abs(pos1.x() - pos2.x()) + Math.abs(pos1.y() - pos2.y()) == 1;
     }
 
     /**
