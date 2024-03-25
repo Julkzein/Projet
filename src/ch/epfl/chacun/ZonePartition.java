@@ -90,12 +90,10 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
         public void addInitialOccupant(Z zone, PlayerColor color) {
             for (Area<Z> area : areas) {
                 if (area.zones().contains(zone)) {
-                    if (area.occupants().isEmpty()) {
-                        areas.add(area.withInitialOccupant(color));
-                        areas.remove(area);
-                        return;
-                    }
-                    throw new IllegalArgumentException();
+                    Preconditions.checkArgument(!area.isOccupied());
+                    areas.add(area.withInitialOccupant(color));
+                    areas.remove(area);
+                    return;
                 }
             }
             throw new IllegalArgumentException();

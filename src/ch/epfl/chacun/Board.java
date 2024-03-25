@@ -444,12 +444,12 @@ public final class Board {
      */
     public Board withOccupant(Occupant occupant) {
         int id = Zone.tileId(occupant.zoneId());
-        Preconditions.checkArgument(tileWithId(id).occupant() == null);
+        Preconditions.checkArgument(Objects.isNull(tileWithId(id).occupant()));
         PlacedTile addTile = tileWithId(id).withOccupant(occupant);
         PlacedTile[] placedTiles1 = Arrays.copyOf(placedTiles, placedTiles.length);
         placedTiles1[index(addTile.pos())] = addTile;
 
-        Builder<Zone> newPartition = new Builder<>(partition);
+        Builder newPartition = new Builder<>(partition);
         for (Zone zone : addTile.tile().zones()) {
             if (zone.id() == occupant.zoneId()) {
                 newPartition.addInitialOccupant(addTile.placer(), occupant.kind(), zone);
