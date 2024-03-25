@@ -205,6 +205,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                 }
             }
         }
+        return null;
     }
     /**
      * This nested class represents the possible actions that can be taken in the game
