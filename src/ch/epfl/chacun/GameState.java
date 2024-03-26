@@ -192,11 +192,27 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     board.cancelledAnimals().addAll(deers);
                 } else {
                     int eatenDeers = 0;
-                    for (Animal deer : deers) {
-                        if (eatenDeers < tigers.size()) {
-                            board.cancelledAnimals().add(deer);
-                            eatenDeers++;
-                        } else break;
+                    Set<Zone.Meadow> meadows = new HashSet<>();
+                    if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.HUNTING_TRAP) != null) meadows = meadowZonesNotAdjacentInSameArea((Zone.Meadow) meadowArea.zoneWithSpecialPower(Zone.SpecialPower.WILD_FIRE), meadowArea);
+                    if (meadows != null) {
+                        for (Zone.Meadow meadow : meadows) {
+                            for (Animal deer : meadow.animals()) {
+                                if (eatenDeers < tigers.size()) {
+                                    board.cancelledAnimals().add(deer);
+                                    deers.remove(deer);
+                                    eatenDeers++;
+                                } else break;
+                            }
+                            meadows.remove(meadow);
+                        }
+                    } else {
+                        for (Animal deer : deers) {
+                            if (eatenDeers < tigers.size()) {
+                                board.cancelledAnimals().add(deer);
+                                deers.remove(deer);
+                                eatenDeers++;
+                            } else break;
+                        }
                     }
                 }
             } else {
@@ -205,7 +221,19 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                 }
             }
         }
+        messageBoard = messageBoard.withScoredMeadow( , board.cancelledAnimals()); //sur quelle meadow ??
+        messageBoard = messageBoard.withScoredRiverSystem(); //sur quel river system ??
         return null;
+    }
+
+    private Set<Zone.Meadow> meadowZonesNotAdjacentInSameArea(Zone.Meadow z, Area<Zone.Meadow> m){
+        Set<Zone.Meadow> meadows = new HashSet<>();
+        for (Zone.Meadow zone : m.zones()) {
+            if (!(board.adjacentMeadow(board.tileWithId(z.tileId()).pos(), z).zones().contains(zone))) {
+                meadows.add(zone);
+            }
+        }
+        return meadows;
     }
     /**
      * This nested class represents the possible actions that can be taken in the game
