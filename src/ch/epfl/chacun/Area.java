@@ -196,7 +196,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      * @return the new area resulting of the connection between the two areas
      */
     public Area<Z> connectTo(Area<Z> that) {
-        if (this == that) {
+        if (this.equals(that)) {
             return new Area<>(this.zones, this.occupants, this.openConnections - 2);
         }
         else {
@@ -217,11 +217,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      */
     public Area<Z> withInitialOccupant(PlayerColor occupant) {
         Preconditions.checkArgument(!this.isOccupied());
-        List<PlayerColor> returnedList = List.of();
-        if (occupant != null) {
-            returnedList = List.of(occupant);
-        }
-        return new Area<>(this.zones, returnedList, this.openConnections);
+        return new Area<>(this.zones, List.of(occupant), this.openConnections);
     }
 
     /**

@@ -425,8 +425,9 @@ public final class Board {
         newPartitions.addTile(tile.tile());
 
         for (Direction dir : Direction.ALL) {
-           if (tileAt(tile.pos().neighbor(dir)) != null) {
-               newPartitions.connectSides(tile.side(dir), tileAt(tile.pos().neighbor(dir)).side(dir.opposite()));
+            PlacedTile neighbor = tileAt(tile.pos().neighbor(dir));
+           if (neighbor != null && neighbor.side(dir.opposite()).isSameKindAs(tile.side(dir))) {
+               newPartitions.connectSides(tile.side(dir), neighbor.side(dir.opposite()));
            }
         }
 
@@ -448,7 +449,6 @@ public final class Board {
         PlacedTile addTile = tileWithId(id).withOccupant(occupant);
         PlacedTile[] placedTiles1 = Arrays.copyOf(placedTiles, placedTiles.length);
         placedTiles1[index(addTile.pos())] = addTile;
-
         Builder newPartition = new Builder<>(partition);
         for (Zone zone : addTile.tile().zones()) {
             if (zone.id() == occupant.zoneId()) {
@@ -456,7 +456,6 @@ public final class Board {
                 break;
             }
         }
-
         return new Board(placedTiles1, index, newPartition.build(), cancelledAnimals);
     }
 

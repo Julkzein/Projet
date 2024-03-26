@@ -90,6 +90,7 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
         public void addInitialOccupant(Z zone, PlayerColor color) {
             for (Area<Z> area : areas) {
                 if (area.zones().contains(zone)) {
+                    System.out.println(area);
                     Preconditions.checkArgument(!area.isOccupied());
                     areas.add(area.withInitialOccupant(color));
                     areas.remove(area);
@@ -152,19 +153,23 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
          * @param zone2 : the second zone to add to the area
          */
         public void union(Z zone1, Z zone2) {
+            Area area1 = null;
+            Area area2 = null;
             for(Area<Z> area : areas) {
-                if(area.zones().contains(zone1)) {
-                    for(Area<Z> area2 : areas) {
-                        if(area2.zones().contains(zone2)) {
-                            areas.add(area.connectTo(area2));
-                            areas.remove(area);
-                            areas.remove(area2);
-                            return;
-                        }
-                    }
+                if (area1 != null && area2 != null) {
+                    break;
+                }
+                if (area.zones().contains(zone1)) {
+                    area1 = area;
+                }
+                if (area.zones().contains(zone2)) {
+                    area2 = area;
                 }
             }
-            throw new IllegalArgumentException();
+            Preconditions.checkArgument(area1 != null && area2 != null);
+            areas.add(area1.connectTo(area2));
+            areas.remove(area1);
+            areas.remove(area2);
         }
 
         /**
