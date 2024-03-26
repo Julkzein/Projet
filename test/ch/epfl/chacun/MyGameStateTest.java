@@ -26,8 +26,19 @@ public class MyGameStateTest {
     private final Zone.Forest forest5 = new Zone.Forest(907, Zone.Forest.Kind.WITH_MENHIR);
     private final Zone.Forest forest6 = new Zone.Forest(568, Zone.Forest.Kind.WITH_MUSHROOMS);
     private final Zone.Lake lake1 = new Zone.Lake(427, 2, null);
+    private final Zone.Lake lake2 = new Zone.Lake(437, 1, null);
     private final Zone.Lake lakeWithLogboat = new Zone.Lake(317, 0, Zone.SpecialPower.LOGBOAT);
     private final Zone.Lake lakeWithRaft = new Zone.Lake(878, 2, Zone.SpecialPower.RAFT);
+    private final Zone.River river1 = new Zone.River(172, 0, null);
+    private final Zone.River river2 = new Zone.River(174, 0, null);
+    private final Zone.River river3 = new Zone.River(564, 0, null);
+    private final Zone.River river4 = new Zone.River(426, 0, null);
+    private final Zone.River riverWithLake1 = new Zone.River(272, 0, lake1);
+    private final Zone.River riverWithLake2 = new Zone.River(706, 0, lake2);
+    private final Zone.River riverWithLakeWithLogboat = new Zone.River(716, 0, lakeWithLogboat);
+    private final Zone.River riverWithLakeWithRaft = new Zone.River(726, 0, lakeWithRaft);
+
+    private final TileSide[] sides
 
 
     @Test

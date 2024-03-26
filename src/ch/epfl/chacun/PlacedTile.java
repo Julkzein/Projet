@@ -171,7 +171,6 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
                     potentialOccupantsSet.add(new Occupant(Occupant.Kind.HUT, zone.id()));
                 } else if (zone instanceof Zone.Lake) {
                     potentialOccupantsSet.add(new Occupant(Occupant.Kind.HUT, zone.id()));
-
                 }
             }
         }
