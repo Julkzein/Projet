@@ -74,7 +74,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      *
      * @return the number of free occupants of the given color and type
      */
-    public int freeOccupants(PlayerColor color, Occupant.Kind kind) {
+    public int freeOccupantsCount(PlayerColor color, Occupant.Kind kind) {
         return occupantsCount(kind) - board.occupantCount(color, kind);
     }
 
@@ -85,7 +85,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      * @throws IllegalArgumentException if the board is empty
      * @return the set of potential occupants of the last placed tile
      */
-    public Set<Occupant> lasTilePotentialOccupants() {
+    public Set<Occupant> lastTilePotentialOccupants() {
         Preconditions.checkArgument(board != Board.EMPTY); //suffisant ?
         return board.lastPlacedTile().potentialOccupants();
     }
