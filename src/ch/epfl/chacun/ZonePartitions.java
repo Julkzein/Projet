@@ -52,18 +52,18 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
          * @param tile the tile from which to add the areas
          */
         public void addTile(Tile tile) {
-            int[] connections = new int[10];
+            int[] connections = new int[10]; //defines the maximum number of zones
             for (TileSide side : tile.sides()) {
                 for (Zone zone : side.zones()) {
                     connections[zone.localId()] += 1;
                     if (zone instanceof Zone.River river && river.hasLake()) {
                         connections[river.lake().localId()] += 1;
-                        connections[zone.localId()] += 1;
+                        connections[river.localId()] += 1;
                     }
                 }
             }
             for (Zone zone : tile.zones()) {
-                switch(zone) {
+                switch (zone) {
                     case Zone.Forest forest -> forests.addSingleton(forest, connections[zone.localId()]);
                     case Zone.Meadow meadow -> meadows.addSingleton(meadow, connections[zone.localId()]);
                     case Zone.River river -> {
@@ -71,7 +71,7 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
                         int riverConnections = river.hasLake() ? connections[zone.localId()] - 1 : connections[zone.localId()];
                         rivers.addSingleton(river, riverConnections);
                     }
-                    case Zone.Water water -> riverSystems.addSingleton(water, connections[zone.localId()]);
+                    case Zone.Lake lake -> riverSystems.addSingleton(lake, connections[zone.localId()]);
                 }
             }
 
@@ -129,8 +129,9 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
                 case Zone.Forest forest when occupantKind == Occupant.Kind.PAWN-> forests.addInitialOccupant(forest, player);
                 case Zone.Meadow meadow when occupantKind == Occupant.Kind.PAWN-> meadows.addInitialOccupant(meadow, player);
                 case Zone.River river when occupantKind == Occupant.Kind.PAWN -> rivers.addInitialOccupant(river, player);
-                case Zone.River river when !river.hasLake() -> rivers.addInitialOccupant(river, player);
-                case Zone.Lake lake when occupantKind == Occupant.Kind.HUT-> riverSystems.addInitialOccupant(lake, player);
+                //case Zone.River river when !river.hasLake() -> rivers.addInitialOccupant(river, player);
+                //case Zone.Lake lake when occupantKind == Occupant.Kind.HUT-> riverSystems.addInitialOccupant(lake, player);
+                case Zone.Water water when occupantKind == Occupant.Kind.HUT -> riverSystems.addInitialOccupant(water, player);
                 default -> throw new IllegalArgumentException();
             }
         }

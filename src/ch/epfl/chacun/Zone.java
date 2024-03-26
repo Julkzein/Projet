@@ -1,6 +1,7 @@
 package ch.epfl.chacun;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This module contains the Zone interface and its implementations.
@@ -110,7 +111,7 @@ public sealed interface Zone {
      */
     record River(int id, int fishCount, Lake lake) implements Zone, Water {
         public boolean hasLake() {
-            return this.lake != null;
+            return Objects.nonNull(lake);
         }
     }
 }
