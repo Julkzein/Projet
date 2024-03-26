@@ -550,8 +550,5 @@ public final class Board {
         return Objects.hash(Arrays.hashCode(index), Arrays.hashCode(placedTiles), partition, cancelledAnimals);
     }
 
-    private boolean isOnBoard(Pos pos) {
-        return Math.abs(pos.x()) <= 12 && Math.abs(pos.y()) <= 12;
-    }
 
 }
