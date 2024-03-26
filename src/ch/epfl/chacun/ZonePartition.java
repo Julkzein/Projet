@@ -153,16 +153,16 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
          * @param zone2 : the second zone to add to the area
          */
         public void union(Z zone1, Z zone2) {
-            Area area1 = null;
-            Area area2 = null;
+            Area<Z> area1 = null;
+            Area<Z> area2 = null;
             for(Area<Z> area : areas) {
                 if (area1 != null && area2 != null) {
                     break;
                 }
-                if (area.zones().contains(zone1)) {
+                if (area.zones().contains(zone1) && area1 == null) {
                     area1 = area;
                 }
-                if (area.zones().contains(zone2)) {
+                if (area.zones().contains(zone2) && area2 == null) {
                     area2 = area;
                 }
             }
