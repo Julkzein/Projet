@@ -1,9 +1,5 @@
 package ch.epfl.chacun;
 
-import javax.naming.TimeLimitExceededException;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This record contains the four zone partitions of the game.
  *

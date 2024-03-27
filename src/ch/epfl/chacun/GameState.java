@@ -2,8 +2,8 @@ package ch.epfl.chacun;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Map;
+import java.util.Set;
 
 import static ch.epfl.chacun.Area.hasMenhir;
 import static ch.epfl.chacun.Occupant.occupantsCount;
@@ -187,6 +187,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
             }
         }
         //gamestate place pas ok
+        return null;
     }
 
     /**

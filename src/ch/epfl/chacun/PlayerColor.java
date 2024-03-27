@@ -18,6 +18,6 @@ public enum PlayerColor {
     /**
      * List of the five possible colors of a player in the order they are declared.
      */
-    final public static List<PlayerColor> ALL = List.of(PlayerColor.values());
+    public static final List<PlayerColor> ALL = List.of(PlayerColor.values());
 
 }

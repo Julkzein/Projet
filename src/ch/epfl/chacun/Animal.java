@@ -15,7 +15,7 @@ public record Animal(int id, Kind kind) {
         MAMMOTH,
         AUROCHS,
         DEER,
-        TIGER;
+        TIGER
     }
 
 

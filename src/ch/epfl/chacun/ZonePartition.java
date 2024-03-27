@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import static java.util.List.copyOf;
-
 
 /**
  * This record represents a partition of zones of the given type.

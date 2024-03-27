@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * This class represents a tile.
+ * This class represents a tile in the game.
  *
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
@@ -18,7 +18,7 @@ public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSi
     public enum Kind {
         START,
         NORMAL,
-        MENHIR;
+        MENHIR
     }
 
     /**
@@ -51,10 +51,8 @@ public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSi
     public Set<Zone> zones() {
         Set<Zone> zonesSet = new HashSet<>(sideZones());
         for(Zone zone : sideZones()) {
-            if (zone instanceof Zone.River river) {
-                if (river.hasLake()) {
-                    zonesSet.add(river.lake());
-                }
+            if (zone instanceof Zone.River river && river.hasLake()) {
+                zonesSet.add(river.lake());
             }
         }
         return zonesSet;

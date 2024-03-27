@@ -38,11 +38,11 @@ public class MyGameStateTest {
     private final Zone.River riverWithLakeWithLogboat = new Zone.River(716, 0, lakeWithLogboat);
     private final Zone.River riverWithLakeWithRaft = new Zone.River(726, 0, lakeWithRaft);
 
-    private final TileSide[] sides
+  //  private final TileSide[] sides;
 
 
     @Test
     public void gameStateConstructorCorrectlyDefined() {
-        assertThrows(IllegalArgumentException.class, () -> new GameState(List.of(), ));
+        //assertThrows(IllegalArgumentException.class, () -> new GameState(List.of(), ));
     }
 }

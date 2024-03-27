@@ -14,7 +14,7 @@ public sealed interface Zone {
     /**
      * Represents the six possible special powers of a zone.
      */
-    public enum SpecialPower {
+    enum SpecialPower {
         SHAMAN,
         LOGBOAT,
         HUNTING_TRAP,
@@ -24,10 +24,10 @@ public sealed interface Zone {
     }
 
     /**
-     * Returns the tile id of the given zone id.
+     * Returns the id of the tile containing the zone of the given zoneId
      *
      * @param zoneId the zone id
-     * @return the tile id of the given zone id.
+     * @return the id of the tile containing the zone of the given zoneId
      */
     static int tileId(int zoneId) {
         return zoneId / 10;
@@ -50,8 +50,8 @@ public sealed interface Zone {
     int id();
 
     /**
-     * Returns the tile id of the zone.
-     * @return the tile id of the zone.
+     * Returns the tile id of the tile containing the zone.
+     * @return the tile id of the tile containing the zone.
      */
     default int tileId() {
         return tileId(id());
@@ -77,6 +77,9 @@ public sealed interface Zone {
      * Represents a forest in the game.
      */
     record Forest(int id, Kind kind) implements Zone {
+        /**
+         * The different types of forest.
+         */
         public enum Kind {
             PLAIN,
             WITH_MENHIR,
@@ -88,6 +91,13 @@ public sealed interface Zone {
      * Represents a meadow in the game.
      */
     record Meadow(int id, List<Animal> animals, SpecialPower specialPower) implements Zone {
+        /**
+         * Compact constructor that guarantees the immutability of the meadow.
+         *
+         * @param id the id of the meadow
+         * @param animals the animals contained in the meadow
+         * @param specialPower the potential special power of the meadow, can be null
+         */
         public Meadow {
             animals = List.copyOf(animals);
         }
@@ -97,6 +107,9 @@ public sealed interface Zone {
      * Represents a water zone in the game.
      */
     sealed interface Water extends Zone {
+        /**
+         * the number of fish in the water zone
+         */
       int fishCount();
     }
 
@@ -110,6 +123,11 @@ public sealed interface Zone {
      * Represents a river in the game.
      */
     record River(int id, int fishCount, Lake lake) implements Zone, Water {
+        /**
+         * This method checks if the river has a lake
+         *
+         * @return true if the river has a lake
+         */
         public boolean hasLake() {
             return Objects.nonNull(lake);
         }

@@ -9,7 +9,7 @@ import static ch.epfl.chacun.Preconditions.checkArgument;
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
  */
-final public class Points {
+public final class Points {
     private Points() {}
 
     /**
@@ -45,7 +45,7 @@ final public class Points {
      *
      * @param mammothCount the number of mammoth in the meadow.
      * @param aurochsCount the number of aurochs in the meadow.
-     * @param deerCount the number of deers in the meadow.
+     * @param deerCount the number of deer in the meadow.
      * @return the number of points scored by the given occupant(s).
      * @throws NullPointerException if the occupant is null.
      */
@@ -80,7 +80,7 @@ final public class Points {
 
 
     /**
-     * Returns the number of points scored by the player who posesses the most
+     * Returns the number of points scored by the player who possesses the most
      * fisherman on the river system where the raft is placed.
      *
      * @param lakeCount the number of lake.
