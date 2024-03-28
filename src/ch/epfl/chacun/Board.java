@@ -1,7 +1,5 @@
 package ch.epfl.chacun;
 
-import ch.epfl.chacun.ZonePartitions.Builder;
-
 import java.util.*;
 
 
@@ -421,7 +419,7 @@ public final class Board {
 
         newPlacedTiles[index] = tile;
         newIndex[newIndex.length - 1] = index;
-        ZonePartitions.Builder<Zone> newPartitions = new ZonePartitions.Builder<>(partition);
+        ZonePartitions.Builder newPartitions = new ZonePartitions.Builder(partition);
         newPartitions.addTile(tile.tile());
 
         for (Direction dir : Direction.ALL) {
@@ -449,7 +447,7 @@ public final class Board {
         PlacedTile addTile = tileWithId(id).withOccupant(occupant);
         PlacedTile[] placedTiles1 = Arrays.copyOf(placedTiles, placedTiles.length);
         placedTiles1[index(addTile.pos())] = addTile;
-        Builder newPartition = new Builder<>(partition);
+        ZonePartitions.Builder newPartition = new ZonePartitions.Builder(partition);
         for (Zone zone : addTile.tile().zones()) {
             if (zone.id() == occupant.zoneId()) {
                 newPartition.addInitialOccupant(addTile.placer(), occupant.kind(), zone);
@@ -471,7 +469,7 @@ public final class Board {
         int id = Zone.tileId(occupant.zoneId());
         PlacedTile tile = tileWithId(id);
         Preconditions.checkArgument(tile != null);
-        ZonePartitions.Builder<Zone> newZonePartitionsBuilder = new ZonePartitions.Builder<>(partition);
+        ZonePartitions.Builder newZonePartitionsBuilder = new ZonePartitions.Builder(partition);
         PlacedTile[] placedTiles1 = Arrays.copyOf(placedTiles, placedTiles.length);
         placedTiles1[index(tile.pos())] = tile.withNoOccupant();
 
@@ -495,7 +493,7 @@ public final class Board {
      * @return a new board identical to the current one but with the given animal added to it
      */
     public Board withoutGatherersOrFishersIn(Set<Area<Zone.Forest>> forests, Set<Area<Zone.River>> rivers) {
-        ZonePartitions.Builder<Zone> newBoardZonePartitionsBuilder = new ZonePartitions.Builder<>(partition);
+        ZonePartitions.Builder newBoardZonePartitionsBuilder = new ZonePartitions.Builder(partition);
         PlacedTile[] newPlacedTile = placedTiles.clone();
         for (Area<Zone.Forest> forestArea : forests) {
             newBoardZonePartitionsBuilder.clearGatherers(forestArea);
