@@ -275,7 +275,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                         for (Zone.Meadow meadow : meadows) {
                             for (Animal deer : meadow.animals()) {
                                 if (eatenDeers < tigers.size()) {
-                                    board.cancelledAnimals().add(deer);
+                                    cancelledAnimals.add(deer);
                                     deers.remove(deer);
                                     eatenDeers++;
                                 } else break;
@@ -285,7 +285,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     } else {
                         for (Animal deer : deers) {
                             if (eatenDeers < tigers.size()) {
-                                board.cancelledAnimals().add(deer);
+                                cancelledAnimals.add(deer);
                                 deers.remove(deer);
                                 eatenDeers++;
                             } else break;
@@ -294,13 +294,14 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                 }
             } else {
                 for (Animal animal : Area.animals(meadowArea, Set.of())) {
-                    if (animal.kind() == Animal.Kind.TIGER) board.cancelledAnimals().add(animal);
+                    if (animal.kind() == Animal.Kind.TIGER) cancelledAnimals.add(animal);
                 }
             }
         }
-        Board newBoard = board.withMoreCancelledAnimals(board.cancelledAnimals());
+
+        Board newBoard = board.withMoreCancelledAnimals(cancelledAnimals);
         for (Area<Zone.Meadow> meadowArea : newBoard.meadowAreas()) {
-            newMessageBoard.withScoredMeadow(meadowArea, board.cancelledAnimals());
+            newMessageBoard.withScoredMeadow(meadowArea, cancelledAnimals);
         }
         for (Area<Zone.Water> waterArea : board.riverSystemAreas()) {
             newMessageBoard.withScoredRiverSystem(waterArea);
@@ -314,7 +315,8 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
             if (entry.getValue() == maxPoints) winners.add(entry.getKey());
         }
         newMessageBoard.withWinners(winners, maxPoints);
-        return null;
+
+        return new GameState(players, tileDecks, null, newBoard, Action.END_GAME, newMessageBoard);
     }
 
     /**
