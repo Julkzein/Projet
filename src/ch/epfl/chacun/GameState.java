@@ -78,8 +78,37 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      * @return the set of potential occupants of the last placed tile
      */
     public Set<Occupant> lastTilePotentialOccupants() {
-        Preconditions.checkArgument(board != Board.EMPTY); //suffisant ?
-        return board.lastPlacedTile().potentialOccupants();
+        Preconditions.checkArgument(board != Board.EMPTY);
+        PlacedTile lastPlacedTile = board.lastPlacedTile();
+        Preconditions.checkArgument(lastPlacedTile != null);
+        Set<Occupant> potentialOccupantsSet = new HashSet<>();
+
+        for (Occupant occupant : lastPlacedTile.potentialOccupants()) {
+            switch (lastPlacedTile.zoneWithId(occupant.zoneId())) {
+                case Zone.Meadow meadow:
+                    if (!board.meadowArea(meadow).isOccupied() && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
+                        potentialOccupantsSet.add(occupant);
+                    }
+                    break;
+                case Zone.Forest forest:
+                    if (!board.forestArea(forest).isOccupied() && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
+                        potentialOccupantsSet.add(occupant);
+                    }
+                    break;
+                case Zone.River river:
+                    if (!board.riverArea(river).isOccupied() && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
+                        potentialOccupantsSet.add(occupant);
+                    }
+                    break;
+                case Zone.Water water:
+                    if (!board.riverSystemArea(water).isOccupied() && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
+                        potentialOccupantsSet.add(occupant);
+                    }
+                    break;
+                default:
+            }
+        }
+        return potentialOccupantsSet;
     }
 
 
@@ -244,7 +273,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         return (newAction == Action.END_GAME) ? nextGameState.withFinalPointsCounted() : nextGameState;
     }
 
-
     /**
      * This method returns the game state after the game has ended
      * It adds to the cancelled animals set the deers that have been eaten by the tigers, and the tigers
@@ -335,6 +363,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         }
         return meadows;
     }
+
     /**
      * This nested class represents the possible actions that can be taken in the game
      */

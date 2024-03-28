@@ -150,8 +150,8 @@ public final class Board {
      * @return the area containing the given meadow zone
      */
     public Area<Zone.Meadow> meadowArea(Zone.Meadow meadow) {
-        for(Area<Zone.Meadow> meadowArea : partition.meadows().areas()) {
-            if(meadowArea.zones().contains(meadow)) {
+        for (Area<Zone.Meadow> meadowArea : partition.meadows().areas()) {
+            if (meadowArea.zones().contains(meadow)) {
                 return meadowArea;
             }
         }
