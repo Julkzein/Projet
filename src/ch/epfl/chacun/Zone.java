@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This module contains the Zone interface and its implementations.
+ * This interface represents a zone in the game.
  *
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
@@ -89,14 +89,13 @@ public sealed interface Zone {
 
     /**
      * Represents a meadow in the game.
+     * @param id the id of the meadow
+     * @param animals the animals contained in the meadow
+     * @param specialPower the potential special power of the meadow
      */
     record Meadow(int id, List<Animal> animals, SpecialPower specialPower) implements Zone {
         /**
          * Compact constructor that guarantees the immutability of the meadow.
-         *
-         * @param id the id of the meadow
-         * @param animals the animals contained in the meadow
-         * @param specialPower the potential special power of the meadow, can be null
          */
         public Meadow {
             animals = List.copyOf(animals);
@@ -115,12 +114,18 @@ public sealed interface Zone {
 
     /**
      * Represents a lake in the game.
+     * @param id the id of the zone
+     * @param fishCount the number of fish in the lake
+     * @param specialPower the possible special power of the lake
      */
     record Lake(int id, int fishCount, Zone.SpecialPower specialPower) implements Zone, Water {
     }
 
     /**
      * Represents a river in the game.
+     * @param id the id of the zone
+     * @param fishCount the number of fish in the river
+     * @param lake the possible lake the river is connected to
      */
     record River(int id, int fishCount, Lake lake) implements Zone, Water {
         /**

@@ -1,18 +1,5 @@
 
-t
-java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ˆüä„ıÿÿÿÿ
-t
-java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(é²×¢ûÿÿÿÿ
-t
-java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(‡„·“üÿÿÿÿ
-o
-java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(€¿ªÊ
-`
-java:S1124"EReorder the modifiers to comply with the Java Language Specification.(¬·‘¬şÿÿÿÿ
-6
-java:S2326"Z is not used in the class.(¬šˆ§ûÿÿÿÿ
-h
-java:S37762"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(¥àşŸ
-7	java:S131>""Add a default case to this switch.(¾Øš
-<	java:S131X""Add a default case to this switch.(ÂÍè¶ÿÿÿÿÿ
-W	java:S125€"<This block of commented-out lines of code should be removed.(¹â€–ùÿÿÿÿ
+•
+java:S37765"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(¥àşŸ8™£è1J$4fff4a5a-03a1-47d4-a9e4-6996aa30fe22
+d	java:S131A""Add a default case to this switch.(¾Øš8›£è1J$38518f1b-88b6-41e4-b0bf-e05b5d66e072
+i	java:S131[""Add a default case to this switch.(ÂÍè¶ÿÿÿÿÿ8 £è1J$18c6228c-223c-4c21-8f29-a0d594195226

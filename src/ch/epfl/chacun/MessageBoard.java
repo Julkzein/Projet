@@ -10,6 +10,10 @@ import static ch.epfl.chacun.Points.*;
  * said events. The nested record represents the messages displayed on the
  * messageBoard that will be updated everytime one of the methods is called.
  *
+ *
+ * @param textMaker the interface that creates the different messages displayed on the
+ * messageBoard
+ * @param messages the messages that will be displayed on the messageBoard
  * @Author Louis Bernard (379724)
  * @Author Jules Delforge (372325)
  */
@@ -17,10 +21,6 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
 
     /**
      * Compact constructor that guaranties the immutability
-     *
-     * @param textMaker the interface that creates the different messages displayed on the
-     *                  messageBoard
-     * @param messages the messages that will be displayed on the messageBoard
      */
     public MessageBoard {
         messages = List.copyOf(messages);

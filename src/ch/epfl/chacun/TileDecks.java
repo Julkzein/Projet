@@ -7,17 +7,16 @@ import java.util.function.Predicate;
 /**
  * Represents the three piles of tiles.
  *
+ * @param startTiles pile containing only the starting tile
+ * @param normalTiles pile containing the normal tiles
+ * @param menhirTiles pile containing the menhir tiles
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
  */
-public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, List<Tile> menhirTiles) {
+public record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, List<Tile> menhirTiles) {
 
     /**
      * Compact constructor with a given startTiles
-     *
-     * @param startTiles pile containing only the starting tile
-     * @param normalTiles pile containing the normal tiles
-     * @param menhirTiles pile containing the menhir tiles
      */
     public TileDecks {
         startTiles = List.copyOf(startTiles);
@@ -51,17 +50,17 @@ public final record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, Lis
             if (startTiles.isEmpty()) {
                 return null;
             }
-            return startTiles.get(0);
+            return startTiles.getFirst();
         } else if (kind == Tile.Kind.NORMAL) {
             if (normalTiles.isEmpty()) {
                 return null;
             }
-            return normalTiles.get(0);
+            return normalTiles.getFirst();
         } else {
             if (menhirTiles.isEmpty()) {
                 return null;
             }
-            return menhirTiles.get(0);
+            return menhirTiles.getFirst();
         }
     }
 

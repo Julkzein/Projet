@@ -7,9 +7,9 @@ import java.util.Set;
 
 /**
  * This record represents a partition of zones of the given type.
- * It has for sole attribute a set of areas, each of which is a set of zones
- * of a given type
  *
+ * @param areas the set of areas composing the partition
+ * @param <Z> The generic type used to allow the zone builder to create partitions of different types of zone
  * @Author Louis Bernard (379724)
  * @Author Jules Delforge (372325)
  */
@@ -54,7 +54,7 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
      * This static subclass represents a builder for zone partitions
      * @param <Z>
      */
-    public final static class Builder<Z extends Zone>{
+    public static final class Builder<Z extends Zone>{
         /**
          * The set of areas of the zone partition
          */
@@ -70,8 +70,8 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
         }
 
         /**
-         * This method adds to the partition a new area containing
-         * solely of the given zone and with the given number of open connections
+         * This method adds to the partition a new area containing solely
+         * a zone of the given zone and with the given number of open connections
          */
         public void addSingleton(Z zone, int openConnections) {
             areas.add(new Area<>(Set.of(zone), new ArrayList<>(), openConnections));
@@ -88,7 +88,6 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
         public void addInitialOccupant(Z zone, PlayerColor color) {
             for (Area<Z> area : areas) {
                 if (area.zones().contains(zone)) {
-                    System.out.println(area);
                     Preconditions.checkArgument(!area.isOccupied());
                     areas.add(area.withInitialOccupant(color));
                     areas.remove(area);
@@ -124,7 +123,7 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
          * @throws IllegalArgumentException if the zone is not in any area
          */
         public void removeAllOccupantsOf(Area<Z> area) {
-
+            Preconditions.checkArgument(areas.contains(area));
             for (Area<Z> area1 : areas) {
                 if (area1.equals(area)) {
                     areas.add(area.withoutOccupants());
@@ -133,19 +132,13 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
                 }
             }
             throw new IllegalArgumentException();
-            /**
-            Preconditions.checkArgument(areas.contains(area));
-            Area<Z> areaNoOccupant = new Area<>(area.zones(), new ArrayList<>(), area.openConnections());
-            areas.remove(area);
-            areas.add(areaNoOccupant);
-             */
 
         }
 
 
 
         /**
-         * This method conncects the two given zones to create one larger area
+         * This method connects the two given zones to create a larger area
          *
          * @param zone1 : the first zone to add to the area
          * @param zone2 : the second zone to add to the area

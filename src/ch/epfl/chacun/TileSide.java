@@ -4,7 +4,7 @@ import java.util.List;
 
 
 /**
- * This module contains the TileSide interface and its implementations.
+ * This interface represents a side of a tile.
  *
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)

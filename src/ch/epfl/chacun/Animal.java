@@ -3,6 +3,8 @@ package ch.epfl.chacun;
 /**
  * Represents an animal in the game.
  *
+ * @param id The id of the animal.
+ * @param kind the kind of the animal.
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
  */

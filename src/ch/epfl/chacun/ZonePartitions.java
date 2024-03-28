@@ -3,6 +3,10 @@ package ch.epfl.chacun;
 /**
  * This record contains the four zone partitions of the game.
  *
+ * @param forests the partition of forests
+ * @param meadows the partition of meadows
+ * @param rivers the partition of rivers
+ * @param riverSystems the partition of aquatic zones
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
  */
@@ -11,18 +15,17 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
     /**
      * This constructor creates a set of empty zone partitions
      */
-    public final static ZonePartitions EMPTY =
+    public static final ZonePartitions EMPTY =
             new ZonePartitions(
-                new ZonePartition<Zone.Forest>(),
-                new ZonePartition<Zone.Meadow>(),
-                new ZonePartition<Zone.River>(),
-                new ZonePartition<Zone.Water>());
+                new ZonePartition<>(),
+                new ZonePartition<>(),
+                new ZonePartition<>(),
+                new ZonePartition<>());
 
     /**
      * This class is a builder for zone partitions
-     * @param <Z> the type of zone
      */
-    public static final class Builder<Z extends Zone> {
+    public static final class Builder {
         private ZonePartition.Builder<Zone.Forest> forests;
         private ZonePartition.Builder<Zone.River> rivers;
         private ZonePartition.Builder<Zone.Meadow> meadows;
@@ -125,8 +128,6 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
                 case Zone.Forest forest when occupantKind == Occupant.Kind.PAWN-> forests.addInitialOccupant(forest, player);
                 case Zone.Meadow meadow when occupantKind == Occupant.Kind.PAWN-> meadows.addInitialOccupant(meadow, player);
                 case Zone.River river when occupantKind == Occupant.Kind.PAWN -> rivers.addInitialOccupant(river, player);
-                //case Zone.River river when !river.hasLake() -> rivers.addInitialOccupant(river, player);
-                //case Zone.Lake lake when occupantKind == Occupant.Kind.HUT-> riverSystems.addInitialOccupant(lake, player);
                 case Zone.Water water when occupantKind == Occupant.Kind.HUT -> riverSystems.addInitialOccupant(water, player);
                 default -> throw new IllegalArgumentException();
             }

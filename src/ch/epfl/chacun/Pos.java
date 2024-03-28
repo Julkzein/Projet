@@ -3,6 +3,8 @@ package ch.epfl.chacun;
 /**
  * Represents a position in the game.
  *
+ * @param x The x coordinate of the position.
+ * @param y The y coordinate of the position.
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
  */

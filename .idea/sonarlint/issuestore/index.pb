@@ -33,3 +33,13 @@ P
  src/ch/epfl/chacun/TileSide.java,e/5/e52007a5df1f1dce8e9334dbe0b2cb548e0be924
 L
 src/ch/epfl/chacun/Tile.java,b/e/be2a73ace9cbe190931b1f0e542ed12b03ba7a21
+R
+"src/ch/epfl/chacun/PlacedTile.java,5/c/5c3343e3cb6d754e23895a704e9dd7a52a392504
+Q
+!src/ch/epfl/chacun/TileDecks.java,7/0/70e783002ee1f542759ce4f10bd78d8cc287e23e
+U
+%src/ch/epfl/chacun/ZonePartition.java,b/3/b36d9df7958ed10dd55380e966d06caadaa98076
+\
+,test/ch/epfl/chacun/MyZonePartitionTest.java,2/9/29cb80da0cc8412bcc3b687119fd08297b08be89
+T
+$src/ch/epfl/chacun/MessageBoard.java,c/c/ccebb5279cc4e90f9adc1e6fec9a7f44d7f4d602

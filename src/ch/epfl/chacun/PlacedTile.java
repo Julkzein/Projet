@@ -7,6 +7,11 @@ import java.util.Set;
 /**
  * Represents a tile placed on the board.
  *
+ * @param tile the tile to place.
+ * @param placer the player who placed the tile (null if first tile).
+ * @param rotation the rotation of the tile.
+ * @param pos the position of the tile.
+ * @param occupant the occupant of the tile.
  * @Author Louis Bernard (379724)
  * @Author Jules Delforge (372325)
  */
@@ -14,12 +19,6 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
     /**
      * Compact constructor with a given tile, placer, rotation, position and occupant.
-     *
-     * @param tile the tile to place.
-     * @param placer the player who placed the tile (null if first tile).
-     * @param rotation the rotation of the tile.
-     * @param pos the position of the tile.
-     * @param occupant the occupant of the tile.
      * @throws IllegalArgumentException if the tile, rotation or position is null.
      */
     public PlacedTile {
@@ -30,12 +29,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
 
     /**
-     * Constructor with a given tile, placer, rotation and position.
-     *
-     * @param tile the tile to place.
-     * @param placer the player who placed the tile (null if first tile).
-     * @param rotation the rotation of the tile.
-     * @param pos the position of the tile.
+     * Constructor with a given tile, placer, rotation and position but without an occupant.
      * @throws IllegalArgumentException if the tile or rotation is null.
      */
     public PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos pos) {
@@ -209,10 +203,8 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      * -1 if no zone is occupied by an occupant of given kind
      */
     public int idOfZoneOccupiedBy(Occupant.Kind occupantKind) {
-        if (this.occupant != null) {
-            if (occupantKind == this.occupant.kind()) {
-                return this.occupant.zoneId();
-            }
+        if (this.occupant != null && occupantKind == this.occupant.kind()) {
+            return this.occupant.zoneId();
         }
         return -1;
     }

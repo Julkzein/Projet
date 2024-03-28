@@ -6,7 +6,13 @@ import java.util.Set;
 
 /**
  * This class represents a tile in the game.
- *
+
+ * @param id The id of the tile
+ * @param kind The kind of the tile
+ * @param n The north side of the tile
+ * @param e The east side of the tile
+ * @param s The south side of the tile
+ * @param w The west side of the tile *
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
  */

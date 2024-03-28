@@ -6,6 +6,8 @@ import static java.util.Objects.requireNonNull;
 /**
  * Represents an occupant of a tile in the game.
  *
+ * @param kind the Kind of the occupant.
+ * @param zoneId the id of the zone to which the occupant belongs.
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
  */

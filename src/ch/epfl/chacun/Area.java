@@ -5,6 +5,9 @@ import java.util.*;
 /**
  * Represent an area that are composed of several zones
  *
+ * @param zones : the set of zones of the area
+ * @param occupants : the list of occupants of the area
+ * @param openConnections : the number of open connections of the area
  * @Author Louis Bernard (379724)
  * @Author Jules Delforge (372325)
  */
@@ -12,9 +15,6 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
     /**
      * This constructor creates an area with the given zones, occupants and open connections
      *
-     * @param zones : the set of zones of the area
-     * @param occupants : the list of occupants of the area
-     * @param openConnections : the number of open connections of the area
      * @throws IllegalArgumentException if the open connections is negative
      */
     public Area {
@@ -57,12 +57,12 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
     }
 
     /**
-     * This method returns the number of animals in the given meadow not
+     * This method returns the set of animals in the given meadow not
      * considering the animals in the given set of cancelled animals
      *
      * @param meadow the meadow to search in
      * @param cancelledAnimals the set of animals to cancel
-     * @return the number of animals in the given meadow
+     * @return the set of animals in the given meadow
      */
     public static Set<Animal> animals(Area<Zone.Meadow> meadow, Set<Animal> cancelledAnimals) {
         Set<Animal> animals = new HashSet<>();
@@ -75,22 +75,22 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
 
 
     /**
-     * This method returns the number fish in the given river and
+     * This method returns the number of fish in the given river and
      * possible lakes attached to the river
      * 
      * @param river the river to search in
      * @return the number of fish in the given river
      */
     public static int riverFishCount(Area<Zone.River> river) {
-        int i = 0;
+        int fishCount = 0;
         Set<Zone.Lake> lakes = new HashSet<>();
         for (Zone.River rivers : river.zones) {
-            i += rivers.fishCount();
+            fishCount += rivers.fishCount();
             if (rivers.hasLake() && lakes.add(rivers.lake())) {
-                i += rivers.lake().fishCount();
+                fishCount += rivers.lake().fishCount();
             }
         }
-        return i;
+        return fishCount;
     }
 
     /**
@@ -126,12 +126,13 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
     public static int lakeCount(Area<Zone.Water> riverSystem) {
         Set<Zone.Lake> lakes = new HashSet<>();
         for (Zone.Water waterBody : riverSystem.zones) {
-            if (waterBody instanceof Zone.Lake) {
-                lakes.add((Zone.Lake) waterBody);
-            }
             if (waterBody instanceof Zone.River river && river.hasLake()) {
                 lakes.add(river.lake());
             }
+            if (waterBody instanceof Zone.Lake) {
+                lakes.add((Zone.Lake) waterBody);
+            }
+
         }
         return lakes.size();
     }
@@ -262,7 +263,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      * power or null if no zone contains this special power
      *
      * @param specialPower the special power of the zone we desire
-     * @return the zone of the area that posesses the special power
+     * @return the zone of the area that posses the special power
      */
     public Zone zoneWithSpecialPower(Zone.SpecialPower specialPower) {
         for (Zone zone : zones) {
