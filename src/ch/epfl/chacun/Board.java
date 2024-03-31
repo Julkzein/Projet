@@ -22,7 +22,6 @@ public final class Board {
     private final Set<Animal> cancelledAnimals;
     public static final int REACH = 12;
     private static final int TOTAL_TILE_COUNT = 625; //fallait pas plutot mettre un truc variabel
-
     public static final Board EMPTY = new Board(new PlacedTile[TOTAL_TILE_COUNT] , new int[0], ZonePartitions.EMPTY, Set.of());
 
 

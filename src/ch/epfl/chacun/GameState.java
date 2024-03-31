@@ -1,9 +1,6 @@
 package ch.epfl.chacun;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static ch.epfl.chacun.Area.hasMenhir;
 import static ch.epfl.chacun.Occupant.occupantsCount;
@@ -134,37 +131,37 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         Preconditions.checkArgument(tile.occupant() == null);
 
         Board newBoard = board.withNewTile(tile);
-        MessageBoard newMessageBoard = messageBoard;
+        MessageBoard newMessageBoard;
 
         switch (tile.kind()) {
             case NORMAL:
                 if (tile.specialPowerZone() != null) {
                     if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.SHAMAN) {
-                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.NORMAL), tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.RETAKE_PAWN, messageBoard);
+                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.NORMAL), null, newBoard, Action.RETAKE_PAWN, messageBoard);
                     } else if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.LOGBOAT) {
                         newMessageBoard = messageBoard.withScoredLogboat(players.get(0), board.riverSystemArea((Zone.Water) tile.specialPowerZone())); // typecast forcé???
-                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.NORMAL), tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
+                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.NORMAL), null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
                     } else if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.HUNTING_TRAP) {
                         newMessageBoard = messageBoard.withScoredHuntingTrap(players.get(0), board.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone())); // typecast forcé???
-                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.NORMAL), tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
+                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.NORMAL), null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
                     }
                 }
-                return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.NORMAL), tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
+                return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.NORMAL), null, newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
 
 
             case MENHIR:
                 if (tile.specialPowerZone() != null) {
                     if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.SHAMAN) {
-                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.RETAKE_PAWN, messageBoard);
+                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), null, newBoard, Action.RETAKE_PAWN, messageBoard);
                     } else if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.LOGBOAT) {
                         newMessageBoard = messageBoard.withScoredLogboat(players.get(0), board.riverSystemArea((Zone.Water) tile.specialPowerZone())); // typecast forcé???
-                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
+                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
                     } else if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.HUNTING_TRAP) {
                         newMessageBoard = messageBoard.withScoredHuntingTrap(players.get(0), board.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone())); // typecast forcé???
-                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
+                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
                     }
                 }
-                return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
+                return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), null, newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
 
             default:
                 throw new IllegalStateException();
@@ -184,7 +181,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         if (occupant == null) {
             return new GameState(players, tileDecks, tileToPlace, board, Action.PLACE_TILE, messageBoard).withTurnFinished(); //check ou occupy tile
         } else {
-            return new GameState(players, tileDecks, tileToPlace, board.withOccupant(occupant), Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
+            return new GameState(players, tileDecks, null, board.withOccupant(occupant), Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
         }
     }
 
@@ -200,23 +197,32 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         if (occupant == null) {
             return new GameState(players, tileDecks, tileToPlace, board, Action.PLACE_TILE, messageBoard).withTurnFinished();
         } else {
-            Board newBoard = board.withOccupant(occupant); //parait trop simple
+            Board newBoard = board.withOccupant(occupant);
             return new GameState(players, tileDecks, tileToPlace, newBoard, Action.PLACE_TILE, messageBoard).withTurnFinished();
         }
     }
 
     private GameState withTurnFinishedIfOccupationImpossible() {
         Preconditions.checkArgument(nextAction == Action.OCCUPY_TILE);
+        Preconditions.checkArgument(board.lastPlacedTile() != null);
+        boolean occupationPossible = false;
+
         for (Zone zone : board.lastPlacedTile().tile().zones()) {
-            if (zone instanceof Zone.Water water && !lastTilePotentialOccupants().isEmpty() && (freeOccupantsCount(currentPlayer(), Occupant.Kind.PAWN) > 0 || freeOccupantsCount(currentPlayer(), Occupant.Kind.HUT) > 0 )) {
-                //gamestate place ok
-            }
-            if (!lastTilePotentialOccupants().isEmpty() && freeOccupantsCount(currentPlayer(), Occupant.Kind.PAWN) > 0) {
-                //gamestate place ok
+            if (Objects.requireNonNull(zone) instanceof Zone.Water) {
+                if (!lastTilePotentialOccupants().isEmpty() &&
+                    ((freeOccupantsCount(currentPlayer(), Occupant.Kind.PAWN) > 0 && setHasOccupantOfKind(lastTilePotentialOccupants(), Occupant.Kind.PAWN)) ||
+                     (freeOccupantsCount(currentPlayer(), Occupant.Kind.HUT) > 0 && setHasOccupantOfKind(lastTilePotentialOccupants(), Occupant.Kind.HUT)))) {
+                    occupationPossible = true;
+                }
+            } else {
+                if (!lastTilePotentialOccupants().isEmpty() && freeOccupantsCount(currentPlayer(), Occupant.Kind.PAWN) > 0 && setHasOccupantOfKind(lastTilePotentialOccupants(), Occupant.Kind.PAWN)) {
+                    occupationPossible = true;
+                }
             }
         }
-        //gamestate place pas ok
-        return null;
+
+        if (occupationPossible) { return new GameState(players, tileDecks, tileToPlace, board, Action.OCCUPY_TILE, messageBoard); }
+        else { return new GameState(players, tileDecks, tileToPlace, board, Action.PLACE_TILE, messageBoard).withTurnFinished(); }
     }
 
     /**
@@ -233,9 +239,9 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         Action newAction = Action.PLACE_TILE;
         TileDecks newTileDecks = tileDecks;
         MessageBoard newMessageBoard = messageBoard;
-
+        Board newBoard;
         boolean canPlayAgain = false;
-        Preconditions.checkArgument(lastPlacedTile != null); //vérfifier si on a le droit de faire ça
+        Preconditions.checkArgument(lastPlacedTile != null);
 
         for (Area<Zone.Forest> forest : board.forestsClosedByLastTile()) {
             newMessageBoard = newMessageBoard.withScoredForest(forest); //est ce que ça suffit ??
@@ -248,13 +254,12 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
             newMessageBoard = newMessageBoard.withScoredRiver(river);
         }
 
+        newBoard = board.withoutGatherersOrFishersIn(board.forestsClosedByLastTile(), board.riversClosedByLastTile());
+
         if (canPlayAgain) {
             newTileDecks = newTileDecks.withTopTileDrawnUntil(Tile.Kind.MENHIR, board::couldPlaceTile);
         } else {
             newTileDecks = newTileDecks.withTopTileDrawnUntil(Tile.Kind.NORMAL, board::couldPlaceTile);
-        }
-
-        if (!canPlayAgain) {
             newPlayers = nextPlayerList();
         }
 
@@ -266,7 +271,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                 newPlayers,
                 newTileDecks,
                 canPlayAgain ? newTileDecks.topTile(Tile.Kind.MENHIR) : newTileDecks.topTile(Tile.Kind.NORMAL),
-                board, //meme board ??
+                newBoard,
                 newAction,
                 newMessageBoard);
 
@@ -384,5 +389,21 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
        List<PlayerColor> list = players.subList(1, players.size());
        list.add(players.get(0));
        return list;
+    }
+
+    /**
+     * This method returns true if the given set of occupants contains an occupant of the given kind
+     *
+     * @param s : the set of occupants
+     * @param k : the kind of occupant
+     * @return true if the given set of occupants contains an occupant of the given kind
+     */
+    private boolean setHasOccupantOfKind(Set<Occupant> s, Occupant.Kind k) {
+        for (Occupant o : s) {
+            if (o.kind() == k)  {
+                return true;
+            }
+        }
+        return false;
     }
 }
