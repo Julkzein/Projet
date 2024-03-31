@@ -284,8 +284,6 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
             } else {
                 tileIds = Set.copyOf(tileIds);
             }
-
         }
-
     }
 }

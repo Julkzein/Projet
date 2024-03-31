@@ -181,7 +181,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         if (occupant == null) {
             return new GameState(players, tileDecks, tileToPlace, board, Action.PLACE_TILE, messageBoard).withTurnFinished(); //check ou occupy tile
         } else {
-            return new GameState(players, tileDecks, null, board.withOccupant(occupant), Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
+            return new GameState(players, tileDecks, null, board.withoutOccupant(occupant), Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
         }
     }
 
@@ -221,7 +221,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
             }
         }
 
-        if (occupationPossible) { return new GameState(players, tileDecks, tileToPlace, board, Action.OCCUPY_TILE, messageBoard); }
+        if (occupationPossible) { return new GameState(players, tileDecks, null, board, Action.OCCUPY_TILE, messageBoard); }
         else { return new GameState(players, tileDecks, tileToPlace, board, Action.PLACE_TILE, messageBoard).withTurnFinished(); }
     }
 
@@ -244,9 +244,10 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         Preconditions.checkArgument(lastPlacedTile != null);
 
         for (Area<Zone.Forest> forest : board.forestsClosedByLastTile()) {
-            newMessageBoard = newMessageBoard.withScoredForest(forest); //est ce que ça suffit ??
+            newMessageBoard = newMessageBoard.withScoredForest(forest);
             if (hasMenhir(forest) && lastPlacedTile.kind() == Tile.Kind.NORMAL) {
                 canPlayAgain = true;
+                newMessageBoard = newMessageBoard.withClosedForestWithMenhir(players.get(0), forest);
             }
         }
 
@@ -288,7 +289,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
     private GameState withFinalPointsCounted() {
         Set<Animal> deers = new HashSet<>();
         Set<Animal> tigers = new HashSet<>();
-        Set<Animal> cancelledAnimals = new HashSet<>();
+        Set<Animal> cancelledAnimals = new HashSet<>(); //ou board.cancelledAnimals() ?
         MessageBoard newMessageBoard = messageBoard;
 
         for (Area<Zone.Meadow> meadowArea : board.meadowAreas()) {
@@ -333,11 +334,18 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         }
 
         Board newBoard = board.withMoreCancelledAnimals(cancelledAnimals);
+
         for (Area<Zone.Meadow> meadowArea : newBoard.meadowAreas()) {
             newMessageBoard.withScoredMeadow(meadowArea, cancelledAnimals);
+            if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP) != null) {
+                newMessageBoard.withScoredPitTrap(meadowArea, cancelledAnimals);
+            }
         }
         for (Area<Zone.Water> waterArea : board.riverSystemAreas()) {
             newMessageBoard.withScoredRiverSystem(waterArea);
+            if (waterArea.zoneWithSpecialPower(Zone.SpecialPower.RAFT) != null) {
+                newMessageBoard.withScoredRaft(waterArea);
+            }
         }
         int maxPoints = 0 ;
         Set<PlayerColor> winners = new HashSet<>();
