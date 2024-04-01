@@ -63,9 +63,10 @@ public class MyGameStateTest {
             new TileSide.River(meadow5, riverWithLakeWithLogboat1, meadow6), new TileSide.Meadow(meadow6),
             new TileSide.Meadow(meadow6), new TileSide.River(meadow6, riverWithLakeWithLogboat2, meadow5)};
 
+    private final TileDecks = new TileDecks()
 
     @Test
     public void gameStateConstructorCorrectlyDefined() {
-        //assertThrows(IllegalArgumentException.class, () -> new GameState(List.of(), ));
+        assertThrows(IllegalArgumentException.class, () -> new GameState(List.of(), ));
     }
 }
