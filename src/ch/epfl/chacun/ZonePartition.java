@@ -126,8 +126,8 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
             Preconditions.checkArgument(areas.contains(area));
             for (Area<Z> area1 : areas) {
                 if (area1.equals(area)) {
-                    areas.add(area.withoutOccupants());
                     areas.remove(area);
+                    areas.add(area.withoutOccupants());
                     return;
                 }
             }

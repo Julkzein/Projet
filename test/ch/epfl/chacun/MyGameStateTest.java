@@ -35,10 +35,33 @@ public class MyGameStateTest {
     private final Zone.River river4 = new Zone.River(426, 0, null);
     private final Zone.River riverWithLake1 = new Zone.River(272, 0, lake1);
     private final Zone.River riverWithLake2 = new Zone.River(706, 0, lake2);
-    private final Zone.River riverWithLakeWithLogboat = new Zone.River(716, 0, lakeWithLogboat);
+    private final Zone.River riverWithLakeWithLogboat1 = new Zone.River(716, 0, lakeWithLogboat);
+    private final Zone.River riverWithLakeWithLogboat2 = new Zone.River(717, 0, lakeWithLogboat);
     private final Zone.River riverWithLakeWithRaft = new Zone.River(726, 0, lakeWithRaft);
+    private final TileSide[] sides1 = new TileSide[]{
+            new TileSide.Meadow(meadow1), new TileSide.Meadow(meadow1),
+            new TileSide.Forest(forest1), new TileSide.Forest(forest1)};
 
-  //  private final TileSide[] sides;
+    private final TileSide[] sides2 = new TileSide[]{
+            new TileSide.Meadow(meadow3), new TileSide.River(meadow3, river1, meadow4),
+            new TileSide.River(meadow4, river1, meadow3), new TileSide.Meadow(meadow3)};
+
+    private final TileSide[] sides3 = new TileSide[]{
+            new TileSide.River(meadow1, riverWithLake1, meadow2), new TileSide.Meadow(meadow2),
+            new TileSide.Forest(forest1), new TileSide.Forest(forest1)};
+
+
+    private final TileSide[] sides4 = new TileSide[]{
+            new TileSide.Forest(forest5), new TileSide.Forest(forest5),
+            new TileSide.Forest(forest5), new TileSide.Forest(forest5)};
+
+    private final TileSide[] sides5 = new TileSide[]{
+            new TileSide.Meadow(meadowWithHuntingTrap), new TileSide.Forest(forest3),
+            new TileSide.Meadow(meadowWithHuntingTrap), new TileSide.Meadow(meadowWithHuntingTrap)};
+
+    private final TileSide[] sides6 = new TileSide[]{
+            new TileSide.River(meadow5, riverWithLakeWithLogboat1, meadow6), new TileSide.Meadow(meadow6),
+            new TileSide.Meadow(meadow6), new TileSide.River(meadow6, riverWithLakeWithLogboat2, meadow5)};
 
 
     @Test
