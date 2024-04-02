@@ -2,6 +2,7 @@ package ch.epfl.chacun;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,10 +64,56 @@ public class MyGameStateTest {
             new TileSide.River(meadow5, riverWithLakeWithLogboat1, meadow6), new TileSide.Meadow(meadow6),
             new TileSide.Meadow(meadow6), new TileSide.River(meadow6, riverWithLakeWithLogboat2, meadow5)};
 
-    private final TileDecks = new TileDecks()
+    private final TileDecks tileDecks = new TileDecks(
+            List.of(new Tile(341, Tile.Kind.START, sides3[0], sides3[1], sides3[2], sides3[3])),
+            List.of(new Tile(342, Tile.Kind.NORMAL, sides1[0], sides1[1], sides1[2], sides1[3]),
+                    new Tile(343, Tile.Kind.NORMAL, sides2[0], sides2[1], sides2[2], sides2[3]),
+                    new Tile(344, Tile.Kind.NORMAL, sides4[0], sides4[1], sides4[2], sides4[3])),
+            List.of(new Tile(345, Tile.Kind.MENHIR, sides5[0], sides5[1], sides5[2], sides5[3]),
+                    new Tile(346, Tile.Kind.MENHIR, sides6[0], sides6[1], sides6[2], sides6[3])));
+
+    private final GameState INITIAL_GAME_STATE = GameState.initial(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks, new BasicTextMaker());
 
     @Test
     public void gameStateConstructorCorrectlyDefined() {
-        assertThrows(IllegalArgumentException.class, () -> new GameState(List.of(), ));
+        assertThrows(IllegalArgumentException.class, () ->
+                new GameState(List.of(), tileDecks, null, Board.EMPTY, GameState.Action.START_GAME, new MessageBoard(new BasicTextMaker(), new ArrayList<>())));
+        assertThrows(IllegalArgumentException.class, () ->
+                new GameState(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks, null, Board.EMPTY, GameState.Action.PLACE_TILE, new MessageBoard(new BasicTextMaker(), new ArrayList<>())));
+        assertThrows(IllegalArgumentException.class, () ->
+                new GameState(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks, tileDecks.topTile(Tile.Kind.NORMAL), Board.EMPTY, GameState.Action.START_GAME, new MessageBoard(new BasicTextMaker(), new ArrayList<>())));
+        assertThrows(IllegalArgumentException.class, () ->
+                new GameState(List.of(PlayerColor.RED, PlayerColor.BLUE), null, null, Board.EMPTY, GameState.Action.START_GAME, new MessageBoard(new BasicTextMaker(), new ArrayList<>())));
+        assertThrows(IllegalArgumentException.class, () ->
+                new GameState(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks, null, null, GameState.Action.START_GAME, new MessageBoard(new BasicTextMaker(), new ArrayList<>())));
+        assertThrows(IllegalArgumentException.class, () ->
+                new GameState(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks, null, Board.EMPTY, null, new MessageBoard(new BasicTextMaker(), new ArrayList<>())));
+        assertThrows(IllegalArgumentException.class, () ->
+                new GameState(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks, null, Board.EMPTY, GameState.Action.START_GAME, null));
+    }
+
+    @Test
+    public void withPlacedTileThrowsIAE() {
+        assertThrows(IllegalArgumentException.class, () ->
+                new GameState(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks, tileDecks.topTile(Tile.Kind.NORMAL), Board.EMPTY, GameState.Action.START_GAME, new MessageBoard(new BasicTextMaker(), new ArrayList<>()))
+                        .withPlacedTile(new PlacedTile(new Tile(341, Tile.Kind.NORMAL, sides3[0], sides3[1], sides3[2], sides3[3]), PlayerColor.RED, Rotation.NONE, new Pos(0,0))));
+        assertThrows(IllegalArgumentException.class, () ->
+                new GameState(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks, tileDecks.topTile(Tile.Kind.NORMAL), Board.EMPTY, GameState.Action.PLACE_TILE, new MessageBoard(new BasicTextMaker(), new ArrayList<>()))
+                        .withPlacedTile(new PlacedTile(new Tile(341, Tile.Kind.NORMAL, sides3[0], sides3[1], sides3[2], sides3[3]), PlayerColor.RED, Rotation.NONE, new Pos(0,0)).withOccupant(new Occupant(Occupant.Kind.PAWN, 12))));
+    }
+
+    @Test
+    public void withPlacedTileNoPower() { 
+        GameState gameState = INITIAL_GAME_STATE.withStartingTilePlaced();
+        gameState = gameState.withPlacedTile(new PlacedTile(new Tile(342, Tile.Kind.NORMAL, sides1[0], sides1[1], sides1[2], sides1[3]), PlayerColor.RED, Rotation.RIGHT, new Pos(0,1)));
+        PlacedTile[] placedTiles = {new PlacedTile(new Tile(341, Tile.Kind.START, sides3[0], sides3[1], sides3[2], sides3[3]), null, Rotation.NONE, new Pos(0,0)), new PlacedTile(new Tile(342, Tile.Kind.NORMAL, sides1[0], sides1[1], sides1[2], sides1[3]), PlayerColor.RED, Rotation.RIGHT, new Pos(0,1))};
+        TileDecks tileDecks1 = tileDecks.withTopTileDrawn(Tile.Kind.NORMAL).withTopTileDrawn(Tile.Kind.START);
+        assertEquals(gameState,
+                new GameState(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks1, null,
+                        Board.EMPTY
+                                .withNewTile(new PlacedTile(new Tile(342, Tile.Kind.NORMAL, sides1[0], sides1[1], sides1[2], sides1[3]), PlayerColor.RED, Rotation.RIGHT, new Pos(0,1)))
+                                .withNewTile(new PlacedTile(new Tile(341, Tile.Kind.START, sides3[0], sides3[1], sides3[2], sides3[3]), null, Rotation.NONE, new Pos(0,0))),
+                        GameState.Action.OCCUPY_TILE, new MessageBoard(new BasicTextMaker(), new ArrayList<>())));
+
     }
 }

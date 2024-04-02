@@ -27,7 +27,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      */
     public GameState {
         Preconditions.checkArgument(players.size() >= 2);
-        Preconditions.checkArgument(tileToPlace == null || nextAction == Action.PLACE_TILE);
+        Preconditions.checkArgument(tileToPlace == null ^ nextAction == Action.PLACE_TILE);
         Preconditions.checkArgument(tileDecks != null && board != null && nextAction != null && messageBoard != null);
         players = List.copyOf(players);
     }
@@ -166,7 +166,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                 return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), null, newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
 
             default:
-                throw new IllegalStateException();
+                throw new IllegalArgumentException();
         }
     }
 
