@@ -103,7 +103,7 @@ public class MyGameStateTest {
     }
 
     @Test
-    public void withPlacedTileNoPower() { 
+    public void withPlacedTileNoPower() {
         GameState gameState = INITIAL_GAME_STATE.withStartingTilePlaced();
         gameState = gameState.withPlacedTile(new PlacedTile(new Tile(342, Tile.Kind.NORMAL, sides1[0], sides1[1], sides1[2], sides1[3]), PlayerColor.RED, Rotation.RIGHT, new Pos(0,1)));
         PlacedTile[] placedTiles = {new PlacedTile(new Tile(341, Tile.Kind.START, sides3[0], sides3[1], sides3[2], sides3[3]), null, Rotation.NONE, new Pos(0,0)), new PlacedTile(new Tile(342, Tile.Kind.NORMAL, sides1[0], sides1[1], sides1[2], sides1[3]), PlayerColor.RED, Rotation.RIGHT, new Pos(0,1))};
