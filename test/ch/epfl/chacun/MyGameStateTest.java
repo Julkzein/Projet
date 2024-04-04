@@ -72,7 +72,8 @@ public class MyGameStateTest {
             List.of(new Tile(345, Tile.Kind.MENHIR, sides5[0], sides5[1], sides5[2], sides5[3]),
                     new Tile(346, Tile.Kind.MENHIR, sides6[0], sides6[1], sides6[2], sides6[3])));
 
-    private final GameState INITIAL_GAME_STATE = GameState.initial(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks, new BasicTextMaker());
+    private BasicTextMaker BASIC_TEXT_MAKER = new BasicTextMaker();
+    private final GameState INITIAL_GAME_STATE = GameState.initial(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks, BASIC_TEXT_MAKER);
 
     @Test
     public void gameStateConstructorCorrectlyDefined() {
@@ -113,7 +114,8 @@ public class MyGameStateTest {
                         Board.EMPTY
                                 .withNewTile(new PlacedTile(new Tile(342, Tile.Kind.NORMAL, sides1[0], sides1[1], sides1[2], sides1[3]), PlayerColor.RED, Rotation.RIGHT, new Pos(0,1)))
                                 .withNewTile(new PlacedTile(new Tile(341, Tile.Kind.START, sides3[0], sides3[1], sides3[2], sides3[3]), null, Rotation.NONE, new Pos(0,0))),
-                        GameState.Action.OCCUPY_TILE, new MessageBoard(new BasicTextMaker(), new ArrayList<>())));
-
+                        GameState.Action.OCCUPY_TILE, new MessageBoard(BASIC_TEXT_MAKER, new ArrayList<>())));
     }
+
+
 }
