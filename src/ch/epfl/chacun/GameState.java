@@ -27,7 +27,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      */
     public GameState {
         Preconditions.checkArgument(players.size() >= 2);
-        Preconditions.checkArgument(tileToPlace == null ^ nextAction == Action.PLACE_TILE);
+        Preconditions.checkArgument(tileToPlace == null || nextAction == Action.PLACE_TILE);
         Preconditions.checkArgument(tileDecks != null && board != null && nextAction != null && messageBoard != null);
         players = List.copyOf(players);
     }
@@ -117,7 +117,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
     public GameState withStartingTilePlaced() {
         Preconditions.checkArgument(nextAction == Action.START_GAME);
         Board newBoard = board.withNewTile(new PlacedTile(tileDecks.topTile(Tile.Kind.START), null, Rotation.NONE, new Pos(0, 0)));
-        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.START), tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.PLACE_TILE, messageBoard);
+        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.START).withTopTileDrawn(Tile.Kind.NORMAL), tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.PLACE_TILE, messageBoard);
     }
 
     /**
@@ -148,22 +148,22 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     }
                 }
                  */
-                return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.NORMAL), null, newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
+                return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
 
 
             case MENHIR:
                 if (tile.specialPowerZone() != null) {
                     if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.SHAMAN) {
-                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), null, newBoard, Action.RETAKE_PAWN, messageBoard);
+                        return new GameState(players, tileDecks, null, newBoard, Action.RETAKE_PAWN, messageBoard);
                     } else if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.LOGBOAT) {
                         newMessageBoard = messageBoard.withScoredLogboat(players.get(0), board.riverSystemArea((Zone.Water) tile.specialPowerZone())); // typecast forcé???
-                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
+                        return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
                     } else if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.HUNTING_TRAP) {
                         newMessageBoard = messageBoard.withScoredHuntingTrap(players.get(0), board.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone())); // typecast forcé???
-                        return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
+                        return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
                     }
                 }
-                return new GameState(players, tileDecks.withTopTileDrawn(Tile.Kind.MENHIR), null, newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
+                return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
 
             default:
                 throw new IllegalArgumentException();
@@ -181,7 +181,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         Preconditions.checkArgument(occupant == null || occupant.kind() == Occupant.Kind.PAWN);
 
         if (occupant == null) {
-            return new GameState(players, tileDecks, tileToPlace, board, Action.PLACE_TILE, messageBoard).withTurnFinished();
+            return new GameState(players, tileDecks, null, board, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
         } else {
             return new GameState(players, tileDecks, null, board.withoutOccupant(occupant), Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
         }
@@ -246,10 +246,13 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         Preconditions.checkArgument(lastPlacedTile != null);
 
         for (Area<Zone.Forest> forest : board.forestsClosedByLastTile()) {
-            newMessageBoard = newMessageBoard.withScoredForest(forest);
-            if (hasMenhir(forest) && lastPlacedTile.kind() == Tile.Kind.NORMAL) {
-                canPlayAgain = true;
+            if (hasMenhir(forest)) {
                 newMessageBoard = newMessageBoard.withClosedForestWithMenhir(players.get(0), forest);
+                if (lastPlacedTile.kind() == Tile.Kind.NORMAL) {
+                    canPlayAgain = true;
+                }
+            } else {
+                newMessageBoard = newMessageBoard.withScoredForest(forest);
             }
         }
 
@@ -272,7 +275,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
 
         GameState nextGameState = new GameState(
                 newPlayers,
-                newTileDecks,
+                canPlayAgain ? newTileDecks.withTopTileDrawn(Tile.Kind.MENHIR) : newTileDecks.withTopTileDrawn(Tile.Kind.NORMAL),
                 canPlayAgain ? newTileDecks.topTile(Tile.Kind.MENHIR) : newTileDecks.topTile(Tile.Kind.NORMAL),
                 newBoard,
                 newAction,
@@ -396,9 +399,10 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      * @return the list of players with the next player at the beginning
      */
     private List<PlayerColor> nextPlayerList() {
-       List<PlayerColor> list = players.subList(1, players.size());
-       list.add(players.get(0));
-       return list;
+        List<PlayerColor> sublist = players.subList(1, players.size());
+        List<PlayerColor> list = new ArrayList<>(sublist); // Create a mutable copy
+        list.add(players.get(0));
+        return list;
     }
 
     /**

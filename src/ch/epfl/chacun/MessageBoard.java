@@ -65,8 +65,8 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      */
     public MessageBoard withScoredForest(Area<Zone.Forest> forest) {
         if (forest.isOccupied()) {
-            int addPoints = forClosedForest(forest.zones().size(), forest.mushroomGroupCount(forest));
-            String addText = textMaker.playersScoredForest(forest.majorityOccupants(), addPoints, forest.mushroomGroupCount(forest), forest.zones().size());
+            int addPoints = forClosedForest(forest.zones().size(), Area.mushroomGroupCount(forest));
+            String addText = textMaker.playersScoredForest(forest.majorityOccupants(), addPoints, Area.mushroomGroupCount(forest), forest.zones().size());
             return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, addPoints, forest.majorityOccupants(), forest.tileIds())));
         }
         return this;

@@ -4,7 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import static ch.epfl.chacun.Tiles.TILES;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MyGameStateTest {
@@ -72,8 +74,17 @@ public class MyGameStateTest {
             List.of(new Tile(345, Tile.Kind.MENHIR, sides5[0], sides5[1], sides5[2], sides5[3]),
                     new Tile(346, Tile.Kind.MENHIR, sides6[0], sides6[1], sides6[2], sides6[3])));
 
-    private BasicTextMaker BASIC_TEXT_MAKER = new BasicTextMaker();
+    private final BasicTextMaker BASIC_TEXT_MAKER = new BasicTextMaker();
     private final GameState INITIAL_GAME_STATE = GameState.initial(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks, BASIC_TEXT_MAKER);
+    private final List<Tile> tileList = TILES;
+
+    private TileDecks deckGenerator() {
+        var startTile = List.of(tileList.get(56));
+        var normalTiles = List.of(tileList.get(14), tileList.get(17), tileList.get(31), tileList.get(57), tileList.get(41), tileList.get(65));
+        var menhirTiles = List.of(tileList.get(82), tileList.get(83), tileList.get(84), tileList.get(85));
+
+        return new TileDecks(startTile, normalTiles, menhirTiles);
+    }
 
     @Test
     public void gameStateConstructorCorrectlyDefined() {
@@ -103,19 +114,237 @@ public class MyGameStateTest {
                         .withPlacedTile(new PlacedTile(new Tile(341, Tile.Kind.NORMAL, sides3[0], sides3[1], sides3[2], sides3[3]), PlayerColor.RED, Rotation.NONE, new Pos(0,0)).withOccupant(new Occupant(Occupant.Kind.PAWN, 12))));
     }
 
+    //good
     @Test
     public void withPlacedTileNoPower() {
         GameState gameState = INITIAL_GAME_STATE.withStartingTilePlaced();
         gameState = gameState.withPlacedTile(new PlacedTile(new Tile(342, Tile.Kind.NORMAL, sides1[0], sides1[1], sides1[2], sides1[3]), PlayerColor.RED, Rotation.RIGHT, new Pos(0,1)));
         PlacedTile[] placedTiles = {new PlacedTile(new Tile(341, Tile.Kind.START, sides3[0], sides3[1], sides3[2], sides3[3]), null, Rotation.NONE, new Pos(0,0)), new PlacedTile(new Tile(342, Tile.Kind.NORMAL, sides1[0], sides1[1], sides1[2], sides1[3]), PlayerColor.RED, Rotation.RIGHT, new Pos(0,1))};
         TileDecks tileDecks1 = tileDecks.withTopTileDrawn(Tile.Kind.NORMAL).withTopTileDrawn(Tile.Kind.START);
-        assertEquals(gameState,
-                new GameState(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks1, null,
-                        Board.EMPTY
-                                .withNewTile(new PlacedTile(new Tile(342, Tile.Kind.NORMAL, sides1[0], sides1[1], sides1[2], sides1[3]), PlayerColor.RED, Rotation.RIGHT, new Pos(0,1)))
-                                .withNewTile(new PlacedTile(new Tile(341, Tile.Kind.START, sides3[0], sides3[1], sides3[2], sides3[3]), null, Rotation.NONE, new Pos(0,0))),
-                        GameState.Action.OCCUPY_TILE, new MessageBoard(BASIC_TEXT_MAKER, new ArrayList<>())));
+        GameState gameState1 = new GameState(List.of(PlayerColor.RED, PlayerColor.BLUE), tileDecks1, null,
+                Board.EMPTY
+                        .withNewTile(new PlacedTile(new Tile(342, Tile.Kind.NORMAL, sides1[0], sides1[1], sides1[2], sides1[3]), PlayerColor.RED, Rotation.RIGHT, new Pos(0,1)))
+                        .withNewTile(new PlacedTile(new Tile(341, Tile.Kind.START, sides3[0], sides3[1], sides3[2], sides3[3]), null, Rotation.NONE, new Pos(0,0))),
+                GameState.Action.OCCUPY_TILE, new MessageBoard(BASIC_TEXT_MAKER, new ArrayList<>()));
+
+        assertEquals(gameState, gameState1);
     }
 
+    @Test
+    void withOccupantRemoved() {
+
+        List<PlayerColor> colorList = List.of(PlayerColor.GREEN, PlayerColor.YELLOW, PlayerColor.PURPLE, PlayerColor.RED, PlayerColor.BLUE);
+        MessageBoard messageBoard = new MessageBoard(new BasicTextMaker(), List.of());
+        TileDecks deck = deckGenerator().withTopTileDrawn(Tile.Kind.START);
+
+        var t56 = new PlacedTile(tileList.get(56), PlayerColor.GREEN, Rotation.NONE, new Pos(0, 0));
+        var t17 = new PlacedTile(tileList.get(17), PlayerColor.GREEN, Rotation.NONE, new Pos(-1, 0));
+        var t27 = new PlacedTile(tileList.get(27), PlayerColor.GREEN, Rotation.NONE, new Pos(-2, 0));
+
+
+        var occupant56 = new Occupant(Occupant.Kind.PAWN, 560);
+        var occupant17 = new Occupant(Occupant.Kind.PAWN, 171);
+        var occupant27 = new Occupant(Occupant.Kind.PAWN, 273);
+
+
+        var board = Board.EMPTY
+                .withNewTile(t56)
+                .withOccupant(occupant56)
+                .withNewTile(t17)
+                .withOccupant(occupant17)
+                .withNewTile(t27)
+                .withOccupant(occupant27);
+
+        var boardEmpty = Board.EMPTY
+                .withNewTile(t56)
+                .withOccupant(occupant56)
+                .withNewTile(t17)
+                .withOccupant(occupant17)
+                .withNewTile(t27);
+
+        GameState removedState = new GameState(colorList, deck, null, board, GameState.Action.RETAKE_PAWN, messageBoard).withOccupantRemoved(occupant27);
+
+        GameState expectedState = new GameState(colorList, deck, null, boardEmpty, GameState.Action.OCCUPY_TILE, messageBoard);
+
+        assertEquals(expectedState, removedState);
+
+    }
+
+    @Test
+    void withOccupantRemoveAndNoOccupationPossible(){
+
+        List<PlayerColor> colorList = List.of(PlayerColor.GREEN, PlayerColor.YELLOW, PlayerColor.PURPLE, PlayerColor.RED, PlayerColor.BLUE);
+
+        List<PlayerColor> colorSwitch = new ArrayList<>(colorList);
+        colorSwitch.addLast(colorSwitch.getFirst());
+        colorSwitch.removeFirst();
+
+        MessageBoard messageBoard = new MessageBoard(new BasicTextMaker(), List.of());
+        TileDecks deck = deckGenerator().withTopTileDrawn(Tile.Kind.START);
+
+        var t56 = new PlacedTile(tileList.get(56), PlayerColor.GREEN, Rotation.NONE, new Pos(0, 0));
+        var t37 = new PlacedTile(tileList.get(37), PlayerColor.GREEN, Rotation.NONE, new Pos(0, 1));
+        var t36 = new PlacedTile(tileList.get(36), PlayerColor.GREEN, Rotation.RIGHT, new Pos(1, 0));
+        var t62 = new PlacedTile(tileList.get(62), PlayerColor.GREEN, Rotation.NONE, new Pos(2, 0));
+        var t88 = new PlacedTile(tileList.get(88), PlayerColor.GREEN, Rotation.NONE, new Pos(3, 0));
+        var t61 = new PlacedTile(tileList.get(61), PlayerColor.GREEN, Rotation.RIGHT, new Pos(3, 0));
+
+
+        var occupant56 = new Occupant(Occupant.Kind.PAWN, 561);
+        var occupant37 = new Occupant(Occupant.Kind.PAWN, 371);
+        var occupant36 = new Occupant(Occupant.Kind.PAWN, 360);
+        var occupant63 = new Occupant(Occupant.Kind.PAWN, 630);
+
+
+        var board = Board.EMPTY
+                .withNewTile(t56)
+                .withOccupant(occupant56)
+                .withNewTile(t37)
+                .withOccupant(occupant37)
+                .withNewTile(t36)
+                .withOccupant(occupant36)
+                .withNewTile(t62);
+
+        var boardEmpty = Board.EMPTY
+                .withNewTile(t56)
+                .withOccupant(occupant56)
+                .withNewTile(t37)
+                .withOccupant(occupant37)
+                .withNewTile(t36)
+                .withOccupant(occupant36)
+                .withNewTile(t62)
+                .withNewTile(t88);
+
+        var lastBoard = Board.EMPTY
+                .withNewTile(t56)
+                .withOccupant(occupant56)
+                .withNewTile(t37)
+                .withOccupant(occupant37)
+                .withNewTile(t36)
+                .withNewTile(t62)
+                .withNewTile(t88);
+
+        var secondBoard = Board.EMPTY
+                .withNewTile(t56)
+                .withOccupant(occupant56)
+                .withNewTile(t37)
+                .withOccupant(occupant37)
+                .withNewTile(t36)
+                .withOccupant(occupant36)
+                .withNewTile(t62)
+                .withNewTile(t61);
+
+        var secondBoardCleaned = Board.EMPTY
+                .withNewTile(t56)
+                .withNewTile(t37)
+                .withOccupant(occupant37)
+                .withNewTile(t36)
+                .withOccupant(occupant36)
+                .withNewTile(t62)
+                .withNewTile(t61);
+
+        GameState removedState = new GameState(colorList, deck, t88.tile(), board, GameState.Action.PLACE_TILE, messageBoard).withPlacedTile(t88).withOccupantRemoved(null).withNewOccupant(null);
+        GameState nullRemove = new GameState(colorSwitch, deck.withTopTileDrawn(Tile.Kind.NORMAL), deck.topTile(Tile.Kind.NORMAL), boardEmpty, GameState.Action.PLACE_TILE, messageBoard);
+        assertEquals(nullRemove, removedState);
+
+        GameState state = new GameState(colorList, deck, null, secondBoard, GameState.Action.RETAKE_PAWN, messageBoard)
+                .withOccupantRemoved(occupant56);
+
+        GameState lastState = new GameState(colorList, deck, t88.tile(), board, GameState.Action.PLACE_TILE, messageBoard).withPlacedTile(t88).withOccupantRemoved(occupant36).withNewOccupant(null);
+        GameState expectedLastState = new GameState(colorSwitch, deck.withTopTileDrawn(Tile.Kind.NORMAL), deck.topTile(Tile.Kind.NORMAL), lastBoard, GameState.Action.PLACE_TILE, messageBoard);
+
+        GameState expectedState = new GameState(colorSwitch, deck.withTopTileDrawn(Tile.Kind.NORMAL), deck.topTile(Tile.Kind.NORMAL), secondBoardCleaned, GameState.Action.PLACE_TILE, messageBoard);
+
+        assertNotEquals(deck.topTile(Tile.Kind.NORMAL), deck.withTopTileDrawn(Tile.Kind.NORMAL).topTile(Tile.Kind.NORMAL));
+
+        assertEquals(expectedState, state);
+        assertEquals(expectedLastState, lastState);
+    }
+
+
+    //good
+    @Test
+    void withNewOccupantWithMenhirClosed() {
+
+        List<PlayerColor> colorList = List.of(PlayerColor.GREEN, PlayerColor.YELLOW, PlayerColor.PURPLE, PlayerColor.RED, PlayerColor.BLUE);
+
+        List<PlayerColor> colorSwitch = new ArrayList<>(colorList);
+        colorSwitch.addLast(colorSwitch.getFirst());
+        colorSwitch.removeFirst();
+
+        MessageBoard messageBoard = new MessageBoard(new BasicTextMaker(), List.of());
+        TileDecks deck = deckGenerator().withTopTileDrawn(Tile.Kind.START);
+
+        var t56 = new PlacedTile(tileList.get(56), PlayerColor.GREEN, Rotation.NONE, new Pos(0, 0));
+        var t37 = new PlacedTile(tileList.get(37), PlayerColor.GREEN, Rotation.NONE, new Pos(0, 1));
+        var t36 = new PlacedTile(tileList.get(36), PlayerColor.GREEN, Rotation.RIGHT, new Pos(1, 0));
+
+        var occupant56 = new Occupant(Occupant.Kind.PAWN, 561);
+        var occupant37 = new Occupant(Occupant.Kind.PAWN, 371);
+        var occupant36 = new Occupant(Occupant.Kind.PAWN, 360);
+
+        var boardOccupied= Board.EMPTY
+                .withNewTile(t56)
+                .withNewTile(t37)
+                .withOccupant(occupant37)
+                .withNewTile(t36)
+                .withOccupant(occupant36);
+
+        var boardEmpty = Board.EMPTY
+                .withNewTile(t56)
+                .withOccupant(occupant56)
+                .withNewTile(t37)
+                .withOccupant(occupant37);
+
+        GameState state = new GameState(colorList, deck, t36.tile(), boardEmpty, GameState.Action.PLACE_TILE, messageBoard)
+                .withPlacedTile(t36)
+                .withNewOccupant(occupant36);
+
+        Area<Zone.Forest> area = new Area<>(Set.of(new Zone.Forest(56_1, Zone.Forest.Kind.WITH_MENHIR), new Zone.Forest(36_1, Zone.Forest.Kind.PLAIN), new Zone.Forest(37_0, Zone.Forest.Kind.PLAIN)), List.of(PlayerColor.GREEN, PlayerColor.GREEN, PlayerColor.GREEN), 0);
+
+        GameState expectedState = new GameState(colorList, deck.withTopTileDrawn(Tile.Kind.MENHIR), deck.topTile(Tile.Kind.MENHIR), boardOccupied, GameState.Action.PLACE_TILE, messageBoard.withClosedForestWithMenhir(PlayerColor.GREEN, area));
+
+        assertNotEquals(deck.topTile(Tile.Kind.MENHIR), deck.withTopTileDrawn(Tile.Kind.MENHIR).topTile(Tile.Kind.MENHIR));
+
+        assertEquals(expectedState, state);
+    }
+
+    @Test
+    void withNewOccupantWithEndOfTurn() {
+        List<PlayerColor> colorList = List.of(PlayerColor.GREEN, PlayerColor.YELLOW, PlayerColor.PURPLE, PlayerColor.RED, PlayerColor.BLUE);
+
+        List<PlayerColor> colorSwitch = new ArrayList<>(colorList);
+        colorSwitch.addLast(colorSwitch.getFirst());
+        colorSwitch.removeFirst();
+
+        MessageBoard messageBoard = new MessageBoard(new BasicTextMaker(), List.of());
+        TileDecks deck = deckGenerator().withTopTileDrawn(Tile.Kind.START);
+
+        var t56 = new PlacedTile(tileList.get(56), PlayerColor.GREEN, Rotation.NONE, new Pos(0, 0));
+        var t36 = new PlacedTile(tileList.get(36), PlayerColor.GREEN, Rotation.RIGHT, new Pos(1, 0));
+
+        var occupant56 = new Occupant(Occupant.Kind.PAWN, 561);
+        var occupant36 = new Occupant(Occupant.Kind.PAWN, 360);
+
+        var boardOccupied= Board.EMPTY
+                .withNewTile(t56)
+                .withOccupant(occupant56)
+                .withNewTile(t36)
+                .withOccupant(occupant36);
+
+        var boardEmpty = Board.EMPTY
+                .withNewTile(t56)
+                .withOccupant(occupant56);
+
+        GameState state = new GameState(colorList, deck, t36.tile(), boardEmpty, GameState.Action.PLACE_TILE, messageBoard)
+                .withPlacedTile(t36)
+                .withNewOccupant(occupant36);
+
+        GameState expectedState = new GameState(colorSwitch, deck.withTopTileDrawn(Tile.Kind.NORMAL), deck.topTile(Tile.Kind.NORMAL), boardOccupied, GameState.Action.PLACE_TILE, messageBoard);
+
+        assertNotEquals(deck.topTile(Tile.Kind.NORMAL), deck.withTopTileDrawn(Tile.Kind.NORMAL).topTile(Tile.Kind.NORMAL));
+
+        assertEquals(expectedState, state);
+    }
 
 }
