@@ -1,0 +1,22 @@
+
+v
+java:S1141K"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿJ$bfbd2c30-7008-45bc-8a45-5ef878e39944
+k	java:S106="+Replace this use of System.err by a logger.(éµ¹¡úÿÿÿÿJ$1783567b-1ba3-449c-b2a2-72c5c6625e88
+f	java:S106A"+Replace this use of System.err by a logger.(şÄßìJ$3a5a467f-92fe-4726-8fab-179b83204837
+š
+java:S2142|"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ò¶ÈJ$108c48ad-c747-46a4-808c-288eacd4f340
+Œ
+java:S3457N"Q%n should be used in place of \n to produce the platform-specific line separator.(Æ¿wJ$e7789dbe-295f-4694-bf87-62e5c4d702f0
+e	java:S106N"+Replace this use of System.err by a logger.(Æ¿wJ$19714223-c52c-4bd8-945b-0b643df3873a
+f	java:S106a"+Replace this use of System.out by a logger.(µİçßJ$57973cf8-b45a-4fd2-90a4-037e6cfff05a
+f	java:S106a"+Replace this use of System.err by a logger.(µİçßJ$f04749b8-f0cb-4094-957f-b3212b3f51c6
+
+java:S3457y"Q%n should be used in place of \n to produce the platform-specific line separator.(¾ «ÜJ$4c08cad4-fa2a-438e-adfc-af5f3f45d082
+k	java:S106}"+Replace this use of System.err by a logger.(¯¡ğÄıÿÿÿÿJ$dbf9feec-d926-4baf-8426-1142d1f4420b
+f	java:S106~"+Replace this use of System.err by a logger.(Îã­ÃJ$f8c8c7f5-bd7e-4f61-9a19-024eeac0dc61
+q
+java:S1128"0Remove this unused import 'java.time.LocalDate'.(›‘¬èıÿÿÿÿJ$30ccb7df-fdd0-48dc-979b-3bb61bcd09f6
+m
+java:S1128",Remove this unused import 'java.time.Month'.(¤‚ÉøÿÿÿÿJ$bcdb51d9-1954-47c8-9c6b-7d1eebfecb24
+v
+java:S1128":Remove this unused import 'java.time.temporal.ChronoUnit'.(Á…§J$a3f3382e-2c5e-4c09-af24-3bd4c19f5b30
