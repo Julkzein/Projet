@@ -17,7 +17,7 @@ import java.util.*;
  */
 public final class Board {
     private final PlacedTile[] placedTiles;
-    private final int[] index; ///////// attention c private
+    private final int[] index;
     private final ZonePartitions partition;
     private final Set<Animal> cancelledAnimals;
     public static final int REACH = 12;
@@ -447,6 +447,7 @@ public final class Board {
         PlacedTile[] placedTiles1 = Arrays.copyOf(placedTiles, placedTiles.length);
         placedTiles1[index(addTile.pos())] = addTile;
         ZonePartitions.Builder newPartition = new ZonePartitions.Builder(partition);
+
         for (Zone zone : addTile.tile().zones()) {
             if (zone.id() == occupant.zoneId()) {
                 newPartition.addInitialOccupant(addTile.placer(), occupant.kind(), zone);
@@ -494,20 +495,25 @@ public final class Board {
     public Board withoutGatherersOrFishersIn(Set<Area<Zone.Forest>> forests, Set<Area<Zone.River>> rivers) {
         ZonePartitions.Builder newBoardZonePartitionsBuilder = new ZonePartitions.Builder(partition);
         PlacedTile[] newPlacedTile = placedTiles.clone();
+
         for (Area<Zone.Forest> forestArea : forests) {
             newBoardZonePartitionsBuilder.clearGatherers(forestArea);
             for (Zone.Forest zoneForest :  forestArea.zones()   ) {
                 newPlacedTile[index(tileWithId(Zone.tileId(zoneForest.id())).pos())] = tileWithId(Zone.tileId(zoneForest.id())).withNoOccupant();
             }
         }
+
         for (Area<Zone.River> riverArea : rivers) {
             newBoardZonePartitionsBuilder.clearFishers(riverArea);
             for (Zone.River zoneRiver :  riverArea.zones()) {
                 newPlacedTile[index(tileWithId(Zone.tileId(zoneRiver.id())).pos())] = tileWithId(Zone.tileId(zoneRiver.id())).withNoOccupant();
             }
         }
+
         ZonePartitions newBoardZonePartitions = newBoardZonePartitionsBuilder.build();
-        return new Board(newPlacedTile, index, newBoardZonePartitions, cancelledAnimals);
+        Board b = new Board(newPlacedTile, index, newBoardZonePartitions, cancelledAnimals);
+
+        return b;
     }
 
     /**

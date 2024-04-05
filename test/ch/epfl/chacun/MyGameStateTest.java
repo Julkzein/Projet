@@ -347,4 +347,68 @@ public class MyGameStateTest {
         assertEquals(expectedState, state);
     }
 
+    @Test
+    void withOccupantRemovedCorrectly() {
+
+        List<PlayerColor> colorList = List.of(PlayerColor.GREEN, PlayerColor.YELLOW, PlayerColor.PURPLE, PlayerColor.RED, PlayerColor.BLUE);
+        MessageBoard messageBoard = new MessageBoard(new BasicTextMaker(), List.of());
+        TileDecks deck = deckGenerator().withTopTileDrawn(Tile.Kind.START);
+
+        var t56 = new PlacedTile(tileList.get(56), PlayerColor.GREEN, Rotation.NONE, new Pos(0, 0));
+        var t17 = new PlacedTile(tileList.get(17), PlayerColor.GREEN, Rotation.NONE, new Pos(-1, 0));
+        var t27 = new PlacedTile(tileList.get(27), PlayerColor.GREEN, Rotation.NONE, new Pos(-2, 0));
+
+
+        var occupant56 = new Occupant(Occupant.Kind.PAWN, 560);
+        var occupant17 = new Occupant(Occupant.Kind.PAWN, 171);
+        var occupant27 = new Occupant(Occupant.Kind.PAWN, 273);
+
+
+        var board = Board.EMPTY
+                .withNewTile(t56)
+                .withOccupant(occupant56)
+                .withNewTile(t17)
+                .withOccupant(occupant17)
+                .withNewTile(t27)
+                .withOccupant(occupant27);
+
+        var boardEmpty = Board.EMPTY
+                .withNewTile(t56)
+                .withOccupant(occupant56)
+                .withNewTile(t17)
+                .withOccupant(occupant17)
+                .withNewTile(t27);
+
+        GameState removedState = new GameState(colorList, deck, null, board, GameState.Action.RETAKE_PAWN, messageBoard).withOccupantRemoved(occupant27);
+
+        GameState expectedState = new GameState(colorList, deck, null, boardEmpty, GameState.Action.OCCUPY_TILE, messageBoard);
+
+        assertEquals(expectedState, removedState);
+
+    }
+
+    @Test
+    void lastTilePotentialOccupantsWithOccupantsLeft() {
+
+        List<PlayerColor> colorList = List.of(PlayerColor.GREEN, PlayerColor.YELLOW, PlayerColor.PURPLE, PlayerColor.RED, PlayerColor.BLUE);
+        MessageBoard messageBoard = new MessageBoard(new BasicTextMaker(), List.of());
+
+        var t56 = new PlacedTile(tileList.get(56), null, Rotation.NONE, new Pos(0, 0));
+        var t17 = new PlacedTile(tileList.get(17), PlayerColor.BLUE, Rotation.NONE, new Pos(-1, 0));
+        var t27 = new PlacedTile(tileList.get(27), PlayerColor.GREEN, Rotation.NONE, new Pos(-2, 0));
+
+        var occupant17 = new Occupant(Occupant.Kind.PAWN, 17_0);
+
+        var board = Board.EMPTY
+                .withNewTile(t56)
+                .withNewTile(t17)
+                .withOccupant(occupant17)
+                .withNewTile(t27);
+
+        Set<Occupant> occupantList = Set.of(new Occupant(Occupant.Kind.PAWN, 273), new Occupant(Occupant.Kind.PAWN, 271), new Occupant(Occupant.Kind.PAWN, 272), new Occupant(Occupant.Kind.HUT, 271));
+
+        assertEquals(occupantList, new GameState(colorList, deckGenerator(), deckGenerator().topTile(Tile.Kind.NORMAL), board, GameState.Action.PLACE_TILE, messageBoard).lastTilePotentialOccupants());
+
+    }
+
 }
