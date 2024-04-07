@@ -8,6 +8,12 @@ import static ch.epfl.chacun.Occupant.occupantsCount;
 /**
  * This record represents the state of the game
  *
+ * @param players the players of the current game
+ * @param tileDecks the three decks of tiles that will be drawn during the game 
+ * @param tileToPlace the next tile that will be placed
+ * @param board the board of the current game
+ * @param nextAction the next action to be taken
+ * @param messageBoard the message board associated to the current game  
  * @Author Louis Bernard (379724)
  * @Author Jules Delforge (372325)
  */
@@ -16,13 +22,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      * This constructor creates a game state with the given players, tile decks, tile to place, board, next action and message board. It also checks if
      * the number of players is at least 2, if the tile to place is null and the next action is place tile, if the tile decks, board, next action or
      *message board is not null
-     *
-     * @param players : the list of players
-     * @param tileDecks : the tile decks
-     * @param tileToPlace : the tile to place
-     * @param board : the board
-     * @param nextAction : the next action
-     * @param messageBoard : the message board
      * @throws IllegalArgumentException if the number of players is less than 2, if the tile to place is not null and the next action is not place tile, if the tile decks, board, next action or message board is null
      */
     public GameState {
@@ -54,7 +53,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
     if (nextAction == Action.START_GAME || nextAction == Action.END_GAME) {
             return null;
         } else {
-            return players.get(0);
+            return players.getFirst();
         }
     }
 
@@ -145,10 +144,10 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.SHAMAN) {
                         return new GameState(players, tileDecks, null, newBoard, Action.RETAKE_PAWN, messageBoard);
                     } else if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.LOGBOAT) {
-                        newMessageBoard = messageBoard.withScoredLogboat(players.get(0), board.riverSystemArea((Zone.Water) tile.specialPowerZone()));
+                        newMessageBoard = messageBoard.withScoredLogboat(players.getFirst(), board.riverSystemArea((Zone.Water) tile.specialPowerZone()));
                         return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
                     } else if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.HUNTING_TRAP) {
-                        newMessageBoard = messageBoard.withScoredHuntingTrap(players.get(0), board.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()));
+                        newMessageBoard = messageBoard.withScoredHuntingTrap(players.getFirst(), board.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()));
                         return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
                     }
                 }
@@ -237,7 +236,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
 
         for (Area<Zone.Forest> forest : board.forestsClosedByLastTile()) {
             if (hasMenhir(forest)) {
-                newMessageBoard = newMessageBoard.withClosedForestWithMenhir(players.get(0), forest);
+                newMessageBoard = newMessageBoard.withClosedForestWithMenhir(players.getFirst(), forest);
                 if (lastPlacedTile.kind() == Tile.Kind.NORMAL) {
                     canPlayAgain = true;
                 }
@@ -391,7 +390,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
     private List<PlayerColor> nextPlayerList() {
         List<PlayerColor> sublist = players.subList(1, players.size());
         List<PlayerColor> list = new ArrayList<>(sublist);
-        list.add(players.get(0));
+        list.add(players.getFirst());
         return list;
     }
 

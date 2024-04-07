@@ -16,13 +16,13 @@ import java.util.*;
  * @Author Jules Delforge (372325)
  */
 public final class Board {
-    private final PlacedTile[] placedTiles;
-    private final int[] index;
-    private final ZonePartitions partition;
-    private final Set<Animal> cancelledAnimals;
-    public static final int REACH = 12;
-    private static final int TOTAL_TILE_COUNT = 625; //fallait pas plutot mettre un truc variabel
-    public static final Board EMPTY = new Board(new PlacedTile[TOTAL_TILE_COUNT] , new int[0], ZonePartitions.EMPTY, Set.of());
+    private final PlacedTile[] placedTiles; //an array of all the tiles placed on the board
+    private final int[] index; //an array of the indexes of the tiles placed on the board in the order they were placed
+    private final ZonePartitions partition; //all the partitions of the board
+    private final Set<Animal> cancelledAnimals; //a set of all the canceled animals
+    public static final int REACH = 12; //the distance in tiles separating the middle tile from the sides
+    private static final int TOTAL_TILE_COUNT = 625; //the total amount of tiles of the board
+    public static final Board EMPTY = new Board(new PlacedTile[TOTAL_TILE_COUNT] , new int[0], ZonePartitions.EMPTY, Set.of()); //a totally empty board
 
 
     /**
@@ -42,22 +42,6 @@ public final class Board {
 
 
     /**
-    public Board(Set<Animal> cancelledAnimals,  int[] index,PlacedTile[] placedTiles, ZonePartitions partition ) {
-        this.placedTiles = placedTiles;
-        this.index = index;
-        this.partition = partition;
-        this.cancelledAnimals = Collections.unmodifiableSet(cancelledAnimals);
-    }
-
-    public Board(int[] index, PlacedTile[] placedTiles, ZonePartitions partition) {
-        this.placedTiles = placedTiles;
-        this.index = index;
-        this.partition = partition;
-        this.cancelledAnimals = Set.of();
-    }
-     */
-
-    /**
      * This method gives the index of a placed tile at a given position.
      *
      * @param pos the position of the tile
@@ -74,8 +58,8 @@ public final class Board {
      * @return the tile at the given position
      */
     public PlacedTile tileAt(Pos pos) {
-        int index = index(pos);
-        return index < 0 || index >= placedTiles.length ? null : placedTiles[index];
+        int i = index(pos);
+        return i < 0 || i >= placedTiles.length ? null : placedTiles[i];
     }
 
 /**
@@ -87,9 +71,9 @@ public final class Board {
      * @return the placed tile with given id
      */
     public PlacedTile tileWithId(int tileId) {
-        for (int index : index) {
-            if (placedTiles[index].id() == tileId) {
-                return placedTiles[index];
+        for (int i : index) {
+            if (placedTiles[i].id() == tileId) {
+                return placedTiles[i];
             }
         }
         throw new IllegalArgumentException();
@@ -237,9 +221,7 @@ public final class Board {
             if (area.zones().contains(meadowZone)) {
                 Set<Zone.Meadow> zones = area.zones();
                 occupants = area.occupants();
-                for (Zone.Meadow zone : zones) {
-                    meadowsInArea.add(zone);
-                }
+                meadowsInArea.addAll(zones); 
             }
         }
 
@@ -374,12 +356,10 @@ public final class Board {
             PlacedTile tileNorth = tileAt(placedTile.pos().neighbor(Direction.N));
             PlacedTile tileSouth = tileAt(placedTile.pos().neighbor(Direction.S));
 
-            if ((tileEast == null || placedTile.side(Direction.E).isSameKindAs(tileEast.side(Direction.W)))
-                && (tileWest == null || placedTile.side(Direction.W).isSameKindAs(tileWest.side(Direction.E)))
-                && (tileNorth == null || placedTile.side(Direction.N).isSameKindAs(tileNorth.side(Direction.S)))
-                && (tileSouth == null || placedTile.side(Direction.S).isSameKindAs(tileSouth.side(Direction.N)))) {
-                return true;
-            }
+            return (tileEast == null || placedTile.side(Direction.E).isSameKindAs(tileEast.side(Direction.W)))
+                    && (tileWest == null || placedTile.side(Direction.W).isSameKindAs(tileWest.side(Direction.E)))
+                    && (tileNorth == null || placedTile.side(Direction.N).isSameKindAs(tileNorth.side(Direction.S)))
+                    && (tileSouth == null || placedTile.side(Direction.S).isSameKindAs(tileSouth.side(Direction.N)));
         }
         return false;
     }
@@ -414,10 +394,10 @@ public final class Board {
         PlacedTile[] newPlacedTiles = Arrays.copyOf(placedTiles, placedTiles.length);
 
         int[] newIndex = Arrays.copyOf(index, index.length + 1);
-        int index = index(tile.pos());
+        int i = index(tile.pos());
 
-        newPlacedTiles[index] = tile;
-        newIndex[newIndex.length - 1] = index;
+        newPlacedTiles[i] = tile;
+        newIndex[newIndex.length - 1] = i;
         ZonePartitions.Builder newPartitions = new ZonePartitions.Builder(partition);
         newPartitions.addTile(tile.tile());
 
@@ -437,7 +417,7 @@ public final class Board {
      * occupied.
      *
      * @param occupant the occupant to be placed on the board
-     * @throws IllegalArgumentException if the tile that should contain the occupant is alreadyoccupied.
+     * @throws IllegalArgumentException if the tile that should contain the occupant is already occupied.
      * @return a new board identical to the current one but with the occupant added
      */
     public Board withOccupant(Occupant occupant) {
@@ -511,9 +491,8 @@ public final class Board {
         }
 
         ZonePartitions newBoardZonePartitions = newBoardZonePartitionsBuilder.build();
-        Board b = new Board(newPlacedTile, index, newBoardZonePartitions, cancelledAnimals);
+        return new Board(newPlacedTile, index, newBoardZonePartitions, cancelledAnimals);
 
-        return b;
     }
 
     /**
@@ -529,11 +508,11 @@ public final class Board {
     }
 
     /**
-     * This method redfines the equals method for the Board class.
+     * This method redefines the equals method for the Board class.
      * It returns true if the given object is equal to the current board.
      *
      * @param that the object to be compared to the current board
-     * @return true if all of the attributes of the given object are equal to the current board
+     * @return true if all the attributes of the given object are equal to the current board
      */
     @Override
     public boolean equals(Object that) {
@@ -543,7 +522,7 @@ public final class Board {
     }
 
     /**
-     * This method redfines the hashCode method for the Board class.
+     * This method redefines the hashCode method for the Board class.
      * It returns the hash code of the current board.
      *
      * @return the hash code of the current board
