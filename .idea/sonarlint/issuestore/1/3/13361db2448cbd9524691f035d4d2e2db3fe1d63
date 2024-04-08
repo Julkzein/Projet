@@ -1,17 +1,7 @@
 
-k
-java:S3740Δ"/Provide the parametrized type for this generic.(Χ£ΎJ$de2432d7-68ea-4fbb-8d16-1d3f4ed05f17
-
-java:S2259Ο"FA "NullPointerException" could be thrown; "lastTile" is nullable here.(§”ωτόÿÿÿÿJ$11b65bc7-94c4-48bd-945f-282521bff118
-
-java:S2259ε"FA "NullPointerException" could be thrown; "lastTile" is nullable here.(κκ£ΆώÿÿÿÿJ$7148bc93-2039-4e34-a6e1-fa609d8dce0b
-z
-java:S1117P"9Rename "index" which hides the field declared at line 22.(€‹ρ΅ύÿÿÿÿJ$98713b2c-38a8-4866-b0cc-bb9344dd4c8e
-z
-java:S1117]"9Rename "index" which hides the field declared at line 22.(Ό¥ι—ώÿÿÿÿJ$d9dde69a-3ced-44c9-af81-4c6d76ac68e1
 
-java:S3776κ"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(€άJ$383a9f90-2d8c-4174-b4ce-4a22566b68cd
-”
-java:S3776 "RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(Ω·ΎύÿÿÿÿJ$dc7d85cb-6702-4e99-bfd1-984a35301f56
-v
-java:S1117¤"9Rename "index" which hides the field declared at line 22.(ηδªΘJ$47cdbe35-25a7-4d36-b3c8-c53b5ec1264e
+java:S2259Π"FA "NullPointerException" could be thrown; "lastTile" is nullable here.(κκ£Άώÿÿÿÿ8ΔΎ”Ήλ1J$21e3663f-061b-4825-9ee5-0bde86aeeb63
+
+java:S2259Ί"FA "NullPointerException" could be thrown; "lastTile" is nullable here.(§”ωτόÿÿÿÿ8ΔΎ”Ήλ1J$704d612b-bb72-4078-a5ce-d614574ff834
+›
+java:S3776‹"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(Ω·Ύύÿÿÿÿ8γΎ”Ήλ1J$d31c8e4f-355d-4e16-b349-ac9dd0dd3547

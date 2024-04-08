@@ -45,3 +45,9 @@ T
 $src/ch/epfl/chacun/MessageBoard.java,c/c/ccebb5279cc4e90f9adc1e6fec9a7f44d7f4d602
 M
 src/ch/epfl/cs108/Submit.java,1/b/1b5e5540fc690e534cf677f1e8247ea82213ed19
+[
++src/ch/epfl/sigcheck/SignatureChecks_6.java,1/d/1dfa949e93d06c4bbdc980e671811bcb814c3ad0
+R
+"test/ch/epfl/chacun/BoardTest.java,0/c/0cc8a7108ef2cf0c6238515f55d19b9c1f41561a
+\
+,test/ch/epfl/chacun/MyGameScenario2Test.java,b/6/b6223f3c38b4f47339b75c3f0f3ce3c856f4d120
