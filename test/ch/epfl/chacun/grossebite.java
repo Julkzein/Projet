@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GameStateTest {
+class grossebite {
     /** Three players of different colors */
     private final List<PlayerColor> players = List.of(PlayerColor.RED, PlayerColor.BLUE, PlayerColor.GREEN);
     /** All the possible player colors */

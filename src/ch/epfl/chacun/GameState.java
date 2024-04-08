@@ -97,7 +97,10 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                             potentialOccupantsSet.add(occupant);
                         }
                         break;
+
                     case Zone.Water water:
+                        //System.out.println(occupant.kind());
+                        //System.out.println(freeOccupantsCount(currentPlayer(), occupant.kind()));
                         if (!board.riverSystemArea(water).isOccupied() && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
                             potentialOccupantsSet.add(occupant);
                         }
@@ -185,10 +188,11 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         Preconditions.checkArgument(nextAction == Action.OCCUPY_TILE);
 
         if (occupant == null) {
-            return new GameState(players, tileDecks, null, board, nextAction, messageBoard).withTurnFinished();
+            return withTurnFinished(board, messageBoard);
+                    //new GameState(players, tileDecks, null, board, nextAction, messageBoard).withTurnFinished();
         } else {
             Board newBoard = board.withOccupant(occupant);
-            return new GameState(players, tileDecks, null, newBoard, nextAction, messageBoard).withTurnFinished();
+            return withTurnFinished(newBoard, messageBoard);
         }
 
     }
@@ -213,7 +217,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         }
 
         if (occupationPossible) { return new GameState(players, tileDecks, null, board, Action.OCCUPY_TILE, messageBoard); }
-        else { return new GameState(players, tileDecks, null, board, nextAction, messageBoard).withTurnFinished(); }
+        else { return withTurnFinished(board, messageBoard); }
     }
 
     /**
@@ -224,19 +228,25 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      *
      * @return the game state after the turn has been finished
      */
-    private GameState withTurnFinished() {
+    private GameState withTurnFinished(Board board, MessageBoard messageBoard) {
+        TileDecks newTileDecks =
+                tileDecks.withTopTileDrawnUntil(Tile.Kind.MENHIR, board::couldPlaceTile)
+                        .withTopTileDrawnUntil(Tile.Kind.NORMAL, board::couldPlaceTile);;
+
         PlacedTile lastPlacedTile = board.lastPlacedTile();
-        List<PlayerColor> newPlayers = players;
-        Action newAction = Action.PLACE_TILE;
-        TileDecks newTileDecks = tileDecks;
         MessageBoard newMessageBoard = messageBoard;
         Board newBoard;
+        List<PlayerColor> newPlayers = new ArrayList<>(players);
+
         boolean canPlayAgain = false;
         Preconditions.checkArgument(lastPlacedTile != null);
 
+        System.out.println(lastPlacedTile);
+        System.out.println(board.forestsClosedByLastTile());
+
         for (Area<Zone.Forest> forest : board.forestsClosedByLastTile()) {
             if (hasMenhir(forest)) {
-                newMessageBoard = newMessageBoard.withClosedForestWithMenhir(players.getFirst(), forest);
+                newMessageBoard = newMessageBoard.withClosedForestWithMenhir(currentPlayer(), forest);
                 if (lastPlacedTile.kind() == Tile.Kind.NORMAL) {
                     canPlayAgain = true;
                 }
@@ -252,25 +262,23 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         newBoard = board.withoutGatherersOrFishersIn(board.forestsClosedByLastTile(), board.riversClosedByLastTile());
 
         if (canPlayAgain) {
-            newTileDecks = newTileDecks.withTopTileDrawnUntil(Tile.Kind.MENHIR, board::couldPlaceTile);
+            //newTileDecks = newTileDecks.withTopTileDrawnUntil(Tile.Kind.MENHIR, board::couldPlaceTile);
         } else {
-            newTileDecks = newTileDecks.withTopTileDrawnUntil(Tile.Kind.NORMAL, board::couldPlaceTile);
+            //newTileDecks = newTileDecks.withTopTileDrawnUntil(Tile.Kind.NORMAL, board::couldPlaceTile);
             newPlayers = nextPlayerList();
         }
 
         if (tileDecks.normalTiles().isEmpty()) {
-            newAction = Action.END_GAME;
+            return new GameState(newPlayers, newTileDecks, null, newBoard, Action.END_GAME, newMessageBoard).withFinalPointsCounted();
+        } else {
+            return new GameState(
+                    newPlayers,
+                    canPlayAgain ? newTileDecks.withTopTileDrawn(Tile.Kind.MENHIR) : newTileDecks.withTopTileDrawn(Tile.Kind.NORMAL),
+                    canPlayAgain ? newTileDecks.topTile(Tile.Kind.MENHIR) : newTileDecks.topTile(Tile.Kind.NORMAL),
+                    newBoard,
+                    Action.PLACE_TILE,
+                    newMessageBoard);
         }
-
-        GameState nextGameState = new GameState(
-                newPlayers,
-                canPlayAgain ? newTileDecks.withTopTileDrawn(Tile.Kind.MENHIR) : newTileDecks.withTopTileDrawn(Tile.Kind.NORMAL),
-                canPlayAgain ? newTileDecks.topTile(Tile.Kind.MENHIR) : newTileDecks.topTile(Tile.Kind.NORMAL),
-                newBoard,
-                newAction,
-                newMessageBoard);
-
-        return (newAction == Action.END_GAME) ? nextGameState.withFinalPointsCounted() : nextGameState;
     }
 
     /**
@@ -304,7 +312,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                             for (Animal deer : meadow.animals()) {
                                 if (eatenDeers < tigers.size()) {
                                     cancelledAnimals.add(deer);
-                                    deers.remove(deer);
+                                    //deers.remove(deer);
                                     eatenDeers++;
                                 } else break;
                             }
@@ -314,7 +322,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                         for (Animal deer : deers) {
                             if (eatenDeers < tigers.size()) {
                                 cancelledAnimals.add(deer);
-                                deers.remove(deer);
+                                //deers.remove(deer);
                                 eatenDeers++;
                             } else break;
                         }
@@ -333,7 +341,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
             newMessageBoard.withScoredMeadow(meadowArea, cancelledAnimals);
             if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP) != null) {
                 newMessageBoard.withScoredPitTrap(meadowArea, cancelledAnimals);
-            }
+             }
         }
         for (Area<Zone.Water> waterArea : board.riverSystemAreas()) {
             newMessageBoard.withScoredRiverSystem(waterArea);
