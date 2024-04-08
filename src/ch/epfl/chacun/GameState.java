@@ -137,15 +137,21 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         MessageBoard newMessageBoard = messageBoard;
 
         if (tile.specialPowerZone() != null) {
+            System.out.println("special power zone " + tile.specialPowerZone());
+            System.out.println("special power " + tile.specialPowerZone().specialPower());
             switch (tile.specialPowerZone().specialPower()) {
                 case SHAMAN:
                     if (board.occupantCount(tile.placer(), Occupant.Kind.PAWN) != 0) {
                         return new GameState(players, tileDecks, null, newBoard, Action.RETAKE_PAWN, messageBoard);
                     }
+                    break;
                 case LOGBOAT:
+                    System.out.println("logboat " + tile.id());
                     newMessageBoard = messageBoard.withScoredLogboat(players.getFirst(), board.riverSystemArea((Zone.Water) tile.specialPowerZone()));
+                    break;
                 case HUNTING_TRAP:
                     newMessageBoard = messageBoard.withScoredHuntingTrap(players.getFirst(), board.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()));
+                    break;
                 default:
             }
         }
@@ -286,7 +292,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
             newPlayers = nextPlayerList();
         }
 
-        if (tileDecks.normalTiles().isEmpty()) {
+        if (tileDecks.normalTiles().isEmpty() && (!canPlayAgain || tileDecks.menhirTiles().isEmpty())) {
             return new GameState(newPlayers, newTileDecks, null, newBoard, Action.END_GAME, newMessageBoard).withFinalPointsCounted();
         } else {
             return new GameState(
@@ -308,11 +314,8 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      */
     private GameState withFinalPointsCounted() {
         System.out.println("final points counted");
-        Set<Animal> deers = new HashSet<>();
-        Set<Animal> tigers = new HashSet<>();
-        Set<Animal> cancelledAnimals = new HashSet<>();
         MessageBoard newMessageBoard = messageBoard;
-
+        Set<Animal> cancelledAnimals = cancelledAnimals(board.meadowAreas());
         Board newBoard = board.withMoreCancelledAnimals(cancelledAnimals);
 
         for (Area<Zone.Meadow> meadowArea : newBoard.meadowAreas()) {
@@ -329,10 +332,10 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         }
         int maxPoints = 0 ;
         Set<PlayerColor> winners = new HashSet<>();
-        for (Integer i : messageBoard.points().values()) {
+        for (Integer i : newMessageBoard.points().values()) {
             if (i > maxPoints) maxPoints = i;
         }
-        for (Map.Entry<PlayerColor, Integer> entry : messageBoard.points().entrySet()) {
+        for (Map.Entry<PlayerColor, Integer> entry : newMessageBoard.points().entrySet()) {
             if (entry.getValue() == maxPoints) winners.add(entry.getKey());
         }
         newMessageBoard = newMessageBoard.withWinners(winners, maxPoints);
@@ -396,5 +399,48 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         return false;
     }
 
-    private Set<Animal> cancelledAnimals()
+    private Set<Animal> cancelledAnimals(Set<Area<Zone.Meadow>> meadowAreas) {
+        Set<Animal> deers = new HashSet<>();
+        Set<Animal> tigers = new HashSet<>();
+        Set<Animal> cancelledAnimals = new HashSet<>();
+        for (Area<Zone.Meadow> meadowArea : meadowAreas) {
+            if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.WILD_FIRE) == null) {
+                for (Animal animal : Area.animals(meadowArea, Set.of())) {
+                    if (animal.kind() == Animal.Kind.DEER) deers.add(animal);
+                    if (animal.kind() == Animal.Kind.TIGER) tigers.add(animal);
+                }
+                if (tigers.size() >= deers.size()) {
+                    cancelledAnimals.addAll(deers);
+                } else {
+                    int eatenDeers = 0;
+                    Set<Zone.Meadow> meadows = new HashSet<>();
+                    if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.HUNTING_TRAP) != null)
+                        meadows = meadowZonesNotAdjacentInSameArea((Zone.Meadow) meadowArea.zoneWithSpecialPower(Zone.SpecialPower.HUNTING_TRAP), meadowArea);
+                    if (!meadows.isEmpty()) {
+                        for (Zone.Meadow meadow : meadows) {
+                            for (Animal deer : meadow.animals()) {
+                                if (eatenDeers < tigers.size()) {
+                                    cancelledAnimals.add(deer);
+                                    eatenDeers++;
+                                } else break;
+                            }
+                            //meadows.remove(meadow);
+                        }
+                    } else {
+                        for (Animal deer : deers) {
+                            if (eatenDeers < tigers.size()) {
+                                cancelledAnimals.add(deer);
+                                eatenDeers++;
+                            } else break;
+                        }
+                    }
+                }
+            } else {
+                for (Animal animal : Area.animals(meadowArea, Set.of())) {
+                    if (animal.kind() == Animal.Kind.TIGER) cancelledAnimals.add(animal);
+                }
+            }
+        }
+        return cancelledAnimals;
+    }
 }
