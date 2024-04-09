@@ -1,9 +1,17 @@
 
-o
-java:S3776L"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(‰œ®8Ö•©¹ë1
-u
-java:S3776Ä"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(¾ÌäŠúÿÿÿÿ8á•©¹ë1
-u
-java:S3776›"RRefactor this method to reduce its Cognitive Complexity from 78 to the 15 allowed.(¿Å³Øşÿÿÿÿ8æ•©¹ë1
-é
-java:S6541›"ÅA "Brain Method" was detected. Refactor it to reduce at least one of the following metrics: LOC from 69 to 64, Complexity from 24 to 14, Nesting Level from 7 to 2, Number of Variables from 19 to 6.(¿Å³Øşÿÿÿÿ8î•©¹ë1
+•
+java:S3776L"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(‰œ®8Ö•©¹ë1J$eb391ed4-336c-42d1-8019-879d0cb1d03c
+n	java:S106‹"+Replace this use of System.out by a logger.(Ò´€8÷¬Ú”ì1J$0a03d12d-766c-4bf5-a1ed-ab997a37fb5d
+s	java:S106Œ"+Replace this use of System.out by a logger.(äÄÿŸûÿÿÿÿ8ø¬Ú”ì1J$f205c3d2-fb63-4424-847b-64145b7191fa
+n	java:S106”"+Replace this use of System.out by a logger.(Ñƒ¢Ğ8ù¬Ú”ì1J$c4a26480-462f-4c5b-9ceb-ee3004bccae2
+„	java:S125Ù"<This block of commented-out lines of code should be removed.(ıÂˆüÿÿÿÿ8ı¬Ú”ì1J$7ef615fd-0b7f-4e34-a659-b8a6ac902c18
+›
+java:S3776á"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(¾ÌäŠúÿÿÿÿ8á•©¹ë1J$4f4a5f0e-8445-47e5-9e1d-edbdd7c042d2
+•
+java:S3776€"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(îË=8‚­Ú”ì1J$c9f7e5f0-3bbc-4b14-8257-74b73bdab0c1
+„	java:S125Ÿ"<This block of commented-out lines of code should be removed.(Íôùÿÿÿÿ8­Ú”ì1J$dc04ec1b-c004-41cd-972b-0034011fbf88
+~	java:S125¡"<This block of commented-out lines of code should be removed.(ë÷÷88­Ú”ì1J$1e08cdaa-1355-4b73-a3f4-9fbd8023a6a8
+s	java:S106º"+Replace this use of System.out by a logger.(Ì€ôÒùÿÿÿÿ8­Ú”ì1J$276dc778-16ea-4a67-b5fe-4edc8e7242a5
+–
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 66 to the 15 allowed.(ŞûÕ¦8•­Ú”ì1J$829ed9f6-4668-45db-80bb-c91f187492f4
+	java:S125ª"<This block of commented-out lines of code should be removed.(şÂÒ8–­Ú”ì1J$49a6597e-dff0-438e-b52b-7089187758c5
