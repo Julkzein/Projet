@@ -1,9 +1,8 @@
 package ch.epfl.chacun;
 
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 import static java.lang.StringTemplate.STR;
 
@@ -12,6 +11,17 @@ public class TextMakerFr implements TextMaker{
     //private order()
     public Map<PlayerColor, String> playerMap = new HashMap<>();
 
+    private String orderPlayer(Set<PlayerColor> players){
+        List playersList = new ArrayList();
+        playersList.addAll(players);
+        Collections.sort(playersList);
+        String orderedPlayersString = "";
+        for (int i = 0; i < playersList.size() - 1; i++) {
+            orderedPlayersString = STR."\{orderedPlayersString} , \{playersList.get(i).toString()}";
+        }
+        return STR."\{orderedPlayersString} et \{playersList.getLast().toString()}";
+    }
+
     @Override
     public String playerName(PlayerColor playerColor) {
         return playerMap.get(playerColor);
@@ -19,7 +29,7 @@ public class TextMakerFr implements TextMaker{
 
     @Override
     public String points(int points) {
-        return STR."\{points} points";
+        return STR."\{points} point\{points > 0 ? "s" : ""}";
     }
 
     @Override
@@ -28,17 +38,19 @@ public class TextMakerFr implements TextMaker{
     }
 
     @Override
-    public String playerScoreForest(Set<PlayerColor> scorers, int points, int mushroomGroupCount, int tileCount) {
-        PlayerColor[] s = (PlayerColor[]) scorers.toArray();
-        if (scorers.size() == 1 && mushroomGroupCount == 0) {
-            return STR."\{playerMap.get(s[0])} a remporté \{points(points)} en tant qu'occupant·e majoritaire d'une forêt composée de \{tileCount} tuiles.";
-        } else if (scorers.size() > 1 && mushroomGroupCount == 0) {
-            //String scorerstri
-            return  STR."\{} ont remporté \{points(points)} en tant qu'occupant·e·s majoritaires d'une forêt composée de \{tileCount} tuiles.";
-        } else if (scorers.size() == 1 && mushroomGroupCount > 0) {
-            return  STR."\{} ont remporté \{points(points)} en tant qu'occupant·e·s majoritaires d'une forêt composée de \{tileCount} tuiles et \{mushroomGroupCount} groupe de champignons.";
-        }
-
+    public String playersScoredForest(Set<PlayerColor> scorers, int points, int mushroomGroupCount, int tileCount) {
+        return STR."\{orderPlayer(scorers)} \{scorers.size() > 1 ? "a remporté" : "ont remporté"} \{points(points)} en tant qu'occupant·e·\{scorers.size() > 1 ? "s" : ""} majoritaire\{scorers.size() > 1 ? "s" : ""} d'une forêt composée de \{tileCount} tuiles \{mushroomGroupCount > 0 ? "et de " + mushroomGroupCount + " groupe de champignons" : ""}.";
     }
 
+    @Override
+    public String playersScoredRiver(Set<PlayerColor> scorers, int points, int fishCount, int tileCount) {
+        String s = "";
+        if (fishCount > 1) { s = "s"; }
+        return STR."\{orderPlayer(scorers)} \{scorers.size() > 1 ? "a remporté" : "ont remporté"} \{points(points)} en tant qu'occupant·e·\{scorers.size() > 1 ? "s" : ""} majoritaire\{scorers.size() > 1 ? "s" : ""} d'une rivière composée de \{tileCount} tuiles \{fishCount > 0 ? "et de " + fishCount + " poisson" + s : ""}.";
+    }
+
+    @Override
+    public String playerScoredHuntingTrap(PlayerColor scorer, int points, Map<Animal.Kind, Integer> animals) {
+        
+    }
 }
