@@ -51,3 +51,11 @@ R
 "test/ch/epfl/chacun/BoardTest.java,0/c/0cc8a7108ef2cf0c6238515f55d19b9c1f41561a
 \
 ,test/ch/epfl/chacun/MyGameScenario2Test.java,b/6/b6223f3c38b4f47339b75c3f0f3ce3c856f4d120
+V
+&test/ch/epfl/chacun/GameStateTest.java,9/e/9e77606c4e5e1f18a6f839fefcd802514a3fb92d
+S
+#src/ch/epfl/chacun/TextMakerFr.java,f/4/f4fc7a831a6a83d9ef7b800c5996fc72f149f1e3
+Q
+!src/ch/epfl/chacun/TextMaker.java,d/f/df081e30eb772ec8b79a116793ee1443464c9d42
+Y
+)test/ch/epfl/chacun/MessageBoardTest.java,5/a/5a91ef443e29de4d5a81c2e7d8f9a972618b5143

@@ -1,7 +1,13 @@
 
+R
+java:S1066æ"/Merge this if statement with the enclosing one.(ô°Øúÿÿÿÿ8×ÉÍ”ì1
+M
+java:S1066ö"/Merge this if statement with the enclosing one.(í½í†8×ÉÍ”ì1
 
 java:S2259Ğ"FA "NullPointerException" could be thrown; "lastTile" is nullable here.(êê£¢şÿÿÿÿ8Ä¾”¹ë1J$21e3663f-061b-4825-9ee5-0bde86aeeb63
 
 java:S2259º"FA "NullPointerException" could be thrown; "lastTile" is nullable here.(§”ùôüÿÿÿÿ8Ä¾”¹ë1J$704d612b-bb72-4078-a5ce-d614574ff834
 ›
 java:S3776‹"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(Ù·¾ıÿÿÿÿ8ã¾”¹ë1J$d31c8e4f-355d-4e16-b349-ac9dd0dd3547
+o
+java:S3776Û"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(¬İún8™ÍÍ”ì1
