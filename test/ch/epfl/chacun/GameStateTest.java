@@ -258,7 +258,9 @@ class GameStateTest {
                 12,
                 Set.of(PlayerColor.RED, PlayerColor.GREEN, PlayerColor.YELLOW),
                 Set.of(42, 56, 58, 47, 1, 28));
-
+        for (MessageBoard.Message message : state.messageBoard().messages()) {
+            System.out.println("message " + message.text() + " " + message.points());
+        }
         assertTrue(state.messageBoard().messages().contains(expectedForestMessage));
         for (PlayerColor playerColor : PlayerColor.values()) {
             var expectedFreePawns = playerColor == PlayerColor.BLUE ? 4 : 5;
@@ -556,8 +558,6 @@ class GameStateTest {
         // Place all tiles
         for (int i = 0; i < positions.size(); i += 1) {
             var placedTile = nextPlacedTile.apply(state);
-            System.out.println(placedTile.id());
-            System.out.println(occupants.get(placedTile.id()));
             state = state
                     .withPlacedTile(placedTile)
                     .withNewOccupant(occupants.get(placedTile.id()));
