@@ -6,7 +6,8 @@ import java.util.List;
 
 import static java.lang.StringTemplate.STR;
 
-public class TextMakerFr implements TextMaker{
+//ENLEVER LE ABSTRACT IL EST LA  POUR LES TESTS
+public abstract class TextMakerFr implements TextMaker{
 
     //private order()
     public Map<PlayerColor, String> playerMap = new HashMap<>();
@@ -51,6 +52,6 @@ public class TextMakerFr implements TextMaker{
 
     @Override
     public String playerScoredHuntingTrap(PlayerColor scorer, int points, Map<Animal.Kind, Integer> animals) {
-        
+        return null;
     }
 }

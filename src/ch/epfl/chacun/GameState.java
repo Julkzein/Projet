@@ -311,7 +311,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      * @return the game state after the game has ended
      */
     private GameState withFinalPointsCounted() {
-        System.out.println("final points counted");
         MessageBoard newMessageBoard = messageBoard;
         Set<Animal> cancelledAnimals = cancelledAnimals(board.meadowAreas());
         Board newBoard = board.withMoreCancelledAnimals(cancelledAnimals);
@@ -319,8 +318,9 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         for (Area<Zone.Meadow> meadowArea : newBoard.meadowAreas()) {
             newMessageBoard = newMessageBoard.withScoredMeadow(meadowArea, cancelledAnimals);
             if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP) != null) {
-                newMessageBoard = newMessageBoard.withScoredPitTrap(meadowArea, cancelledAnimals);
-             }
+                Zone.Meadow meadow = (Zone.Meadow) meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP);
+                newMessageBoard = newMessageBoard.withScoredPitTrap(newBoard.adjacentMeadow(newBoard.tileWithId(meadow.tileId()).pos(), meadow), cancelledAnimals);
+            }
         }
         for (Area<Zone.Water> waterArea : board.riverSystemAreas()) {
             newMessageBoard = newMessageBoard.withScoredRiverSystem(waterArea);
@@ -470,7 +470,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
 
                     for (Zone.Meadow meadow : priorityMeadows) {
                         for (Animal deer : meadow.animals()) {
-                            if (eatenDeers < tigers.size()) {
+                            if (eatenDeers < tigers.size() && deer.kind() == Animal.Kind.DEER) {
                                 cancelledAnimals.add(deer);
                                 eatenDeers++;
                             } else break;
