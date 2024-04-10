@@ -216,8 +216,6 @@ public class MaximeGameStateTest {
     @Test
     void withNewOccupantTestBlue35(){
         //Vérifications Occupants du board possèdent le nouveau pion
-        System.out.println(gameWithNewOccupantBlue35.board().occupants());
-        System.out.println(gameStateBlue35.board().occupants());
         assertEquals(Set.of(new Occupant(Occupant.Kind.PAWN, 35_0)), gameWithNewOccupantBlue35.board().occupants());
 
         //Vérifications next action = PLACE_TILE

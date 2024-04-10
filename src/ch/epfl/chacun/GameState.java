@@ -136,8 +136,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         MessageBoard newMessageBoard = messageBoard;
 
         if (tile.specialPowerZone() != null) {
-            System.out.println("special power zone " + tile.specialPowerZone());
-            System.out.println("special power " + tile.specialPowerZone().specialPower());
             switch (tile.specialPowerZone().specialPower()) {
                 case SHAMAN:
                     if (board.occupantCount(tile.placer(), Occupant.Kind.PAWN) != 0) {
@@ -145,7 +143,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     }
                     break;
                 case LOGBOAT:
-                    System.out.println("logboat " + tile.id());
                     newMessageBoard = messageBoard.withScoredLogboat(players.getFirst(), newBoard.riverSystemArea((Zone.Water) tile.specialPowerZone()));
                     break;
                 case HUNTING_TRAP:
@@ -322,7 +319,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                 newMessageBoard = newMessageBoard.withScoredPitTrap(newBoard.adjacentMeadow(newBoard.tileWithId(meadow.tileId()).pos(), meadow), cancelledAnimals);
             }
         }
-        for (Area<Zone.Water> waterArea : board.riverSystemAreas()) {
+        for (Area<Zone.Water> waterArea : newBoard.riverSystemAreas()) {
             newMessageBoard = newMessageBoard.withScoredRiverSystem(waterArea);
             if (waterArea.zoneWithSpecialPower(Zone.SpecialPower.RAFT) != null) {
                 newMessageBoard = newMessageBoard.withScoredRaft(waterArea);
