@@ -211,7 +211,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
 
         if (occupant == null) {
             return withTurnFinished(board, messageBoard);
-                    //new GameState(players, tileDecks, null, board, nextAction, messageBoard).withTurnFinished();
         } else {
             Board newBoard = board.withOccupant(occupant);
             return withTurnFinished(newBoard, messageBoard);
@@ -281,17 +280,13 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
 
         newBoard = board.withoutGatherersOrFishersIn(board.forestsClosedByLastTile(), board.riversClosedByLastTile());
 
-        if (canPlayAgain) {
-            //newTileDecks = newTileDecks.withTopTileDrawnUntil(Tile.Kind.MENHIR, board::couldPlaceTile);
-        } else {
-            //newTileDecks = newTileDecks.withTopTileDrawnUntil(Tile.Kind.NORMAL, board::couldPlaceTile);
+        if (!canPlayAgain) {
             newPlayers = nextPlayerList();
         }
 
         if (tileDecks.normalTiles().isEmpty() && (!canPlayAgain || tileDecks.menhirTiles().isEmpty())) {
             return new GameState(newPlayers, newTileDecks, null, newBoard, Action.END_GAME, newMessageBoard).withFinalPointsCounted();
         } else {
-            System.out.println("passage else");
             return new GameState(
                     newPlayers,
                     canPlayAgain ? newTileDecks.withTopTileDrawn(Tile.Kind.MENHIR) : newTileDecks.withTopTileDrawn(Tile.Kind.NORMAL),
@@ -396,55 +391,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         return false;
     }
 
-    /**
-    private Set<Animal> cancelledAnimals2(Set<Area<Zone.Meadow>> meadowAreas) {
-        Set<Animal> deers = new HashSet<>();
-        Set<Animal> tigers = new HashSet<>();
-        Set<Animal> cancelledAnimals = new HashSet<>();
-
-        for (Area<Zone.Meadow> meadowArea : meadowAreas) {
-            if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.WILD_FIRE) == null) {
-                for (Animal animal : Area.animals(meadowArea, Set.of())) {
-                    if (animal.kind() == Animal.Kind.DEER) deers.add(animal);
-                    if (animal.kind() == Animal.Kind.TIGER) tigers.add(animal);
-                }
-                if (tigers.size() >= deers.size()) {
-                    cancelledAnimals.addAll(deers);
-                } else {
-                    int eatenDeers = 0;
-                    Set<Zone.Meadow> meadows = new HashSet<>();
-                    if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP) != null)
-                        meadows = meadowZonesNotAdjacentInSameArea((Zone.Meadow) meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP), meadowArea);
-                    if (!meadows.isEmpty()) {
-                        for (Zone.Meadow meadow : meadows) {
-                            for (Animal deer : meadow.animals()) {
-                                if (eatenDeers < tigers.size()) {
-                                    cancelledAnimals.add(deer);
-                                    eatenDeers++;
-                                } else break;
-                            }
-                            //meadows.remove(meadow);
-                        }
-                    } else {
-                        for (Animal deer : deers) {
-                            if (eatenDeers < tigers.size()) {
-                                cancelledAnimals.add(deer);
-                                eatenDeers++;
-                            } else break;
-                        }
-                    }
-                }
-            } else {
-                for (Animal animal : Area.animals(meadowArea, Set.of())) {
-                    if (animal.kind() == Animal.Kind.TIGER) cancelledAnimals.add(animal);
-                }
-            }
-        }
-        return cancelledAnimals;
-    }
-    */
-
-
     private Set<Animal> cancelledAnimals(Set<Area<Zone.Meadow>> meadowAreas) {
         Set<Animal> cancelledAnimals = new HashSet<>();
 
@@ -487,7 +433,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                 }
             }
         }
-        System.out.println(cancelledAnimals);
         return cancelledAnimals;
     }
 }

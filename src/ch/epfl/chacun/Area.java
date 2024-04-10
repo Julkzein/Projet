@@ -132,7 +132,6 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
             if (waterBody instanceof Zone.Lake) {
                 lakes.add((Zone.Lake) waterBody);
             }
-
         }
         return lakes.size();
     }

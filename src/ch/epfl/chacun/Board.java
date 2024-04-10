@@ -219,9 +219,8 @@ public final class Board {
 
         for (Area<Zone.Meadow> area : meadowAreas()) {
             if (area.zones().contains(meadowZone)) {
-                Set<Zone.Meadow> zones = area.zones();
                 occupants = area.occupants();
-                meadowsInArea.addAll(zones); 
+                meadowsInArea.addAll(area.zones());
             }
         }
 
@@ -293,10 +292,7 @@ public final class Board {
      * @return the last tile placed on the board or null if the board is empty.
      */
     public PlacedTile lastPlacedTile() {
-        if (index.length > 0) {
-            return placedTiles[index[index.length - 1]];
-        }
-        return null;
+        return (index.length > 0) ? placedTiles[index[index.length - 1]] : null;
     }
 
     /**
@@ -403,11 +399,11 @@ public final class Board {
 
         for (Direction dir : Direction.ALL) {
             PlacedTile neighbor = tileAt(tile.pos().neighbor(dir));
-           if (neighbor != null && neighbor.side(dir.opposite()).isSameKindAs(tile.side(dir))) {
-               newPartitions.connectSides(tile.side(dir), neighbor.side(dir.opposite()));
-           }
+            if (neighbor != null && neighbor.side(dir.opposite()).isSameKindAs(tile.side(dir))) {
+                newPartitions.connectSides(tile.side(dir), neighbor.side(dir.opposite()));
+            }
         }
-
+        
         return new Board(newPlacedTiles, newIndex, newPartitions.build(), cancelledAnimals);
     }
 
@@ -431,9 +427,9 @@ public final class Board {
         for (Zone zone : addTile.tile().zones()) {
             if (zone.id() == occupant.zoneId()) {
                 newPartition.addInitialOccupant(addTile.placer(), occupant.kind(), zone);
-                break;
             }
         }
+
         return new Board(placedTiles1, index, newPartition.build(), cancelledAnimals);
     }
 
@@ -456,7 +452,6 @@ public final class Board {
         for (Zone zone : tile.tile().zones()) {
             if (occupant.zoneId() == zone.id()) {
                 newZonePartitionsBuilder.removePawn(tile.placer(), zone);
-                break;
             }
         }
 
@@ -493,7 +488,6 @@ public final class Board {
             }
 
         }
-
         for (Area<Zone.River> riverArea : rivers) {
             newBoardZonePartitionsBuilder.clearFishers(riverArea);
             for (Zone.River zoneRiver : riverArea.zones()) {
@@ -508,7 +502,6 @@ public final class Board {
                 newPlacedTile[index(tile.pos())] = tile.withNoOccupant();
             }
         }
-
         ZonePartitions newBoardZonePartitions = newBoardZonePartitionsBuilder.build();
         return new Board(newPlacedTile, index, newBoardZonePartitions, cancelledAnimals);
     }
@@ -534,8 +527,7 @@ public final class Board {
      */
     @Override
     public boolean equals(Object that) {
-        if (that == null) return false;
-        if (!(that instanceof Board board)) return false;
+        if ((that == null) || !(that instanceof Board board)) return false;
         return Arrays.equals(board.index, index) && Arrays.equals(board.placedTiles, placedTiles) &&  board.partition.equals(partition) && board.cancelledAnimals.equals(cancelledAnimals);
     }
 
@@ -549,6 +541,4 @@ public final class Board {
     public int hashCode() {
         return Objects.hash(Arrays.hashCode(index), Arrays.hashCode(placedTiles), partition, cancelledAnimals);
     }
-
-
 }
