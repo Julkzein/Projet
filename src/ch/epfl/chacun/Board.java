@@ -403,7 +403,7 @@ public final class Board {
                 newPartitions.connectSides(tile.side(dir), neighbor.side(dir.opposite()));
             }
         }
-        
+
         return new Board(newPlacedTiles, newIndex, newPartitions.build(), cancelledAnimals);
     }
 
