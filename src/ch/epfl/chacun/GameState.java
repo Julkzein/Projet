@@ -462,27 +462,30 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     int eatenDeers = 0;
                     Set<Zone.Meadow> priorityMeadows = new HashSet<>();
 
-                    if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP) != null)
+                    if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP) != null) {
                         priorityMeadows = meadowZonesNotAdjacentInSameArea((Zone.Meadow) meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP), meadowArea);
+                    }
 
                     for (Zone.Meadow meadow : priorityMeadows) {
                         for (Animal deer : meadow.animals()) {
                             if (eatenDeers < tigers.size() && deer.kind() == Animal.Kind.DEER) {
                                 cancelledAnimals.add(deer);
                                 eatenDeers++;
-                            } else break;
+                            } else;
                         }
                     }
+
 
                     for (Animal deer : deers) {
                         if (eatenDeers < tigers.size() && !cancelledAnimals.contains(deer)) {
                             cancelledAnimals.add(deer);
                             eatenDeers++;
-                        } else break;
+                        } else;
                     }
                 }
             }
         }
+        System.out.println(cancelledAnimals);
         return cancelledAnimals;
     }
 }
