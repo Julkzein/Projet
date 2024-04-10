@@ -30,13 +30,27 @@ public abstract class TextMakerFr implements TextMaker{
         String orderedPlayersString = "";
         for (Object a : animalList) {
             if (a == animalList.getLast()) {
-                orderedPlayersString = STR."\{orderedPlayersString} et \{animals.get(a)} \{a.toString()}";
+                orderedPlayersString = STR."\{orderedPlayersString} et \{animals.get(a)} \{a.toString()}\{plural(animals.get(a) > 0)}";
             } else {
                 orderedPlayersString = STR."\{orderedPlayersString}, \{animals.get(a)} \{a.toString()}";
             }
         }
         return STR."\{orderedPlayersString}.";
     }
+
+    private String plural(boolean condition) {
+        return STR."\{condition ? "s" : "" }";
+    }
+
+    private String pluralScorer(boolean condition) {
+        return STR."\{condition ? "·s" : "" }";
+    }
+
+    private String pluralVerb(boolean condition) {
+        return STR."\{condition ? "a remporté" : "ont remporté" }";
+    }
+
+
 
     @Override
     public String playerName(PlayerColor playerColor) {
@@ -45,7 +59,7 @@ public abstract class TextMakerFr implements TextMaker{
 
     @Override
     public String points(int points) {
-        return STR."\{points} point\{points > 0 ? "s" : ""}";
+        return STR."\{points} point\{plural(points > 0)}";
     }
 
     @Override
@@ -55,14 +69,14 @@ public abstract class TextMakerFr implements TextMaker{
 
     @Override
     public String playersScoredForest(Set<PlayerColor> scorers, int points, int mushroomGroupCount, int tileCount) {
-        return STR."\{orderPlayer(scorers)} \{scorers.size() > 1 ? "a remporté" : "ont remporté"} \{points(points)} en tant qu'occupant·e·\{scorers.size() > 1 ? "s" : ""} majoritaire\{scorers.size() > 1 ? "s" : ""} d'une forêt composée de \{tileCount} tuiles \{mushroomGroupCount > 0 ? "et de " + mushroomGroupCount + " groupe de champignons" : ""}.";
+        return STR."\{orderPlayer(scorers)} \{pluralVerb(scorers.size() > 1)} \{points(points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'une forêt composée de \{tileCount} tuiles \{mushroomGroupCount > 0 ? "et de " + mushroomGroupCount + " groupe" + plural(mushroomGroupCount > 1) +" de champignons" : ""}.";
     }
 
     @Override
     public String playersScoredRiver(Set<PlayerColor> scorers, int points, int fishCount, int tileCount) {
         String s = "";
         if (fishCount > 1) { s = "s"; }
-        return STR."\{orderPlayer(scorers)} \{scorers.size() > 1 ? "a remporté" : "ont remporté"} \{points(points)} en tant qu'occupant·e·\{scorers.size() > 1 ? "s" : ""} majoritaire\{scorers.size() > 1 ? "s" : ""} d'une rivière composée de \{tileCount} tuiles \{fishCount > 0 ? "et de " + fishCount + " poisson" + s : ""}.";
+        return STR."\{orderPlayer(scorers)} \{pluralVerb(scorers.size() > 1)} \{points(points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'une rivière composée de \{tileCount} tuiles \{fishCount > 0 ? "et de " + fishCount + " poisson" + plural(fishCount > 1) : ""}.";
     }
 
     @Override
@@ -73,5 +87,15 @@ public abstract class TextMakerFr implements TextMaker{
     @Override
     public String playerScoredLogboat(PlayerColor scorer, int points, int lakeCount) {
         return STR."\{scorer} a remporté \{points(points)} en  plaçant la pirogue dans un réseau hydrographique contenant \{lakeCount} lac\{lakeCount > 1 ? "s" : ""}.";
+    }
+
+    @Override
+    public String playersScoredMeadow(Set<PlayerColor> scorers, int points, Map<Animal.Kind, Integer> animals) {
+        return STR."\{orderPlayer(scorers)} \{pluralVerb(scorers.size() > 1)} \{points(points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'un pré contenant \{orderAnimal(animals)}";
+    }
+
+    @Override
+    public String playersScoredRiverSystem(Set<PlayerColor> scorers, int points, int fishCount) {
+        return STR."\{orderPlayer(scorers)} \{pluralVerb(scorers.size() > 1)} \{points(points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'un réseau hydrographique contenant \{fishCount} poisson\{plural(fishCount > 1)}";
     }
 }
