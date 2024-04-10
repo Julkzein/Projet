@@ -23,6 +23,21 @@ public abstract class TextMakerFr implements TextMaker{
         return STR."\{orderedPlayersString} et \{playersList.getLast().toString()}";
     }
 
+    private String orderAnimal(Map<Animal.Kind, Integer> animals) {
+        List animalList = new ArrayList<>();
+        animalList.addAll(animals.keySet());
+        Collections.sort(animalList);
+        String orderedPlayersString = "";
+        for (Object a : animalList) {
+            if (a == animalList.getLast()) {
+                orderedPlayersString = STR."\{orderedPlayersString} et \{animals.get(a)} \{a.toString()}.";
+            } else {
+                orderedPlayersString = STR."\{orderedPlayersString}, \{animals.get(a)} \{a.toString()}.";
+            }
+        }
+        return orderedPlayersString;
+    }
+
     @Override
     public String playerName(PlayerColor playerColor) {
         return playerMap.get(playerColor);
@@ -52,6 +67,11 @@ public abstract class TextMakerFr implements TextMaker{
 
     @Override
     public String playerScoredHuntingTrap(PlayerColor scorer, int points, Map<Animal.Kind, Integer> animals) {
-        return null;
+        return STR."\{scorer} a remporté \{points(points)} en plaçant la fosse à pieux dans un pré dans lequel elle est entourée de \{orderAnimal(animals)}";
+    }
+
+    @Override
+    public String playerScoredLogboat(PlayerColor scorer, int points, int lakeCount) {
+        return STR."\{scorer} a remporté \{points(points)} en  plaçant la pirogue dans un réseau hydrographique contenant \{lakeCount} lac\{lakeCount > 1 ? "s" : ""}.";
     }
 }
