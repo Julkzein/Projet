@@ -30,12 +30,12 @@ public abstract class TextMakerFr implements TextMaker{
         String orderedPlayersString = "";
         for (Object a : animalList) {
             if (a == animalList.getLast()) {
-                orderedPlayersString = STR."\{orderedPlayersString} et \{animals.get(a)} \{a.toString()}.";
+                orderedPlayersString = STR."\{orderedPlayersString} et \{animals.get(a)} \{a.toString()}";
             } else {
-                orderedPlayersString = STR."\{orderedPlayersString}, \{animals.get(a)} \{a.toString()}.";
+                orderedPlayersString = STR."\{orderedPlayersString}, \{animals.get(a)} \{a.toString()}";
             }
         }
-        return orderedPlayersString;
+        return STR."\{orderedPlayersString}.";
     }
 
     @Override
