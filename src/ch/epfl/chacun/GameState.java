@@ -263,14 +263,15 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         Preconditions.checkArgument(lastPlacedTile != null);
 
         for (Area<Zone.Forest> forest : board.forestsClosedByLastTile()) {
+            newMessageBoard = newMessageBoard.withScoredForest(forest);
             if (hasMenhir(forest)) {
                 newMessageBoard = newMessageBoard.withClosedForestWithMenhir(currentPlayer(), forest);
                 if (lastPlacedTile.kind() == Tile.Kind.NORMAL) {
                     canPlayAgain = true;
                 }
-            } else {
+            } /**else {
                 newMessageBoard = newMessageBoard.withScoredForest(forest);
-            }
+            }*/
         }
 
         for (Area<Zone.River> river : board.riversClosedByLastTile()) {
@@ -290,6 +291,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         if (tileDecks.normalTiles().isEmpty() && (!canPlayAgain || tileDecks.menhirTiles().isEmpty())) {
             return new GameState(newPlayers, newTileDecks, null, newBoard, Action.END_GAME, newMessageBoard).withFinalPointsCounted();
         } else {
+            System.out.println("passage else");
             return new GameState(
                     newPlayers,
                     canPlayAgain ? newTileDecks.withTopTileDrawn(Tile.Kind.MENHIR) : newTileDecks.withTopTileDrawn(Tile.Kind.NORMAL),

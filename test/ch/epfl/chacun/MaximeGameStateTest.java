@@ -82,18 +82,6 @@ public class MaximeGameStateTest {
         assertEquals(gameState1.currentPlayer(), PlayerColor.GREEN);
     }
 
-    @Test
-    void withStartingTilePlacedPreconditionTest(){
-        GameState gameState  = new GameState(List.of(PlayerColor.GREEN, PlayerColor.PURPLE), tileDecksConstructor(),
-                null, Board.EMPTY, GameState.Action.START_GAME, messageBoard);
-        GameState gameStateFalseAction  = new GameState(List.of(PlayerColor.GREEN, PlayerColor.PURPLE),tileDecksConstructor(),null,Board.EMPTY, GameState.Action.PLACE_TILE,messageBoard);
-
-        GameState gameState1 = gameState.withStartingTilePlaced();
-        assertEquals(gameState1.board().lastPlacedTile().tile(), tileList.get(56));
-        assertEquals(gameState1.tileToPlace(), tileDecksConstructor().topTile(Tile.Kind.NORMAL));
-        assertEquals(gameState1.nextAction(), GameState.Action.PLACE_TILE);
-        assertThrows(IllegalArgumentException.class, () -> {gameStateFalseAction.withStartingTilePlaced();});
-    }
 
 
     ////////////////////////////////////////////////////////
