@@ -26,6 +26,7 @@ public enum Direction {
 
     /**
      * Returns the direction obtained by rotating this direction by 90 degrees clockwise the given number of times.
+     *
      * @param rotation the rotation to apply.
      * @return the new direction obtained.
      */
@@ -35,6 +36,7 @@ public enum Direction {
 
     /**
      * Returns the direction opposite to this direction.
+     *
      * @return the new direction.
      */
     public Direction opposite() {

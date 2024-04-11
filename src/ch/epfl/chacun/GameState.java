@@ -48,7 +48,8 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
     }
 
     /**
-     * This method returns the player who has the turn or null if there is none.
+     *This method returns the player who has the turn or null if there is none.
+     *
      * @return the player who has the turn.
      */
     public PlayerColor currentPlayer() {
@@ -61,6 +62,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
 
     /**
      * This method returns number of free occupants (that are not currently on a tile) of the given color and type.
+     *
      * @param color : the color of the occupants
      * @param kind : the kind of the occupants
      * @return the number of free occupants of the given color and type.
@@ -254,9 +256,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                 if (lastPlacedTile.kind() == Tile.Kind.NORMAL) {
                     canPlayAgain = true;
                 }
-            } /**else {
-                newMessageBoard = newMessageBoard.withScoredForest(forest);
-            }*/
+            }
         }
 
         for (Area<Zone.River> river : board.riversClosedByLastTile()) {
