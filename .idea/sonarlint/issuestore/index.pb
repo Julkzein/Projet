@@ -27,8 +27,6 @@ V
 &src/ch/epfl/chacun/ZonePartitions.java,7/4/74b45a32786391c07ce8d98e6d362ccda2dbaa10
 S
 #test/ch/epfl/chacun/AnimalTest.java,9/6/9639e70cdc45b9ad9128ed41b1479195cd57c44e
-X
-(test/ch/epfl/chacun/MyGameStateTest.java,c/8/c842ab4d14a5c7327b718dd169df93805228d6e8
 P
  src/ch/epfl/chacun/TileSide.java,e/5/e52007a5df1f1dce8e9334dbe0b2cb548e0be924
 L
@@ -39,8 +37,6 @@ Q
 !src/ch/epfl/chacun/TileDecks.java,7/0/70e783002ee1f542759ce4f10bd78d8cc287e23e
 U
 %src/ch/epfl/chacun/ZonePartition.java,b/3/b36d9df7958ed10dd55380e966d06caadaa98076
-\
-,test/ch/epfl/chacun/MyZonePartitionTest.java,2/9/29cb80da0cc8412bcc3b687119fd08297b08be89
 T
 $src/ch/epfl/chacun/MessageBoard.java,c/c/ccebb5279cc4e90f9adc1e6fec9a7f44d7f4d602
 M
@@ -49,8 +45,6 @@ M
 +src/ch/epfl/sigcheck/SignatureChecks_6.java,1/d/1dfa949e93d06c4bbdc980e671811bcb814c3ad0
 R
 "test/ch/epfl/chacun/BoardTest.java,0/c/0cc8a7108ef2cf0c6238515f55d19b9c1f41561a
-\
-,test/ch/epfl/chacun/MyGameScenario2Test.java,b/6/b6223f3c38b4f47339b75c3f0f3ce3c856f4d120
 V
 &test/ch/epfl/chacun/GameStateTest.java,9/e/9e77606c4e5e1f18a6f839fefcd802514a3fb92d
 S

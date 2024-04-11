@@ -1,17 +1,13 @@
 
 •
-java:S3776L"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(‰œ®8Ö•©¹ë1J$eb391ed4-336c-42d1-8019-879d0cb1d03c
-n	java:S106‹"+Replace this use of System.out by a logger.(Ò´€8÷¬Ú”ì1J$0a03d12d-766c-4bf5-a1ed-ab997a37fb5d
-s	java:S106Œ"+Replace this use of System.out by a logger.(äÄÿŸûÿÿÿÿ8ø¬Ú”ì1J$f205c3d2-fb63-4424-847b-64145b7191fa
-n	java:S106”"+Replace this use of System.out by a logger.(Ñƒ¢Ğ8ù¬Ú”ì1J$c4a26480-462f-4c5b-9ceb-ee3004bccae2
-„	java:S125Ù"<This block of commented-out lines of code should be removed.(ıÂˆüÿÿÿÿ8ı¬Ú”ì1J$7ef615fd-0b7f-4e34-a659-b8a6ac902c18
+java:S3776R"RRefactor this method to reduce its Cognitive Complexity from 26 to the 15 allowed.(‰œ®8Ö•©¹ë1J$119278c7-a76e-41b3-9845-ae39a6e90d6e
 ›
-java:S3776á"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(¾ÌäŠúÿÿÿÿ8á•©¹ë1J$4f4a5f0e-8445-47e5-9e1d-edbdd7c042d2
+java:S3776Ñ"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(¾ÌäŠúÿÿÿÿ8ÅÚ²áì1J$05f147cb-45e8-410a-9ad5-a7849f5a4a04
 •
-java:S3776€"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(îË=8‚­Ú”ì1J$c9f7e5f0-3bbc-4b14-8257-74b73bdab0c1
-„	java:S125Ÿ"<This block of commented-out lines of code should be removed.(Íôùÿÿÿÿ8­Ú”ì1J$dc04ec1b-c004-41cd-972b-0034011fbf88
-~	java:S125¡"<This block of commented-out lines of code should be removed.(ë÷÷88­Ú”ì1J$1e08cdaa-1355-4b73-a3f4-9fbd8023a6a8
-s	java:S106º"+Replace this use of System.out by a logger.(Ì€ôÒùÿÿÿÿ8­Ú”ì1J$276dc778-16ea-4a67-b5fe-4edc8e7242a5
+java:S3776ğ"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(îË=8ÈÚ²áì1J$bda25e56-3a1e-4c08-99b4-69b74158292a
 –
-java:S3776"RRefactor this method to reduce its Cognitive Complexity from 66 to the 15 allowed.(ŞûÕ¦8•­Ú”ì1J$829ed9f6-4668-45db-80bb-c91f187492f4
-	java:S125ª"<This block of commented-out lines of code should be removed.(şÂÒ8–­Ú”ì1J$49a6597e-dff0-438e-b52b-7089187758c5
+java:S3776ü"RRefactor this method to reduce its Cognitive Complexity from 47 to the 15 allowed.(ŞûÕ¦8ÒÚ²áì1J$c01537ae-fdb1-4b5c-ac8f-050286d4fcd3
+`
+java:S1116˜"Remove this empty statement.(ßò™¹8ÖÚ²áì1J$9d796039-b1bb-4ce8-a81c-5fe98e758280
+`
+java:S1116¡"Remove this empty statement.(ßò™¹8×Ú²áì1J$62fcffbb-d3f9-4d08-a33d-021f128d6c15
