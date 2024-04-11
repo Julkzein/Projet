@@ -18,11 +18,13 @@ import static ch.epfl.chacun.Occupant.occupantsCount;
  * @Author Jules Delforge (372325)
  */
 public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile tileToPlace, Board board, Action nextAction, MessageBoard messageBoard) {
+
     /**
-     * This constructor creates a game state with the given players, tile decks, tile to place, board, next action and message board. It also checks if
-     * the number of players is at least 2, if the tile to place is null and the next action is place tile, if the tile decks, board, next action or
-     *message board is not null
-     * @throws IllegalArgumentException if the number of players is less than 2, if the tile to place is not null and the next action is not place tile, if the tile decks, board, next action or message board is null
+     * This constructor creates a game state with the given players, tile decks, tile to place, board, next action and
+     * message board. It also checks if the number of players is at least 2, if the tile to place is null or (exclusive)
+     * the next action is place tile, and if the tile decks, board, next action or message board are not null.
+     *
+     * @throws IllegalArgumentException if one of the conditions above is not met.
      */
     public GameState {
         Preconditions.checkArgument(players.size() >= 2);
@@ -33,24 +35,24 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
 
 
     /**
-     * This method creates the initial game state with the given players, tile decks and text maker
+     * This method creates the initial game state with the given players, tile decks and text maker and instantiates the
+     * message board with an empty list of messages.
      *
      * @param players : the list of players
      * @param tileDecks : the tile decks
      * @param textMaker : the text maker
-     * @return the initial game state
+     * @return the initial game state.
      */
     public static GameState initial(List<PlayerColor> players, TileDecks tileDecks, TextMaker textMaker) {
         return new GameState(players, tileDecks, null, Board.EMPTY, Action.START_GAME, new MessageBoard(textMaker, List.of()));
     }
 
     /**
-     * This method returns the player who has the turn or null if there is none
-     *
-     * @return the player who has the turn
+     * This method returns the player who has the turn or null if there is none.
+     * @return the player who has the turn.
      */
     public PlayerColor currentPlayer() {
-    if (nextAction == Action.START_GAME || nextAction == Action.END_GAME) {
+        if (nextAction == Action.START_GAME || nextAction == Action.END_GAME) {
             return null;
         } else {
             return players.getFirst();
@@ -58,20 +60,22 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
     }
 
     /**
-     * This method returns number of free occupants (that are not currently on a tile) of the given color and type
-     *
-     * @return the number of free occupants of the given color and type
+     * This method returns number of free occupants (that are not currently on a tile) of the given color and type.
+     * @param color : the color of the occupants
+     * @param kind : the kind of the occupants
+     * @return the number of free occupants of the given color and type.
      */
     public int freeOccupantsCount(PlayerColor color, Occupant.Kind kind) {
         return occupantsCount(kind) - board.occupantCount(color, kind);
     }
 
     /**
-     * This method returns the set of potential occupants of the last placed tile or throws
-     * IllegalArgumentException if the board is empty
+     * This method returns the set of potential occupants of the last placed tile or throws IllegalArgumentException
+     * if the board is empty or the last placed tile is null. It loops over each zone of the last placed tile to
+     * determine the potential occupants.
      *
-     * @throws IllegalArgumentException if the board is empty
-     * @return the set of potential occupants of the last placed tile
+     * @throws IllegalArgumentException if the board is empty or the last placed tile is null.
+     * @return the set of potential occupants of the last placed tile.
      */
     public Set<Occupant> lastTilePotentialOccupants() {
         Preconditions.checkArgument(board != Board.EMPTY);
@@ -111,9 +115,10 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
 
 
     /**
-     * This method returns the game state with the starting tile placed
+     * This method returns the game state with the starting tile placed and the tile decks updated.
      *
-     * @return the game state with the starting tile placed
+     * @throws IllegalArgumentException if the next action is not start game.
+     * @return the new game state.
      */
     public GameState withStartingTilePlaced() {
         Preconditions.checkArgument(nextAction == Action.START_GAME);
@@ -123,10 +128,12 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
     }
 
     /**
-     * This method returns the game state after the PLACE_TILE action has been taken
+     * This method returns the game state after the PLACE_TILE action has been taken. If the tile has a special power, a
+     * new GameState is returned with the corresponding action or a message is added to the message board.
      *
      * @param tile : the tile to place
-     * @return the game state after the PLACE_TILE action has been taken
+     * @throws IllegalArgumentException if the next action is not place tile or the tile has an occupant.
+     * @return the game state after the PLACE_TILE action has been taken.
      */
     public GameState withPlacedTile(PlacedTile tile) {
         Preconditions.checkArgument(nextAction == Action.PLACE_TILE);
@@ -143,50 +150,23 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     }
                     break;
                 case LOGBOAT:
-                    newMessageBoard = messageBoard.withScoredLogboat(players.getFirst(), newBoard.riverSystemArea((Zone.Water) tile.specialPowerZone()));
+                    newMessageBoard = messageBoard.withScoredLogboat(currentPlayer(), newBoard.riverSystemArea((Zone.Water) tile.specialPowerZone()));
                     break;
                 case HUNTING_TRAP:
-                    newMessageBoard = messageBoard.withScoredHuntingTrap(players.getFirst(), newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()));
+                    newMessageBoard = messageBoard.withScoredHuntingTrap(currentPlayer(), newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()));
                     break;
                 default:
             }
         }
 
         return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
-
-        /**
-        switch (tile.kind()) {
-            case NORMAL:
-                return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
-
-            case MENHIR:
-                if (tile.specialPowerZone() != null) {
-                    if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.SHAMAN) {
-                        if (board.occupantCount(tile.placer(), Occupant.Kind.PAWN) != 0) {
-                            return new GameState(players, tileDecks, null, newBoard, Action.RETAKE_PAWN, messageBoard);
-                        } else {
-                            return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
-                        }
-                    } else if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.LOGBOAT) {
-                        newMessageBoard = messageBoard.withScoredLogboat(players.getFirst(), board.riverSystemArea((Zone.Water) tile.specialPowerZone()));
-                        return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
-                    } else if (tile.specialPowerZone().specialPower() == Zone.SpecialPower.HUNTING_TRAP) {
-                        newMessageBoard = messageBoard.withScoredHuntingTrap(players.getFirst(), board.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()));
-                        return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, newMessageBoard).withTurnFinishedIfOccupationImpossible();
-                    }
-                }
-                return new GameState(players, tileDecks, null, newBoard, Action.OCCUPY_TILE, messageBoard).withTurnFinishedIfOccupationImpossible();
-
-            default:
-                throw new IllegalArgumentException();
-        }
-         */
     }
 
     /**
-     * This method returns the game state after the RETAKE_PAWN action has been taken
+     * This method returns the game state with the pawn retaken and the next action set to OCCUPY_TILE.
      *
      * @param occupant: the occupant to retake
+     * @throws IllegalArgumentException if the next action is not retake pawn or if the occupant is not null and not a pawn
      * @return the game state after the RETAKE_PAWN action has been taken
      */
     public GameState withOccupantRemoved(Occupant occupant) {
@@ -201,24 +181,29 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
     }
 
     /**
-     * This method returns the game state after the OCCUPY_TILE action has been taken
+     * This method returns the game state with the tile occupied by the given occupant.
      *
      * @param occupant: the occupant to occupy the tile
-     * @return the game state after the OCCUPY_TILE action has been taken
+     * @throws IllegalArgumentException if the next action is not occupy tile.
+     * @return the game state after the OCCUPY_TILE action has been taken.
      */
     public GameState withNewOccupant(Occupant occupant) {
         Preconditions.checkArgument(nextAction == Action.OCCUPY_TILE);
-
         if (occupant == null) {
             return withTurnFinished(board, messageBoard);
-                    //new GameState(players, tileDecks, null, board, nextAction, messageBoard).withTurnFinished();
         } else {
             Board newBoard = board.withOccupant(occupant);
             return withTurnFinished(newBoard, messageBoard);
         }
-
     }
 
+    /**
+     * This method returns the game state with the next action set to occupy tile if the player has the possibility to
+     * do so. Otherwise, it returns the game state with the turn finished.
+     *
+     * @throws IllegalArgumentException if the next action is not occupy tile or if the last placed tile is null.
+     * @return the game state after the turn has been finished if the occupation is impossible.
+     */
     private GameState withTurnFinishedIfOccupationImpossible() {
         Preconditions.checkArgument(nextAction == Action.OCCUPY_TILE);
         Preconditions.checkArgument(board.lastPlacedTile() != null);
@@ -263,14 +248,15 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         Preconditions.checkArgument(lastPlacedTile != null);
 
         for (Area<Zone.Forest> forest : board.forestsClosedByLastTile()) {
+            newMessageBoard = newMessageBoard.withScoredForest(forest);
             if (hasMenhir(forest)) {
                 newMessageBoard = newMessageBoard.withClosedForestWithMenhir(currentPlayer(), forest);
                 if (lastPlacedTile.kind() == Tile.Kind.NORMAL) {
                     canPlayAgain = true;
                 }
-            } else {
+            } /**else {
                 newMessageBoard = newMessageBoard.withScoredForest(forest);
-            }
+            }*/
         }
 
         for (Area<Zone.River> river : board.riversClosedByLastTile()) {
@@ -280,10 +266,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
 
         newBoard = board.withoutGatherersOrFishersIn(board.forestsClosedByLastTile(), board.riversClosedByLastTile());
 
-        if (canPlayAgain) {
-            //newTileDecks = newTileDecks.withTopTileDrawnUntil(Tile.Kind.MENHIR, board::couldPlaceTile);
-        } else {
-            //newTileDecks = newTileDecks.withTopTileDrawnUntil(Tile.Kind.NORMAL, board::couldPlaceTile);
+        if (!canPlayAgain) {
             newPlayers = nextPlayerList();
         }
 
@@ -394,55 +377,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         return false;
     }
 
-    /**
-    private Set<Animal> cancelledAnimals2(Set<Area<Zone.Meadow>> meadowAreas) {
-        Set<Animal> deers = new HashSet<>();
-        Set<Animal> tigers = new HashSet<>();
-        Set<Animal> cancelledAnimals = new HashSet<>();
-
-        for (Area<Zone.Meadow> meadowArea : meadowAreas) {
-            if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.WILD_FIRE) == null) {
-                for (Animal animal : Area.animals(meadowArea, Set.of())) {
-                    if (animal.kind() == Animal.Kind.DEER) deers.add(animal);
-                    if (animal.kind() == Animal.Kind.TIGER) tigers.add(animal);
-                }
-                if (tigers.size() >= deers.size()) {
-                    cancelledAnimals.addAll(deers);
-                } else {
-                    int eatenDeers = 0;
-                    Set<Zone.Meadow> meadows = new HashSet<>();
-                    if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP) != null)
-                        meadows = meadowZonesNotAdjacentInSameArea((Zone.Meadow) meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP), meadowArea);
-                    if (!meadows.isEmpty()) {
-                        for (Zone.Meadow meadow : meadows) {
-                            for (Animal deer : meadow.animals()) {
-                                if (eatenDeers < tigers.size()) {
-                                    cancelledAnimals.add(deer);
-                                    eatenDeers++;
-                                } else break;
-                            }
-                            //meadows.remove(meadow);
-                        }
-                    } else {
-                        for (Animal deer : deers) {
-                            if (eatenDeers < tigers.size()) {
-                                cancelledAnimals.add(deer);
-                                eatenDeers++;
-                            } else break;
-                        }
-                    }
-                }
-            } else {
-                for (Animal animal : Area.animals(meadowArea, Set.of())) {
-                    if (animal.kind() == Animal.Kind.TIGER) cancelledAnimals.add(animal);
-                }
-            }
-        }
-        return cancelledAnimals;
-    }
-    */
-
-
     private Set<Animal> cancelledAnimals(Set<Area<Zone.Meadow>> meadowAreas) {
         Set<Animal> cancelledAnimals = new HashSet<>();
 
@@ -462,23 +396,25 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     int eatenDeers = 0;
                     Set<Zone.Meadow> priorityMeadows = new HashSet<>();
 
-                    if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP) != null)
+                    if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP) != null) {
                         priorityMeadows = meadowZonesNotAdjacentInSameArea((Zone.Meadow) meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP), meadowArea);
+                    }
 
                     for (Zone.Meadow meadow : priorityMeadows) {
                         for (Animal deer : meadow.animals()) {
                             if (eatenDeers < tigers.size() && deer.kind() == Animal.Kind.DEER) {
                                 cancelledAnimals.add(deer);
                                 eatenDeers++;
-                            } else break;
+                            } else;
                         }
                     }
+
 
                     for (Animal deer : deers) {
                         if (eatenDeers < tigers.size() && !cancelledAnimals.contains(deer)) {
                             cancelledAnimals.add(deer);
                             eatenDeers++;
-                        } else break;
+                        } else;
                     }
                 }
             }

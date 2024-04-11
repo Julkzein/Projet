@@ -25,15 +25,17 @@ public enum Direction {
     public static final int COUNT = ALL.size();
 
     /**
+     * Returns the direction obtained by rotating this direction by 90 degrees clockwise the given number of times.
      * @param rotation the rotation to apply.
-     * @return the direction obtained by rotating this direction by 90 degrees clockwise the given number of times.
+     * @return the new direction obtained.
      */
     public Direction rotated(Rotation rotation) {
         return Direction.values()[(this.ordinal() + rotation.quarterTurnsCW()) % COUNT];
     }
 
     /**
-     * @return the direction opposite to this direction.
+     * Returns the direction opposite to this direction.
+     * @return the new direction.
      */
     public Direction opposite() {
         return Direction.values()[(this.ordinal() + 2) % COUNT];
