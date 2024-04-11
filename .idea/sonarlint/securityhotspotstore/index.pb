@@ -53,3 +53,9 @@ Q
 !src/ch/epfl/chacun/TextMaker.java,d/f/df081e30eb772ec8b79a116793ee1443464c9d42
 Y
 )test/ch/epfl/chacun/MessageBoardTest.java,5/a/5a91ef443e29de4d5a81c2e7d8f9a972618b5143
+T
+$src/ch/epfl/chacun/gui/ColorMap.java,3/a/3aa0a98312770dc9dddd34a9ca9acc4f8e66d92a
+P
+ src/ch/epfl/chacun/gui/Icon.java,d/7/d72b13234575d03a6135b8102421d369ab5b185c
+D
+src/module-info.java,c/d/cdc434daeee688944ced38ff1c9875422db88382
