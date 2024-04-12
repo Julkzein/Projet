@@ -15,7 +15,6 @@ import java.util.*;
  * @Author Louis Bernard (379724)
  * @Author Jules Delforge (372325)
  */
-@SuppressWarnings("ALL")
 public final class Board {
     private final PlacedTile[] placedTiles; //an array of all the tiles placed on the board
     private final int[] index; //an array of the indexes of the tiles placed on the board in the order they were placed

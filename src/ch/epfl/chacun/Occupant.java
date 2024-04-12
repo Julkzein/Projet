@@ -35,9 +35,9 @@ public record Occupant(Kind kind, int zoneId) {
 
 
     /**
-     * Returns the number of occupants of the given kind.
+     * Returns the number of occupants given at the beginning of the given kind.
      * @param kind : kind of the occupant.
-     * @return the number of occupants of the given kind.
+     * @return the number of occupants given at the beginning of the given kind.
      */
     public static int occupantsCount(Kind kind) {
         return switch (kind) {

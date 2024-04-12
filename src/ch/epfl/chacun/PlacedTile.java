@@ -30,7 +30,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
     /**
      * Constructor with a given tile, placer, rotation and position but without an occupant.
-     * @throws IllegalArgumentException if the tile or rotation is null.
+     * @throws IllegalArgumentException if the tile, rotation or position is null.
      */
     public PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos pos) {
         this(tile, placer, rotation, pos, null);
@@ -39,7 +39,6 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
     /**
      * This method return the current tile id
-     *
      * @return current tile id
      */
     public int id() {
@@ -48,7 +47,6 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
     /**
      * This method return the current tile kind
-     *
      * @return current tile kind
      */
     public Tile.Kind kind() {
@@ -73,9 +71,10 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
 
     /**
-     * Returns the zone associated to the given id, or null if no zone is associated to such id
+     * Returns the zone associated to the given id
      *
      * @param id the id of the zone we want
+     * @throws IllegalArgumentException if no zone of the tile has the given id
      * @return the type of zone associated to the given id
      */
     public Zone zoneWithId(int id) {
@@ -87,7 +86,6 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
     /**
      * Returns the zone with a special power, or null if no zone of the tile has a special power
-     *
      * @return the zone of the given tile with a special power
      */
     public Zone specialPowerZone() {
@@ -99,7 +97,6 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
     /**
      * Returns a set containing all the forest zones of the tile, or null if no zone of the tile is of type forest
-     *
      * @return a set containing all the forest zones of the tile
      */
     public Set<Zone.Forest> forestZones() {
@@ -112,7 +109,6 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
     /**
      * Returns a set containing all the meadow zones of the tile, or null if no zone of the tile is of type meadow
-     *
      * @return a set containing all the meadow zones of the tile
      */
     public Set<Zone.Meadow> meadowZones() {
@@ -125,7 +121,6 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
     /**
      * Returns a set containing all the river zones of the tile, or null if no zone of the tile is of type river
-     *
      * @return a set containing all the river zones of the tile
      */
     public Set<Zone.River> riverZones() {
@@ -138,7 +133,6 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
     /**
      * Returns a set containing all the possible occupants of a tile, or null if said tile is the starting tile
-     *
      * @return a set containing all the possible occupants of a tile
      */
     public Set<Occupant> potentialOccupants() {
@@ -169,7 +163,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      */
     public PlacedTile withOccupant(Occupant occupant) {
         Preconditions.checkArgument(this.occupant == null);
-        return new PlacedTile(this.tile, this.placer, this.rotation, this.pos, occupant);
+        return new PlacedTile(tile, placer, rotation, pos, occupant);
     }
 
 
@@ -179,7 +173,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      * @return a tile identical to the given tile but with no occupant
      */
     public PlacedTile withNoOccupant() {
-        return new PlacedTile(this.tile, this.placer, this.rotation, this.pos);
+        return new PlacedTile(tile, placer, rotation, pos);
     }
 
     /**
@@ -191,8 +185,8 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      * -1 if no zone is occupied by an occupant of given kind
      */
     public int idOfZoneOccupiedBy(Occupant.Kind occupantKind) {
-        if (this.occupant != null && occupantKind == this.occupant.kind()) {
-            return this.occupant.zoneId();
+        if (occupant != null && occupantKind == occupant.kind()) {
+            return occupant.zoneId();
         }
         return -1;
     }

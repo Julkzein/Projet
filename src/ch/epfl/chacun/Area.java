@@ -209,7 +209,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      */
     public Area<Z> withInitialOccupant(PlayerColor occupant) {
         Preconditions.checkArgument(!this.isOccupied());
-        return new Area<>(this.zones, List.of(occupant), this.openConnections);
+        return new Area<>(zones, List.of(occupant), openConnections);
     }
 
     /**
@@ -221,10 +221,10 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      * @return an identical area to the current one but with the given occupant removed
      */
     public Area<Z> withoutOccupant(PlayerColor occupant) {
-        Preconditions.checkArgument(this.occupants.contains(occupant));
-        List<PlayerColor> newOccupants = new ArrayList<>(this.occupants);
+        Preconditions.checkArgument(occupants.contains(occupant));
+        List<PlayerColor> newOccupants = new ArrayList<>(occupants);
         newOccupants.remove(occupant);
-        return new Area<>(this.zones, newOccupants, this.openConnections);
+        return new Area<>(zones, newOccupants, openConnections);
     }
 
     /**
@@ -233,7 +233,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      * @return an identical area to the current one but without any occupants
      */
     public Area<Z> withoutOccupants() {
-        return new Area<>(this.zones, new ArrayList<>(), this.openConnections);
+        return new Area<>(zones, new ArrayList<>(), openConnections);
     }
 
     /**

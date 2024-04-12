@@ -41,7 +41,7 @@ public enum Rotation {
      * @return the rotation opposite to this rotation.
      */
     public Rotation negated() {
-        return Rotation.values()[(COUNT - this.quarterTurnsCW()) % COUNT];
+        return Rotation.values()[(COUNT - quarterTurnsCW()) % COUNT];
     }
 
 
@@ -49,7 +49,7 @@ public enum Rotation {
      * @return the number of quarter turns clockwise in this rotation.
      */
     public int quarterTurnsCW() {
-        return this.ordinal();
+        return ordinal();
     }
 
 
@@ -57,6 +57,6 @@ public enum Rotation {
      * @return the number of degrees clockwise in this rotation.
      */
     public int degreesCW() {
-        return this.quarterTurnsCW() * 90;
+        return quarterTurnsCW() * 90;
     }
 }
