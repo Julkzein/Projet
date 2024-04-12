@@ -168,9 +168,8 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
 
 
     /**
-     * This method return the same tile
-     *
-     * @return a tile identical to the given tile but with no occupant
+     * Returns a tile identical but with no occupant
+     * @return a tile identical but with no occupant
      */
     public PlacedTile withNoOccupant() {
         return new PlacedTile(tile, placer, rotation, pos);
