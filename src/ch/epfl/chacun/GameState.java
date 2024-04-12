@@ -309,8 +309,11 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                 newMessageBoard = newMessageBoard.withScoredRaft(waterArea);
             }
         }
+
         int maxPoints = 0 ;
         Set<PlayerColor> winners = new HashSet<>();
+
+        
         for (Integer i : newMessageBoard.points().values()) {
             if (i > maxPoints) maxPoints = i;
         }
@@ -330,13 +333,9 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      * @return the set of meadow zones of the given area that are not adjacent to the given meadow zone
      */
     private Set<Zone.Meadow> meadowZonesNotAdjacentInSameArea(Zone.Meadow z, Area<Zone.Meadow> m){
-        Set<Zone.Meadow> meadows = new HashSet<>();
-        for (Zone.Meadow zone : m.zones()) {
-            if (!(board.adjacentMeadow(board.tileWithId(z.tileId()).pos(), z).zones().contains(zone))) {
-                meadows.add(zone);
-            }
-        }
-        return meadows;
+        return m.zones().stream()
+                .filter(zone -> !(board.adjacentMeadow(board.tileWithId(z.tileId()).pos(), z).zones().contains(zone)))
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -370,15 +369,17 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      * @return true if the given set of occupants contains an occupant of the given kind
      */
     private boolean setHasOccupantOfKind(Set<Occupant> s, Occupant.Kind k) {
-        for (Occupant o : s) {
-            if (o.kind() == k)  {
-                return true;
-            }
-        }
-        return false;
+        return s.stream().anyMatch(o -> o.kind() == k);
     }
 
 
+    /**
+     * This method returns the set of animals that have been cancelled from the given meadow areas
+     * It deals with each meadow area by check if there is a fire, and if not, it deals with the deer to cancel
+     *
+     * @param meadowAreas : the meadow areas
+     * @return the set of animals that have been cancelled
+     */
     private Set<Animal> cancelledAnimals(Set<Area<Zone.Meadow>> meadowAreas) {
         Set<Animal> cancelledAnimals = new HashSet<>();
 
