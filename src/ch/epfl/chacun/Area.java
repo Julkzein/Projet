@@ -33,9 +33,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      */
     public static boolean hasMenhir(Area<Zone.Forest> forest) {
         for (Zone.Forest zone : forest.zones) {
-            if (zone.kind() == Zone.Forest.Kind.WITH_MENHIR) {
-                return true;
-            }
+            if (zone.kind() == Zone.Forest.Kind.WITH_MENHIR) return true;
         }
         return false;
     }
@@ -49,9 +47,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
     public static int mushroomGroupCount(Area<Zone.Forest> forest) {
         int i = 0;
         for (Zone.Forest zone : forest.zones) {
-            if (zone.kind() == Zone.Forest.Kind.WITH_MUSHROOMS) {
-                i += 1;
-            }
+            if (zone.kind() == Zone.Forest.Kind.WITH_MUSHROOMS) i += 1;
         }
         return i;
     }
@@ -86,9 +82,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         Set<Zone.Lake> lakes = new HashSet<>();
         for (Zone.River rivers : river.zones) {
             fishCount += rivers.fishCount();
-            if (rivers.hasLake() && lakes.add(rivers.lake())) {
-                fishCount += rivers.lake().fishCount();
-            }
+            if (rivers.hasLake() && lakes.add(rivers.lake())) fishCount += rivers.lake().fishCount();
         }
         return fishCount;
     }
@@ -170,9 +164,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         }
         int max = 0;
         for (int i = 0; i < index; i++) {
-            if (occupantCount[i] > max) {
-                max = occupantCount[i];
-            }
+            if (occupantCount[i] > max) max = occupantCount[i];
         }
         if (max == 0) {
             return new HashSet<>();
@@ -266,9 +258,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
      */
     public Zone zoneWithSpecialPower(Zone.SpecialPower specialPower) {
         for (Zone zone : zones) {
-            if (zone.specialPower() == specialPower) {
-                return zone;
-            }
+            if (zone.specialPower() == specialPower) return zone;
         }
         return null;
     }

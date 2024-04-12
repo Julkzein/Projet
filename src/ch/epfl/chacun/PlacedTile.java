@@ -80,9 +80,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      */
     public Zone zoneWithId(int id) {
         for (Zone zone : tile.zones()) {
-            if (zone.id() == id) {
-                return zone;
-            }
+            if (zone.id() == id) return zone;
         }
         throw new IllegalArgumentException();
     }
@@ -94,9 +92,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      */
     public Zone specialPowerZone() {
         for (Zone zone : tile.zones()) {
-            if (zone.specialPower() != null) {
-                return zone;
-            }
+            if (zone.specialPower() != null) return zone;
         }
         return null;
     }
@@ -109,9 +105,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
     public Set<Zone.Forest> forestZones() {
         Set<Zone.Forest> set = new HashSet<>();
         for (Zone zone : tile.zones()) {
-            if (zone instanceof Zone.Forest forest) {
-                set.add(forest);
-            }
+            if (zone instanceof Zone.Forest forest) set.add(forest);
         }
         return set;
     }
@@ -124,9 +118,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
     public Set<Zone.Meadow> meadowZones() {
         Set<Zone.Meadow> set = new HashSet<>();
         for (Zone zone : tile.zones()) {
-            if (zone instanceof Zone.Meadow meadow) {
-                set.add(meadow);
-            }
+            if (zone instanceof Zone.Meadow meadow) set.add(meadow);
         }
         return set;
     }
@@ -139,9 +131,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
     public Set<Zone.River> riverZones() {
         Set<Zone.River> set = new HashSet<>();
         for (Zone zone : tile.zones()) {
-            if (zone instanceof Zone.River river) {
-                set.add(river);
-            }
+            if (zone instanceof Zone.River river) set.add(river);
         }
         return set;
     }
@@ -153,9 +143,7 @@ public record PlacedTile(Tile tile, PlayerColor placer, Rotation rotation, Pos p
      */
     public Set<Occupant> potentialOccupants() {
         Set<Occupant> potentialOccupantsSet = new HashSet<>();
-        if (placer == null) {
-            return potentialOccupantsSet;
-        }
+        if (placer == null) return potentialOccupantsSet;
         else {
             for (Zone zone : tile.zones()) {
                 if (tile.sideZones().contains(zone)) {

@@ -45,13 +45,9 @@ public record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, List<Tile
      * @return the top tile of the pile of the given type of tile
      */
     public Tile topTile(Tile.Kind kind) {
-        if (kind == Tile.Kind.START) {
-            return startTiles.isEmpty() ? null : startTiles.getFirst();
-        } else if (kind == Tile.Kind.NORMAL) {
-            return normalTiles.isEmpty() ? null : normalTiles.getFirst();
-        } else {
-            return menhirTiles.isEmpty() ? null : menhirTiles.getFirst();
-        }
+        if (kind == Tile.Kind.START) return startTiles.isEmpty() ? null : startTiles.getFirst();
+        else if (kind == Tile.Kind.NORMAL) return normalTiles.isEmpty() ? null : normalTiles.getFirst();
+        else return menhirTiles.isEmpty() ? null : menhirTiles.getFirst();
     }
 
     /**
