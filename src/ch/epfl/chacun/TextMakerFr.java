@@ -20,9 +20,7 @@ public class TextMakerFr implements TextMaker{
      * @return the string with the players' names
      */
     private String orderPlayer(Set<PlayerColor> players){
-        List playersList = new ArrayList();
-        playersList.addAll(players);
-        Collections.sort(playersList);
+        List<PlayerColor> playersList = PlayerColor.ALL.stream().filter(players::contains).toList();
         String orderedPlayersString = "";
         for (int i = 0; i < playersList.size() - 1; i++) {
             orderedPlayersString = STR."\{orderedPlayersString} , \{playersList.get(i).toString()}";
@@ -37,11 +35,9 @@ public class TextMakerFr implements TextMaker{
      * @return the string with the animals' names and their number
      */
     private String orderAnimal(Map<Animal.Kind, Integer> animals) {
-        List animalList = new ArrayList<>();
-        animalList.addAll(animals.keySet());
-        Collections.sort(animalList);
+        List<Animal.Kind> animalList = Arrays.stream(Animal.Kind.values()).filter(animals::containsKey).toList(); // List of the animals (MAMMOTH, AUROCHS, DEER, TIGER
         String orderedPlayersString = "";
-        for (Object a : animalList) {
+        for (Animal.Kind a : animalList) {
             if (a == animalList.getLast()) {
                 orderedPlayersString = STR."\{orderedPlayersString} et \{animals.get(a)} \{a.toString()}\{plural(animals.get(a) > 0)}";
             } else {
@@ -128,7 +124,8 @@ public class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredForest(Set<PlayerColor> scorers, int points, int mushroomGroupCount, int tileCount) {
-        return STR."\{pluralVerb(scorers, points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'une forêt composée de \{tileCount} tuiles \{mushroomGroupCount > 0 ? "et de " + mushroomGroupCount + " groupe" + plural(mushroomGroupCount > 1) +" de champignons" : ""}.";
+        String mushroomString = mushroomGroupCount > 0 ? STR."et de \{mushroomGroupCount} groupe\{plural(mushroomGroupCount > 1)} de champignons" : "";
+        return STR."\{pluralVerb(scorers, points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'une forêt composée de \{tileCount} tuiles \{mushroomString}.";
     }
 
     /**
@@ -143,9 +140,8 @@ public class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredRiver(Set<PlayerColor> scorers, int points, int fishCount, int tileCount) {
-        String s = "";
-        if (fishCount > 1) { s = "s"; }
-        return STR."\{pluralVerb(scorers, points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'une rivière composée de \{tileCount} tuiles \{fishCount > 0 ? "et de " + fishCount + " poisson" + plural(fishCount > 1) : ""}.";
+        String fishString = fishCount > 0 ? STR."et de \{fishCount} poisson\{plural(fishCount > 1)}" : "";
+        return STR."\{pluralVerb(scorers, points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'une rivière composée de \{tileCount} tuiles \{fishString}.";
     }
 
     /**

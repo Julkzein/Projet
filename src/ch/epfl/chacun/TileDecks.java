@@ -1,6 +1,5 @@
 package ch.epfl.chacun;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -47,20 +46,11 @@ public record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, List<Tile
      */
     public Tile topTile(Tile.Kind kind) {
         if (kind == Tile.Kind.START) {
-            if (startTiles.isEmpty()) {
-                return null;
-            }
-            return startTiles.getFirst();
+            return startTiles.isEmpty() ? null : startTiles.getFirst();
         } else if (kind == Tile.Kind.NORMAL) {
-            if (normalTiles.isEmpty()) {
-                return null;
-            }
-            return normalTiles.getFirst();
+            return normalTiles.isEmpty() ? null : normalTiles.getFirst();
         } else {
-            if (menhirTiles.isEmpty()) {
-                return null;
-            }
-            return menhirTiles.getFirst();
+            return menhirTiles.isEmpty() ? null : menhirTiles.getFirst();
         }
     }
 
@@ -90,36 +80,14 @@ public record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, List<Tile
      * @throws IllegalArgumentException if the pile is empty
      */
     public TileDecks withTopTileDrawnUntil(Tile.Kind kind, Predicate<Tile> predicate) {
-        switch (kind) {
-            case START -> {
-                int predicateTrue = 0;
-                for (Tile t : startTiles) {
-                    if (predicate.test(t)) {
-                        return new TileDecks(startTiles.subList(predicateTrue, startTiles.size()), normalTiles, menhirTiles);
-                    } else ++predicateTrue;
-                }
-            }
-            case NORMAL -> {
-                int predicateTrue = 0;
-                for (Tile t : normalTiles) {
-                    if (predicate.test(t)) {
-                        return new TileDecks(startTiles, normalTiles.subList(predicateTrue, normalTiles.size()), menhirTiles);
-                    } else ++predicateTrue;
-                }
-            }
-            case MENHIR -> {
-                int predicateTrue = 0;
-                for (Tile t : menhirTiles) {
-                    if (predicate.test(t)) {
-                        return new TileDecks(startTiles, normalTiles, menhirTiles.subList(predicateTrue, menhirTiles.size()));
-                    } else ++predicateTrue;
-                }
-            }
-        }
-        return switch (kind) {
-            case START -> new TileDecks(new ArrayList<>(), normalTiles, menhirTiles);
-            case NORMAL -> new TileDecks(startTiles, new ArrayList<>(), menhirTiles);
-            case MENHIR -> new TileDecks(startTiles, normalTiles, new ArrayList<>());
+        List<Tile> newTileDeck = switch (kind) {
+            case START -> startTiles;
+            case NORMAL -> normalTiles;
+            case MENHIR -> menhirTiles;
         };
+        newTileDeck = newTileDeck.stream().dropWhile(tile -> !predicate.test(tile)).toList();
+        return new TileDecks(kind == Tile.Kind.START ? newTileDeck : startTiles,
+                             kind == Tile.Kind.NORMAL ? newTileDeck : normalTiles,
+                             kind == Tile.Kind.MENHIR ? newTileDeck : menhirTiles);
     }
 }
