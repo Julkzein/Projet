@@ -470,8 +470,8 @@ public final class Board {
     public Board withoutGatherersOrFishersIn(Set<Area<Zone.Forest>> forests, Set<Area<Zone.River>> rivers) {
         ZonePartitions.Builder newBoardZonePartitionsBuilder = new ZonePartitions.Builder(partition);
         PlacedTile[] newPlacedTile = placedTiles.clone();
-        Set<PlacedTile> forestPawnsToCancell = new HashSet<>();
-        Set<PlacedTile> riversPawnsToCancell = new HashSet<>();
+        Set<PlacedTile> forestPawnsToCancel = new HashSet<>();
+        Set<PlacedTile> riversPawnsToCancel = new HashSet<>();
 
         for (Area<Zone.Forest> forestArea : forests) {
             newBoardZonePartitionsBuilder.clearGatherers(forestArea);
@@ -479,11 +479,11 @@ public final class Board {
                 PlacedTile tile = tileWithId(Zone.tileId(zoneForest.id()));
                 if (tile.occupant() != null) {
                     if (tile.occupant().zoneId() == zoneForest.id() && tile.occupant().kind() == Occupant.Kind.PAWN) {
-                        forestPawnsToCancell.add(tile);
+                        forestPawnsToCancel.add(tile);
                     }
                 }
             }
-            for (PlacedTile tile : forestPawnsToCancell) {
+            for (PlacedTile tile : forestPawnsToCancel) {
                 newPlacedTile[index(tile.pos())] = tile.withNoOccupant();
             }
 
@@ -494,11 +494,11 @@ public final class Board {
                 PlacedTile tile = tileWithId(Zone.tileId(zoneRiver.id()));
                 if (tile.occupant() != null) {
                     if (tile.occupant().zoneId() == zoneRiver.id() && tile.occupant().kind() == Occupant.Kind.PAWN) {
-                        riversPawnsToCancell.add(tile);
+                        riversPawnsToCancel.add(tile);
                     }
                 }
             }
-            for (PlacedTile tile : riversPawnsToCancell) {
+            for (PlacedTile tile : riversPawnsToCancel) {
                 newPlacedTile[index(tile.pos())] = tile.withNoOccupant();
             }
         }

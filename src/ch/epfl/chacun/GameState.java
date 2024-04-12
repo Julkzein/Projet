@@ -1,6 +1,7 @@
 package ch.epfl.chacun;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static ch.epfl.chacun.Area.hasMenhir;
 import static ch.epfl.chacun.Occupant.occupantsCount;
@@ -285,7 +286,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
 
     /**
      * This method returns the game state after the game has ended
-     * It adds to the cancelled animals set the deers that have been eaten by the tigers, and the tigers
+     * It adds to the cancelled animals set the deer that have been eaten by the tigers, and the tigers
      * It counts the final points and determines the winners
      *
      * @return the game state after the game has ended
@@ -377,45 +378,48 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         return false;
     }
 
+
     private Set<Animal> cancelledAnimals(Set<Area<Zone.Meadow>> meadowAreas) {
         Set<Animal> cancelledAnimals = new HashSet<>();
 
         for (Area<Zone.Meadow> meadowArea : meadowAreas) {
-            Set<Animal> deers = new HashSet<>();
+            Set<Animal> deer = new HashSet<>();
             Set<Animal> tigers = new HashSet<>();
 
             for (Animal animal : Area.animals(meadowArea, Set.of())) {
-                if (animal.kind() == Animal.Kind.DEER) deers.add(animal);
+                if (animal.kind() == Animal.Kind.DEER) deer.add(animal);
                 if (animal.kind() == Animal.Kind.TIGER) tigers.add(animal);
             }
             cancelledAnimals.addAll(tigers);
-            if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.WILD_FIRE) == null) {
-                if (deers.size() <= tigers.size()) {
-                    cancelledAnimals.addAll(deers);
+
+            if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.WILD_FIRE) == null) { //If there isn't any fire, we deal with the deer to cancel
+                if (deer.size() <= tigers.size()) {
+                    cancelledAnimals.addAll(deer);
                 } else {
-                    int eatenDeers = 0;
                     Set<Zone.Meadow> priorityMeadows = new HashSet<>();
 
                     if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP) != null) {
                         priorityMeadows = meadowZonesNotAdjacentInSameArea((Zone.Meadow) meadowArea.zoneWithSpecialPower(Zone.SpecialPower.PIT_TRAP), meadowArea);
                     }
 
-                    for (Zone.Meadow meadow : priorityMeadows) {
-                        for (Animal deer : meadow.animals()) {
-                            if (eatenDeers < tigers.size() && deer.kind() == Animal.Kind.DEER) {
-                                cancelledAnimals.add(deer);
-                                eatenDeers++;
-                            } else;
-                        }
-                    }
+                    //Use of the flat map to convert each individual element of the stream into a stream itself, and avoiding nested streams into a stream
+                    //Filters the animals by kind and keeps only the deer until reaching the size of the tigers
+                    Set<Animal> cancelledAnimals2 = priorityMeadows.stream()
+                            .flatMap(m -> m.animals().stream())
+                            .filter(d -> d.kind() == Animal.Kind.DEER)
+                            .limit(tigers.size())
+                            .collect(Collectors.toSet());
 
+                    cancelledAnimals.addAll(cancelledAnimals2);
+                    int eatenDeer = cancelledAnimals2.size();
 
-                    for (Animal deer : deers) {
-                        if (eatenDeers < tigers.size() && !cancelledAnimals.contains(deer)) {
-                            cancelledAnimals.add(deer);
-                            eatenDeers++;
-                        } else;
-                    }
+                    //Filters the deer to check if they aren't already cancelled, and adds them until reaching the limit (number of tigers - eaten deer)
+                    Set<Animal> cancelledAnimals3 = deer.stream()
+                            .filter(d -> !cancelledAnimals.contains(d))
+                            .limit(tigers.size() - eatenDeer)
+                            .collect(Collectors.toSet());
+
+                    cancelledAnimals.addAll(cancelledAnimals3);
                 }
             }
         }
