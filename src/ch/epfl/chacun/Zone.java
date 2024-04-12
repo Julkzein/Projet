@@ -118,8 +118,7 @@ public sealed interface Zone {
      * @param fishCount the number of fish in the lake
      * @param specialPower the possible special power of the lake
      */
-    record Lake(int id, int fishCount, Zone.SpecialPower specialPower) implements Zone, Water {
-    }
+    record Lake(int id, int fishCount, Zone.SpecialPower specialPower) implements Zone, Water {}
 
     /**
      * Represents a river in the game.

@@ -59,3 +59,11 @@ P
  src/ch/epfl/chacun/gui/Icon.java,d/7/d72b13234575d03a6135b8102421d369ab5b185c
 D
 src/module-info.java,c/d/cdc434daeee688944ced38ff1c9875422db88382
+Z
+*test/ch/epfl/chacun/MyTextMakerFrTest.java,e/2/e2d22469fa3c0c6189325508e71b399eb4fa01f1
+Q
+!test/ch/epfl/chacun/AreaTest.java,6/e/6eddbd7e379d05bccacc2278b840f1f2e90ce49c
+Z
+*test/ch/epfl/chacun/ZonePartitionTest.java,c/c/cc19fc96c0ff26fe9f9e740b4100f864b776d57a
+V
+&test/ch/epfl/chacun/TileDecksTest.java,1/a/1aa822f608601d1abfc606c590c5e018d95061c0

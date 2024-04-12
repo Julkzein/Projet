@@ -27,7 +27,7 @@ public enum Rotation {
 
 
     /**
-     * Adds a certain rotation to this rotation.
+     * This method adds a certain rotation to this rotation.
      *
      * @param that the rotation to apply.
      * @return the rotation obtained by adding the given rotation to this rotation.
@@ -38,6 +38,8 @@ public enum Rotation {
 
 
     /**
+     * This method returns the opposite rotation of this rotation.
+     *
      * @return the rotation opposite to this rotation.
      */
     public Rotation negated() {
@@ -46,6 +48,8 @@ public enum Rotation {
 
 
     /**
+     * This method returns the number of quarter turns clockwise in this rotation.
+     * *
      * @return the number of quarter turns clockwise in this rotation.
      */
     public int quarterTurnsCW() {
@@ -54,6 +58,8 @@ public enum Rotation {
 
 
     /**
+     * This method returns the number of degrees clockwise in this rotation.
+     *
      * @return the number of degrees clockwise in this rotation.
      */
     public int degreesCW() {

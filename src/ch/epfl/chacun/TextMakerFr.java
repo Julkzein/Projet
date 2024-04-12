@@ -10,8 +10,8 @@ import static java.lang.StringTemplate.STR;
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
  */
-public class TextMakerFr implements TextMaker{
-    public Map<PlayerColor, String> playerMap = new HashMap<>(); // Map of the players' names and their colors
+public final class TextMakerFr implements TextMaker{
+    private final Map<PlayerColor, String> playerMap = new HashMap<>(); // Map of the players' names and their colors
 
     /**
      * This method orders the players in a string.
@@ -21,11 +21,11 @@ public class TextMakerFr implements TextMaker{
      */
     private String orderPlayer(Set<PlayerColor> players){
         List<PlayerColor> playersList = PlayerColor.ALL.stream().filter(players::contains).toList();
-        StringBuilder orderedPlayersString = new StringBuilder();
+        StringJoiner orderedPlayersString = new StringJoiner(", ", "", "");
         for (int i = 0; i < playersList.size() - 1; i++) {
-            orderedPlayersString.append(STR.", \{playersList.get(i).toString()}");
+            orderedPlayersString.add(STR."\{playerMap.get(playersList.get(i))}");
         }
-        return STR."\{orderedPlayersString.toString()} et \{playersList.getLast().toString()}";
+        return STR."\{orderedPlayersString.toString()} et \{playerMap.get(playersList.getLast())}";
     }
 
     /**
@@ -34,17 +34,18 @@ public class TextMakerFr implements TextMaker{
      * @param animals the map of the animals
      * @return the string with the animals' names and their number
      */
-    private String orderAnimal(Map<Animal.Kind, Integer> animals) {
-        List<Animal.Kind> animalList = Arrays.stream(Animal.Kind.values()).filter(animals::containsKey).toList(); // List of the animals (MAMMOTH, AUROCHS, DEER, TIGER
-        StringBuilder orderedPlayersString = new StringBuilder();
-        for (Animal.Kind a : animalList) {
-            if (a == animalList.getLast()) {
-                orderedPlayersString.append(STR."et \{animals.get(a)} \{a.toString()}\{plural(animals.get(a) > 0)}");
-            } else {
-                orderedPlayersString.append(STR.", \{animals.get(a)} \{a.toString()}");
-            }
+    public String orderAnimal(Map<Animal.Kind, Integer> animals) {
+        List<Animal.Kind> animalList = Arrays.stream(Animal.Kind.values()).filter(animals::containsKey).toList();
+        Map<Animal.Kind, String> frName = Map.of(Animal.Kind.DEER, "cerf", Animal.Kind.AUROCHS, "aurochs", Animal.Kind.MAMMOTH, "mammouth", Animal.Kind.TIGER, "tigre");
+        StringJoiner orderedPlayersString = new StringJoiner(", ", "", "");
+        List<Integer> animalIntList = animalList.stream().map(animals::get).toList();
+        for (int i = 0; i < animalList.size() - 1; i++) {
+            orderedPlayersString.add(STR."\{animalIntList.get(i)} \{frName.get(animalList.get(i))}\{frName.get(animalList.get(i)).equals("aurochs") ? "" : plural(animalIntList.get(i) > 1)}");
         }
-        return STR."\{orderedPlayersString.toString()}.";
+        if (animals.keySet().size() > 1) {
+            return STR."\{orderedPlayersString.toString()} et \{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{frName.get(animalList.getLast()).equals("aurochs") ? "" : plural(animalIntList.getLast() > 1)}.";
+        }
+        return STR."\{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{frName.get(animalList.getLast()).equals("aurochs") ? "" : plural(animalIntList.getLast() > 1)}.";
     }
 
     /**
@@ -75,8 +76,8 @@ public class TextMakerFr implements TextMaker{
      * @param points the number of points
      * @return the verb in the plural form and the points won if the condition is true
      */
-    private String pluralVerb(Set<PlayerColor> players, int points) {
-        return STR."\{orderPlayer(players)} \{players.size() > 1 ? "a remporté" : "ont remporté"} \{points(points)}";
+    private String pluralStartSentence(Set<PlayerColor> players, int points) {
+        return STR."\{orderPlayer(players)} \{players.size() > 1 ? "ont remporté" : "a remporté"} \{points(points)} en tant qu'occupant·e\{pluralScorer(players.size() > 1)} majoritaire\{plural(players.size() > 1)}";
     }
 
     /**
@@ -98,7 +99,7 @@ public class TextMakerFr implements TextMaker{
      */
     @Override
     public String points(int points) {
-        return STR."\{points} point\{plural(points > 0)}";
+        return STR."\{points} point\{plural(points > 1)}";
     }
 
     /**
@@ -124,8 +125,8 @@ public class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredForest(Set<PlayerColor> scorers, int points, int mushroomGroupCount, int tileCount) {
-        String mushroomString = mushroomGroupCount > 0 ? STR."et de \{mushroomGroupCount} groupe\{plural(mushroomGroupCount > 1)} de champignons" : "";
-        return STR."\{pluralVerb(scorers, points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'une forêt composée de \{tileCount} tuiles \{mushroomString}.";
+        String mushroomString = mushroomGroupCount > 0 ? STR." et de \{mushroomGroupCount} groupe\{plural(mushroomGroupCount > 1)} de champignons" : "";
+        return STR."\{pluralStartSentence(scorers, points)} d'une forêt composée de \{tileCount} tuiles\{mushroomString}.";
     }
 
     /**
@@ -140,8 +141,8 @@ public class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredRiver(Set<PlayerColor> scorers, int points, int fishCount, int tileCount) {
-        String fishString = fishCount > 0 ? STR."et de \{fishCount} poisson\{plural(fishCount > 1)}" : "";
-        return STR."\{pluralVerb(scorers, points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'une rivière composée de \{tileCount} tuiles \{fishString}.";
+        String fishString = fishCount > 0 ? STR." et de \{fishCount} poisson\{plural(fishCount > 1)}" : "";
+        return STR."\{pluralStartSentence(scorers, points)} d'une rivière composée de \{tileCount} tuile\{plural(tileCount > 1)}\{fishString}.";
     }
 
     /**
@@ -155,7 +156,7 @@ public class TextMakerFr implements TextMaker{
      */
     @Override
     public String playerScoredHuntingTrap(PlayerColor scorer, int points, Map<Animal.Kind, Integer> animals) {
-        return STR."\{scorer} a remporté \{points(points)} en plaçant la fosse à pieux dans un pré dans lequel elle est entourée de \{orderAnimal(animals)}";
+        return STR."\{scorer} a remporté \{points(points)} en plaçant la fosse à pieux dans un pré dans lequel elle est entourée de \{orderAnimal(animals)}.";
     }
 
     /**
@@ -181,7 +182,7 @@ public class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredMeadow(Set<PlayerColor> scorers, int points, Map<Animal.Kind, Integer> animals) {
-        return STR."\{pluralVerb(scorers, points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'un pré contenant \{orderAnimal(animals)}";
+        return STR."\{pluralStartSentence(scorers, points)} d'un pré contenant \{orderAnimal(animals)}.";
     }
 
     /**
@@ -194,7 +195,7 @@ public class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredRiverSystem(Set<PlayerColor> scorers, int points, int fishCount) {
-        return STR."\{pluralVerb(scorers, points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'un réseau hydrographique contenant \{fishCount} poisson\{plural(fishCount > 1)}";
+        return STR."\{pluralStartSentence(scorers, points)} d'un réseau hydrographique contenant \{fishCount} poisson\{plural(fishCount > 1)}.";
     }
 
     /**
@@ -207,7 +208,7 @@ public class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredPitTrap(Set<PlayerColor> scorers, int points, Map<Animal.Kind, Integer> animals) {
-        return STR."\{pluralVerb(scorers, points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'un pré contenant la grande fosse à pieux entourée de \{orderAnimal(animals)}";
+        return STR."\{pluralStartSentence(scorers, points)} d'un pré contenant la grande fosse à pieux entourée de \{orderAnimal(animals)}.";
     }
 
     /**
@@ -220,7 +221,7 @@ public class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredRaft(Set<PlayerColor> scorers, int points, int lakeCount) {
-        return STR."\{pluralVerb(scorers, points)} en tant qu'occupant·e\{pluralScorer(scorers.size() > 1)} majoritaire\{plural(scorers.size() > 1)} d'un réseau hydrographique contenant le radeau et \{lakeCount} lac\{plural(lakeCount > 1)}";
+        return STR."\{pluralStartSentence(scorers, points)} d'un réseau hydrographique contenant le radeau et \{lakeCount} lac\{plural(lakeCount > 1)}.";
     }
 
     /**
@@ -232,7 +233,7 @@ public class TextMakerFr implements TextMaker{
      */
    @Override
    public String playersWon(Set<PlayerColor> winners, int points) {
-        return STR."\{orderPlayer(winners)} \{winners.size() > 1 ? "ont remporté" : "a remporté"} avec \{points(points)}";
+        return STR."\{orderPlayer(winners)} \{winners.size() > 1 ? "ont remporté" : "a remporté"} avec \{points(points)}.";
    }
 
    /**

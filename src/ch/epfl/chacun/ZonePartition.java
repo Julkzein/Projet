@@ -58,7 +58,7 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
         /**
          * The set of areas of the zone partition
          */
-        private Set<Area<Z>> areas;
+        private final Set<Area<Z>> areas;
 
         /**
          * This constructor creates a builder with the given zone partition
@@ -76,7 +76,6 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
         public void addSingleton(Z zone, int openConnections) {
             areas.add(new Area<>(Set.of(zone), new ArrayList<>(), openConnections));
         }
-
 
         /**
          * This method adds an occupant of the given color in the given zone
@@ -132,16 +131,14 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
                 }
             }
             throw new IllegalArgumentException();
-
         }
-
-
 
         /**
          * This method connects the two given zones to create a larger area
          *
          * @param zone1 : the first zone to add to the area
          * @param zone2 : the second zone to add to the area
+         * @throws IllegalArgumentException if the any of the two zones are not in any area
          */
         public void union(Z zone1, Z zone2) {
             Area<Z> area1 = null;
@@ -157,7 +154,7 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
                     area2 = area;
                 }
             }
-            Preconditions.checkArgument(area1 != null && area2 != null);
+            Preconditions.checkArgument(area1 !=null && area2 != null);
             areas.add(area1.connectTo(area2));
             areas.remove(area1);
             areas.remove(area2);

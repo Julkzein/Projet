@@ -6,7 +6,7 @@ import java.util.Set;
 
 /**
  * This class represents a tile in the game.
-
+ *
  * @param id The id of the tile
  * @param kind The kind of the tile
  * @param n The north side of the tile
@@ -28,7 +28,7 @@ public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSi
     }
 
     /**
-     * The four sides of the tile.
+     * This method the four sides of the tile.
      *
      * @return the four sides of the tile.
      */
@@ -37,7 +37,7 @@ public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSi
     }
 
     /**
-     * The zones of the sides of the tile.
+     * This method returns zones of the sides of the tile.
      *
      * @return the zones of the sides of the tile.
      */
@@ -50,7 +50,7 @@ public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSi
     }
 
     /**
-     * The zones of the tile.
+     * This method returns the zones of the tile.
      * 
      * @return the zones of the tile.
      */

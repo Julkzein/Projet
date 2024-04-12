@@ -15,7 +15,7 @@ import java.util.function.Predicate;
 public record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, List<Tile> menhirTiles) {
 
     /**
-     * Compact constructor with a given startTiles
+     * Compact constructor with the given startTiles, normalTiles and menhirTiles
      */
     public TileDecks {
         startTiles = List.copyOf(startTiles);
@@ -42,16 +42,14 @@ public record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, List<Tile
      * This method returns the top tile of the pile of the given type of tile
      *
      * @param kind the type of tile for which we would like the top tile
-     * @return the top tile of the pile of the given type of tile
+     * @return the top tile of the pile of the given type of tile or null is the pile is empty
      */
     public Tile topTile(Tile.Kind kind) {
-        if (kind == Tile.Kind.START) {
-            return startTiles.isEmpty() ? null : startTiles.getFirst();
-        } else if (kind == Tile.Kind.NORMAL) {
-            return normalTiles.isEmpty() ? null : normalTiles.getFirst();
-        } else {
-            return menhirTiles.isEmpty() ? null : menhirTiles.getFirst();
-        }
+        return switch(kind) {
+            case START -> startTiles.isEmpty() ? null : startTiles.getFirst();
+            case NORMAL -> normalTiles.isEmpty() ? null : normalTiles.getFirst();
+            case MENHIR -> menhirTiles.isEmpty() ? null : menhirTiles.getFirst();
+        };
     }
 
     /**

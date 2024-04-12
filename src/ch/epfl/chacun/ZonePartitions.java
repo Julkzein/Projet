@@ -26,10 +26,10 @@ public record ZonePartitions(ZonePartition<Zone.Forest> forests,ZonePartition<Zo
      * This class is a builder for zone partitions
      */
     public static final class Builder {
-        private ZonePartition.Builder<Zone.Forest> forests;
-        private ZonePartition.Builder<Zone.River> rivers;
-        private ZonePartition.Builder<Zone.Meadow> meadows;
-        private ZonePartition.Builder<Zone.Water> riverSystems;
+        private final ZonePartition.Builder<Zone.Forest> forests;
+        private final ZonePartition.Builder<Zone.River> rivers;
+        private final ZonePartition.Builder<Zone.Meadow> meadows;
+        private final ZonePartition.Builder<Zone.Water> riverSystems;
 
         /**
          * This constructor creates a builder with given zone partitions
