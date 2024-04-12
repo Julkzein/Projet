@@ -395,12 +395,19 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         return cancelledAnimals;
     }
 
-    private <T extends Zone> Area<T> areaOfZoneOnBoard(T zone, Board b) {
-        return switch (zone) {
-            case Zone.Forest forest -> (Area<T>) b.forestArea(forest);
-            case Zone.Meadow meadow -> (Area<T>) b.meadowArea(meadow);
-            case Zone.River river -> (Area<T>) b.riverArea(river);
-            case Zone.Water water -> (Area<T>) b.riverSystemArea(water);
+    /**
+     * This method returns the area of the given zone on the board, avoiding long switch statements
+     *
+     * @param zone : the zone
+     * @param b : the board
+     * @return the area of the given zone on the board
+     */
+    private Area<Zone> areaOfZoneOnBoard(Zone zone, Board b) {
+        return (Area<Zone>) switch (zone) {
+            case Zone.Forest forest -> b.forestArea(forest);
+            case Zone.Meadow meadow -> b.meadowArea(meadow);
+            case Zone.River river -> b.riverArea(river);
+            case Zone.Water water -> b.riverSystemArea(water);
         };
     }
 }

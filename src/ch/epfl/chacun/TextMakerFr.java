@@ -1,8 +1,8 @@
 package ch.epfl.chacun;
 
 import java.util.*;
-import java.util.List;
 import static java.lang.StringTemplate.STR;
+
 
 /**
  * This class creates the texts,  in French, for the different events of the game.
