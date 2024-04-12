@@ -40,6 +40,6 @@ public enum Direction {
      * @return the new direction.
      */
     public Direction opposite() {
-        return Direction.values()[(this.ordinal() + 2) % COUNT];
+        return Direction.values()[(ordinal() + 2) % COUNT];
     }
 }

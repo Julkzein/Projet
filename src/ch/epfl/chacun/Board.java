@@ -72,9 +72,7 @@ public final class Board {
      */
     public PlacedTile tileWithId(int tileId) {
         for (int i : index) {
-            if (placedTiles[i].id() == tileId) {
-                return placedTiles[i];
-            }
+            if (placedTiles[i].id() == tileId) return placedTiles[i];
         }
         throw new IllegalArgumentException();
     }
@@ -114,9 +112,7 @@ public final class Board {
      */
     public Area<Zone.Forest> forestArea(Zone.Forest forest) {
          for (Area<Zone.Forest> forestArea : partition.forests().areas()) {
-             if (forestArea.zones().contains(forest)) {
-                 return forestArea;
-             }
+             if (forestArea.zones().contains(forest)) return forestArea;
          }
          throw new IllegalArgumentException();
     }
@@ -132,9 +128,7 @@ public final class Board {
      */
     public Area<Zone.Meadow> meadowArea(Zone.Meadow meadow) {
         for (Area<Zone.Meadow> meadowArea : partition.meadows().areas()) {
-            if (meadowArea.zones().contains(meadow)) {
-                return meadowArea;
-            }
+            if (meadowArea.zones().contains(meadow)) return meadowArea;
         }
         throw new IllegalArgumentException();
     }
@@ -150,10 +144,8 @@ public final class Board {
      * @return the area containing the given river zone
      */
     public Area<Zone.River> riverArea(Zone.River riverZone) {
-        for(Area<Zone.River> riverArea : partition.rivers().areas()) {
-            if(riverArea.zones().contains(riverZone)) {
-                return riverArea;
-            }
+        for (Area<Zone.River> riverArea : partition.rivers().areas()) {
+            if (riverArea.zones().contains(riverZone)) return riverArea;
         }
         throw new IllegalArgumentException();
     }
@@ -168,10 +160,8 @@ public final class Board {
      * @return the area containing the given water zone
      */
     public Area<Zone.Water> riverSystemArea(Zone.Water waterZone) {
-        for(Area<Zone.Water> riverSystemArea : partition.riverSystems().areas()) {
-            if(riverSystemArea.zones().contains(waterZone)) {
-                return riverSystemArea;
-            }
+        for (Area<Zone.Water> riverSystemArea : partition.riverSystems().areas()) {
+            if (riverSystemArea.zones().contains(waterZone)) return riverSystemArea;
         }
         throw new IllegalArgumentException();
     }
@@ -265,8 +255,8 @@ public final class Board {
      */
     public Set<Pos> insertionPositions() {
         Set<Pos> positions = new HashSet<>();
-        for(PlacedTile placedTile : placedTiles) {
-            if(placedTile != null) {
+        for (PlacedTile placedTile : placedTiles) {
+            if (placedTile != null) {
                 int x = placedTile.pos().x();
                 int y = placedTile.pos().y();
                 if ((tileAt(new Pos(x - 1, y)) == null) && Math.abs(x-1) <= 12 && Math.abs(y) <= 12) {

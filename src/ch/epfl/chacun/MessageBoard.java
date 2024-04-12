@@ -27,10 +27,10 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     }
 
     /**
-     * This method returns a new MessageBoard identical to the current one except that it contains a new message
+     * This method returns a list of messages identical to the current one except that it contains a new message
      *
      * @param m the message we want to add to the MessageBoard
-     * @return the new MessageBoard with the additional message
+     * @return a list of messages with the additional message
      */
     private List<Message> messagesWithNewMessage(Message m) {
         List<Message> newMessages = new ArrayList<>(messages);
@@ -74,7 +74,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
 
     /**
      * This method returns a MessageBoard identical to the current one but with a new message
-     * indicating that the given player may play a second time as he colsed a forest containing
+     * indicating that the given player may play a second time as he closed a forest containing
      * one or more menhir
      *
      * @param player the player that closed of the given forest
@@ -98,7 +98,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     public MessageBoard withScoredRiver(Area<Zone.River> river) {
         if (river.isOccupied()) {
             int addPoints = Area.riverFishCount(river) + river.zones().size();
-            String addText = textMaker.playersScoredRiver(river.majorityOccupants(), addPoints, river.riverFishCount(river), river.zones().size());
+            String addText = textMaker.playersScoredRiver(river.majorityOccupants(), addPoints, Area.riverFishCount(river), river.zones().size());
             return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, addPoints, river.majorityOccupants(), river.tileIds())));
         }
         return this;
@@ -109,7 +109,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * the given Hunting Trap by the given player gained points in which case it will add a message
      * indicating the points given by the Hunting Trap placed by the player
      *
-     * @param scorer the player that placed the trapz
+     * @param scorer the player that placed the trap
      * @param adjacentMeadow all meadows in the range of the Hunting Trap
      * @return the MessageBoard with the possible new message
      */
@@ -148,8 +148,9 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @return the MessageBoard with the new message
      */
     public MessageBoard withScoredLogboat(PlayerColor scorer, Area<Zone.Water> riverSystem) {
-        String addText = textMaker.playerScoredLogboat(scorer, forLogboat(riverSystem.lakeCount(riverSystem)), riverSystem.lakeCount(riverSystem));
-        return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, forLogboat(riverSystem.lakeCount(riverSystem)), Set.of(scorer), riverSystem.tileIds())));
+        int lakeCount = Area.lakeCount(riverSystem);
+        String addText = textMaker.playerScoredLogboat(scorer, forLogboat(lakeCount), lakeCount);
+        return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, forLogboat(lakeCount), Set.of(scorer), riverSystem.tileIds())));
     }
 
 
@@ -159,7 +160,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * the amount of points associated to its closing
      *
      * @param meadow the given meadow we want to check if closed
-     * @param cancelledAnimals the animals that must not be counted in the poins
+     * @param cancelledAnimals the animals that must not be counted in the points
      * @return the MessageBoard with the possible additional message
      */
     public MessageBoard withScoredMeadow(Area<Zone.Meadow> meadow, Set<Animal> cancelledAnimals) {
@@ -187,13 +188,13 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * is occupied and that the points it gives is superior to 0 in which case it will add a new message
      * indicating that the majority occupant players have won a certain amount of points
      *
-     * @param riverSystem the river systel we want to check
+     * @param riverSystem the river system we want to check
      * @return the MessageBoard with the possible new message
      */
     public MessageBoard withScoredRiverSystem(Area<Zone.Water> riverSystem) {
         if (riverSystem.isOccupied()){
             int points = Area.riverSystemFishCount(riverSystem);
-            if (points > 0 ) {
+            if (points > 0) {
                 Set<PlayerColor> scorers = riverSystem.majorityOccupants();
                 String addText = textMaker.playersScoredRiverSystem(scorers, points, points);
                 return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, points, scorers, riverSystem.tileIds())));
@@ -235,7 +236,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * This method returns a MessageBoard identical to the current one except if the given river system is occupied
      * in which case it will add a message indicating that its majority occupants have won the corresponding points
      *
-     * @param riverSystem the river systel we desire to check
+     * @param riverSystem the river system we desire to check
      * @return the MessageBoard with the possible additional message
      */
     public MessageBoard withScoredRaft(Area<Zone.Water> riverSystem) {
@@ -271,19 +272,13 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     public record Message(String text, int points, Set<PlayerColor> scorers, Set<Integer> tileIds) {
         public Message {
             Preconditions.checkArgument(points >= 0);
-            if (text.equals(null)){
-                throw new NullPointerException();
-            }
-            if (scorers.equals(null)){
-                scorers = Set.of();
-            } else {
-                scorers = Set.copyOf(scorers);
-            }
-            if (tileIds.equals(null)){
-                tileIds = Set.of();
-            } else {
-                tileIds = Set.copyOf(tileIds);
-            }
+            if (text == null) throw new NullPointerException();
+
+            if (scorers == null) scorers = Set.of();
+            else scorers = Set.copyOf(scorers);
+
+            if (tileIds == null) tileIds = Set.of();
+            else tileIds = Set.copyOf(tileIds);
         }
     }
 }

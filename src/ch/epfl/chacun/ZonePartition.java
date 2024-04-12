@@ -42,9 +42,7 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
      */
     public Area<Z> areaContaining(Z zone) {
         for (Area<Z> area : areas) {
-            if (area.zones().contains(zone)) {
-                return area;
-            }
+            if (area.zones().contains(zone)) return area;
         }
         throw new IllegalArgumentException();
     }
@@ -143,16 +141,10 @@ public record ZonePartition<Z extends Zone>(Set<Area<Z>> areas) {
         public void union(Z zone1, Z zone2) {
             Area<Z> area1 = null;
             Area<Z> area2 = null;
-            for(Area<Z> area : areas) {
-                if (area1 != null && area2 != null) {
-                    break;
-                }
-                if (area.zones().contains(zone1) && area1 == null) {
-                    area1 = area;
-                }
-                if (area.zones().contains(zone2) && area2 == null) {
-                    area2 = area;
-                }
+            for (Area<Z> area : areas) {
+                if (area1 != null && area2 != null) break;
+                if (area.zones().contains(zone1) && area1 == null) area1 = area;
+                if (area.zones().contains(zone2) && area2 == null) area2 = area;
             }
             Preconditions.checkArgument(area1 !=null && area2 != null);
             areas.add(area1.connectTo(area2));
