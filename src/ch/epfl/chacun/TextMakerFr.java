@@ -21,11 +21,11 @@ public class TextMakerFr implements TextMaker{
      */
     private String orderPlayer(Set<PlayerColor> players){
         List<PlayerColor> playersList = PlayerColor.ALL.stream().filter(players::contains).toList();
-        String orderedPlayersString = "";
+        StringBuilder orderedPlayersString = new StringBuilder();
         for (int i = 0; i < playersList.size() - 1; i++) {
-            orderedPlayersString = STR."\{orderedPlayersString} , \{playersList.get(i).toString()}";
+            orderedPlayersString.append(STR.", \{playersList.get(i).toString()}");
         }
-        return STR."\{orderedPlayersString} et \{playersList.getLast().toString()}";
+        return STR."\{orderedPlayersString.toString()} et \{playersList.getLast().toString()}";
     }
 
     /**
@@ -36,15 +36,15 @@ public class TextMakerFr implements TextMaker{
      */
     private String orderAnimal(Map<Animal.Kind, Integer> animals) {
         List<Animal.Kind> animalList = Arrays.stream(Animal.Kind.values()).filter(animals::containsKey).toList(); // List of the animals (MAMMOTH, AUROCHS, DEER, TIGER
-        String orderedPlayersString = "";
+        StringBuilder orderedPlayersString = new StringBuilder();
         for (Animal.Kind a : animalList) {
             if (a == animalList.getLast()) {
-                orderedPlayersString = STR."\{orderedPlayersString} et \{animals.get(a)} \{a.toString()}\{plural(animals.get(a) > 0)}";
+                orderedPlayersString.append(STR."et \{animals.get(a)} \{a.toString()}\{plural(animals.get(a) > 0)}");
             } else {
-                orderedPlayersString = STR."\{orderedPlayersString}, \{animals.get(a)} \{a.toString()}";
+                orderedPlayersString.append(STR.", \{animals.get(a)} \{a.toString()}");
             }
         }
-        return STR."\{orderedPlayersString}.";
+        return STR."\{orderedPlayersString.toString()}.";
     }
 
     /**
