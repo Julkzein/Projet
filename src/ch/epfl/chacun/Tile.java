@@ -43,9 +43,7 @@ public record Tile(int id, Kind kind, TileSide n, TileSide e, TileSide s, TileSi
      */
     public Set<Zone> sideZones() {
         Set<Zone> sideZonesSet = new HashSet<>();
-        for (TileSide side : sides()) {
-            sideZonesSet.addAll(side.zones());
-        }
+        sides().forEach(side -> sideZonesSet.addAll(side.zones()));
         return sideZonesSet;
     }
 
