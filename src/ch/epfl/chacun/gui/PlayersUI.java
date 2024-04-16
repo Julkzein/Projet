@@ -7,11 +7,26 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-
 import java.util.Map;
 
+
+/**
+ * This class represents the UI elements that display the players' names, points and remaining pawns and huts.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
+ */
 public class PlayersUI {
+    //private constructor to prevent instantiation
     private PlayersUI() {}
+
+    /**
+     * This method creates the UI elements that display the players' names, points and remaining pawns and huts.
+     *
+     * @param gameState the current state of the game
+     * @param textMaker the text maker used to generate the text in French
+     * @return the ui elements of the players
+     */
     public static Node create(ObservableValue<GameState> gameState, TextMakerFr textMaker) {
         VBox vbox = new VBox();
         vbox.getStylesheets().add("/players.css");
@@ -24,6 +39,14 @@ public class PlayersUI {
         return vbox;
     }
 
+    /**
+     * This method creates the text flow that displays the name, points and remaining pawns and huts of a player.
+     *
+     * @param gameState the current state of the game
+     * @param player the color of the player
+     * @param textMaker the text maker used to generate the text in French
+     * @return the ui element of the given player
+     */
     private static TextFlow createPlayerTextFlow(ObservableValue<GameState> gameState, PlayerColor player, TextMakerFr textMaker) {
         //points
         ObservableValue<Map<PlayerColor, Integer>> pointsO = gameState.map(GameState::messageBoard).map(MessageBoard::points);
