@@ -88,7 +88,7 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playerName(PlayerColor playerColor) {
-        return playerMap.get(playerColor);
+        return playerMap.getOrDefault(playerColor, null);
     }
 
     /**

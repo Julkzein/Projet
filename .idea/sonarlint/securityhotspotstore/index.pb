@@ -67,3 +67,7 @@ Z
 *test/ch/epfl/chacun/ZonePartitionTest.java,c/c/cc19fc96c0ff26fe9f9e740b4100f864b776d57a
 V
 &test/ch/epfl/chacun/TileDecksTest.java,1/a/1aa822f608601d1abfc606c590c5e018d95061c0
+W
+'src/ch/epfl/chacun/gui/ImageLoader.java,3/6/36a53d5105752ed0c12e0fcc2e6c5f87877d71d8
+U
+%src/ch/epfl/chacun/gui/PlayersUI.java,f/a/fad55c3f5d146bb895ab9ed21905334eec5e6637

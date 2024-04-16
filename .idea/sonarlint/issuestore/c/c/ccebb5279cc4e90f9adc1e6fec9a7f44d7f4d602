@@ -4,30 +4,10 @@ java:S16400"Convert this Map to an EnumMap.(­ù°‹J$f728c314-cb40-438e-b8de-869
 [
 java:S1640v"Convert this Map to an EnumMap.(Œ÷ÂÈJ$28aab793-4925-4c12-aa12-cb46827d6365
 \
-java:S1640¨"Convert this Map to an EnumMap.(Œ÷ÂÈJ$54f280d4-9279-428b-8e6c-59f418a66599
+java:S1640©"Convert this Map to an EnumMap.(Œ÷ÂÈJ$54f280d4-9279-428b-8e6c-59f418a66599
 c
-java:S1640Ù"Convert this Map to an EnumMap.(Œ÷ÂÈ8›µ»£è1J$c3d070b7-91d7-4820-bdfa-3b0d9a485443
-†
-java:S2583’"DChange this condition so that it does not always evaluate to "false"(ŒººÍøÿÿÿÿJ$4b88158f-3f30-4018-9c85-9568abab1063
-†
-java:S2583š"DChange this condition so that it does not always evaluate to "false"(×ï½‘ÿÿÿÿÿJ$2dd2e30d-b76a-4b1d-ab0d-4cc20c1479b7
-†
-java:S2583•"DChange this condition so that it does not always evaluate to "false"(¸Þò™úÿÿÿÿJ$2e64b086-4fed-49e2-b9d2-b0bd508c9ccf
-p
-java:S2209e"5Change this instance-reference to a static reference.(¡Ù½;J$a2d48808-fe71-4a50-b074-b596f422d971
-w
-java:S2209—"5Change this instance-reference to a static reference.(ÏÑïÄýÿÿÿÿJ$7c0e66bd-db7d-409b-98e4-1c8535861052
-w
-java:S2209—"5Change this instance-reference to a static reference.(ÏÑïÄýÿÿÿÿJ$a02d311a-9665-47f1-92ef-65d96718a0e9
+java:S1640Ú"Convert this Map to an EnumMap.(Œ÷ÂÈ8›µ»£è1J$c3d070b7-91d7-4820-bdfa-3b0d9a485443
 r
-java:S2209˜"5Change this instance-reference to a static reference.(ô˜¾§J$206b4b50-7bda-4b48-9dc8-60df775ec15e
-r
-java:S2209§"5Change this instance-reference to a static reference.(’¹üúJ$9e7c2d33-deeb-4a95-b7a3-162106e835a1
+java:S2209¨"5Change this instance-reference to a static reference.(’¹üúJ$9e7c2d33-deeb-4a95-b7a3-162106e835a1
 w
-java:S2209Ø"5Change this instance-reference to a static reference.(ð¢¡àùÿÿÿÿJ$678bb522-4f72-45b6-a843-4fc5f814cad6
-¼
-java:S2159’"zRemove this call to "equals"; comparisons against null always return false; consider using '== null' to check for nullity.(ŒººÍøÿÿÿÿJ$2c726fe2-7c84-487c-b636-f3e9dafcf8dd
-¼
-java:S2159•"zRemove this call to "equals"; comparisons against null always return false; consider using '== null' to check for nullity.(¸Þò™úÿÿÿÿJ$9e3c6cee-d968-419f-a707-20bfec295300
-¼
-java:S2159š"zRemove this call to "equals"; comparisons against null always return false; consider using '== null' to check for nullity.(×ï½‘ÿÿÿÿÿJ$5d1e26f2-62c7-4e8a-ac0f-78d9a6cc191b
+java:S2209Ù"5Change this instance-reference to a static reference.(ð¢¡àùÿÿÿÿJ$678bb522-4f72-45b6-a843-4fc5f814cad6
