@@ -34,7 +34,7 @@ public final class TextMakerFr implements TextMaker{
      * @param animals the map of the animals
      * @return the string with the animals' names and their number
      */
-    public String orderAnimal(Map<Animal.Kind, Integer> animals) {
+    private String orderAnimal(Map<Animal.Kind, Integer> animals) {
         List<Animal.Kind> animalList = Arrays.stream(Animal.Kind.values()).filter(animals::containsKey).toList();
         Map<Animal.Kind, String> frName = Map.of(Animal.Kind.DEER, "cerf", Animal.Kind.AUROCHS, "aurochs", Animal.Kind.MAMMOTH, "mammouth", Animal.Kind.TIGER, "tigre");
         StringJoiner orderedPlayersString = new StringJoiner(", ", "", "");
