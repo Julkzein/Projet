@@ -12,9 +12,10 @@ import static java.lang.StringTemplate.STR;
  */
 public final class TextMakerFr implements TextMaker{
 
-    //REMETTRE TT CE QUI N'OVERRIDE PAS EN PRIVATE
-    //REMETTRE MAP EN FINAL
-    public /**final*/ Map<PlayerColor, String> playerMap = new HashMap<>(); // Map of the players' names and their colors
+    public TextMakerFr(Map<PlayerColor, String> map) {
+        playerMap.putAll(map);
+    }
+    private final Map<PlayerColor, String> playerMap = new HashMap<>(); // Map of the players' names and their colors
 
     /**
      * This method orders the players in a string.

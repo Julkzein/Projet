@@ -8,8 +8,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="junit.jupiter" level="application" />
-    <orderEntry type="library" name="OpenJFX 22" level="application" />
+    <orderEntry type="library" exported="" name="junit.jupiter" level="application" />
+    <orderEntry type="library" exported="" name="OpenJFX 22" level="application" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="d28e4ac3-0e23-49fa-9f6a-45739e47a417" />

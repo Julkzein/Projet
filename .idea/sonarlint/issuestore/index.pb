@@ -75,3 +75,13 @@ E
 resources/players.css,b/1/b19b7d94c33da7c8ae9a82ab13d1f4b7c8344d76
 X
 (test/ch/epfl/chacun/TextMakerFrTest.java,f/7/f706f8f87763b6e8fa024b0f09b1124b74bafabe
+V
+&test/ch/epfl/chacun/PlayersUiTest.java,5/5/555ddf8a72e40b1227f2eefebdfd65765087e13a
+Y
+)src/ch/epfl/chacun/gui/PlayersUITest.java,5/4/542046e53fb6a8959738eb3fd4423b16dcf30bb3
+N
+test/ch/epfl/chacun/Tiles.java,0/3/03042514db4405d20642c242c69230acc1d2513a
+U
+%test/ch/epfl/chacun/TileSideTest.java,4/5/4525afe9e3a0ff24f31a1457e236cdb83bac7c21
+V
+&test/ch/epfl/chacun/PlayersUITest.java,b/8/b86abe98676589c36f3e93514a23d1e109035741
