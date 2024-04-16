@@ -11,7 +11,10 @@ import static java.lang.StringTemplate.STR;
  * @author Jules Delforge (372325)
  */
 public final class TextMakerFr implements TextMaker{
-    private final Map<PlayerColor, String> playerMap = new HashMap<>(); // Map of the players' names and their colors
+
+    //REMETTRE TT CE QUI N'OVERRIDE PAS EN PRIVATE
+    //REMETTRE MAP EN FINAL
+    public /**final*/ Map<PlayerColor, String> playerMap = new HashMap<>(); // Map of the players' names and their colors
 
     /**
      * This method orders the players in a string.
@@ -22,6 +25,9 @@ public final class TextMakerFr implements TextMaker{
     private String orderPlayer(Set<PlayerColor> players){
         List<PlayerColor> playersList = PlayerColor.ALL.stream().filter(players::contains).toList();
         StringJoiner orderedPlayersString = new StringJoiner(", ", "", "");
+
+        if (playersList.size() == 1) return STR."\{playerMap.get(playersList.get(0))}";
+
         for (int i = 0; i < playersList.size() - 1; i++) {
             orderedPlayersString.add(STR."\{playerMap.get(playersList.get(i))}");
         }
@@ -43,9 +49,9 @@ public final class TextMakerFr implements TextMaker{
             orderedPlayersString.add(STR."\{animalIntList.get(i)} \{frName.get(animalList.get(i))}\{frName.get(animalList.get(i)).equals("aurochs") ? "" : plural(animalIntList.get(i) > 1)}");
         }
         if (animals.keySet().size() > 1) {
-            return STR."\{orderedPlayersString.toString()} et \{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{frName.get(animalList.getLast()).equals("aurochs") ? "" : plural(animalIntList.getLast() > 1)}.";
+            return STR."\{orderedPlayersString.toString()} et \{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{frName.get(animalList.getLast()).equals("aurochs") ? "" : plural(animalIntList.getLast() > 1)}";
         }
-        return STR."\{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{frName.get(animalList.getLast()).equals("aurochs") ? "" : plural(animalIntList.getLast() > 1)}.";
+        return STR."\{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{frName.get(animalList.getLast()).equals("aurochs") ? "" : plural(animalIntList.getLast() > 1)}";
     }
 
     /**
@@ -110,7 +116,7 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playerClosedForestWithMenhir(PlayerColor player) {
-        return STR."\{player} a fermé une forêt contenant un menhir et peut donc placeer une tuile menhir.";
+        return STR."\{playerName(player)} a fermé une forêt contenant un menhir et peut donc placer une tuile menhir.";
     }
 
     /**
@@ -141,7 +147,7 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredRiver(Set<PlayerColor> scorers, int points, int fishCount, int tileCount) {
-        String fishString = fishCount > 0 ? STR." et de \{fishCount} poisson\{plural(fishCount > 1)}" : "";
+        String fishString = fishCount > 0 ? STR." et contenant \{fishCount} poisson\{plural(fishCount > 1)}" : "";
         return STR."\{pluralStartSentence(scorers, points)} d'une rivière composée de \{tileCount} tuile\{plural(tileCount > 1)}\{fishString}.";
     }
 
@@ -156,7 +162,7 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playerScoredHuntingTrap(PlayerColor scorer, int points, Map<Animal.Kind, Integer> animals) {
-        return STR."\{scorer} a remporté \{points(points)} en plaçant la fosse à pieux dans un pré dans lequel elle est entourée de \{orderAnimal(animals)}.";
+        return STR."\{playerName(scorer)} a remporté \{points(points)} en plaçant la fosse à pieux dans un pré dans lequel elle est entourée de \{orderAnimal(animals)}.";
     }
 
     /**
@@ -169,7 +175,7 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playerScoredLogboat(PlayerColor scorer, int points, int lakeCount) {
-        return STR."\{scorer} a remporté \{points(points)} en  plaçant la pirogue dans un réseau hydrographique contenant \{lakeCount} lac\{lakeCount > 1 ? "s" : ""}.";
+        return STR."\{playerName(scorer)} a remporté \{points(points)} en plaçant la pirogue dans un réseau hydrographique contenant \{lakeCount} lac\{lakeCount > 1 ? "s" : ""}.";
     }
 
     /**
@@ -233,7 +239,7 @@ public final class TextMakerFr implements TextMaker{
      */
    @Override
    public String playersWon(Set<PlayerColor> winners, int points) {
-        return STR."\{orderPlayer(winners)} \{winners.size() > 1 ? "ont remporté" : "a remporté"} avec \{points(points)}.";
+        return STR."\{orderPlayer(winners)} \{winners.size() > 1 ? "ont remporté" : "a remporté"} la partie avec \{points(points)} !";
    }
 
    /**
