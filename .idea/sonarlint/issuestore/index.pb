@@ -71,3 +71,5 @@ W
 'src/ch/epfl/chacun/gui/ImageLoader.java,3/6/36a53d5105752ed0c12e0fcc2e6c5f87877d71d8
 U
 %src/ch/epfl/chacun/gui/PlayersUI.java,f/a/fad55c3f5d146bb895ab9ed21905334eec5e6637
+E
+resources/players.css,b/1/b19b7d94c33da7c8ae9a82ab13d1f4b7c8344d76
