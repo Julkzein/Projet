@@ -42,16 +42,16 @@ public final class TextMakerFr implements TextMaker{
      */
     private String orderAnimal(Map<Animal.Kind, Integer> animals) {
         List<Animal.Kind> animalList = Arrays.stream(Animal.Kind.values()).filter(animals::containsKey).toList();
-        Map<Animal.Kind, String> frName = Map.of(Animal.Kind.DEER, "cerf", Animal.Kind.AUROCHS, "aurochs", Animal.Kind.MAMMOTH, "mammouth", Animal.Kind.TIGER, "tigre");
+        Map<Animal.Kind, String> frName = Map.of(Animal.Kind.DEER, "cerf", Animal.Kind.AUROCHS, "auroch", Animal.Kind.MAMMOTH, "mammouth", Animal.Kind.TIGER, "tigre");
         StringJoiner orderedPlayersString = new StringJoiner(", ", "", "");
         List<Integer> animalIntList = animalList.stream().map(animals::get).toList();
         for (int i = 0; i < animalList.size() - 1; i++) {
-            orderedPlayersString.add(STR."\{animalIntList.get(i)} \{frName.get(animalList.get(i))}\{frName.get(animalList.get(i)).equals("aurochs") ? "" : plural(animalIntList.get(i) > 1)}");
+            orderedPlayersString.add(STR."\{animalIntList.get(i)} \{frName.get(animalList.get(i))}\{plural(animalIntList.get(i) > 1)}");
         }
         if (animals.keySet().size() > 1) {
-            return STR."\{orderedPlayersString.toString()} et \{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{frName.get(animalList.getLast()).equals("aurochs") ? "" : plural(animalIntList.getLast() > 1)}";
+            return STR."\{orderedPlayersString.toString()} et \{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{plural(animalIntList.getLast() > 1)}";
         }
-        return STR."\{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{frName.get(animalList.getLast()).equals("aurochs") ? "" : plural(animalIntList.getLast() > 1)}";
+        return STR."\{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{plural(animalIntList.getLast() > 1)}";
     }
 
     /**

@@ -73,3 +73,5 @@ U
 %src/ch/epfl/chacun/gui/PlayersUI.java,f/a/fad55c3f5d146bb895ab9ed21905334eec5e6637
 E
 resources/players.css,b/1/b19b7d94c33da7c8ae9a82ab13d1f4b7c8344d76
+X
+(test/ch/epfl/chacun/TextMakerFrTest.java,f/7/f706f8f87763b6e8fa024b0f09b1124b74bafabe
