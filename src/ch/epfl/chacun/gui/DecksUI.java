@@ -43,6 +43,11 @@ public class DecksUI {
         tileImageView.setFitHeight(LARGE_TILE_FIT_SIZE);
         nextTileStackPane.getChildren().add(tileImageView);
 
+        tile.addListener((o, oV, nV) -> {
+            tileImageView.setImage(largeImageForTile(nV.id()));
+            newText.setText("");
+        });
+
         ObservableValue<Boolean> textVisible = text.map(t -> !t.equals(""));
         newText.visibleProperty().bind(textVisible);
 
@@ -56,10 +61,9 @@ public class DecksUI {
         normalCountValue.textProperty().bind(normalCount.map(String::valueOf));
         normalStackPane.getChildren().add(normalCountValue);
 
-        tile.addListener((o, oV, nV) -> {
-            tileImageView.setImage(largeImageForTile(nV.id()));
-            newText.setText("");
-        });
+        Text menhirCountValue = new Text();
+        menhirCountValue.textProperty().bind(menhirCount.map(String::valueOf));
+        menhirStackPane.getChildren().add(menhirCountValue);
 
         return vbox;
     }
