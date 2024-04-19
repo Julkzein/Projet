@@ -19,19 +19,18 @@ public class MessageBoardUI {
     private MessageBoardUI() {}
 
     public static Node create(ObservableValue<List<MessageBoard.Message>> messages, ObjectProperty<Set<Integer>> tileIds) {
-        ScrollPane scrollPane = new ScrollPane();
+        VBox vbox = new VBox();
+
+        ScrollPane scrollPane = new ScrollPane(vbox);
         scrollPane.setId("message-board");
         scrollPane.getStylesheets().add("message-board.css");
-
-        VBox vbox = new VBox();
-        scrollPane.getChildrenUnmodifiable().add(vbox);
 
         vbox.getChildren().add(new Text());
 
         messages.addListener((o, oV, nV) -> {
             nV.subList(oV.size(), nV.size()).forEach(message -> {
                 Text newText = new Text(message.toString());
-                newText.setWrappingWidth(LARGE_TITLE_FIT_SIZE);
+                newText.setWrappingWidth(LARGE_TILE_FIT_SIZE);
                 newText.setOnMouseEntered(e -> {
                     tileIds.set(message.tileIds());
                 });

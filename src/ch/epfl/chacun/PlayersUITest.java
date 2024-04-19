@@ -1,14 +1,22 @@
 package ch.epfl.chacun;
 
+import ch.epfl.chacun.gui.MessageBoardUI;
 import ch.epfl.chacun.gui.PlayersUI;
 import javafx.application.Application;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static javafx.application.Platform.runLater;
 
 public final class PlayersUITest extends Application {
     public static void main(String[] args) { launch(args); }
@@ -37,9 +45,18 @@ public final class PlayersUITest extends Application {
 
         var gameStateO = new SimpleObjectProperty<>(gameState);
 
+
         var playersNode = PlayersUI.create(gameStateO, textMaker);
         var rootNode = new BorderPane(playersNode);
         primaryStage.setScene(new Scene(rootNode));
+
+        SimpleObjectProperty<List<MessageBoard.Message>> messages = new SimpleObjectProperty<>(List.of());
+        ObjectProperty<Set<Integer>> tileIds = new SimpleObjectProperty<>(Set.of());
+        var messageBoardNode = MessageBoardUI.create(messages, tileIds);
+        var root2Node = new ScrollPane(messageBoardNode);
+        primaryStage.setScene(new Scene(root2Node));
+
+        messages.setValue(List.of(new MessageBoard.Message("test text", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of())));
 
         primaryStage.setTitle("ChaCuN test");
         primaryStage.show();
