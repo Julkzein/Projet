@@ -81,3 +81,7 @@ U
 %test/ch/epfl/chacun/TileSideTest.java,4/5/4525afe9e3a0ff24f31a1457e236cdb83bac7c21
 V
 &test/ch/epfl/chacun/PlayersUITest.java,b/8/b86abe98676589c36f3e93514a23d1e109035741
+U
+%src/ch/epfl/chacun/PlayersUITest.java,d/8/d85b46fcba408afb1e8a8b62d916aa57fea42e4d
+M
+src/ch/epfl/chacun/Tiles.java,c/b/cbdd83a21e0a9e2ffc91ba4c682857995d936a67

@@ -29,7 +29,7 @@ public class PlayersUI {
      */
     public static Node create(ObservableValue<GameState> gameState, TextMakerFr textMaker) {
         VBox vbox = new VBox();
-        vbox.getStylesheets().add("/players.css");
+        vbox.getStylesheets().add("players.css");
         vbox.setId("players");
         for (PlayerColor player : PlayerColor.ALL) {
             if (textMaker.playerName(player) != null) {
@@ -50,7 +50,7 @@ public class PlayersUI {
     private static TextFlow createPlayerTextFlow(ObservableValue<GameState> gameState, PlayerColor player, TextMakerFr textMaker) {
         //points
         ObservableValue<Map<PlayerColor, Integer>> pointsO = gameState.map(GameState::messageBoard).map(MessageBoard::points);
-        ObservableValue<String> pointTextO = pointsO.map(points -> STR."\{ player} : \{textMaker.points(points.get(player))} \n");
+        ObservableValue<String> pointTextO = pointsO.map(points -> STR."\{ textMaker.playerName(player)} : \{textMaker.points(points.getOrDefault(player, 0))} \n");
         Text playerNameAndPoints = new Text();
         playerNameAndPoints.textProperty().bind(pointTextO);
 
@@ -62,7 +62,7 @@ public class PlayersUI {
 
 
         //icons and space
-        Node[] icons = new Node[8];
+        Node[] icons = new Node[5];
         for (int i = 0; i < 3; i++) {
             icons[i] = Icon.newFor(player, Occupant.Kind.HUT);
             final int finalI1 = i;
@@ -70,7 +70,7 @@ public class PlayersUI {
             textFlow.getChildren().add(icons[i]);
         }
         textFlow.getChildren().add(new Text("   "));
-        for (int i = 3; i < 8; i++) {
+        for (int i = 0; i < 5; i++) {
             icons[i] = Icon.newFor(player, Occupant.Kind.PAWN);
             final int finalI2 = i;
             icons[i].opacityProperty().bind(gameState.map(gameState1 -> gameState1.freeOccupantsCount(player, Occupant.Kind.PAWN) > finalI2 ? 1 : 0.1));
