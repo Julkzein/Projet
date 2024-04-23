@@ -57,8 +57,6 @@ public final class PlayersUITest extends Application {
         primaryStage.setScene(new Scene(root2Node));
         messages.setValue(List.of(new MessageBoard.Message("test text", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of())));
 
-
-
         primaryStage.setTitle("ChaCuN test");
         primaryStage.show();
     }

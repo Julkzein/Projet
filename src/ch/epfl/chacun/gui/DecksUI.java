@@ -29,9 +29,11 @@ public class DecksUI {
 
         HBox hbox = new HBox();
         vbox.getChildren().add(hbox);
+        hbox.setId("decks");
 
         StackPane nextTileStackPane = new StackPane();
         vbox.getChildren().add(nextTileStackPane);
+        nextTileStackPane.setId("next-tile");
 
         Text newText = new Text();
         newText.setWrappingWidth(0.8 * LARGE_TILE_FIT_SIZE);
@@ -57,23 +59,34 @@ public class DecksUI {
         });
 
         StackPane normalStackPane = new StackPane();
-        hbox.getChildren().add(normalStackPane);
+        //hbox.getChildren().add(normalStackPane);
 
         StackPane menhirStackPane = new StackPane();
-        hbox.getChildren().add(menhirStackPane);
+        //hbox.getChildren().add(menhirStackPane);
 
         Text normalCountValue = new Text();
-        normalCountValue.textProperty().bind(normalCount.map(String::valueOf));
-        normalStackPane.getChildren().add(normalCountValue);
+        //normalCountValue.textProperty().bind(normalCount.map(String::valueOf));
+        //normalStackPane.getChildren().add(normalCountValue);
 
         Text menhirCountValue = new Text();
-        menhirCountValue.textProperty().bind(menhirCount.map(String::valueOf));
-        menhirStackPane.getChildren().add(menhirCountValue);
+        //menhirCountValue.textProperty().bind(menhirCount.map(String::valueOf));
+        //menhirStackPane.getChildren().add(menhirCountValue);
+
+        ImageView normalTileImageView = new ImageView();
+        ImageView menhirTileImageView = new ImageView();
+        normalTileImageView.setId("NORMAL");
+        menhirTileImageView.setId("MENHIR");
+
+        Image normalTileImage = new Image(STR."/256/NORMAL.jpg");
+        Image menhirTileImage = new Image(STR."/256/MENHIR.jpg");
+
+        createDeck(normalStackPane, hbox, normalCountValue, normalCount, normalTileImageView, normalTileImage);
+        createDeck(menhirStackPane, hbox, menhirCountValue, menhirCount, menhirTileImageView, menhirTileImage);
 
         return vbox;
     }
 
-    private void createDeck(StackPane stack, HBox hBox, Text tileCountText, ObservableValue<Integer> tileCount, ImageView imageView, Image image) {
+    private static void createDeck(StackPane stack, HBox hBox, Text tileCountText, ObservableValue<Integer> tileCount, ImageView imageView, Image image) {
         hBox.getChildren().add(stack);
         tileCountText.textProperty().bind(tileCount.map(String::valueOf));
         imageView.setImage(image);
