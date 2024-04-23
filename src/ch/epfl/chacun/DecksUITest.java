@@ -60,7 +60,7 @@ public class DecksUITest extends Application {
         ObservableValue<Tile> tile = new SimpleObjectProperty<>(allTiles().get(23));
         ObservableValue<Integer> normalCount = new SimpleObjectProperty<>(32);
         ObservableValue<Integer> menhirCount = new SimpleObjectProperty<>(7);
-        ObservableValue<String> text = new SimpleObjectProperty<>("Test text displayed");
+        ObservableValue<String> text = new SimpleObjectProperty<>("");
         Consumer<Occupant> occupantConsumer = o -> System.out.println("occupant consumed");
 
         Node decks = DecksUI.create(tile, normalCount, menhirCount, text, occupantConsumer);

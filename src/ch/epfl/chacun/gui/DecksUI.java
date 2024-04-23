@@ -35,27 +35,30 @@ public class DecksUI {
         vbox.getChildren().add(nextTileStackPane);
         nextTileStackPane.setId("next-tile");
 
-        Text newText = new Text();
-        newText.setWrappingWidth(0.8 * LARGE_TILE_FIT_SIZE);
-        text.addListener((o, oV, nV) -> newText.setText(nV));
-        nextTileStackPane.getChildren().add(newText);
-
-        ObservableValue<Boolean> textVisible = text.map(t -> !t.equals(""));
-        newText.visibleProperty().bind(textVisible);
-
-        newText.setOnMouseClicked(o -> {
-            if (textVisible.getValue()) occupantConsumer.accept(null);
-        });
-
         ImageView tileImageView = new ImageView();
         tileImageView.setImage(largeImageForTile(tile.getValue().id()));
         tileImageView.setFitWidth(LARGE_TILE_FIT_SIZE);
         tileImageView.setFitHeight(LARGE_TILE_FIT_SIZE);
         nextTileStackPane.getChildren().add(tileImageView);
 
+        Text newText = new Text(text.getValue());
+        newText.setWrappingWidth(0.8 * LARGE_TILE_FIT_SIZE);
+        text.addListener((o, oV, nV) -> newText.setText(nV));
+        nextTileStackPane.getChildren().add(newText);
+
+        ObservableValue<Boolean> textVisible = text.map(t -> !t.isEmpty());
+        newText.visibleProperty().bind(text.map(String::isEmpty));
+        tileImageView.visibleProperty().bind(text.map(String::isEmpty));
+
+        newText.setOnMouseClicked(o -> {
+            if (textVisible.getValue()) occupantConsumer.accept(null);
+        });
+
         tile.addListener((o, oV, nV) -> {
-            tileImageView.setImage(largeImageForTile(nV.id()));
-            newText.setText("");
+            if (tile != null) {
+                tileImageView.setImage(largeImageForTile(nV.id()));
+                newText.setText("");
+            }
         });
 
         StackPane normalStackPane = new StackPane();
