@@ -44,23 +44,10 @@ public class DecksUITest extends Application {
 
         var gameStateO = new SimpleObjectProperty<>(gameState);
 
-        /**
-        var playersNode = PlayersUI.create(gameStateO, textMaker);
-        var rootNode = new BorderPane(playersNode);
-        primaryStage.setScene(new Scene(rootNode));
-
-        SimpleObjectProperty<List<MessageBoard.Message>> messages = new SimpleObjectProperty<>(List.of());
-        ObjectProperty<Set<Integer>> tileIds = new SimpleObjectProperty<>(Set.of());
-        var messageBoardNode = MessageBoardUI.create(messages, tileIds);
-        var root2Node = new ScrollPane(messageBoardNode);
-        primaryStage.setScene(new Scene(root2Node));
-        messages.setValue(List.of(new MessageBoard.Message("test text", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of())));
-        */
-
         ObservableValue<Tile> tile = new SimpleObjectProperty<>(allTiles().get(23));
         ObservableValue<Integer> normalCount = new SimpleObjectProperty<>(32);
         ObservableValue<Integer> menhirCount = new SimpleObjectProperty<>(7);
-        ObservableValue<String> text = new SimpleObjectProperty<>("");
+        ObservableValue<String> text = new SimpleObjectProperty<>("This text is a test text to see if the text is displayed correctly.");
         Consumer<Occupant> occupantConsumer = o -> System.out.println("occupant consumed");
 
         Node decks = DecksUI.create(tile, normalCount, menhirCount, text, occupantConsumer);
