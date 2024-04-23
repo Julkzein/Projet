@@ -22,9 +22,9 @@ public class BoardUI {
         scrollPane.getStylesheets().add("board.css");
         GridPane gridPane = new GridPane();
         gridPane.setId("board-grid");
-        for (int i = 0; i < 2 * reach + 1; i++) {
-            for (int j = 0; j < 2 * reach + 1; j++) {
-                Pos pos = new Pos(i - reach, j - reach);
+        for (int i = -reach; i < reach; i++) {
+            for (int j = -reach; j < reach; j++) {
+                Pos pos = new Pos(i, j);
                 gridPane.add(createGroup(reach, gameState, rotation, occupants, evidentId, desiredRotation, desiredPlacement, desiredRetake, pos), i, j);
             }
         }
@@ -35,7 +35,7 @@ public class BoardUI {
     private static Node createGroup(int reach, ObservableValue<GameState> gameState, ObservableValue<Rotation> rotation, ObservableValue<Set<Occupant>> occupants,
                                     ObservableValue<Set<Integer>> evidentId, Consumer<Rotation> desiredRotation, Consumer<Pos> desiredPlacement, Consumer<Occupant> desiredRetake, Pos pos) {
         Group group = new Group();
-        group.getChildren().add(ImageView("")); 
+        group.getChildren().add(ImageView(""));
         return null;
     }
 }
