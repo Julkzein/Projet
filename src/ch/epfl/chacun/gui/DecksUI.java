@@ -47,7 +47,7 @@ public class DecksUI {
         nextTileStackPane.getChildren().add(newText);
 
         ObservableValue<Boolean> textVisible = text.map(t -> !t.isEmpty());
-        newText.visibleProperty().bind(text.map(String::isEmpty));
+        newText.visibleProperty().bind(textVisible);
         tileImageView.visibleProperty().bind(text.map(String::isEmpty));
 
         newText.setOnMouseClicked(o -> {
@@ -55,10 +55,8 @@ public class DecksUI {
         });
 
         tile.addListener((o, oV, nV) -> {
-            if (tile != null) {
-                tileImageView.setImage(largeImageForTile(nV.id()));
-                newText.setText("");
-            }
+            tileImageView.setImage(largeImageForTile(nV.id()));
+            newText.setText("");
         });
 
         StackPane normalStackPane = new StackPane();
