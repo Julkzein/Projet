@@ -4,9 +4,9 @@ java:S1066Χ"/Merge this if statement with the enclosing one.(τ°Ψϊÿÿÿÿ8ΧΙΝ”μ1
 s
 java:S1066ζ"/Merge this if statement with the enclosing one.(ν½ν†8ΧΙΝ”μ1J$534b5fa9-d471-4be5-a00c-6db62d4c9289
 
-java:S2259¬"FA "NullPointerException" could be thrown; "lastTile" is nullable here.(§”ωτόÿÿÿÿ8ΔΎ”Ήλ1J$e1627eaa-0e69-4135-871c-cf381ef952df
-
 java:S2259Β"FA "NullPointerException" could be thrown; "lastTile" is nullable here.(κκ£Άώÿÿÿÿ8ΔΎ”Ήλ1J$3450725b-44e7-4684-a2d5-df3f8134256a
+
+java:S2259¬"FA "NullPointerException" could be thrown; "lastTile" is nullable here.(§”ωτόÿÿÿÿ8ΔΎ”Ήλ1J$e1627eaa-0e69-4135-871c-cf381ef952df
 ›
 java:S3776€"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(Ω·Ύύÿÿÿÿ8γΎ”Ήλ1J$f05ad0b1-5077-41c0-af72-0d0fad0a3259
 •
