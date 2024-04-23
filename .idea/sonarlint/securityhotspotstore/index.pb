@@ -85,3 +85,9 @@ U
 %src/ch/epfl/chacun/PlayersUITest.java,d/8/d85b46fcba408afb1e8a8b62d916aa57fea42e4d
 M
 src/ch/epfl/chacun/Tiles.java,c/b/cbdd83a21e0a9e2ffc91ba4c682857995d936a67
+S
+#src/ch/epfl/chacun/gui/BoardUI.java,0/2/02b966491d6de6f7376db3862ca27efb976d7c7f
+S
+#src/ch/epfl/chacun/gui/DecksUI.java,c/e/ceddb55abacbe7a40f8ff30e17516fd84b60de2b
+Z
+*src/ch/epfl/chacun/gui/MessageBoardUI.java,e/c/ecd45b41d27fd7d16fbf06070b87069fff41a49a
