@@ -41,21 +41,13 @@ public final class PlayersUITest extends Application {
         var gameState =
                 GameState.initial(playerColors,
                         tileDecks,
-                        textMaker).withStartingTilePlaced().withPlacedTile(new PlacedTile(Tiles.TILES.get(11),PlayerColor.RED, Rotation.NONE, new Pos(-1, 0), null)).withNewOccupant(new Occupant(Occupant.Kind.HUT, 118));
+                        textMaker);
 
         var gameStateO = new SimpleObjectProperty<>(gameState);
-
 
         var playersNode = PlayersUI.create(gameStateO, textMaker);
         var rootNode = new BorderPane(playersNode);
         primaryStage.setScene(new Scene(rootNode));
-
-        SimpleObjectProperty<List<MessageBoard.Message>> messages = new SimpleObjectProperty<>(List.of());
-        ObjectProperty<Set<Integer>> tileIds = new SimpleObjectProperty<>(Set.of());
-        var messageBoardNode = MessageBoardUI.create(messages, tileIds);
-        var root2Node = new ScrollPane(messageBoardNode);
-        primaryStage.setScene(new Scene(root2Node));
-        messages.setValue(List.of(new MessageBoard.Message("test text", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of())));
 
         primaryStage.setTitle("ChaCuN test");
         primaryStage.show();
