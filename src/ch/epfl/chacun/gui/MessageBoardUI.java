@@ -37,6 +37,7 @@ public class MessageBoardUI {
                 newText.setOnMouseExited(e -> {
                     tileIds.set(Set.of());
                 });
+
                 vbox.getChildren().add(newText);
             });
         });

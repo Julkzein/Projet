@@ -4,6 +4,7 @@ import ch.epfl.chacun.Occupant;
 import ch.epfl.chacun.Tile;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -37,6 +38,13 @@ public class DecksUI {
         text.addListener((o, oV, nV) -> newText.setText(nV));
         nextTileStackPane.getChildren().add(newText);
 
+        ObservableValue<Boolean> textVisible = text.map(t -> !t.equals(""));
+        newText.visibleProperty().bind(textVisible);
+
+        newText.setOnMouseClicked(o -> {
+            if (textVisible.getValue()) occupantConsumer.accept(null);
+        });
+
         ImageView tileImageView = new ImageView();
         tileImageView.setImage(largeImageForTile(tile.getValue().id()));
         tileImageView.setFitWidth(LARGE_TILE_FIT_SIZE);
@@ -47,9 +55,6 @@ public class DecksUI {
             tileImageView.setImage(largeImageForTile(nV.id()));
             newText.setText("");
         });
-
-        ObservableValue<Boolean> textVisible = text.map(t -> !t.equals(""));
-        newText.visibleProperty().bind(textVisible);
 
         StackPane normalStackPane = new StackPane();
         hbox.getChildren().add(normalStackPane);
@@ -66,5 +71,15 @@ public class DecksUI {
         menhirStackPane.getChildren().add(menhirCountValue);
 
         return vbox;
+    }
+
+    private void createDeck(StackPane stack, HBox hBox, Text tileCountText, ObservableValue<Integer> tileCount, ImageView imageView, Image image) {
+        hBox.getChildren().add(stack);
+        tileCountText.textProperty().bind(tileCount.map(String::valueOf));
+        imageView.setImage(image);
+        imageView.setFitWidth(NORMAL_TILE_FIT_SIZE);
+        imageView.setFitHeight(NORMAL_TILE_FIT_SIZE);
+        stack.getChildren().add(imageView);
+        stack.getChildren().add(tileCountText);
     }
 }
