@@ -35,7 +35,7 @@ public class BoardUI {
     private static Node createGroup(int reach, ObservableValue<GameState> gameState, ObservableValue<Rotation> rotation, ObservableValue<Set<Occupant>> occupants,
                                     ObservableValue<Set<Integer>> evidentId, Consumer<Rotation> desiredRotation, Consumer<Pos> desiredPlacement, Consumer<Occupant> desiredRetake, Pos pos) {
         Group group = new Group();
-        group.getChildren().add(ImageView("")); 
+        //group.getChildren().add(ImageView(""));
         return null;
     }
 }
