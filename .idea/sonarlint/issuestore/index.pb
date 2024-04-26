@@ -91,3 +91,5 @@ S
 #src/ch/epfl/chacun/gui/DecksUI.java,c/e/ceddb55abacbe7a40f8ff30e17516fd84b60de2b
 Z
 *src/ch/epfl/chacun/gui/MessageBoardUI.java,e/c/ecd45b41d27fd7d16fbf06070b87069fff41a49a
+S
+#src/ch/epfl/chacun/DecksUITest.java,c/f/cfe1e88fcf37eb7d66d4f787c1ea6a60e2f98c0b
