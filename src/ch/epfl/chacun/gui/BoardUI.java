@@ -79,7 +79,7 @@ public class BoardUI {
         ObservableValue<PlacedTile> placedTile = gameState.map(GameState::board).map(Board -> Board.tileAt(pos));
         //when the tile changes (and a tile is placed), we change the image and we create the cancel token and the occupants
         placedTile.addListener((_, _, nV) -> {
-            imageView.setImage(cache.computeIfAbsent(nV.id(), ImageLoader::normalImageForTile));
+            imageView.setImage(cache.computeIfAbsent(nV.id(), _ -> ImageLoader.normalImageForTile(nV.tile().id())));
             createCancelledTocken(nV.id(), pos, gameState, group);
             createOccupants(nV.id(), pos, gameState, group, occupants);
         });

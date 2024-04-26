@@ -26,7 +26,7 @@ public class ImageLoader {
      * @return the image of the tile with the given id in normal size
      */
     public static Image normalImageForTile(int id) {
-        return new Image(STR."/\{NORMAL_TILE_PIXEL_SIZE}/\{id}.jpg");
+        return new Image(STR."\{NORMAL_TILE_PIXEL_SIZE}/\{(id < 10) ? "0" : ""}\{id}.jpg");
     }
 
     /**
@@ -36,6 +36,6 @@ public class ImageLoader {
      * @return the image of the tile with the given id in large size
      */
     public static Image largeImageForTile(int id) {
-        return new Image(STR."/\{LARGE_TILE_PIXEL_SIZE}/\{id}.jpg");
+        return new Image(STR."\{LARGE_TILE_PIXEL_SIZE}/\{id}.jpg");
     }
 }
