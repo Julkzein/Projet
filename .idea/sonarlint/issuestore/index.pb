@@ -93,3 +93,7 @@ Z
 *src/ch/epfl/chacun/gui/MessageBoardUI.java,e/c/ecd45b41d27fd7d16fbf06070b87069fff41a49a
 S
 #src/ch/epfl/chacun/DecksUITest.java,c/f/cfe1e88fcf37eb7d66d4f787c1ea6a60e2f98c0b
+U
+%src/ch/epfl/chacun/BoardUITest22.java,0/4/04f914e52f0f03ff12d4a8351f744553491e7c87
+Z
+*src/ch/epfl/chacun/MessageBoardUITest.java,9/a/9a9adb3d773f5a35c9e488d8d9ffd752bc25577c

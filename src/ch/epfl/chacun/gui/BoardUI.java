@@ -46,8 +46,8 @@ public class BoardUI {
         scrollPane.setContent(gridPane);
 
         //initial grid creation
-        for (int i = -reach; i < reach; i++) {
-            for (int j = -reach; j < reach; j++) {
+        for (int i = -reach; i <= reach; i++) {
+            for (int j = -reach; j <= reach; j++) {
                 gridPane.add(createGroup(new Pos(i, j), gameState, rotation, occupants, evidentId, desiredRotation, desiredPlacement, desiredRetake), i+reach, j+reach);
             }
         }

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public final class BoardUITest extends Application {
+public final class BoardUITest22 extends Application {
     public static void main(String[] args) {
         launch(args);
     }
