@@ -1,16 +1,0 @@
-
-X	java:S107"<Method has 8 parameters, which is greater than 7 authorized.(™ÚÚë8ª¤ÁÕñ1
-X	java:S107#"<Method has 9 parameters, which is greater than 7 authorized.(òË–Ø8«¤ÁÕñ1
-\
-java:S1118":Add a private constructor to hide the implicit public one.(ßßÖÜıÿÿÿÿ8«¤ÁÕñ1
-T
-java:S1135"2Complete the task associated to this TODO comment.(ôõ·©ÿÿÿÿÿ8±¤ÁÕñ1
-V
-java:S1854%"9Remove this useless assignment to local variable "group".(ôÔ÷ï8±¤ÁÕñ1
-¾
-java:S1172#" Remove these unused method parameters "reach", "gameState", "rotation", "occupants", "evidentId", "desiredRotation", "desiredPlacement", "desiredRetake", "pos".(òË–Ø8²¤ÁÕñ1
-G
-java:S1481%"*Remove this unused "group" local variable.(ôÔ÷ï8³¤ÁÕñ1
-]	java:S125&"<This block of commented-out lines of code should be removed.(ÌöâÄùÿÿÿÿ8³¤ÁÕñ1
-[
-java:S1128"9Remove this unused import 'javafx.scene.image.ImageView'.(áÿ®Ãüÿÿÿÿ8³¤ÁÕñ1
