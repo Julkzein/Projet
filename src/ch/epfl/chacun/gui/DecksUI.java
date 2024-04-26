@@ -39,7 +39,7 @@ public class DecksUI {
         tileImageView.setImage(largeImageForTile(tile.getValue().id()));
         tileImageView.setFitWidth(LARGE_TILE_FIT_SIZE);
         tileImageView.setFitHeight(LARGE_TILE_FIT_SIZE);
-        nextTileStackPane.getChildren().add(tileImageView);
+        //nextTileStackPane.getChildren().add(tileImageView);
 
         Text newText = new Text(text.getValue());
         newText.setWrappingWidth(0.8 * LARGE_TILE_FIT_SIZE);
