@@ -48,7 +48,7 @@ public class BoardUI {
         //initial grid creation
         for (int i = -reach; i < reach; i++) {
             for (int j = -reach; j < reach; j++) {
-                gridPane.add(createGroup(new Pos(i, j), gameState, rotation, occupants, evidentId, desiredRotation, desiredPlacement, desiredRetake), i, j);
+                gridPane.add(createGroup(new Pos(i, j), gameState, rotation, occupants, evidentId, desiredRotation, desiredPlacement, desiredRetake), i+reach, j+reach);
             }
         }
 
@@ -77,7 +77,7 @@ public class BoardUI {
 
         //the placed tile concerned by the group
         ObservableValue<PlacedTile> placedTile = gameState.map(GameState::board).map(Board -> Board.tileAt(pos));
-        //when the tile changes (and a tile is placed), we change the image and we
+        //when the tile changes (and a tile is placed), we change the image and we create the cancel token and the occupants
         placedTile.addListener((_, _, nV) -> {
             imageView.setImage(cache.computeIfAbsent(nV.id(), ImageLoader::normalImageForTile));
             createCancelledTocken(nV.id(), pos, gameState, group);
@@ -98,7 +98,7 @@ public class BoardUI {
             //verif si action good
             if (gameState.getValue().nextAction() == PLACE_TILE) {
 
-                //frange sans survole
+                //frange sans survol
 
                 if (nV.contains(pos)) {
                     ColorInput colorInput = new ColorInput();
@@ -108,9 +108,16 @@ public class BoardUI {
                     Blend blend = new Blend(SRC_OVER, null, colorInput);
                     blend.setOpacity(0.5);
                     group.setEffect(blend);
+
+                    //frange avec survoll
                     group.setOnMouseEntered(_ -> {
-                        PlacedTile tempoTile = gameState.getValue().map(GameState::tileToPlace).getValue();
-                        if (boardObservableValue.getValue().canAddTile(gameState.map(GameState::tileToPlace).getValue())) {
+                        PlacedTile tempoTile = new PlacedTile(gameState.map(GameState::tileToPlace).getValue(), gameState.getValue().currentPlayer(), rotation.getValue(), pos);
+                        if (!boardObservableValue.getValue().canAddTile(tempoTile)) {
+                            colorInput.setPaint(Color.WHITE);
+                            Blend blend1 = new Blend(SRC_OVER, null, colorInput);
+                            blend1.setOpacity(0.5);
+                            group.setEffect(blend);
+                        } else {
                             group.setEffect(null);
                         }
                     });
@@ -120,15 +127,31 @@ public class BoardUI {
         return group;
     }
 
+    /**
+     * Creates the SVG paths for the potential occupants of a tile
+     * @param id the id of the placed tile
+     * @param pos the position of the tile on the board
+     * @param gameState the observable value of the game state
+     * @param group the group to which the SVG paths are added
+     * @param occupants the observable value of the occupants to be displayed
+     */
     private static void createOccupants(int id, Pos pos, ObservableValue<GameState> gameState, Group group, ObservableValue<Set<Occupant>> occupants) {
         for (Occupant o : gameState.getValue().board().tileAt(pos).potentialOccupants()) {
             SVGPath occupantSVGPath = new SVGPath();
-            occupantSVGPath.setId(STR."pawn_\{id}");
+            if ((o.kind() == Occupant.Kind.PAWN)) occupantSVGPath.setId(STR. "pawn_\{ id }" );
+            else occupantSVGPath.setId(STR. "hut_\{ id }" );
             occupantSVGPath.visibleProperty().bind(occupants.map(s -> s.contains(o)));
             group.getChildren().add(occupantSVGPath);
         }
     }
 
+    /**
+     * Creates the image views of the cancel token for the animals of a tile
+     * @param id the id of the placed tile
+     * @param pos the position of the tile on the board
+     * @param gameState the observable value of the game state
+     * @param group the group to which the image views of the cancel tokens are added
+     */
     private static void createCancelledTocken(int id, Pos pos, ObservableValue<GameState> gameState, Group group) {
         ObservableValue<Board> boardObservableValue = gameState.map(GameState::board);
         ObservableValue<Set<Animal>> cancelledAnimals = boardObservableValue.map(Board::cancelledAnimals);
