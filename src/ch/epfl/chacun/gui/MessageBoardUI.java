@@ -14,10 +14,23 @@ import java.util.Set;
 import static ch.epfl.chacun.gui.ImageLoader.*;
 import static javafx.application.Platform.runLater;
 
+/**
+ * This class represents the UI elements that display the message board.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
+ */
 public class MessageBoardUI {
     //private constructor to prevent instantiation
     private MessageBoardUI() {}
 
+    /**
+     * This method creates the UI elements that display the message board.
+     *
+     * @param messages the observable value of the list of messages
+     * @param tileIds the object property of the tile ids
+     * @return the ui elements of the message board
+     */
     public static Node create(ObservableValue<List<MessageBoard.Message>> messages, ObjectProperty<Set<Integer>> tileIds) {
         VBox vbox = new VBox();
 
@@ -27,6 +40,7 @@ public class MessageBoardUI {
 
         vbox.getChildren().add(new Text());
 
+        // When the list of messages changes, add the new messages to the VBox
         messages.addListener((o, oV, nV) -> {
             nV.subList(oV.size(), nV.size()).forEach(message -> {
                 Text newText = new Text(message.toString());
@@ -37,7 +51,6 @@ public class MessageBoardUI {
                 newText.setOnMouseExited(e -> {
                     tileIds.set(Set.of());
                 });
-
                 vbox.getChildren().add(newText);
             });
         });

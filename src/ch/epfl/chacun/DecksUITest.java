@@ -44,7 +44,7 @@ public class DecksUITest extends Application {
 
         var gameStateO = new SimpleObjectProperty<>(gameState);
 
-        ObservableValue<Tile> tile = new SimpleObjectProperty<>(allTiles().get(23));
+        ObservableValue<Tile> tile = new SimpleObjectProperty<>(allTiles().get(2));
         ObservableValue<Integer> normalCount = new SimpleObjectProperty<>(32);
         ObservableValue<Integer> menhirCount = new SimpleObjectProperty<>(7);
         ObservableValue<String> text = new SimpleObjectProperty<>("This text is a test text to see if the text is displayed correctly.");
