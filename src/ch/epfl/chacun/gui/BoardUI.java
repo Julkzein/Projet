@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.control.Cell;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.ColorInput;
@@ -24,6 +25,7 @@ import static ch.epfl.chacun.gui.ImageLoader.NORMAL_TILE_FIT_SIZE;
 import static javafx.scene.effect.BlendMode.SRC_OVER;
 
 public class BoardUI {
+
 
     //cache for images
     private static Map<Integer, Image> cache = new HashMap<>();
@@ -66,6 +68,12 @@ public class BoardUI {
                                     Consumer<Occupant> desiredRetake) {
 
         Group group = new Group();
+        CellData cellData = new CellData(gameState.map(GameState::board).map(Board -> Board.tileAt(pos)),
+                gameState.map(GameState::board).map(Board::insertionPositions),
+                gameState.map(GameState::board));
+        cellData.placeTile.addListener((_, _, nV) -> {
+            //TODO : call des méthodes ?????
+        });
 
         //empty tile
         WritableImage emptyTileImage = new WritableImage(1, 1);
@@ -167,5 +175,21 @@ public class BoardUI {
         }
     }
 
-
+    private record CellData (ObservableValue<PlacedTile> placeTile, ObservableValue<Set<Pos>> insertionPos, ObservableValue<Board> board) {
+        private Image gestionImage() {
+            if () {
+                if (Node.isHover()) {
+                   //image avec survol;
+                } else {
+                    //image sans survol;
+                }
+            }
+            WritableImage emptyTileImage = new WritableImage(1, 1);
+            emptyTileImage
+                    .getPixelWriter()
+                    .setColor(0, 0, Color.gray(0.98));
+            ImageView imageView = new ImageView(emptyTileImage);
+            return imageView;
+        }
+    }
 }
