@@ -17,8 +17,9 @@ public class ActionEncoder {
         List<Pos> list = gameState.board().insertionPositions()
                 .stream()
                 .sorted(Comparator.comparingInt(p -> p.x() * (REACH * 2 + 1) + p.y()))
-                .collect(Collectors.toList());
-        return new StateAction(gameState.withPlacedTile(placedTile), encodeBits10())
+                .toList();
+        int index = (list.indexOf(placedTile.pos()) * 4) + placedTile.rotation().ordinal();
+        return new StateAction(gameState.withPlacedTile(placedTile), encodeBits10(index));
     }
 
 
