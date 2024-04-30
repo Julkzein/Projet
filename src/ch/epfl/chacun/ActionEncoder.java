@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static ch.epfl.chacun.Base32.encodeBits10;
+import static ch.epfl.chacun.Base32.*;
 import static ch.epfl.chacun.Board.REACH;
-import static java.lang.Integer.compare;
 
 public class ActionEncoder {
     //private constructor to prevent instantiation
@@ -22,6 +21,15 @@ public class ActionEncoder {
         return new StateAction(gameState.withPlacedTile(placedTile), encodeBits10(index));
     }
 
+    public StateAction withNewOccupant(GameState gameState, Occupant occupant) {
+        int index = occupant.kind().ordinal() * 16 + occupant.zoneId(); //TODO : check si l'id c'est le bon où pas
+        return new StateAction(gameState.withNewOccupant(occupant), encodeBits5(index));
+    }
 
-    private record StateAction(GameState gameState, String action) {}
+    public StateAction withOccupantRemoved(GameState gameState, Occupant occupant) {
+        
+    }
+
+
+    public record StateAction(GameState gameState, String action) {}
 }
