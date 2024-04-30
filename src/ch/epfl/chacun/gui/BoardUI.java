@@ -83,6 +83,8 @@ public class BoardUI {
                 .getPixelWriter()
                 .setColor(0, 0, Color.gray(0.98));
         ImageView imageView = new ImageView(emptyTileImage);
+        imageView.setFitWidth(NORMAL_TILE_FIT_SIZE);
+        imageView.setFitHeight(NORMAL_TILE_FIT_SIZE);
         group.getChildren().add(imageView);
 
         //the placed tile concerned by the group
