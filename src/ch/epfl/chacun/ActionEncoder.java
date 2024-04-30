@@ -27,9 +27,9 @@ public class ActionEncoder {
     }
 
     public StateAction withOccupantRemoved(GameState gameState, Occupant occupant) {
-        
+        int index = occupant.zoneId(); //TODO : vérifier si c'est le bon id ou pas
+        return new StateAction(gameState.withOccupantRemoved(occupant), encodeBits5(index));
     }
-
 
     public record StateAction(GameState gameState, String action) {}
 }
