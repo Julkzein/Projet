@@ -67,13 +67,15 @@ public class BoardUI {
                                     Consumer<Pos> desiredPlacement,
                                     Consumer<Occupant> desiredRetake) {
 
-        Group group = new Group();
+
+        Group group = new Group();  /**
         CellData cellData = new CellData(gameState.map(GameState::board).map(Board -> Board.tileAt(pos)),
                 gameState.map(GameState::board).map(Board::insertionPositions),
                 gameState.map(GameState::board));
         cellData.placeTile.addListener((_, _, nV) -> {
             //TODO : call des méthodes ?????
         });
+         */
 
         //empty tile
         WritableImage emptyTileImage = new WritableImage(1, 1);
@@ -175,6 +177,8 @@ public class BoardUI {
         }
     }
 
+    /**
+
     private record CellData (ObservableValue<PlacedTile> placeTile, ObservableValue<Set<Pos>> insertionPos, ObservableValue<Board> board) {
         private Image gestionImage() {
             if () {
@@ -192,4 +196,5 @@ public class BoardUI {
             return imageView;
         }
     }
+     */
 }
