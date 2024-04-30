@@ -1,6 +1,8 @@
 package ch.epfl.chacun.gui;
 
 import ch.epfl.chacun.*;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
@@ -76,6 +78,32 @@ public class BoardUI {
             //TODO : call des méthodes ?????
         });
          */
+
+        ObjectBinding<CellData> = Bindings.createObjectBinding(() ->  {
+            Rotation rotationCell = rotation.getValue();
+
+
+
+            Color colorCell = Color.TRANSPARENT;
+            Boolean hoverCell = group.hoverProperty().getValue();
+            if (!evidentId.getValue().isEmpty() &&
+                    !evidentId.getValue().contains(gameState.getValue().board().tileAt(pos).id())) {
+                //TODO : vérifier si tuile à l'emplacement
+                colorCell = Color.BLACK;
+            }
+            if (gameState.getValue().nextAction() == PLACE_TILE) {
+                if (gameState.getValue().board().insertionPositions().contains(pos)) {
+                    colorCell = fillColor(gameState.getValue().currentPlayer());
+                    if (hoverCell) {
+                        PlacedTile tempoTile = new PlacedTile(gameState.map(GameState::tileToPlace).getValue(), gameState.getValue().currentPlayer(), rotation.getValue(), pos);
+                        if (!gameState.getValue().board().canAddTile(tempoTile)) {
+                            colorCell = Color.WHITE;
+                        }
+                    }
+                }
+            }
+            return new CellData()
+        });
 
         //empty tile
         WritableImage emptyTileImage = new WritableImage(1, 1);
@@ -213,9 +241,18 @@ public class BoardUI {
         }
     }
 
-    /**
+    private record CellData (Image image, int rotation, Color veilColor) {
+        private static Map<Integer, Image> cache = new HashMap<>();
+        private static WritableImage emptyTileImage = new WritableImage(1, 1);
 
-    private record CellData (ObservableValue<PlacedTile> placeTile, ObservableValue<Set<Pos>> insertionPos, ObservableValue<Board> board) {
+        static ImageView imageView = new ImageView(emptyTileImage);
+
+        public CellData(PlacedTile pLacedTile) {
+            rotation = pLacedTile.rotation().degreesCW();
+            veilColor = fillColor(pLacedTile.placer());
+        }
+
+        /**
         private Image gestionImage() {
             if () {
                 if (Node.isHover()) {
@@ -224,13 +261,14 @@ public class BoardUI {
                     //image sans survol;
                 }
             }
-            WritableImage emptyTileImage = new WritableImage(1, 1);
+            WritableImage suitebt = new WritableImage(1, 1);
             emptyTileImage
                     .getPixelWriter()
                     .setColor(0, 0, Color.gray(0.98));
             ImageView imageView = new ImageView(emptyTileImage);
             return imageView;
         }
+            */
     }
-     */
+
 }
