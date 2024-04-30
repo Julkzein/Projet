@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 
 import static ch.epfl.chacun.GameState.Action.PLACE_TILE;
 import static ch.epfl.chacun.gui.ColorMap.fillColor;
-import static ch.epfl.chacun.gui.ImageLoader.NORMAL_TILE_FIT_SIZE;
+import static ch.epfl.chacun.gui.ImageLoader.*;
 import static javafx.scene.effect.BlendMode.SRC_OVER;
 
 public class BoardUI {
@@ -107,6 +107,7 @@ public class BoardUI {
         ObservableValue<Set<Pos>> insertionPos = gameState.map(GameState::board).map(Board::insertionPositions);
         ObservableValue<Board> boardObservableValue = gameState.map(GameState::board);
         insertionPos.addListener((_, _, nV) -> {
+
             //verif si action good
             if (gameState.getValue().nextAction() == PLACE_TILE) {
 
@@ -120,6 +121,37 @@ public class BoardUI {
                     Blend blend = new Blend(SRC_OVER, null, colorInput);
                     blend.setOpacity(0.5);
                     group.setEffect(blend);
+                    ObservableValue<Boolean> hover = group.hoverProperty();
+                    hover.addListener((_, _, nV2) -> {
+                        if (hover.getValue()) {
+                            PlacedTile tempoTile = new PlacedTile(gameState.map(GameState::tileToPlace).getValue(), gameState.getValue().currentPlayer(), rotation.getValue(), pos);
+                            if (!boardObservableValue.getValue().canAddTile(tempoTile)) {
+                                colorInput.setPaint(Color.WHITE);
+                                Blend blend1 = new Blend(SRC_OVER, null, colorInput);
+                                blend1.setOpacity(0.5);
+                                group.setEffect(blend);
+                            } else {
+                                group.setEffect(null);
+                            }
+                        } else {
+                            colorInput.setPaint(fillColor(gameState.getValue().currentPlayer()));
+                            Blend blend1 = new Blend(SRC_OVER, null, colorInput);
+                            blend1.setOpacity(0.5);
+                            group.setEffect(blend1);
+                        }
+                    });
+
+
+
+
+
+
+
+
+                   // colorInput.setPaint(fillColor(gameState.getValue().currentPlayer()));
+                    //Blend blend = new Blend(SRC_OVER, null, colorInput);
+                    //blend.setOpacity(0.5);
+                    //group.setEffect(blend);
 
                     //frange avec survoll
                     group.setOnMouseEntered(_ -> {
@@ -173,6 +205,8 @@ public class BoardUI {
                 ImageView cancelTocken = new ImageView();
                 cancelTocken.setId(STR."marker_\{id}");
                 cancelTocken.getStyleClass().add("marker");
+                cancelTocken.setFitWidth(MARKER_FIT_SIZE);
+                cancelTocken.setFitHeight(MARKER_FIT_SIZE);
                 cancelTocken.visibleProperty().bind(cancelledAnimals.map(s -> s.contains(a)));
                 group.getChildren().add(cancelTocken);
             }
