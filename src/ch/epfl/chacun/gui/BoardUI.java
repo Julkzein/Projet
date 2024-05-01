@@ -79,7 +79,7 @@ public class BoardUI {
         });
          */
 
-        ObjectBinding<CellData> = Bindings.createObjectBinding(() ->  {
+        ObjectBinding<CellData> cell = Bindings.createObjectBinding(() ->  {
             Rotation rotationCell = rotation.getValue();
 
 
@@ -102,7 +102,7 @@ public class BoardUI {
                     }
                 }
             }
-            return new CellData()
+            return new CellData();
         });
 
         //empty tile
