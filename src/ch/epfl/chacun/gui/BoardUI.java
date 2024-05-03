@@ -79,7 +79,6 @@ public class BoardUI {
         });
          */
 
-
         ObjectBinding<CellData> cellData = Bindings.createObjectBinding(() ->  {
 
             WritableImage emptyTileImage = new WritableImage(1, 1);
@@ -115,9 +114,7 @@ public class BoardUI {
                     }
                 }
             }
-
             return new CellData(imageCell, rotationCell, colorCell);
-
         });
 
         //empty tile
@@ -146,7 +143,7 @@ public class BoardUI {
         ObservableValue<Board> boardObservableValue = gameState.map(GameState::board);
         
 
-        /**
+
         insertionPos.addListener((_, _, nV) -> {
 
             //verif si action good
@@ -203,7 +200,7 @@ public class BoardUI {
                 }
             }
         });
-        */
+
         return group;
     }
 
