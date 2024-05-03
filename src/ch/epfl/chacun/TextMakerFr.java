@@ -1,7 +1,6 @@
 package ch.epfl.chacun;
 
 import java.util.*;
-import static java.lang.StringTemplate.STR;
 
 
 /**
