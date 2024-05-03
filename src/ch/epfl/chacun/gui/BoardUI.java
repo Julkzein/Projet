@@ -79,6 +79,7 @@ public class BoardUI {
         });
          */
 
+
         ObjectBinding<CellData> cellData = Bindings.createObjectBinding(() ->  {
 
             WritableImage emptyTileImage = new WritableImage(1, 1);
@@ -114,7 +115,9 @@ public class BoardUI {
                     }
                 }
             }
+
             return new CellData(imageCell, rotationCell, colorCell);
+
         });
 
         //empty tile
