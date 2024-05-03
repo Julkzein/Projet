@@ -74,7 +74,7 @@ public class ActionEncoder {
             default:
                 throw new IllegalArgumentException();
         }
-        
+
     }
 
     public record StateAction(GameState gameState, String action) {}
