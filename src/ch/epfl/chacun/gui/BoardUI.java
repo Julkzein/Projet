@@ -79,7 +79,8 @@ public class BoardUI {
         });
          */
 
-        ObjectBinding<CellData> cell = Bindings.createObjectBinding(() ->  {
+
+        ObjectBinding<CellData> cellData = Bindings.createObjectBinding(() ->  {
             Rotation rotationCell = rotation.getValue();
 
 
