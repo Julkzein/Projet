@@ -29,11 +29,31 @@ import static ch.epfl.chacun.gui.ColorMap.fillColor;
 import static ch.epfl.chacun.gui.ImageLoader.*;
 import static javafx.scene.effect.BlendMode.SRC_OVER;
 
+/**
+ * This represents the UI elements of the board as they evolve during a game.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
+ */
 public class BoardUI {
 
 
     //cache for images
     private static Map<Integer, Image> cache = new HashMap<>();
+
+    /**
+     * This method creates the UI elements of the board as they evolve during a game.
+     *
+     * @param reach the reach of the Board
+     * @param gameState the observable value of the game state
+     * @param rotation the observable value of the rotation
+     * @param occupants the observable value of the occupants
+     * @param evidentId the observable value of the set of ids of the tiles put in evidence
+     * @param desiredRotation the consumer of the desired rotation
+     * @param desiredPlacement the consumer of the desired placement
+     * @param desiredRetake the consumer of the desired retake
+     * @return the node representing the board
+     */
     public static Node create(int reach,
                               ObservableValue<GameState> gameState,
                               ObservableValue<Rotation> rotation,
@@ -63,6 +83,19 @@ public class BoardUI {
     }
 
 
+    /**
+     * This method creates a group of UI elements representing a tile on the board.
+     *
+     * @param pos the position of the tile on the board
+     * @param gameState the observable value of the game state
+     * @param rotation the observable value of the rotation
+     * @param occupants the observable value of the occupants
+     * @param evidentId the observable value of the set of ids of the tiles put in evidence
+     * @param desiredRotation the consumer of the desired rotation
+     * @param desiredPlacement the consumer of the desired placement
+     * @param desiredRetake the consumer of the desired retake
+     * @return the group representing the tile
+     */
     private static Group createGroup(Pos pos,
                                     ObservableValue<GameState> gameState,
                                     ObservableValue<Rotation> rotation,
@@ -76,22 +109,23 @@ public class BoardUI {
 
         Group group = new Group();
 
+        //creation of the cell data that will evolve
         ObjectBinding<CellData> cellData = Bindings.createObjectBinding(() ->  {
-
             WritableImage emptyTileImage = new WritableImage(1, 1);
             emptyTileImage
                     .getPixelWriter()
                     .setColor(0, 0, Color.gray(0.98));
             
-            //rotation
+            //rotation data
             Rotation rotationCell = rotation.getValue();
             
-            //tile 
+            //image data
             PlacedTile placedTile = gameState.getValue().board().tileAt(pos);
             Image imageCell = placedTile == null ? emptyTileImage : cache.computeIfAbsent(placedTile.id(), _ -> normalImageForTile(placedTile.tile().id()));
 
+
+            //color data
             Color colorCell = Color.TRANSPARENT;
-            //color
             Boolean hoverCell = group.hoverProperty().getValue();
             if (!evidentId.getValue().isEmpty()) {
                 if (placedTile != null && !evidentId.getValue().contains(placedTile.id())) {
@@ -111,7 +145,7 @@ public class BoardUI {
             return new CellData(imageCell, rotationCell, colorCell);
         }, gameState, rotation, evidentId, group.hoverProperty());
 
-        //empty tile
+        //empty tile that will change as the cell data evolves
         ImageView imageView = new ImageView();
         imageView.setFitWidth(NORMAL_TILE_FIT_SIZE);
         imageView.setFitHeight(NORMAL_TILE_FIT_SIZE);
@@ -120,6 +154,7 @@ public class BoardUI {
 
         //the placed tile concerned by the group
         ObservableValue<PlacedTile> placedTile = gameState.map(GameState::board).map(Board -> Board.tileAt(pos));
+
         //when the tile changes (and a tile is placed), we change the image and create the cancel token and the occupants
         placedTile.addListener((_, _, nV) -> {
             group.rotateProperty().unbind();
@@ -127,13 +162,10 @@ public class BoardUI {
             createOccupants(nV.id(), pos, gameState, group, occupants, desiredRetake);
         });
 
-
-
-        //gestion rotation
+        //rotation binding
         group.rotateProperty().bind(cellData.map(CellData::rotation).map(Rotation::degreesCW));
 
-        //gestion frange
-
+        //veil color binding
         Blend blend = new Blend(SRC_OVER);
         ColorInput colorInputBlend = new ColorInput();
         colorInputBlend.paintProperty().bind(cellData.map(CellData::veilColor));
@@ -145,7 +177,7 @@ public class BoardUI {
         blend.topInputProperty().bind(cellData.map(_ -> colorInputBlend));
         group.setEffect(blend);
 
-        //gestion des clics
+        //click handling
         group.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
             if (e.getButton() == MouseButton.PRIMARY) {
                 if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
@@ -159,7 +191,6 @@ public class BoardUI {
                 }
             }
         });
-
         return group;
     }
 
@@ -210,6 +241,7 @@ public class BoardUI {
         }
     }
 
+    //private record to store the data of a cell
     private record CellData (Image image, Rotation rotation, Color veilColor) {}
 
 }
