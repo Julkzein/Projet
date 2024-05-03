@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public final class BoardUITest22 extends Application {
@@ -34,6 +35,9 @@ public final class BoardUITest22 extends Application {
         var highlightedTilesP =
                 new SimpleObjectProperty<>(Set.<Integer>of());
 
+        Consumer<Rotation> rotationConsumer = r -> {
+            tileToPlaceRotationP.setValue((Rotation.ALL.get(r.ordinal() + tileToPlaceRotationP.getValue().ordinal()%4)));
+        };
         var gameStateO = new SimpleObjectProperty<>(gameState);
         var boardNode = BoardUI
                 .create(2,

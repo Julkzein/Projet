@@ -15,6 +15,8 @@ import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
@@ -120,8 +122,9 @@ public class BoardUI {
         ObservableValue<PlacedTile> placedTile = gameState.map(GameState::board).map(Board -> Board.tileAt(pos));
         //when the tile changes (and a tile is placed), we change the image and create the cancel token and the occupants
         placedTile.addListener((_, _, nV) -> {
+            group.rotateProperty().unbind();
             createCancelledTocken(nV.id(), pos, gameState, group);
-            createOccupants(nV.id(), pos, gameState, group, occupants);
+            createOccupants(nV.id(), pos, gameState, group, occupants, desiredRetake);
         });
 
 
@@ -142,6 +145,21 @@ public class BoardUI {
         blend.topInputProperty().bind(cellData.map(_ -> colorInputBlend));
         group.setEffect(blend);
 
+        //gestion des clics
+        group.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
+                    desiredPlacement.accept(pos);
+                }
+            }
+
+            if (e.getButton() == MouseButton.SECONDARY) {
+                if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
+                    desiredRotation.accept(Rotation.ALL.get((rotation.getValue().ordinal() + 1) % 4));
+                }
+            }
+        });
+
         return group;
     }
 
@@ -153,12 +171,17 @@ public class BoardUI {
      * @param group the group to which the SVG paths are added
      * @param occupants the observable value of the occupants to be displayed
      */
-    private static void createOccupants(int id, Pos pos, ObservableValue<GameState> gameState, Group group, ObservableValue<Set<Occupant>> occupants) {
+    private static void createOccupants(int id, Pos pos, ObservableValue<GameState> gameState, Group group, ObservableValue<Set<Occupant>> occupants, Consumer<Occupant> desiredRetake) {
         for (Occupant o : gameState.getValue().board().tileAt(pos).potentialOccupants()) {
-            SVGPath occupantSVGPath = new SVGPath();
-            if ((o.kind() == Occupant.Kind.PAWN)) occupantSVGPath.setId(STR. "pawn_\{ id }" );
-            else occupantSVGPath.setId(STR. "hut_\{ id }" );
+            Node occupantSVGPath = Icon.newFor(gameState.getValue().currentPlayer(), o.kind());
+            occupantSVGPath.setId(STR."\{o.kind().toString().toLowerCase()}_\{o.zoneId()}" );
             occupantSVGPath.visibleProperty().bind(occupants.map(s -> s.contains(o)));
+            occupantSVGPath.setOnMouseClicked(e -> {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    desiredRetake.accept(o);
+                }
+            });
+            occupantSVGPath.rotateProperty().bind(group.rotateProperty().negate());
             group.getChildren().add(occupantSVGPath);
         }
     }
