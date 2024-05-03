@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Cell;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -60,7 +61,7 @@ public class BoardUI {
     }
 
 
-    private static Node createGroup(Pos pos,
+    private static Group createGroup(Pos pos,
                                     ObservableValue<GameState> gameState,
                                     ObservableValue<Rotation> rotation,
                                     ObservableValue<Set<Occupant>> occupants,
@@ -70,14 +71,8 @@ public class BoardUI {
                                     Consumer<Occupant> desiredRetake) {
 
 
-        Group group = new Group();  /**
-        CellData cellData = new CellData(gameState.map(GameState::board).map(Board -> Board.tileAt(pos)),
-                gameState.map(GameState::board).map(Board::insertionPositions),
-                gameState.map(GameState::board));
-        cellData.placeTile.addListener((_, _, nV) -> {
-            //TODO : call des méthodes ?????
-        });
-         */
+
+        Group group = new Group();
 
         ObjectBinding<CellData> cellData = Bindings.createObjectBinding(() ->  {
 
@@ -85,9 +80,6 @@ public class BoardUI {
             emptyTileImage
                     .getPixelWriter()
                     .setColor(0, 0, Color.gray(0.98));
-            ImageView imageView = new ImageView(emptyTileImage);
-            imageView.setFitWidth(NORMAL_TILE_FIT_SIZE);
-            imageView.setFitHeight(NORMAL_TILE_FIT_SIZE);
             
             //rotation
             Rotation rotationCell = rotation.getValue();
@@ -96,39 +88,38 @@ public class BoardUI {
             PlacedTile placedTile = gameState.getValue().board().tileAt(pos);
             Image imageCell = placedTile == null ? emptyTileImage : cache.computeIfAbsent(placedTile.id(), _ -> normalImageForTile(placedTile.tile().id()));
 
-            //color
             Color colorCell = Color.TRANSPARENT;
+            //color
             Boolean hoverCell = group.hoverProperty().getValue();
-            if (placedTile != null && !evidentId.getValue().isEmpty() &&
-                    !evidentId.getValue().contains(gameState.getValue().board().tileAt(pos).id())) {
-                colorCell = Color.BLACK;
-            } else if (gameState.getValue().board().insertionPositions().contains(pos) && gameState.getValue().nextAction() == PLACE_TILE) {
+            if (!evidentId.getValue().isEmpty()) {
+                if (placedTile != null && !evidentId.getValue().contains(placedTile.id())) {
+                    colorCell = Color.BLACK;
+                }
+            }
+            else if (placedTile == null && gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
                 if (!hoverCell) {
-                    colorCell = fillColor(gameState.getValue().currentPlayer());
-                } else if (hoverCell) {
+                    colorCell = fillColor(Objects.requireNonNull(gameState.getValue().currentPlayer()));
+                } else {
+                    imageCell = cache.computeIfAbsent(gameState.getValue().tileToPlace().id(), _ -> normalImageForTile(gameState.getValue().tileToPlace().id()));
                     if (!gameState.getValue().board().canAddTile(new PlacedTile(gameState.getValue().tileToPlace(), gameState.getValue().currentPlayer(), rotationCell, pos))) {
-                        imageCell = cache.computeIfAbsent(gameState.getValue().tileToPlace().id(), _ -> normalImageForTile(gameState.getValue().tileToPlace().id()));
                         colorCell = Color.WHITE;
-                    } else {
-                        colorCell = fillColor(gameState.getValue().currentPlayer());
                     }
                 }
             }
             return new CellData(imageCell, rotationCell, colorCell);
-        });
+        }, gameState, rotation, evidentId, group.hoverProperty());
 
         //empty tile
         ImageView imageView = new ImageView();
-        imageView.imageProperty().bind(cellData.map(CellData::image));
         imageView.setFitWidth(NORMAL_TILE_FIT_SIZE);
         imageView.setFitHeight(NORMAL_TILE_FIT_SIZE);
+        imageView.imageProperty().bind(cellData.map(CellData::image));
         group.getChildren().add(imageView);
 
         //the placed tile concerned by the group
         ObservableValue<PlacedTile> placedTile = gameState.map(GameState::board).map(Board -> Board.tileAt(pos));
-        //when the tile changes (and a tile is placed), we change the image and we create the cancel token and the occupants
+        //when the tile changes (and a tile is placed), we change the image and create the cancel token and the occupants
         placedTile.addListener((_, _, nV) -> {
-            imageView.setImage(cache.computeIfAbsent(nV.id(), _ -> ImageLoader.normalImageForTile(nV.tile().id())));
             createCancelledTocken(nV.id(), pos, gameState, group);
             createOccupants(nV.id(), pos, gameState, group, occupants);
         });
@@ -136,70 +127,20 @@ public class BoardUI {
 
 
         //gestion rotation
-       // rotation.bind(cellData.map(CellData::rotation));
+        group.rotateProperty().bind(cellData.map(CellData::rotation).map(Rotation::degreesCW));
 
-        //gestion  frange
-        ObservableValue<Set<Pos>> insertionPos = gameState.map(GameState::board).map(Board::insertionPositions);
-        ObservableValue<Board> boardObservableValue = gameState.map(GameState::board);
-        
+        //gestion frange
 
-
-        insertionPos.addListener((_, _, nV) -> {
-
-            //verif si action good
-            if (gameState.getValue().nextAction() == PLACE_TILE) {
-
-                //frange sans survol
-
-
-
-                if (nV.contains(pos)) {
-                    ColorInput colorInput = new ColorInput();
-                    colorInput.setHeight(NORMAL_TILE_FIT_SIZE);
-                    colorInput.setWidth(NORMAL_TILE_FIT_SIZE);
-                    colorInput.setPaint(fillColor(gameState.getValue().currentPlayer()));
-                    Blend blend = new Blend(SRC_OVER, null, colorInput);
-                    blend.setOpacity(0.5);
-                    group.setEffect(blend);
-                    ObservableValue<Boolean> hover = group.hoverProperty();
-                    hover.addListener((_, _, nV2) -> {
-                        if (hover.getValue()) {
-                            PlacedTile tempoTile = new PlacedTile(gameState.map(GameState::tileToPlace).getValue(), gameState.getValue().currentPlayer(), rotation.getValue(), pos);
-                            if (!boardObservableValue.getValue().canAddTile(tempoTile)) {
-                                colorInput.setPaint(Color.WHITE);
-                                Blend blend1 = new Blend(SRC_OVER, null, colorInput);
-                                blend1.setOpacity(0.5);
-                                group.setEffect(blend);
-                            } else {
-                                group.setEffect(null);
-                            }
-                        } else {
-                            colorInput.setPaint(fillColor(gameState.getValue().currentPlayer()));
-                            Blend blend1 = new Blend(SRC_OVER, null, colorInput);
-                            blend1.setOpacity(0.5);
-                            group.setEffect(blend1);
-                        }
-                    });
-                   // colorInput.setPaint(fillColor(gameState.getValue().currentPlayer()));
-                    //Blend blend = new Blend(SRC_OVER, null, colorInput);
-                    //blend.setOpacity(0.5);
-                    //group.setEffect(blend);
-
-                    //frange avec survoll
-                    group.setOnMouseEntered(_ -> {
-                        PlacedTile tempoTile = new PlacedTile(gameState.map(GameState::tileToPlace).getValue(), gameState.getValue().currentPlayer(), rotation.getValue(), pos);
-                        if (!boardObservableValue.getValue().canAddTile(tempoTile)) {
-                            colorInput.setPaint(Color.WHITE);
-                            Blend blend1 = new Blend(SRC_OVER, null, colorInput);
-                            blend1.setOpacity(0.5);
-                            group.setEffect(blend);
-                        } else {
-                            group.setEffect(null);
-                        }
-                    });
-                }
-            }
-        });
+        Blend blend = new Blend(SRC_OVER);
+        ColorInput colorInputBlend = new ColorInput();
+        colorInputBlend.paintProperty().bind(cellData.map(CellData::veilColor));
+        colorInputBlend.setX(pos.x());
+        colorInputBlend.setY(pos.y());
+        colorInputBlend.setHeight(NORMAL_TILE_FIT_SIZE);
+        colorInputBlend.setWidth(NORMAL_TILE_FIT_SIZE);
+        blend.setOpacity(0.5);
+        blend.topInputProperty().bind(cellData.map(_ -> colorInputBlend));
+        group.setEffect(blend);
 
         return group;
     }

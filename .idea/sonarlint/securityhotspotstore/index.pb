@@ -97,3 +97,5 @@ U
 %src/ch/epfl/chacun/BoardUITest22.java,0/4/04f914e52f0f03ff12d4a8351f744553491e7c87
 Z
 *src/ch/epfl/chacun/MessageBoardUITest.java,9/a/9a9adb3d773f5a35c9e488d8d9ffd752bc25577c
+U
+%src/ch/epfl/chacun/ActionEncoder.java,2/4/242e2bf52f018e69902a0fc3338a8c61e81f80bd
