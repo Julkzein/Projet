@@ -2,9 +2,6 @@ package ch.epfl.chacun;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static ch.epfl.chacun.Base32.*;
 import static ch.epfl.chacun.Board.REACH;

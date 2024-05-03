@@ -1,21 +1,17 @@
 package ch.epfl.chacun;
 
 import ch.epfl.chacun.gui.MessageBoardUI;
-import ch.epfl.chacun.gui.PlayersUI;
 import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static javafx.application.Application.launch;
 
 public class MessageBoardUITest extends Application {
     public static void main(String[] args) { launch(args); }
