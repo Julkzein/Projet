@@ -3,6 +3,7 @@ package ch.epfl.chacun;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static ch.epfl.chacun.Base32.*;
@@ -32,9 +33,21 @@ public class ActionEncoder {
     }
 
     public StateAction decodeAndApply(GameState gameState, String str) {
+        try {
+            return decodeOrThrow(gameState, str);
+        } catch (Exception e) { //TODO : check si tous les cas d'erreurs sont bien gérés
+            return null;
+        }
+    }
+
+    private StateAction decodeOrThrow(GameState gameState, String str) {
+        if (!isValid(str) || (str.length() != 1 && str.length() != 2) || gameState.nextAction() == null) {
+            throw new IllegalArgumentException();
+        }
+
+        int index = decode(str);
         switch(gameState.nextAction()) {
             case PLACE_TILE:
-                int index = decode(str);
                 int rotation = index % 4;
                 int posIndex = index / 4;
                 Pos pos = gameState.board().insertionPositions()
@@ -42,7 +55,24 @@ public class ActionEncoder {
                         .sorted(Comparator.comparingInt(p -> p.x() * (REACH * 2 + 1) + p.y()))
                         .toList()
                         .get(posIndex);
-                return withPlacedTile(gameState, new PlacedTile(gameState.board().tileAt(pos).tile(), gameState.currentPlayer(), Rotation.values()[rotation], pos));
+                PlacedTile pT = new PlacedTile(gameState.tileToPlace(), gameState.currentPlayer(), Rotation.values()[rotation], pos);
+                return withPlacedTile(gameState, pT);
+
+            case OCCUPY_TILE:
+                int kind = index / 16;
+                int zoneId = index % 16;
+                Occupant occupant1 = new Occupant(Occupant.Kind.values()[kind], zoneId);
+                return withNewOccupant(gameState, occupant1);
+
+            case RETAKE_PAWN:
+                Occupant occupant2 = gameState.board().occupants().stream()
+                        .sorted(Comparator.comparingInt(Occupant::zoneId))
+                        .toList()
+                        .get(index);
+                return withOccupantRemoved(gameState, occupant2);
+
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
