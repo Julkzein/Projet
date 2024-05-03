@@ -80,37 +80,46 @@ public class BoardUI {
          */
 
         ObjectBinding<CellData> cellData = Bindings.createObjectBinding(() ->  {
+
+            WritableImage emptyTileImage = new WritableImage(1, 1);
+            emptyTileImage
+                    .getPixelWriter()
+                    .setColor(0, 0, Color.gray(0.98));
+            ImageView imageView = new ImageView(emptyTileImage);
+            imageView.setFitWidth(NORMAL_TILE_FIT_SIZE);
+            imageView.setFitHeight(NORMAL_TILE_FIT_SIZE);
+            
+            //rotation
             Rotation rotationCell = rotation.getValue();
+            
+            //tile 
+            PlacedTile placedTile = gameState.getValue().board().tileAt(pos);
+            Image imageCell = placedTile == null ? emptyTileImage : cache.computeIfAbsent(placedTile.id(), _ -> normalImageForTile(placedTile.tile().id()));
 
-
-
+            //color
             Color colorCell = Color.TRANSPARENT;
             Boolean hoverCell = group.hoverProperty().getValue();
-            if (!evidentId.getValue().isEmpty() &&
+            if (placedTile != null && !evidentId.getValue().isEmpty() &&
                     !evidentId.getValue().contains(gameState.getValue().board().tileAt(pos).id())) {
-                //TODO : vérifier si tuile à l'emplacement
                 colorCell = Color.BLACK;
-            }
-            if (gameState.getValue().nextAction() == PLACE_TILE) {
-                if (gameState.getValue().board().insertionPositions().contains(pos)) {
+            } else if (gameState.getValue().board().insertionPositions().contains(pos) && gameState.getValue().nextAction() == PLACE_TILE) {
+                if (!hoverCell) {
                     colorCell = fillColor(gameState.getValue().currentPlayer());
-                    if (hoverCell) {
-                        PlacedTile tempoTile = new PlacedTile(gameState.map(GameState::tileToPlace).getValue(), gameState.getValue().currentPlayer(), rotation.getValue(), pos);
-                        if (!gameState.getValue().board().canAddTile(tempoTile)) {
-                            colorCell = Color.WHITE;
-                        }
+                } else if (hoverCell) {
+                    if (!gameState.getValue().board().canAddTile(new PlacedTile(gameState.getValue().tileToPlace(), gameState.getValue().currentPlayer(), rotationCell, pos))) {
+                        imageCell = cache.computeIfAbsent(gameState.getValue().tileToPlace().id(), _ -> normalImageForTile(gameState.getValue().tileToPlace().id()));
+                        colorCell = Color.WHITE;
+                    } else {
+                        colorCell = fillColor(gameState.getValue().currentPlayer());
                     }
                 }
             }
-            return new CellData()
+            return new CellData(imageCell, rotationCell, colorCell);
         });
 
         //empty tile
-        WritableImage emptyTileImage = new WritableImage(1, 1);
-        emptyTileImage
-                .getPixelWriter()
-                .setColor(0, 0, Color.gray(0.98));
-        ImageView imageView = new ImageView(emptyTileImage);
+        ImageView imageView = new ImageView();
+        imageView.imageProperty().bind(cellData.map(CellData::image));
         imageView.setFitWidth(NORMAL_TILE_FIT_SIZE);
         imageView.setFitHeight(NORMAL_TILE_FIT_SIZE);
         group.getChildren().add(imageView);
@@ -127,19 +136,22 @@ public class BoardUI {
 
 
         //gestion rotation
-        rotation.addListener((_, _, nV) -> {
-            group.setRotate(nV.degreesCW());
-        });
+       // rotation.bind(cellData.map(CellData::rotation));
 
         //gestion  frange
         ObservableValue<Set<Pos>> insertionPos = gameState.map(GameState::board).map(Board::insertionPositions);
         ObservableValue<Board> boardObservableValue = gameState.map(GameState::board);
+        
+
+        /**
         insertionPos.addListener((_, _, nV) -> {
 
             //verif si action good
             if (gameState.getValue().nextAction() == PLACE_TILE) {
 
                 //frange sans survol
+
+
 
                 if (nV.contains(pos)) {
                     ColorInput colorInput = new ColorInput();
@@ -168,14 +180,6 @@ public class BoardUI {
                             group.setEffect(blend1);
                         }
                     });
-
-
-
-
-
-
-
-
                    // colorInput.setPaint(fillColor(gameState.getValue().currentPlayer()));
                     //Blend blend = new Blend(SRC_OVER, null, colorInput);
                     //blend.setOpacity(0.5);
@@ -196,6 +200,7 @@ public class BoardUI {
                 }
             }
         });
+        */
         return group;
     }
 
@@ -241,34 +246,6 @@ public class BoardUI {
         }
     }
 
-    private record CellData (Image image, int rotation, Color veilColor) {
-        private static Map<Integer, Image> cache = new HashMap<>();
-        private static WritableImage emptyTileImage = new WritableImage(1, 1);
-
-        static ImageView imageView = new ImageView(emptyTileImage);
-
-        public CellData(PlacedTile pLacedTile) {
-            rotation = pLacedTile.rotation().degreesCW();
-            veilColor = fillColor(pLacedTile.placer());
-        }
-
-        /**
-        private Image gestionImage() {
-            if () {
-                if (Node.isHover()) {
-                   //image avec survol;
-                } else {
-                    //image sans survol;
-                }
-            }
-            WritableImage suitebt = new WritableImage(1, 1);
-            emptyTileImage
-                    .getPixelWriter()
-                    .setColor(0, 0, Color.gray(0.98));
-            ImageView imageView = new ImageView(emptyTileImage);
-            return imageView;
-        }
-            */
-    }
+    private record CellData (Image image, Rotation rotation, Color veilColor) {}
 
 }
