@@ -14,6 +14,7 @@ public class ActionEncoder {
     private ActionEncoder() {}
 
     public StateAction withPlacedTile(GameState gameState, PlacedTile placedTile) {
+        //TODO : check si il faut mettre des precondition
         List<Pos> list = gameState.board().insertionPositions()
                 .stream()
                 .sorted(Comparator.comparingInt(p -> p.x() * (REACH * 2 + 1) + p.y()))
