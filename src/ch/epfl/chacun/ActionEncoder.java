@@ -31,5 +31,20 @@ public class ActionEncoder {
         return new StateAction(gameState.withOccupantRemoved(occupant), encodeBits5(index));
     }
 
+    public StateAction decodeAndApply(GameState gameState, String str) {
+        switch(gameState.nextAction()) {
+            case PLACE_TILE:
+                int index = decode(str);
+                int rotation = index % 4;
+                int posIndex = index / 4;
+                Pos pos = gameState.board().insertionPositions()
+                        .stream()
+                        .sorted(Comparator.comparingInt(p -> p.x() * (REACH * 2 + 1) + p.y()))
+                        .toList()
+                        .get(posIndex);
+                return withPlacedTile(gameState, new PlacedTile(gameState.board().tileAt(pos).tile(), gameState.currentPlayer(), Rotation.values()[rotation], pos));
+        }
+    }
+
     public record StateAction(GameState gameState, String action) {}
 }
