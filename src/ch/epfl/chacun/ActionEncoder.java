@@ -44,6 +44,7 @@ public class ActionEncoder {
                         .get(posIndex);
                 return withPlacedTile(gameState, new PlacedTile(gameState.board().tileAt(pos).tile(), gameState.currentPlayer(), Rotation.values()[rotation], pos));
         }
+        return null;
     }
 
     public record StateAction(GameState gameState, String action) {}

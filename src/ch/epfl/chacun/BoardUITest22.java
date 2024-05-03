@@ -36,7 +36,7 @@ public final class BoardUITest22 extends Application {
 
         var gameStateO = new SimpleObjectProperty<>(gameState);
         var boardNode = BoardUI
-                .create(1,
+                .create(2,
                         gameStateO,
                         tileToPlaceRotationP,
                         visibleOccupantsP,

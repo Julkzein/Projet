@@ -88,36 +88,33 @@ public class BoardUI {
             PlacedTile placedTile = gameState.getValue().board().tileAt(pos);
             Image imageCell = placedTile == null ? emptyTileImage : cache.computeIfAbsent(placedTile.id(), _ -> normalImageForTile(placedTile.tile().id()));
 
-            //color
             Color colorCell = Color.TRANSPARENT;
+            //color
             Boolean hoverCell = group.hoverProperty().getValue();
             if (!evidentId.getValue().isEmpty()) {
                 if (placedTile != null && !evidentId.getValue().contains(placedTile.id())) {
                     colorCell = Color.BLACK;
                 }
             }
-            else if (placedTile == null && gameState.getValue().nextAction() == PLACE_TILE) {
+            else if (placedTile == null && gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
                 if (!hoverCell) {
                     colorCell = fillColor(Objects.requireNonNull(gameState.getValue().currentPlayer()));
                 } else {
+                    imageCell = cache.computeIfAbsent(gameState.getValue().tileToPlace().id(), _ -> normalImageForTile(gameState.getValue().tileToPlace().id()));
                     if (!gameState.getValue().board().canAddTile(new PlacedTile(gameState.getValue().tileToPlace(), gameState.getValue().currentPlayer(), rotationCell, pos))) {
-                        if (gameState.getValue().tileToPlace() != null) {
-                            imageCell = cache.computeIfAbsent(gameState.getValue().tileToPlace().id(), _ -> normalImageForTile(gameState.getValue().tileToPlace().id()));
-                        }
-                    } else {
                         colorCell = Color.WHITE;
                     }
                 }
             }
-
             return new CellData(imageCell, rotationCell, colorCell);
-        });
+        }, gameState, rotation, evidentId, group.hoverProperty());
 
         //empty tile
         ImageView imageView = new ImageView();
         imageView.setFitWidth(NORMAL_TILE_FIT_SIZE);
         imageView.setFitHeight(NORMAL_TILE_FIT_SIZE);
         imageView.imageProperty().bind(cellData.map(CellData::image));
+        group.getChildren().add(imageView);
 
         //the placed tile concerned by the group
         ObservableValue<PlacedTile> placedTile = gameState.map(GameState::board).map(Board -> Board.tileAt(pos));
