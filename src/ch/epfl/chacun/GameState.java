@@ -88,7 +88,8 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         //Checks if the corresponding area is occupied and if the player has enough pawns or huts to place
         if (lastPlacedTile.occupant() == null) {
             for (Occupant occupant : lastPlacedTile.potentialOccupants()) {
-                if (!areaOfZoneOnBoard(lastPlacedTile.zoneWithId(occupant.zoneId()), board).isOccupied() && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
+                if (!areaOfZoneOnBoard(lastPlacedTile.zoneWithId(occupant.zoneId()), board).isOccupied()
+                        && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
                     potentialOccupantsSet.add(occupant);
                 }
             }
@@ -107,7 +108,8 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         Preconditions.checkArgument(nextAction == Action.START_GAME);
         Board newBoard = board.withNewTile(new PlacedTile(tileDecks.topTile(Tile.Kind.START), null, Rotation.NONE, new Pos(0, 0)));
         TileDecks tileDecks1 = tileDecks.withTopTileDrawnUntil(Tile.Kind.NORMAL, newBoard::couldPlaceTile);
-        return new GameState(players, tileDecks1.withTopTileDrawn(Tile.Kind.START).withTopTileDrawn(Tile.Kind.NORMAL), tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.PLACE_TILE, messageBoard);
+        TileDecks finalTileDecks = tileDecks1.withTopTileDrawn(Tile.Kind.START).withTopTileDrawn(Tile.Kind.NORMAL);
+        return new GameState(players, finalTileDecks, tileDecks.topTile(Tile.Kind.NORMAL), newBoard, Action.PLACE_TILE, messageBoard);
     }
 
     /**
@@ -197,14 +199,16 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     occupationPossible = true;
                 }
             } else {
-                if (!lastTilePotentialOccupants().isEmpty() && freeOccupantsCount(currentPlayer(), Occupant.Kind.PAWN) > 0 && setHasOccupantOfKind(lastTilePotentialOccupants(), Occupant.Kind.PAWN)) {
+                if (!lastTilePotentialOccupants().isEmpty()
+                        && freeOccupantsCount(currentPlayer(), Occupant.Kind.PAWN) > 0
+                        && setHasOccupantOfKind(lastTilePotentialOccupants(), Occupant.Kind.PAWN)) {
                     occupationPossible = true;
                 }
             }
         }
 
         if (occupationPossible) return new GameState(players, tileDecks, null, board, Action.OCCUPY_TILE, messageBoard);
-        else { return withTurnFinished(board, messageBoard); }
+        else return withTurnFinished(board, messageBoard);
     }
 
     /**

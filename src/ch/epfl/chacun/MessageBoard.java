@@ -11,10 +11,9 @@ import static ch.epfl.chacun.Animal.Kind.*;
  * said events. The nested record represents the messages displayed on the
  * messageBoard that will be updated everytime one of the methods is called.
  *
- *
  * @param textMaker the interface that creates the different messages displayed on the
- * messageBoard
- * @param messages the messages that will be displayed on the messageBoard
+ *                  messageBoard
+ * @param messages  the messages that will be displayed on the messageBoard
  * @Author Louis Bernard (379724)
  * @Author Jules Delforge (372325)
  */
@@ -56,6 +55,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
         }
         return scoarerMap;
     }
+
     /**
      * This method returns a MessageBoard identical to the current one except if the given
      * forest is occupied in which case it adds a message to the MessageBoard that indicates that
@@ -116,7 +116,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * the given Hunting Trap by the given player gained points in which case it will add a message
      * indicating the points given by the Hunting Trap placed by the player
      *
-     * @param scorer the player that placed the trap
+     * @param scorer         the player that placed the trap
      * @param adjacentMeadow all meadows in the range of the Hunting Trap
      * @return the MessageBoard with the possible new message
      */
@@ -124,12 +124,12 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
         Set<Animal> animals = Area.animals(adjacentMeadow, Set.of());
         Map<Animal.Kind, Integer> animalMap = getAnimalMap(animals);
         for (Animal animal : animals) {
-           if (animalMap.get(TIGER) == 0) {
-               break;
-           } else if (animal.kind() == DEER) {
-               animalMap.put(DEER, animalMap.get(DEER) - 1);
-               animalMap.put(TIGER, animalMap.get(TIGER) - 1);
-           }
+            if (animalMap.get(TIGER) == 0) {
+                break;
+            } else if (animal.kind() == DEER) {
+                animalMap.put(DEER, animalMap.get(DEER) - 1);
+                animalMap.put(TIGER, animalMap.get(TIGER) - 1);
+            }
         }
         int points = pointsForMeadow(animalMap);
         if (points > 0) {
@@ -144,7 +144,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * message indicating that the given player obtained a certain amount of points by placing
      * the logboat on the river system
      *
-     * @param scorer the player that placed the logboat
+     * @param scorer      the player that placed the logboat
      * @param riverSystem the river system on which the player placed the logboat
      * @return the MessageBoard with the new message
      */
@@ -161,7 +161,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * occupied and if it sums up to a positive amount of points in which case it will add a message indicating that its majority occupant have won
      * the amount of points associated to its closing
      *
-     * @param meadow the given meadow we want to check if closed
+     * @param meadow           the given meadow we want to check if closed
      * @param cancelledAnimals the animals that must not be counted in the points
      * @return the MessageBoard with the possible additional message
      */
@@ -188,7 +188,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @return the MessageBoard with the possible new message
      */
     public MessageBoard withScoredRiverSystem(Area<Zone.Water> riverSystem) {
-        if (riverSystem.isOccupied()){
+        if (riverSystem.isOccupied()) {
             int points = Area.riverSystemFishCount(riverSystem);
             if (points > 0) {
                 Set<PlayerColor> scorers = riverSystem.majorityOccupants();
@@ -204,7 +204,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * pit trap is occupied and that it gives an amount of points to its majority occupants superior to 0 in which
      * case it will add a new message indicating that the majority occupants have gained a certain amount of points
      *
-     * @param adjacentMeadow the meadows in the range of the pit trap
+     * @param adjacentMeadow   the meadows in the range of the pit trap
      * @param cancelledAnimals the animals that must not be counted int the point calculations
      * @return the MessageBoard with the potential additional message
      */
@@ -245,7 +245,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * that the given winners have won the game with the given amount of points
      *
      * @param winners the players who won
-     * @param points the amount of points with which the players have won
+     * @param points  the amount of points with which the players have won
      * @return the MessageBoard with the possible additional message
      */
     public MessageBoard withWinners(Set<PlayerColor> winners, int points) {
@@ -264,6 +264,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
 
     /**
      * This method returns a map that associates to all animal kinds the amount of animals of that kind
+     *
      * @param animals the set of animals we want to count
      * @return the map that associates to all animal kinds the amount of animals of that kind
      */
@@ -285,8 +286,9 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
 
     /**
      * This nested record represents a message that will be displayed on the MessageBoard
-     * @param text the text of the message
-     * @param points the points associated to the message
+     *
+     * @param text    the text of the message
+     * @param points  the points associated to the message
      * @param scorers the set of players that have won the given points
      * @param tileIds the ids of the concerned tiles or an empty set if the message does not concern any tile
      */
