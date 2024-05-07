@@ -46,9 +46,9 @@ public record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, List<Tile
      */
     public Tile topTile(Tile.Kind kind) {
         return switch(kind) {
-            case START -> startTiles.isEmpty() ? null : startTiles.getFirst();
-            case NORMAL -> normalTiles.isEmpty() ? null : normalTiles.getFirst();
-            case MENHIR -> menhirTiles.isEmpty() ? null : menhirTiles.getFirst();
+            case START -> getTopTile(startTiles);
+            case NORMAL -> getTopTile(normalTiles);
+            case MENHIR -> getTopTile(menhirTiles);
         };
     }
 
@@ -87,5 +87,15 @@ public record TileDecks(List<Tile> startTiles, List<Tile> normalTiles, List<Tile
         return new TileDecks(kind == Tile.Kind.START ? newTileDeck : startTiles,
                              kind == Tile.Kind.NORMAL ? newTileDeck : normalTiles,
                              kind == Tile.Kind.MENHIR ? newTileDeck : menhirTiles);
+    }
+
+    /**
+     * Returns the top tile of the given list of tiles
+     *
+     * @param tiles the list of tiles
+     * @return the top tile of the given list of tile or null if the list is empty
+     */
+    private Tile getTopTile(List<Tile> tiles) {
+        return tiles.isEmpty() ? null : tiles.getFirst();
     }
 }

@@ -4,6 +4,7 @@ package ch.epfl.chacun;
 import java.util.*;
 
 import static ch.epfl.chacun.Points.*;
+import static ch.epfl.chacun.Animal.Kind.*;
 
 /**
  * Represent the messages that will be sent by the game at the different
@@ -65,9 +66,12 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      */
     public MessageBoard withScoredForest(Area<Zone.Forest> forest) {
         if (forest.isOccupied()) {
-            int addPoints = forClosedForest(forest.zones().size(), Area.mushroomGroupCount(forest));
-            String addText = textMaker.playersScoredForest(forest.majorityOccupants(), addPoints, Area.mushroomGroupCount(forest), forest.zones().size());
-            return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, addPoints, forest.majorityOccupants(), forest.tileIds())));
+            int mushroomGroupCount = Area.mushroomGroupCount(forest);
+            int forestSize = forest.zones().size();
+            int addPoints = forClosedForest(forestSize, mushroomGroupCount);
+            Set<PlayerColor> majorityOccupants = forest.majorityOccupants();
+            String addText = textMaker.playersScoredForest(majorityOccupants, addPoints, mushroomGroupCount, forestSize);
+            return messageBoardWithNewMessage(new Message(addText, addPoints, majorityOccupants, forest.tileIds()));
         }
         return this;
     }
@@ -83,7 +87,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      */
     public MessageBoard withClosedForestWithMenhir(PlayerColor player, Area<Zone.Forest> forest) {
         String addText = textMaker.playerClosedForestWithMenhir(player);
-        return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, 0, forest.majorityOccupants(), forest.tileIds())));
+        return messageBoardWithNewMessage(new Message(addText, 0, Set.of(), forest.tileIds()));
     }
 
 
@@ -97,9 +101,12 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      */
     public MessageBoard withScoredRiver(Area<Zone.River> river) {
         if (river.isOccupied()) {
-            int addPoints = Area.riverFishCount(river) + river.zones().size();
-            String addText = textMaker.playersScoredRiver(river.majorityOccupants(), addPoints, Area.riverFishCount(river), river.zones().size());
-            return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, addPoints, river.majorityOccupants(), river.tileIds())));
+            int riverFishCount = Area.riverFishCount(river);
+            int riverSize = river.zones().size();
+            int addPoints = riverFishCount + riverSize;
+            Set<PlayerColor> majorityOccupants = river.majorityOccupants();
+            String addText = textMaker.playersScoredRiver(majorityOccupants, addPoints, riverFishCount, riverSize);
+            return messageBoardWithNewMessage(new Message(addText, addPoints, majorityOccupants, river.tileIds()));
         }
         return this;
     }
@@ -115,25 +122,19 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      */
     public MessageBoard withScoredHuntingTrap(PlayerColor scorer, Area<Zone.Meadow> adjacentMeadow) {
         Set<Animal> animals = Area.animals(adjacentMeadow, Set.of());
-        Map<Animal.Kind, Integer> animalMap = new HashMap<>();
-        for (Animal.Kind kind : Animal.Kind.values()) {
-            animalMap.put(kind, 0);
-        }
+        Map<Animal.Kind, Integer> animalMap = getAnimalMap(animals);
         for (Animal animal : animals) {
-            animalMap.put(animal.kind(), animalMap.get(animal.kind()) + 1);
-        }
-        for (Animal animal : animals) {
-           if (animalMap.get(Animal.Kind.TIGER) == 0) {
+           if (animalMap.get(TIGER) == 0) {
                break;
-           } else if (animal.kind() == Animal.Kind.DEER) {
-               animalMap.put(Animal.Kind.DEER, animalMap.get(Animal.Kind.DEER) - 1);
-               animalMap.put(Animal.Kind.TIGER, animalMap.get(Animal.Kind.TIGER) - 1);
+           } else if (animal.kind() == DEER) {
+               animalMap.put(DEER, animalMap.get(DEER) - 1);
+               animalMap.put(TIGER, animalMap.get(TIGER) - 1);
            }
         }
-        int points = forMeadow(animalMap.get(Animal.Kind.MAMMOTH), animalMap.get(Animal.Kind.AUROCHS), animalMap.get(Animal.Kind.DEER));
+        int points = forMeadow(animalMap.get(MAMMOTH), animalMap.get(AUROCHS), animalMap.get(DEER));
         if (points > 0) {
             String addText = textMaker.playerScoredHuntingTrap(scorer, points, animalMap);
-            return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, points, Set.of(scorer), adjacentMeadow.tileIds())));
+            return messageBoardWithNewMessage(new Message(addText, points, Set.of(scorer), adjacentMeadow.tileIds()));
         }
         return this;
     }
@@ -150,7 +151,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     public MessageBoard withScoredLogboat(PlayerColor scorer, Area<Zone.Water> riverSystem) {
         int lakeCount = Area.lakeCount(riverSystem);
         String addText = textMaker.playerScoredLogboat(scorer, forLogboat(lakeCount), lakeCount);
-        return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, forLogboat(lakeCount), Set.of(scorer), riverSystem.tileIds())));
+        return messageBoardWithNewMessage(new Message(addText, forLogboat(lakeCount), Set.of(scorer), riverSystem.tileIds()));
     }
 
 
@@ -166,18 +167,12 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     public MessageBoard withScoredMeadow(Area<Zone.Meadow> meadow, Set<Animal> cancelledAnimals) {
         if (meadow.isOccupied()) {
             Set<Animal> animals = meadow.animals(meadow, cancelledAnimals);
-            Map<Animal.Kind, Integer> animalMap = new HashMap<>();
-            for (Animal.Kind kind : Animal.Kind.values()) {
-                animalMap.put(kind, 0);
-            }
-            for (Animal animal : animals) {
-                animalMap.put(animal.kind(), animalMap.get(animal.kind()) + 1);
-            }
-            int points = forMeadow(animalMap.get(Animal.Kind.MAMMOTH), animalMap.get(Animal.Kind.AUROCHS), animalMap.get(Animal.Kind.DEER));
+            Map<Animal.Kind, Integer> animalMap = getAnimalMap(animals);
+            int points = forMeadow(animalMap.get(MAMMOTH), animalMap.get(AUROCHS), animalMap.get(DEER));
             if (points > 0) {
                 Set<PlayerColor> scorers = meadow.majorityOccupants();
                 String addText = textMaker.playersScoredMeadow(scorers, points, animalMap);
-                return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, points, scorers, meadow.tileIds())));
+                return messageBoardWithNewMessage(new Message(addText, points, scorers, meadow.tileIds()));
             }
         }
         return this;
@@ -197,7 +192,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
             if (points > 0) {
                 Set<PlayerColor> scorers = riverSystem.majorityOccupants();
                 String addText = textMaker.playersScoredRiverSystem(scorers, points, points);
-                return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, points, scorers, riverSystem.tileIds())));
+                return messageBoardWithNewMessage(new Message(addText, points, scorers, riverSystem.tileIds()));
             }
         }
         return this;
@@ -215,18 +210,12 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     public MessageBoard withScoredPitTrap(Area<Zone.Meadow> adjacentMeadow, Set<Animal> cancelledAnimals) {
         if (adjacentMeadow.isOccupied()) {
             Set<Animal> animals = adjacentMeadow.animals(adjacentMeadow, cancelledAnimals);
-            Map<Animal.Kind, Integer> animalMap = new HashMap<>();
-            for (Animal.Kind kind : Animal.Kind.values()) {
-                animalMap.put(kind, 0);
-            }
-            for (Animal animal : animals) {
-                animalMap.put(animal.kind(), animalMap.get(animal.kind()) + 1);
-            }
-            int points = forMeadow(animalMap.get(Animal.Kind.MAMMOTH), animalMap.get(Animal.Kind.AUROCHS), animalMap.get(Animal.Kind.DEER));
+            Map<Animal.Kind, Integer> animalMap = getAnimalMap(animals);
+            int points = forMeadow(animalMap.get(MAMMOTH), animalMap.get(AUROCHS), animalMap.get(DEER));
             if (points > 0) {
                 Set<PlayerColor> scorers = adjacentMeadow.majorityOccupants();
                 String addText = textMaker.playersScoredPitTrap(scorers, points, animalMap);
-                return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, points, scorers, adjacentMeadow.tileIds())));
+                return messageBoardWithNewMessage(new Message(addText, points, scorers, adjacentMeadow.tileIds()));
             }
         }
         return this;
@@ -244,7 +233,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
             int points = forRaft(Area.lakeCount(riverSystem));
             Set<PlayerColor> scorers = riverSystem.majorityOccupants();
             String addText = textMaker.playersScoredRaft(scorers, points, Area.lakeCount(riverSystem));
-            return new MessageBoard(textMaker, messagesWithNewMessage(new Message(addText, points, scorers, riverSystem.tileIds())));
+            return messageBoardWithNewMessage(new Message(addText, points, scorers, riverSystem.tileIds()));
         }
         return this;
     }
@@ -258,7 +247,28 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @return the MessageBoard with the possible additional message
      */
     public MessageBoard withWinners(Set<PlayerColor> winners, int points) {
-        return new MessageBoard(textMaker, messagesWithNewMessage(new Message(textMaker.playersWon(winners, points), 0, winners, Set.of())));
+        return messageBoardWithNewMessage(new Message(textMaker.playersWon(winners, points), 0, winners, Set.of()));
+    }
+
+    /**
+     * This method returns a MessageBoard identical to the current one but with an additional message
+     *
+     * @param message the message we want to add to the MessageBoard
+     * @return the MessageBoard with the additional message
+     */
+    private MessageBoard messageBoardWithNewMessage(Message message) {
+        return new MessageBoard(textMaker, messagesWithNewMessage(message));
+    }
+
+    private Map<Animal.Kind, Integer> getAnimalMap(Set<Animal> animals) {
+        Map<Animal.Kind, Integer> animalMap = new HashMap<>();
+        for (Animal.Kind kind : Animal.Kind.values()) {
+            animalMap.put(kind, 0);
+        }
+        for (Animal animal : animals) {
+            animalMap.put(animal.kind(), animalMap.get(animal.kind()) + 1);
+        }
+        return animalMap;
     }
 
 
@@ -270,6 +280,9 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @param tileIds the ids of the concerned tiles or an empty set if the message does not concern any tile
      */
     public record Message(String text, int points, Set<PlayerColor> scorers, Set<Integer> tileIds) {
+        /**
+         * Compact constructor that guaranties the immutability
+         */
         public Message {
             Preconditions.checkArgument(points >= 0);
             if (text == null) throw new NullPointerException();
