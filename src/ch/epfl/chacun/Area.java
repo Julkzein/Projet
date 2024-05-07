@@ -97,6 +97,11 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
     public static int riverSystemFishCount(Area<Zone.Water> riverSystem) {
         int i = 0;
         Set<Zone.Lake> lakes = new HashSet<>();
+
+        for (Zone.Water waterBody : riverSystem.zones) {
+            i+= waterBody.fishCount();
+        }
+        /**
         for (Zone.Water waterBody : riverSystem.zones) {
             if (waterBody instanceof Zone.Lake && lakes.add((Zone.Lake) waterBody)) {
                 i += waterBody.fishCount();
@@ -108,6 +113,7 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
                 }
             }
         }
+        */
         return i;
     }
 
@@ -122,9 +128,6 @@ public record Area<Z extends Zone>(Set<Z> zones, List<PlayerColor> occupants, in
         for (Zone.Water waterBody : riverSystem.zones) {
             if (waterBody instanceof Zone.River river && river.hasLake()) {
                 lakes.add(river.lake());
-            }
-            if (waterBody instanceof Zone.Lake) {
-                lakes.add((Zone.Lake) waterBody);
             }
         }
         return lakes.size();

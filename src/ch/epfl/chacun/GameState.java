@@ -407,7 +407,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      * @param b : the board
      * @return the area of the given zone on the board
      */
-    private Area<Zone> areaOfZoneOnBoard(Zone zone, Board b) {
+    private static Area<Zone> areaOfZoneOnBoard(Zone zone, Board b) {
         return (Area<Zone>) switch (zone) {
             case Zone.Forest forest -> b.forestArea(forest);
             case Zone.Meadow meadow -> b.meadowArea(meadow);

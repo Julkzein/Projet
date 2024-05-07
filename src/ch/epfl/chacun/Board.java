@@ -48,7 +48,12 @@ public final class Board {
      * @return the index of the tile at the given position
      */
     private int index(Pos pos) {
-        return (pos.x() + REACH) + (REACH + pos.y()) * 25;
+        return (pos.x() + REACH) + (REACH + pos.y()) * (REACH * 2 + 1);
+    }
+
+    private boolean invalidPos(Pos pos) {
+        int i = index(pos);
+        return i < 0 || i >= placedTiles.length || Math.abs(pos.x()) > REACH || Math.abs(pos.y()) > REACH;
     }
 
     /**
@@ -59,7 +64,7 @@ public final class Board {
      */
     public PlacedTile tileAt(Pos pos) {
         int i = index(pos);
-        return i < 0 || i >= placedTiles.length ? null : placedTiles[i];
+        return invalidPos(pos) ? null : placedTiles[i];
     }
 
 /**
@@ -93,9 +98,9 @@ public final class Board {
      */
     public Set<Occupant> occupants() {
         Set<Occupant> occupants = new HashSet<>();
-        for (PlacedTile placedTile : placedTiles) {
-            if (placedTile != null && placedTile.occupant() != null) {
-                occupants.add(placedTile.occupant());
+        for (int i : index) {
+            if (placedTiles[i] != null && placedTiles[i].occupant() != null) {
+                occupants.add(placedTiles[i].occupant());
             }
         }
         return occupants;
@@ -190,7 +195,8 @@ public final class Board {
      * @return true if the two given positions are adjacent
      */
     private boolean isAdjacent(Pos pos1, Pos pos2) {
-        return (Math.abs(pos1.x() - pos2.x()) == 1 && Math.abs(pos1.y() - pos2.y()) == 1) || Math.abs(pos1.x() - pos2.x()) + Math.abs(pos1.y() - pos2.y()) == 1;
+        return (Math.abs(pos1.x() - pos2.x()) == 1 && Math.abs(pos1.y() - pos2.y()) == 1) || Math.abs(pos1.x() -
+                pos2.x()) + Math.abs(pos1.y() - pos2.y()) == 1;
     }
 
     /**
@@ -239,7 +245,8 @@ public final class Board {
     public int occupantCount(PlayerColor player, Occupant.Kind occupantKind) {
         int count = 0;
         for (PlacedTile tile : placedTiles) {
-            if (tile != null && tile.occupant() != null && tile.occupant().kind() == occupantKind && tile.placer() == player) {
+            if (tile != null && tile.occupant() != null && tile.occupant().kind() == occupantKind
+                    && tile.placer() == player) {
                 count++;
             }
         }
@@ -294,6 +301,8 @@ public final class Board {
     public Set<Area<Zone.Forest>> forestsClosedByLastTile() {
         Set<Area<Zone.Forest>> closedForests = new HashSet<>();
         PlacedTile lastTile = lastPlacedTile();
+
+
         for (Area<Zone.Forest> forestArea : partition.forests().areas()) {
             if (forestArea.openConnections() == 0) {
                 for (Zone.Forest forest : forestArea.zones()) {
@@ -303,6 +312,7 @@ public final class Board {
                 }
             }
         }
+
         return closedForests;
     }
 
@@ -517,8 +527,9 @@ public final class Board {
      */
     @Override
     public boolean equals(Object that) {
-        if ((that == null) || !(that instanceof Board board)) return false;
-        return Arrays.equals(board.index, index) && Arrays.equals(board.placedTiles, placedTiles) &&  board.partition.equals(partition) && board.cancelledAnimals.equals(cancelledAnimals);
+        if (!(that instanceof Board board)) return false;
+        return Arrays.equals(board.index, index) && Arrays.equals(board.placedTiles, placedTiles)
+                && board.partition.equals(partition) && board.cancelledAnimals.equals(cancelledAnimals);
     }
 
     /**
