@@ -132,7 +132,7 @@ public class BoardUI {
                     colorCell = Color.BLACK;
                 }
             }
-            else if (placedTile == null && gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
+            if (placedTile == null && gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
                 if (!hoverCell) {
                     colorCell = fillColor(Objects.requireNonNull(gameState.getValue().currentPlayer()));
                 } else {
