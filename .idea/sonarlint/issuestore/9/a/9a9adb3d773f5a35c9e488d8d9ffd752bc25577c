@@ -1,12 +1,5 @@
 
 T
-java:S1854-">Remove this useless assignment to local variable "gameStateO".(à‚¯ò
+java:S1854)">Remove this useless assignment to local variable "gameStateO".(à‚¯ò
 E
-java:S1481-"/Remove this unused "gameStateO" local variable.(à‚¯ò
-O
-java:S1128"9Remove this unused import 'ch.epfl.chacun.gui.PlayersUI'.(©ôƒï
-V
-java:S1128
-";Remove this unused import 'javafx.scene.layout.BorderPane'.(Îî¥üÿÿÿÿ
-]
-java:S1128"BRemove this unused import 'javafx.application.Application.launch'.(Ç¢¦çúÿÿÿÿ
+java:S1481)"/Remove this unused "gameStateO" local variable.(à‚¯ò
