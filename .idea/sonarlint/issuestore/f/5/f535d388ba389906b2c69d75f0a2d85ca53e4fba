@@ -1,11 +1,11 @@
 
-‡
-java:S2184"CCast one of the operands of this subtraction operation to a "long".(®™Â²8£Í”ö1J$08c80a3c-2d56-4d46-961d-4440f9518626
-™
-java:S3655¢"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(–Äı’üÿÿÿÿ8“§Í”ö1J$61010bbf-cb30-41c2-bfac-5d6628fc0550
-›
-java:S3776¼"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(¾ÌäŠúÿÿÿÿ8¤§Í”ö1J$b46ec36e-3e11-4cad-9a94-9bd21fd82995
-•
-java:S3776Ş"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(îË=8§§Í”ö1J$16bbf0e3-7bec-4119-aa34-9aa4e9622782
-–
-java:S3776è"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ŞûÕ¦8±§Í”ö1J$866c17d9-7f53-4348-a6e0-7f2a7884e45c
+a
+java:S2184ÿ"CCast one of the operands of this subtraction operation to a "long".(®™Â²8¬¥­–ö1
+s
+java:S3655”"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(–Äı’üÿÿÿÿ8¦¬­–ö1
+o
+java:S3776Ï"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(îË=8Ë¬­–ö1
+p
+java:S3776Ú"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ŞûÕ¦8ê¬­–ö1
+\
+java:S1144Î"9Remove this unused private "setHasOccupantOfKind" method.(ÕŸ‚Æùÿÿÿÿ8õ¬­–ö1
