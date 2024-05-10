@@ -120,8 +120,8 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @param adjacentMeadow all meadows in the range of the Hunting Trap
      * @return the MessageBoard with the possible new message
      */
-    public MessageBoard withScoredHuntingTrap(PlayerColor scorer, Area<Zone.Meadow> adjacentMeadow) {
-        Set<Animal> animals = Area.animals(adjacentMeadow, Set.of());
+    public MessageBoard withScoredHuntingTrap(PlayerColor scorer, Area<Zone.Meadow> adjacentMeadow, Set<Animal> cancelledAnimals) {
+        Set<Animal> animals = Area.animals(adjacentMeadow, cancelledAnimals);
         Map<Animal.Kind, Integer> animalMap = getAnimalMap(animals);
         for (Animal animal : animals) {
             if (animalMap.get(TIGER) == 0) {

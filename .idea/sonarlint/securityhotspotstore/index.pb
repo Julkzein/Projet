@@ -105,3 +105,5 @@ U
 %src/ch/epfl/chacun/gui/ActionsUI.java,5/7/5700521c3b0c2031663ea4d3bfb146a2cf70af1f
 N
 src/ch/epfl/chacun/Base32.java,5/4/54af8c20aafe6c65eff8274a44211058155eaed9
+P
+ src/ch/epfl/chacun/gui/Main.java,7/9/795cf7388f07071494cbcc204f55d2ad6b5a9fad

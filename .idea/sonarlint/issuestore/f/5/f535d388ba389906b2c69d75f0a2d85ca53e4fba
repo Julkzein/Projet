@@ -1,11 +1,11 @@
 
 ‡
-java:S2184"CCast one of the operands of this subtraction operation to a "long".(®™Â²8ÓíôÖñ1J$437122a4-9ec8-4249-b073-3be5c83bb436
+java:S2184"CCast one of the operands of this subtraction operation to a "long".(®™Â²8£Í”ö1J$08c80a3c-2d56-4d46-961d-4440f9518626
 ™
-java:S3655¢"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(–Äı’üÿÿÿÿ8ƒ’Ã®î1J$a25a723a-7716-4d43-9531-90df6e1f5252
+java:S3655¢"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(–Äı’üÿÿÿÿ8“§Í”ö1J$61010bbf-cb30-41c2-bfac-5d6628fc0550
 ›
-java:S3776¼"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(¾ÌäŠúÿÿÿÿ8ÅÚ²áì1J$f9e5c6a5-a3b9-4eab-843f-ddef18aaedf8
+java:S3776¼"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(¾ÌäŠúÿÿÿÿ8¤§Í”ö1J$b46ec36e-3e11-4cad-9a94-9bd21fd82995
 •
-java:S3776Ş"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(îË=8ÈÚ²áì1J$5ffb513c-83f6-4ba2-8130-33ffadf3386d
+java:S3776Ş"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(îË=8§§Í”ö1J$16bbf0e3-7bec-4119-aa34-9aa4e9622782
 –
-java:S3776è"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ŞûÕ¦8¥öôÖñ1J$b9b0c53d-c0f2-437a-8663-a0d55a9323b5
+java:S3776è"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ŞûÕ¦8±§Í”ö1J$866c17d9-7f53-4348-a6e0-7f2a7884e45c
