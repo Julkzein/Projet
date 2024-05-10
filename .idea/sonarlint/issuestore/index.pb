@@ -99,3 +99,9 @@ Z
 *src/ch/epfl/chacun/MessageBoardUITest.java,9/a/9a9adb3d773f5a35c9e488d8d9ffd752bc25577c
 U
 %src/ch/epfl/chacun/ActionEncoder.java,2/4/242e2bf52f018e69902a0fc3338a8c61e81f80bd
+T
+$src/ch/epfl/chacun/ActionUITest.java,8/4/849a171f4685ec1c7851c3357e4bb4d47d3ee443
+U
+%src/ch/epfl/chacun/gui/ActionsUI.java,5/7/5700521c3b0c2031663ea4d3bfb146a2cf70af1f
+N
+src/ch/epfl/chacun/Base32.java,5/4/54af8c20aafe6c65eff8274a44211058155eaed9

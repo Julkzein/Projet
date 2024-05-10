@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public final class Tiles {
+    private Tiles() {}
+
     public static final List<Tile> TILES = createTiles();
 
     private static List<Tile> createTiles() {
@@ -327,8 +329,8 @@ public final class Tiles {
             var z1 = new Zone.River(21_1, 0, null);
             var a2_0 = new Animal(21_2_0, Animal.Kind.AUROCHS);
             var z2 = new Zone.Meadow(21_2, List.of(a2_0), null);
-            var sN = new TileSide.River(z0, z1, z2);
-            var sE = new TileSide.Meadow(z2);
+            var sN = new TileSide.Meadow(z0);
+            var sE = new TileSide.River(z0, z1, z2);
             var sS = new TileSide.River(z2, z1, z0);
             var sW = new TileSide.Meadow(z0);
             assert tiles.size() == 21;
@@ -363,12 +365,12 @@ public final class Tiles {
         {   // Tile 24
             var l1 = new Zone.Lake(24_8, 1, null);
             var z0 = new Zone.Meadow(24_0, List.of(), null);
-            var z1 = new Zone.River(24_1, 0, null);
+            var z1 = new Zone.River(24_1, 0, l1);
             var a2_0 = new Animal(24_2_0, Animal.Kind.AUROCHS);
             var z2 = new Zone.Meadow(24_2, List.of(a2_0), null);
             var z3 = new Zone.Forest(24_3, Zone.Forest.Kind.PLAIN);
             var z4 = new Zone.Meadow(24_4, List.of(), null);
-            var z5 = new Zone.River(24_5, 0, null);
+            var z5 = new Zone.River(24_5, 0, l1);
             var sN = new TileSide.River(z0, z1, z2);
             var sE = new TileSide.Meadow(z2);
             var sS = new TileSide.Forest(z3);
@@ -428,7 +430,7 @@ public final class Tiles {
             tiles.add(new Tile(28, Tile.Kind.NORMAL, sN, sE, sS, sW));
         }
         {   // Tile 29
-            var z0 = new Zone.Forest(29_0, Zone.Forest.Kind.PLAIN);
+            var z0 = new Zone.Forest(29_0, Zone.Forest.Kind.WITH_MENHIR);
             var z1 = new Zone.Meadow(29_1, List.of(), null);
             var z2 = new Zone.River(29_2, 0, null);
             var z3 = new Zone.Meadow(29_3, List.of(), null);

@@ -19,7 +19,7 @@ public class ActionsUI {
     //private constructor to prevent instantiation
     private ActionsUI() {}
 
-    public Node create(ObservableValue<List<String>> actionList,
+    public static Node create(ObservableValue<List<String>> actionList,
                        Consumer<String> action) {
 
         HBox actions = new HBox();
@@ -29,7 +29,7 @@ public class ActionsUI {
         Text fourLastActions = new Text(fourLastActionsToString(actionList.getValue()));
         actions.getChildren().add(fourLastActions);
 
-        // Create a StringBinding and binding it to the Text
+        // Create a StringBinding and binds it to the Text
         StringBinding textBinding = Bindings.createStringBinding(
             () -> fourLastActionsToString(actionList.getValue()), actionList
         );
@@ -41,18 +41,25 @@ public class ActionsUI {
 
         // Checks if the input character is valid
         textField.setTextFormatter(new TextFormatter<>(change -> {
+            change.setText(change.getText().toUpperCase());
             change.setText(
                 (Base32.isValid(change.getText()) ? change.getText() : "")
             );
             return change;
         }));
 
+        // When the user presses enter, the action is sent to the consumer
+        textField.setOnAction(e -> {
+            action.accept(textField.getText());
+            textField.clear();
+        });
+
         return actions;
     }
-    private String fourLastActionsToString(List<String> actionList) {
+    private static String fourLastActionsToString(List<String> actionList) {
         StringJoiner joiner = new StringJoiner(", ");
         for (int i = actionList.size() - 4; i < actionList.size(); i++) {
-            joiner.add(i + ":" + actionList.get(i));
+            joiner.add(STR."\{i + 1}:\{actionList.get(i)}");
         }
         return joiner.toString();
     }

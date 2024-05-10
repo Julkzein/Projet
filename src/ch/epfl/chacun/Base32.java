@@ -8,7 +8,7 @@ public class Base32 {
 
     public static boolean isValid(String s) {
         for (int i = 0; i < s.length(); i++) {
-            if (ALPHABET.contains(String.valueOf(s.charAt(i))))
+            if (!ALPHABET.contains(String.valueOf(s.charAt(i))))
                 return false;
         }
         return true;
