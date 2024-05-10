@@ -302,7 +302,6 @@ public final class Board {
         Set<Area<Zone.Forest>> closedForests = new HashSet<>();
         PlacedTile lastTile = lastPlacedTile();
 
-
         for (Area<Zone.Forest> forestArea : partition.forests().areas()) {
             if (forestArea.openConnections() == 0) {
                 for (Zone.Forest forest : forestArea.zones()) {

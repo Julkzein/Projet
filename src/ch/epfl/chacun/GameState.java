@@ -90,9 +90,16 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         //Checks if the corresponding area is occupied and if the player has enough pawns or huts to place
         if (lastPlacedTile.occupant() == null) {
             for (Occupant occupant : lastPlacedTile.potentialOccupants()) {
-                if (!areaOfZoneOnBoard(lastPlacedTile.zoneWithId(occupant.zoneId()), board).isOccupied()
+                Zone zone = lastPlacedTile.zoneWithId(occupant.zoneId());
+                if (!areaOfZoneOnBoard(zone, board).isOccupied()
                         && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
-                    potentialOccupantsSet.add(occupant);
+                    if (occupant.kind().equals(Occupant.Kind.HUT) && zone instanceof Zone.River) {
+                        if (!board.riverSystemArea((Zone.Water) zone).isOccupied()) {
+                            potentialOccupantsSet.add(occupant);
+                        }
+                    } else {
+                        potentialOccupantsSet.add(occupant);
+                    }
                 }
             }
         }
@@ -231,7 +238,8 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         if (!canPlayAgain) newPlayers = nextPlayerList();
 
         //Changes the action to end game if the normal tile deck is empty and if the player hasn't a menhir tile to place or if the menhir tile deck is empty
-        if (tileDecks.normalTiles().isEmpty() && (!canPlayAgain || tileDecks.menhirTiles().isEmpty())) {
+        if ((tileDecks.normalTiles().isEmpty() && !canPlayAgain) ||
+                (tileDecks.menhirTiles().isEmpty() && canPlayAgain)) {
             return new GameState(newPlayers, newTileDecks, null, newBoard, Action.END_GAME, newMessageBoard)
                     .withFinalPointsCounted();
         } else {
