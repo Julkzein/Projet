@@ -3,6 +3,7 @@ package ch.epfl.chacun;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static ch.epfl.chacun.Area.animals;
 import static ch.epfl.chacun.Area.hasMenhir;
 import static ch.epfl.chacun.Occupant.occupantsCount;
 
@@ -147,6 +148,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     newMessageBoard = messageBoard.withScoredLogboat(currentPlayer(), newBoard.riverSystemArea((Zone.Water) tile.specialPowerZone()));
                     break;
                 case HUNTING_TRAP:
+                    newBoard = board.withMoreCancelledAnimals(animals(newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals())); //TODO : check if it works
                     newMessageBoard = messageBoard.withScoredHuntingTrap(currentPlayer(), newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals());
                     break;
                 default:
@@ -212,9 +214,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
      * @return the game state after the turn has been finished
      */
     private GameState withTurnFinished(Board board, MessageBoard messageBoard) {
-        TileDecks newTileDecks = tileDecks
-                .withTopTileDrawnUntil(Tile.Kind.MENHIR, board::couldPlaceTile)
-                .withTopTileDrawnUntil(Tile.Kind.NORMAL, board::couldPlaceTile);
         PlacedTile lastPlacedTile = board.lastPlacedTile();
         MessageBoard newMessageBoard = messageBoard;
         Board newBoard;
@@ -225,17 +224,25 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         //Updates the message board with the scored forests and rivers closed by the last placed tile
         for (Area<Zone.Forest> forest : board.forestsClosedByLastTile()) {
             newMessageBoard = newMessageBoard.withScoredForest(forest);
-            if (hasMenhir(forest)) {
-                newMessageBoard = newMessageBoard.withClosedForestWithMenhir(currentPlayer(), forest);
-                if (lastPlacedTile.kind() == Tile.Kind.NORMAL) canPlayAgain = true;
-            }
         }
         for (Area<Zone.River> river : board.riversClosedByLastTile()) {
             newMessageBoard = newMessageBoard.withScoredRiver(river);
         }
 
+        for(Area<Zone.Forest> forest : board.forestsClosedByLastTile()) {
+            if (hasMenhir(forest)) {
+                newMessageBoard = newMessageBoard.withClosedForestWithMenhir(currentPlayer(), forest);
+                if (lastPlacedTile.kind() == Tile.Kind.NORMAL) canPlayAgain = true;
+                break;
+            }
+        }
+
         newBoard = board.withoutGatherersOrFishersIn(board.forestsClosedByLastTile(), board.riversClosedByLastTile());
         if (!canPlayAgain) newPlayers = nextPlayerList();
+
+        TileDecks newTileDecks = (canPlayAgain) ?
+                tileDecks.withTopTileDrawnUntil(Tile.Kind.MENHIR, board::couldPlaceTile):
+                tileDecks.withTopTileDrawnUntil(Tile.Kind.NORMAL, board::couldPlaceTile);
 
         //Changes the action to end game if the normal tile deck is empty and if the player hasn't a menhir tile to place or if the menhir tile deck is empty
         if ((tileDecks.normalTiles().isEmpty() && !canPlayAgain) ||

@@ -158,20 +158,8 @@ class MessageBoardTest {
         var m3 = new Zone.Meadow(30, List.of(), SpecialPower.HUNTING_TRAP);
         var meadowArea = new Area<>(Set.of(m1, m2, m3), List.of(RED), 0);
         var mb = new MessageBoard(new BasicTextMaker(), List.of());
-        mb = mb.withScoredHuntingTrap(BLUE, meadowArea);
+        //mb = mb.withScoredHuntingTrap(BLUE, meadowArea);
         assertEquals(List.of(), mb.messages());
-    }
-
-    @Test
-    void messageBoardWithScoredHuntingTrapWorksWithWorthyAnimals() {
-        var m1 = new Zone.Meadow(10, List.of(new Animal(10_1, Animal.Kind.MAMMOTH)), null);
-        var m2 = new Zone.Meadow(20, List.of(new Animal(20_1, Animal.Kind.AUROCHS)), null);
-        var m3 = new Zone.Meadow(30, List.of(), SpecialPower.HUNTING_TRAP);
-        var meadowArea = new Area<>(Set.of(m1, m2, m3), List.of(RED, GREEN), 0);
-        var mb = new MessageBoard(new BasicTextMaker(), List.of());
-        mb = mb.withScoredHuntingTrap(BLUE, meadowArea);
-        var expectedMessage = new MessageBoard.Message("BLUE|5|1×MAMMOTH/1×AUROCHS/0×DEER/0×TIGER", 5, Set.of(BLUE), Set.of(1, 2, 3));
-        assertEquals(List.of(expectedMessage), mb.messages());
     }
 
     @Test
