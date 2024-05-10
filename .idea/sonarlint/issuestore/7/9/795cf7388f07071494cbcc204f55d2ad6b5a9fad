@@ -1,3 +1,13 @@
 
-Ä
-java:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ïã‚¤8žš¤”ö1J$ac2ea466-65c8-4306-8598-4c529b12051e
+Q
+java:S3740"/Provide the parametrized type for this generic.(¬ˆÞÞúÿÿÿÿ8Ã·ç•ö1
+a
+java:S1854"?Remove this useless assignment to local variable "playerNames".(‡ÃØ‡ýÿÿÿÿ8Ð·ç•ö1
+_
+java:S1854'"=Remove this useless assignment to local variable "tileDecks".(¡Ø‘…øÿÿÿÿ8Ð·ç•ö1
+R
+java:S1481"0Remove this unused "playerNames" local variable.(‡ÃØ‡ýÿÿÿÿ8Ñ·ç•ö1
+P
+java:S1481'".Remove this unused "tileDecks" local variable.(¡Ø‘…øÿÿÿÿ8Ô·ç•ö1
+e
+java:S1128"CRemove this unused import 'java.util.stream.Collectors.groupingBy'.(Ïú¯üùÿÿÿÿ8Ô·ç•ö1
