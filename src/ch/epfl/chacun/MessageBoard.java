@@ -295,6 +295,10 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
     public record Message(String text, int points, Set<PlayerColor> scorers, Set<Integer> tileIds) {
         /**
          * Compact constructor that guaranties the immutability
+         * @param points  the points associated to the message
+         * @param scorers the set of players that have won the given points
+         * @param tileIds the ids of the concerned tiles or an empty set if the message does not concern any tile
+         * @throws NullPointerException if the text is null
          */
         public Message {
             Preconditions.checkArgument(points >= 0);

@@ -74,7 +74,10 @@ public sealed interface Zone {
     }
 
     /**
+     **
      * Represents a forest in the game.
+     * @param id the id of the meadow
+     * @param kind the kind of forest
      */
     record Forest(int id, Kind kind) implements Zone {
         /**
