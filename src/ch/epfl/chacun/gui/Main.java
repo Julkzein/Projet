@@ -1,4 +1,4 @@
-/**package ch.epfl.chacun.gui;
+package ch.epfl.chacun.gui;
 
 import ch.epfl.chacun.*;
 import javafx.application.Application;
@@ -62,21 +62,37 @@ public class Main extends Application {
 
 
         BorderPane root = new BorderPane();
-        //root.getChildren().add(BoardUI.create(gameState, textMaker)); //TODO
+        //tout check
+        ObservableValue<Rotation> currentRotation = new SimpleObjectProperty<>(gameState.map(GameState::tileToPlace).map(PlacedTile::rotation));
+        ObservableValue<Set<Occupant>> visibleOccupants = new SimpleObjectProperty<>(Set.of());
+        ObservableValue<Set<Integer>> evidentTiles = new SimpleObjectProperty<>(Set.of());
+        //consuler lol
+
+        root.setCenter(new BoardUI(gameState, textMaker));//TODO
+
+
+
         BorderPane rightNode = new BorderPane();
         rightNode.setTop(PlayersUI.create(gameState, textMaker));
         rightNode.setCenter(MessageBoardUI.create(messages, new SimpleObjectProperty<>(Set.of())));
         VBox vbox = new VBox();
+
+        //actions mon gars
         //vbox.getChildren().add(new ActionsUI(gameState, textMaker)); //TODO
 
         ObservableValue<Tile> currentTile = gameState.map(GameState::tileToPlace);
-        ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks::deckSize(Tile.Kind.NORMAL));
-        ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks::deckSize(Tile.Kind.MENHIR));
+
+        ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
+        ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
 
         vbox.getChildren().add(new DecksUI(gameState, textMaker));
         rightNode.setBottom();
 
 
+
+        vbox.getChildren().add(new DecksUI(currentTile, normalCount, menhirCount,));
+        rightNode.setBottom(vbox);
+        root.setRight(rightNode);
 
 
         Scene scene = new Scene(root);
@@ -89,4 +105,4 @@ public class Main extends Application {
     }
 
 }
- */
+
