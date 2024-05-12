@@ -32,7 +32,7 @@ public final class ActionUITest extends Application {
         var textMaker = new TextMakerFr(playerNames);
         var gameState = GameState.initial(playerColors,
                 tileDecks,
-                textMaker);
+                textMaker).withStartingTilePlaced();
 
 
         var tileToPlaceRotationP =
@@ -43,9 +43,11 @@ public final class ActionUITest extends Application {
                 new SimpleObjectProperty<>(Set.<Integer>of());
 
         var actionListObs = new SimpleObjectProperty<>(List.of("AG","C","AM","EP", "B2", "B6"));
-        var actionUINode = ActionsUI.create(actionListObs, r -> System.out.println("enterHasBeenPressed: " + ActionEncoder.decodeAndApply(gameState,r)));
+        var actionUINode = ActionsUI.create(actionListObs, r -> {
+            System.out.println(gameState.nextAction());
+            System.out.println("enterHasBeenPressed: " + ActionEncoder.decodeAndApply(gameState,r));
+        });
 
-        //gameStateO.set(gameStateO.get().withStartingTilePlaced());
 
         var rootNode = new BorderPane(actionUINode);
         primaryStage.setScene(new Scene(rootNode));

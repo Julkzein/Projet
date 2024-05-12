@@ -36,7 +36,6 @@ import static javafx.scene.effect.BlendMode.SRC_OVER;
  */
 public class BoardUI {
 
-
     //cache for images
     private final static Map<Integer, Image> cache = new HashMap<>();
 

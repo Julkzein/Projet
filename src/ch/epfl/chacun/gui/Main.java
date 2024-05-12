@@ -1,3 +1,4 @@
+
 package ch.epfl.chacun.gui;
 
 import ch.epfl.chacun.*;
@@ -5,6 +6,7 @@ import javafx.application.Application;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -14,10 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGeneratorFactory;
 import java.util.stream.Collectors;
 
+import static ch.epfl.chacun.Board.REACH;
 import static java.lang.Long.parseUnsignedLong;
 import static java.util.Collections.shuffle;
 import static java.util.stream.Collectors.groupingBy;
@@ -40,7 +44,7 @@ public class Main extends Application {
             random = rngFactory.create();
         }
         List<Tile> tiles = List.copyOf(Tiles.TILES);
-        shuffle(tiles, random);
+        shuffle(tiles, random); //TODO : check dns le cs ou ps de seed pssée en rg
         Map<Tile.Kind, List<Tile>> tilesByKind = Tiles.TILES.stream()
                 .collect(Collectors.groupingBy(Tile::kind));
         TileDecks tileDecks =
@@ -57,20 +61,41 @@ public class Main extends Application {
         TextMakerFr textMaker = new TextMakerFr(playerNameMap);
 
 
-        ObservableValue<GameState> gameState = new SimpleObjectProperty<>(GameState.initial(playerNameMap.keySet().stream().toList(), tileDecks, textMaker));
+        ObservableValue<GameState> gameState = new SimpleObjectProperty<>(GameState.initial(playerNameMap.keySet().stream().toList(), tileDecks, textMaker).withStartingTilePlaced());
         ObservableValue<List<MessageBoard.Message>> messages = gameState.map(GameState::messageBoard).map(MessageBoard::messages);
-
 
         BorderPane root = new BorderPane();
         //tout check
-        ObservableValue<Rotation> currentRotation = new SimpleObjectProperty<>(gameState.map(GameState::tileToPlace).map(PlacedTile::rotation));
+        ObservableValue<Rotation> currentRotation = new SimpleObjectProperty<>(/**gameState.map(GameState::tileToPlace).map((Tile t) -> PlacedTile.rotation(t))*/);
         ObservableValue<Set<Occupant>> visibleOccupants = new SimpleObjectProperty<>(Set.of());
         ObservableValue<Set<Integer>> evidentTiles = new SimpleObjectProperty<>(Set.of());
-        //consuler lol
 
-        root.setCenter(new BoardUI(gameState, textMaker));//TODO
+        Consumer<Rotation> rotationSetter = r -> { //TODO : check
+            currentRotation.getValue().quarterTurnsCW();
+        };
+        Consumer<Pos> desiredPlacement = pos -> {
+            gameState.getValue().withPlacedTile(new PlacedTile(
+                    gameState.getValue().tileToPlace(),
+                    gameState.getValue().currentPlayer(),
+                    currentRotation.getValue(),
+                    pos));
+        };
+        Consumer<Occupant> desiredRetake = occupant -> {
+            gameState.getValue().withOccupantRemoved(occupant);
+        };
 
+        Node boardUI = BoardUI.create(
+                REACH,
+                gameState,
+                currentRotation,
+                visibleOccupants, //TODO : pk visible occupants ?
+                evidentTiles,
+                rotationSetter,
+                desiredPlacement,
+                desiredRetake
+            );
 
+        root.setCenter(boardUI);
 
         BorderPane rightNode = new BorderPane();
         rightNode.setTop(PlayersUI.create(gameState, textMaker));
@@ -78,31 +103,36 @@ public class Main extends Application {
         VBox vbox = new VBox();
 
         //actions mon gars
-        //vbox.getChildren().add(new ActionsUI(gameState, textMaker)); //TODO
+
+        ObservableValue<List<String>> actions = new SimpleObjectProperty<>(List.of());
+        Consumer<String> actionConsumer = a -> System.out.println("Action: " + a);
+        vbox.getChildren().add(ActionsUI.create(actions, actionConsumer)); //TODO
 
         ObservableValue<Tile> currentTile = gameState.map(GameState::tileToPlace);
-
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
         ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
+        ObservableValue<String> text = new SimpleObjectProperty<>("");
+        Consumer<Occupant> occupantConsumer = o -> {}; //TODO : jsp quoi mettre
 
-        vbox.getChildren().add(new DecksUI(gameState, textMaker));
-        rightNode.setBottom();
+        vbox.getChildren().add(DecksUI.create(
+                currentTile,
+                normalCount,
+                menhirCount,
+                text,
+                occupantConsumer
+                ));
 
-
-
-        vbox.getChildren().add(new DecksUI(currentTile, normalCount, menhirCount,));
         rightNode.setBottom(vbox);
         root.setRight(rightNode);
-
 
         Scene scene = new Scene(root);
         primaryStage.setHeight(1440);
         primaryStage.setWidth(1080);
+        primaryStage.setTitle("ChaCuN");
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-
 }
 

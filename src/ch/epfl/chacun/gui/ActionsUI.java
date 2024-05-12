@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
 
@@ -48,7 +49,7 @@ public class ActionsUI {
             return change;
         }));
 
-        // When the user presses enter, the action is sent to the consumer
+        // When the user presses enter, the consumer is called with the text field's content
         textField.setOnAction(e -> {
             action.accept(textField.getText());
             textField.clear();
@@ -58,7 +59,7 @@ public class ActionsUI {
     }
     private static String fourLastActionsToString(List<String> actionList) {
         StringJoiner joiner = new StringJoiner(", ");
-        for (int i = actionList.size() - 4; i < actionList.size(); i++) {
+        for (int i = Math.max(actionList.size() - 4, 0); i < actionList.size(); i++) {
             joiner.add(STR."\{i + 1}:\{actionList.get(i)}");
         }
         return joiner.toString();

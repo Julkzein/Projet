@@ -118,6 +118,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      *
      * @param scorer         the player that placed the trap
      * @param adjacentMeadow all meadows in the range of the Hunting Trap
+     * @param cancelledAnimals the animals that must not be counted in the point calculations
      * @return the MessageBoard with the possible new message
      */
     public MessageBoard withScoredHuntingTrap(PlayerColor scorer, Area<Zone.Meadow> adjacentMeadow, Set<Animal> cancelledAnimals) {
