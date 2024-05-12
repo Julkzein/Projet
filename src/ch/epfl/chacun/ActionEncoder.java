@@ -10,7 +10,7 @@ public class ActionEncoder {
     //private constructor to prevent instantiation
     private ActionEncoder() {}
 
-    public StateAction withPlacedTile(GameState gameState, PlacedTile placedTile) {
+    public static StateAction withPlacedTile(GameState gameState, PlacedTile placedTile) {
         //TODO : check si il faut mettre des precondition
         List<Pos> list = gameState.board().insertionPositions()
                 .stream()
@@ -20,17 +20,17 @@ public class ActionEncoder {
         return new StateAction(gameState.withPlacedTile(placedTile), encodeBits10(index));
     }
 
-    public StateAction withNewOccupant(GameState gameState, Occupant occupant) {
+    public static StateAction withNewOccupant(GameState gameState, Occupant occupant) {
         int index = occupant.kind().ordinal() * 16 + occupant.zoneId(); //TODO : check si l'id c'est le bon où pas
         return new StateAction(gameState.withNewOccupant(occupant), encodeBits5(index));
     }
 
-    public StateAction withOccupantRemoved(GameState gameState, Occupant occupant) {
+    public static StateAction withOccupantRemoved(GameState gameState, Occupant occupant) {
         int index = occupant.zoneId(); //TODO : vérifier si c'est le bon id ou pas
         return new StateAction(gameState.withOccupantRemoved(occupant), encodeBits5(index));
     }
 
-    public StateAction decodeAndApply(GameState gameState, String str) {
+    public static StateAction decodeAndApply(GameState gameState, String str) {
         try {
             return decodeOrThrow(gameState, str);
         } catch (Exception e) { //TODO : check si tous les cas d'erreurs sont bien gérés
@@ -38,7 +38,7 @@ public class ActionEncoder {
         }
     }
 
-    private StateAction decodeOrThrow(GameState gameState, String str) {
+    private static StateAction decodeOrThrow(GameState gameState, String str) {
         if (!isValid(str) || (str.length() != 1 && str.length() != 2) || gameState.nextAction() == null) {
             throw new IllegalArgumentException();
         }
@@ -77,3 +77,4 @@ public class ActionEncoder {
 
     public record StateAction(GameState gameState, String action) {}
 }
+//TODO : static

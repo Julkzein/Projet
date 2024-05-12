@@ -1,4 +1,4 @@
-package ch.epfl.chacun.gui;
+/**package ch.epfl.chacun.gui;
 
 import ch.epfl.chacun.*;
 import javafx.application.Application;
@@ -47,7 +47,7 @@ public class Main extends Application {
                 new TileDecks(tilesByKind.get(Tile.Kind.START),
                         tilesByKind.get(Tile.Kind.NORMAL),
                         tilesByKind.get(Tile.Kind.MENHIR));
-        
+
         //Graphe ta mère
         Map<PlayerColor, String> playerNameMap = new HashMap<>();
         for (String playerName : playerNames) {
@@ -73,7 +73,6 @@ public class Main extends Application {
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks::deckSize(Tile.Kind.NORMAL));
         ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks::deckSize(Tile.Kind.MENHIR));
 
-
         vbox.getChildren().add(new DecksUI(gameState, textMaker));
         rightNode.setBottom();
 
@@ -90,3 +89,4 @@ public class Main extends Application {
     }
 
 }
+ */
