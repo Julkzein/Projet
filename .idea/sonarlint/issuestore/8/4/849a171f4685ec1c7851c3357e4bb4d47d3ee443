@@ -5,15 +5,11 @@ java:S1854*"ERemove this useless assignment to local variable "highlightedTiles
 java:S1854("ERemove this useless assignment to local variable "visibleOccupantsP".(°²ÝâýÿÿÿÿJ$2352ac0c-3aec-4947-b1c0-5b13f7892978
 ƒ
 java:S1854&"HRemove this useless assignment to local variable "tileToPlaceRotationP".(Þò‚NJ$2b7be999-aa6b-458c-9bf5-c06b43892acc
-~
-java:S1854!"=Remove this useless assignment to local variable "gameState".(³ëÇÐüÿÿÿÿJ$ae5857d4-8332-4746-a196-42e3a5dcf28c
-o
-java:S1481!".Remove this unused "gameState" local variable.(³ëÇÐüÿÿÿÿJ$22f78bc7-a89c-405e-8d9c-60c0fb76ad67
 t
 java:S1481&"9Remove this unused "tileToPlaceRotationP" local variable.(Þò‚NJ$c6edbecb-12ed-4e74-9126-4dfd5d1196d9
 w
 java:S1481("6Remove this unused "visibleOccupantsP" local variable.(°²ÝâýÿÿÿÿJ$2561ad82-b66c-4b93-bfa2-4ec9deded515
 w
 java:S1481*"6Remove this unused "highlightedTilesP" local variable.(•ŒÝ¤ÿÿÿÿÿJ$57031514-c46d-419a-b99e-8238b5b4b093
-k	java:S106."+Replace this use of System.out by a logger.(Æ©óÎøÿÿÿÿJ$38dc5500-f7c4-4493-a61a-64c0882459f7
-|	java:S1250"<This block of commented-out lines of code should be removed.(·÷ÚøýÿÿÿÿJ$7072b53f-edb1-4262-8a4f-225da3a3379b
+F	java:S106/"+Replace this use of System.out by a logger.(òïÝP8•€¶“÷1
+L	java:S1060"+Replace this use of System.out by a logger.(þŸ”×øÿÿÿÿ8•€¶“÷1
