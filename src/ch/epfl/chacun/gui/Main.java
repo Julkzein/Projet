@@ -3,7 +3,6 @@ package ch.epfl.chacun.gui;
 
 import ch.epfl.chacun.*;
 import javafx.application.Application;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -12,10 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.random.RandomGenerator;
 import java.util.random.RandomGeneratorFactory;
@@ -35,7 +31,7 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //tile mixing
-        RandomGeneratorFactory rngFactory = RandomGeneratorFactory.getDefault();
+        RandomGeneratorFactory<RandomGenerator> rngFactory = RandomGeneratorFactory.getDefault();
         RandomGenerator random;
         if (seedString != null) {
             long seed1 = parseUnsignedLong(seedString);
@@ -43,7 +39,7 @@ public class Main extends Application {
         } else {
             random = rngFactory.create();
         }
-        List<Tile> tiles = List.copyOf(Tiles.TILES);
+        List<Tile> tiles = new ArrayList<>(Tiles.TILES);
         shuffle(tiles, random); //TODO : check dns le cs ou ps de seed pssée en rg
         Map<Tile.Kind, List<Tile>> tilesByKind = Tiles.TILES.stream()
                 .collect(Collectors.groupingBy(Tile::kind));
@@ -126,9 +122,12 @@ public class Main extends Application {
         root.setRight(rightNode);
 
         Scene scene = new Scene(root);
-        primaryStage.setHeight(1440);
-        primaryStage.setWidth(1080);
+        primaryStage.setHeight(1080);
+        primaryStage.setWidth(1440);
         primaryStage.setTitle("ChaCuN");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        scene.getStylesheets().add("style.css");
     }
 
     public static void main(String[] args) {
