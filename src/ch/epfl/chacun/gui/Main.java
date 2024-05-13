@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -122,12 +123,12 @@ public class Main extends Application {
         root.setRight(rightNode);
 
         Scene scene = new Scene(root);
-        primaryStage.setHeight(1080);
-        primaryStage.setWidth(1440);
+        primaryStage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
+        primaryStage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
+
         primaryStage.setTitle("ChaCuN");
         primaryStage.setScene(scene);
         primaryStage.show();
-        scene.getStylesheets().add("style.css");
     }
 
     public static void main(String[] args) {
