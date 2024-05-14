@@ -75,7 +75,6 @@ public class DecksUI {
 
         tile.addListener((_, _, nV) -> {
             tileImageView.setImage(largeImageForTile(nV.id()));
-            newText.setText("");
         });
 
         //The decks of normal and menhir tiles ----------------------------------------------------

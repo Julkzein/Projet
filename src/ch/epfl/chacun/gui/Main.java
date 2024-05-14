@@ -54,7 +54,7 @@ public class Main extends Application {
         ObjectProperty<GameState> observableGameState = new SimpleObjectProperty<>(gameState);
 
         //Creation of the observable value of the messages
-        ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(MessageBoard::messages);
+        ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(m-> m.messages()); //TODO : changer la mise en page des messages
 
         //Creation of the actions and decks vbox
         VBox actionsDecksVbox = getActionsDecksVbox(observableGameState);
@@ -81,9 +81,6 @@ public class Main extends Application {
         primaryStage.show();
 
         observableGameState.set(gameState.withStartingTilePlaced());
-        //TODO : tke off fter testing
-        //gameState = gameState.withPlacedTile(new PlacedTile(Tiles.TILES.get(11), PlayerColor.RED, Rotation.NONE, new Pos(-1, 0), null));
-        //observableGameState.set(gameState);
     }
 
 
@@ -132,11 +129,21 @@ public class Main extends Application {
         ObjectProperty<Tile> currentTile = new SimpleObjectProperty<>(gameState.getValue().tileToPlace());
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
         ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
-        ObservableValue<String> text = new SimpleObjectProperty<>("");
-        Consumer<Occupant> occupantConsumer = o -> {}; //TODO : jsp quoi mettre
+        ObjectProperty<String> text = new SimpleObjectProperty<>("");
+        Consumer<Occupant> occupantConsumer = o -> {
+            switch (gameState.getValue().nextAction()) {
+                case OCCUPY_TILE -> gameState.set(gameState.getValue().withNewOccupant(null));
+                case RETAKE_PAWN -> gameState.set(gameState.getValue().withOccupantRemoved(null));
+            }
+        }; //TODO : jsp quoi mettre
 
         gameState.addListener((_,_,nV) -> {
             if (nV.tileToPlace() != null) currentTile.set(nV.tileToPlace());
+            switch (nV.nextAction()) {
+                case PLACE_TILE -> text.set("");
+                case OCCUPY_TILE -> text.set("Cliquez sur un occupant pour le placer ou cliquez ici pour continuer");
+                case RETAKE_PAWN -> text.set("Cliquez sur un pion pour le reprendre ou cliquez ici pour continuer");
+            }
         });
 
 

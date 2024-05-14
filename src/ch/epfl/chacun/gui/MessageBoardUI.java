@@ -45,7 +45,7 @@ public class MessageBoardUI {
         // When the list of messages changes, add the new messages to the VBox
         messages.addListener((o, oV, nV) -> {
             nV.subList(oV.size(), nV.size()).forEach(message -> {
-                Text newText = new Text(message.toString());
+                Text newText = new Text(message.text());
                 newText.setWrappingWidth(LARGE_TILE_FIT_SIZE);
                 newText.setOnMouseEntered(e -> {
                     tileIds.set(message.tileIds());
