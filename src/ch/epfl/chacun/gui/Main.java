@@ -45,26 +45,27 @@ public class Main extends Application {
         }
         TextMakerFr textMaker = new TextMakerFr(playerNameMap);
 
-        //Creation of the game state
-        ObservableValue<GameState> gameState = new SimpleObjectProperty<>(
-                GameState.initial(
-                    playerNameMap.keySet().stream().toList(),
-                    tileDecks,
-                    textMaker)
-                        .withStartingTilePlaced()); //TODO : ne pas changer le gamestate avant d'voir construit le grphe de scene
+        GameState gameState = GameState.initial(
+                playerNameMap.keySet().stream().toList(),
+                tileDecks,
+                textMaker);
 
+        gameState = gameState.withStartingTilePlaced();
+
+        //Creation of the game state
+        ObservableValue<GameState> observableGameState = new SimpleObjectProperty<>(gameState);
 
         //Creation of the observable value of the messages
-        ObservableValue<List<MessageBoard.Message>> messages = gameState.map(GameState::messageBoard).map(MessageBoard::messages);
+        ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(MessageBoard::messages);
 
         //Creation of the actions and decks vbox
-        VBox actionsDecksVbox = getActionsDecksVbox(gameState);
+        VBox actionsDecksVbox = getActionsDecksVbox(observableGameState);
 
         //Creation of the root parameters
-        Node boardUI = getBoardUI(gameState);
+        Node boardUI = getBoardUI(observableGameState);
 
         BorderPane sideBorderPane = new BorderPane();
-        sideBorderPane.setTop(PlayersUI.create(gameState, textMaker));
+        sideBorderPane.setTop(PlayersUI.create(observableGameState, textMaker));
         sideBorderPane.setCenter(MessageBoardUI.create(messages, new SimpleObjectProperty<>(Set.of())));
         sideBorderPane.setBottom(actionsDecksVbox);
 
@@ -123,13 +124,19 @@ public class Main extends Application {
         ObservableValue<List<String>> actions = new SimpleObjectProperty<>(List.of());
         Consumer<String> actionConsumer = a -> System.out.println(Base32.decode(a)); //TODO : ecrire le consumer
 
-        Tile t = gameState.getValue().tileToPlace();
+        ObjectProperty<Tile> currentTile = new SimpleObjectProperty<>(gameState.getValue().tileToPlace());
+
         //Creation of the parameters for the decks
-        ObservableValue<Tile> currentTile = new SimpleObjectProperty<>(gameState.getValue().tileToPlace());
+        //ObservableValue<Tile> observableCurrentTile = new SimpleObjectProperty<>(currentTile);
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
         ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
         ObservableValue<String> text = new SimpleObjectProperty<>("");
         Consumer<Occupant> occupantConsumer = o -> {}; //TODO : jsp quoi mettre
+
+        gameState.addListener((_,_,nV) -> {
+            currentTile.set(nV.tileToPlace());
+        });
+
 
         //Creation of the vbox containing the actions and the decks
         VBox vbox = new VBox();
