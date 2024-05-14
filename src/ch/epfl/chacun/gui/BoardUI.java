@@ -189,7 +189,7 @@ public class BoardUI {
 
                 if (e.getButton() == MouseButton.SECONDARY) {
                     if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
-                        desiredRotation.accept(Rotation.ALL.get((rotation.getValue().ordinal() + 1) % 4));
+                        desiredRotation.accept(Rotation.ALL.get((rotation.getValue().ordinal() + 1) % 4)); //TODO : check quel parametre mettre
                     }
                 }
             }

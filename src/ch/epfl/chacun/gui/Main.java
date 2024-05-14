@@ -31,7 +31,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         //Argument management
-        List<String> playerNames = getParameters().getUnnamed();
+        List<String> playerNames = getParameters().getUnnamed(); //TODO : order is importnt for plyers
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
@@ -50,10 +50,8 @@ public class Main extends Application {
                 tileDecks,
                 textMaker);
 
-        gameState = gameState.withStartingTilePlaced();
-
         //Creation of the game state
-        ObservableValue<GameState> observableGameState = new SimpleObjectProperty<>(gameState);
+        ObjectProperty<GameState> observableGameState = new SimpleObjectProperty<>(gameState);
 
         //Creation of the observable value of the messages
         ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(MessageBoard::messages);
@@ -81,8 +79,11 @@ public class Main extends Application {
         primaryStage.setTitle("ChaCuN");
         primaryStage.setScene(scene);
         primaryStage.show();
-        gameState = gameState.withPlacedTile(new PlacedTile(Tiles.TILES.get(11), PlayerColor.RED, Rotation.NONE, new Pos(-1, 0), null));
-        //gameState = gameState.withNewOccupant(new Occupant(Occupant.Kind.HUT, 118));
+
+        observableGameState.set(gameState.withStartingTilePlaced());
+        //TODO : tke off fter testing
+        //gameState = gameState.withPlacedTile(new PlacedTile(Tiles.TILES.get(11), PlayerColor.RED, Rotation.NONE, new Pos(-1, 0), null));
+        //observableGameState.set(gameState);
     }
 
 
@@ -121,7 +122,7 @@ public class Main extends Application {
      * @param gameState the observable value of the game state
      * @return a VBox containing the actions and the decks
      */
-    private static VBox getActionsDecksVbox(ObservableValue<GameState> gameState) {
+    private static VBox getActionsDecksVbox(ObjectProperty<GameState> gameState) {
         //Creation of the parameters for the actions
         ObservableValue<List<String>> actions = new SimpleObjectProperty<>(List.of());
         Consumer<String> actionConsumer = a -> System.out.println(Base32.decode(a)); //TODO : ecrire le consumer
@@ -135,7 +136,7 @@ public class Main extends Application {
         Consumer<Occupant> occupantConsumer = o -> {}; //TODO : jsp quoi mettre
 
         gameState.addListener((_,_,nV) -> {
-            currentTile.set(nV.tileToPlace());
+            if (nV.tileToPlace() != null) currentTile.set(nV.tileToPlace());
         });
 
 
@@ -158,21 +159,21 @@ public class Main extends Application {
      * @param gameState the observable value of the game state
      * @return the board UI
      */
-    private static Node getBoardUI(ObservableValue<GameState> gameState) {
+    private static Node getBoardUI(ObjectProperty<GameState> gameState) {
         ObjectProperty<Rotation> currentRotation = new SimpleObjectProperty<>(Rotation.NONE);
         ObservableValue<Set<Occupant>> visibleOccupants = new SimpleObjectProperty<>(Set.of());
         ObservableValue<Set<Integer>> evidentTiles = new SimpleObjectProperty<>(Set.of());
 
         Consumer<Rotation> rotationSetter = r -> { //TODO : check
-            currentRotation.set(currentRotation.getValue().add(r));
+            currentRotation.set(currentRotation.getValue().add(Rotation.RIGHT));
         };
 
         Consumer<Pos> desiredPlacement = pos -> {
-            gameState.getValue().withPlacedTile(new PlacedTile(
+            gameState.set(gameState.getValue().withPlacedTile(new PlacedTile(
                     gameState.getValue().tileToPlace(),
                     gameState.getValue().currentPlayer(),
                     currentRotation.getValue(),
-                    pos));
+                    pos)));
         };
 
         Consumer<Occupant> desiredRetake = occupant -> {
