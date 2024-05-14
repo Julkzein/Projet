@@ -16,7 +16,7 @@ public class ImageLoader {
     public static final int LARGE_TILE_FIT_SIZE = 256;
     public static final int NORMAL_TILE_PIXEL_SIZE = 256;
     public static final int NORMAL_TILE_FIT_SIZE = 128;
-    public static final int MARKER_PIXEL_SIZE = 96;
+    public static final int MARKER_PIXEL_SIZE = 96; //TODO : check if used
     public static final int MARKER_FIT_SIZE = 48;
 
     /**
@@ -26,7 +26,7 @@ public class ImageLoader {
      * @return the image of the tile with the given id in normal size
      */
     public static Image normalImageForTile(int id) {
-        return new Image(STR."\{NORMAL_TILE_PIXEL_SIZE}/\{(id < 10) ? "0" : ""}\{id}.jpg");
+        return new Image(STR."/\{NORMAL_TILE_PIXEL_SIZE}/\{(id < 10) ? "0" : ""}\{id}.jpg");
     }
 
     /**
@@ -36,6 +36,6 @@ public class ImageLoader {
      * @return the image of the tile with the given id in large size
      */
     public static Image largeImageForTile(int id) {
-        return new Image(STR."\{LARGE_TILE_PIXEL_SIZE}/\{(id < 10) ? "0" : ""}\{id}.jpg");
+        return new Image(STR."/\{LARGE_TILE_PIXEL_SIZE}/\{(id < 10) ? "0" : ""}\{id}.jpg");
     }
 }

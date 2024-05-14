@@ -1,24 +1,32 @@
 
-r	java:S117l"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8¸£‘÷1
-r	java:S117m"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8¸£‘÷1
+s	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8¸£‘÷1
+s	java:S117‚"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8¸£‘÷1
+ƒ
+java:S1488k"aImmediately return this expression instead of assigning it to the temporary variable "tileDecks".(ŒòÈ•øÿÿÿÿ8Ãü¸®÷1
+}
+java:S1488®"_Immediately return this expression instead of assigning it to the temporary variable "boardUI".(ùòœş8Äü¸®÷1
 A
-java:S16404"Convert this Map to an EnumMap.(Ò®Úùÿÿÿÿ8½£‘÷1
+java:S1640)"Convert this Map to an EnumMap.(Ò®Úùÿÿÿÿ8½£‘÷1
+T
+java:S11356"2Complete the task associated to this TODO comment.(ıÙ½¿ûÿÿÿÿ8ø€¹®÷1
+R
+java:S1854~"5Remove this useless assignment to local variable "t".(‹Ó“8ë¹®÷1
+G	java:S106|"+Replace this use of System.out by a logger.(ê˜å®8ö¹®÷1
 O
-java:S1135+"2Complete the task associated to this TODO comment.(âÇá8å£‘÷1
-N
-java:S1602E",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8ì£‘÷1
-T
-java:S1135E"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8ì£‘÷1
-I
-java:S1602H",Remove useless curly braces around statement(Ë­¢ß8ì£‘÷1
-N
-java:S1602O",Remove useless curly braces around statement(¾Ÿåşıÿÿÿÿ8î£‘÷1
-T
-java:S1135W"2Complete the task associated to this TODO comment.(ÅÏ˜ïÿÿÿÿÿ8ï£‘÷1
-G	java:S106h"+Replace this use of System.out by a logger.(‡Ïäú8ò£‘÷1
-T
-java:S1135i"2Complete the task associated to this TODO comment.(¼“ÿãıÿÿÿÿ8ó£‘÷1
-T
-java:S1135o"2Complete the task associated to this TODO comment.(—­±¬şÿÿÿÿ8õ£‘÷1
-e
-java:S1128"CRemove this unused import 'java.util.stream.Collectors.groupingBy'.(Ïú¯üùÿÿÿÿ8û£‘÷1
+java:S1135|"2Complete the task associated to this TODO comment.(ê˜å®8ø¹®÷1
+C
+java:S1481~"&Remove this unused "t" local variable.(‹Ó“8¶‚¹®÷1
+U
+java:S1135„"2Complete the task associated to this TODO comment.(—­±¬şÿÿÿÿ8õ£‘÷1
+U
+java:S1135ˆ"2Complete the task associated to this TODO comment.(¼“ÿãıÿÿÿÿ8ó£‘÷1
+O
+java:S1602",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8ì£‘÷1
+U
+java:S1135"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8ì£‘÷1
+J
+java:S1602¢",Remove useless curly braces around statement(Ë­¢ß8ì£‘÷1
+O
+java:S1602ª",Remove useless curly braces around statement(¾Ÿåşıÿÿÿÿ8î£‘÷1
+U
+java:S1135²"2Complete the task associated to this TODO comment.(ÅÏ˜ïÿÿÿÿÿ8ï£‘÷1

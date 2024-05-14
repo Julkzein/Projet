@@ -109,3 +109,5 @@ P
  src/ch/epfl/chacun/gui/Main.java,7/9/795cf7388f07071494cbcc204f55d2ad6b5a9fad
 S
 #src/ch/epfl/chacun/BoardUITest.java,7/e/7e46dbf06e9eeeb080308208154128dca8c687f4
+P
+ test/ch/epfl/chacun/PosTest.java,7/6/765ed29157e473a10c4d188a6d596022d1fcccb3

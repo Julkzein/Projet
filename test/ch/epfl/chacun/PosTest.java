@@ -2,6 +2,8 @@ package ch.epfl.chacun;
 
 import org.junit.jupiter.api.Test;
 
+import static ch.epfl.chacun.gui.ImageLoader.NORMAL_TILE_PIXEL_SIZE;
+import static ch.epfl.chacun.gui.ImageLoader.normalImageForTile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PosTest {
@@ -39,4 +41,6 @@ class PosTest {
             }
         }
     }
+
+   
 }
