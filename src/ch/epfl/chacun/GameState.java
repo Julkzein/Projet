@@ -288,7 +288,8 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         }
 
         Set<PlayerColor> winners = new HashSet<>();
-        int maxPoints = newMessageBoard.points().values().stream().max(Comparator.naturalOrder()).get(); //Gets the maximum number of points among the message board points
+        int maxPoints; //Gets the maximum number of points among the message board points
+        maxPoints = newMessageBoard.points().values().stream().max(Comparator.naturalOrder()).get();
 
         for (Map.Entry<PlayerColor, Integer> entry : newMessageBoard.points().entrySet()) {
             if (entry.getValue() == maxPoints) winners.add(entry.getKey());
