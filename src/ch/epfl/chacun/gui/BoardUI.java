@@ -63,6 +63,8 @@ public class BoardUI {
 
         //initial scrollPane and gridPane setup
         ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setHvalue(0.5);
+        scrollPane.setVvalue(0.5);
         scrollPane.setId("board-scroll-pane");
         scrollPane.getStylesheets().add("board.css");
 
@@ -178,15 +180,17 @@ public class BoardUI {
 
         //click handling
         group.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
-            if (e.getButton() == MouseButton.PRIMARY) {
-                if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
-                    desiredPlacement.accept(pos);
+            if (e.isStillSincePress()) {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
+                        desiredPlacement.accept(pos);
+                    }
                 }
-            }
 
-            if (e.getButton() == MouseButton.SECONDARY) {
-                if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
-                    desiredRotation.accept(Rotation.ALL.get((rotation.getValue().ordinal() + 1) % 4));
+                if (e.getButton() == MouseButton.SECONDARY) {
+                    if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
+                        desiredRotation.accept(Rotation.ALL.get((rotation.getValue().ordinal() + 1) % 4));
+                    }
                 }
             }
         });
@@ -206,7 +210,7 @@ public class BoardUI {
             occupantSVGPath.setId(STR."\{o.kind().toString().toLowerCase()}_\{o.zoneId()}" );
             occupantSVGPath.visibleProperty().bind(occupants.map(s -> s.contains(o)));
             occupantSVGPath.setOnMouseClicked(e -> {
-                if (e.getButton() == MouseButton.PRIMARY) {
+                if (e.getButton() == MouseButton.PRIMARY && e.isStillSincePress()) {
                     desiredRetake.accept(o);
                 }
             });

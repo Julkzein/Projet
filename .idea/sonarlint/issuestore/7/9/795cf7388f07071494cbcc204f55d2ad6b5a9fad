@@ -1,32 +1,35 @@
 
-™	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8¸£‘÷1J$830fc023-98a1-4654-bddb-2ae8f76c0b4e
-™	java:S117‚"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8¸£‘÷1J$33c75297-bd0a-4e94-8d3d-841b83bbd442
+™	java:S117ƒ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8¸£‘÷1J$a11f02b4-a5aa-4711-a27a-2eed9f0f9a59
+™	java:S117„"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8¸£‘÷1J$f38fefdd-695f-4cde-8aaf-a56f60c489f5
+™	java:S117ˆ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8¶­Ï¯÷1J$9efb64ce-4e86-41bd-8fc6-b9c2eb362efd
+™	java:S117ˆ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8¶­Ï¯÷1J$87623049-290b-4067-a730-2e74863778f1
 ©
-java:S1488k"aImmediately return this expression instead of assigning it to the temporary variable "tileDecks".(ŒòÈ•øÿÿÿÿ8Ãü¸®÷1J$42e6919f-9f08-447b-9b2a-e701f4c8cc5c
+java:S1488l"aImmediately return this expression instead of assigning it to the temporary variable "tileDecks".(ŒòÈ•øÿÿÿÿ8Ãü¸®÷1J$02a5e854-e6c4-4565-a5e7-42c5703a8168
 £
-java:S1488®"_Immediately return this expression instead of assigning it to the temporary variable "boardUI".(ùòœş8Äü¸®÷1J$16aef8fb-f7e9-4f0c-8ea4-52603fd31cc7
+java:S1488µ"_Immediately return this expression instead of assigning it to the temporary variable "boardUI".(ùòœş8Äü¸®÷1J$3883f45c-9fd9-4e98-b2c6-9c43872b0806
 g
-java:S1640)"Convert this Map to an EnumMap.(Ò®Úùÿÿÿÿ8½£‘÷1J$6e9274bb-2f1c-41b4-83dd-59f8c87df1d4
-z
-java:S11356"2Complete the task associated to this TODO comment.(ıÙ½¿ûÿÿÿÿ8ø€¹®÷1J$e2a65dfe-8ce8-4c73-9ca6-0b0d993f5d1e
-x
-java:S1854~"5Remove this useless assignment to local variable "t".(‹Ó“8ë¹®÷1J$82d85918-241b-4ed6-b7bb-5f730c87a2fd
-m	java:S106|"+Replace this use of System.out by a logger.(ê˜å®8ö¹®÷1J$22264b54-b4db-4474-9841-1bf685d02b8c
+java:S1190ˆ"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8Ğ­Ï¯÷1J$f960aac0-0ceb-4c10-b64d-6f8f5da55861
+g
+java:S1190ˆ"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8Ñ­Ï¯÷1J$6ea48ebb-195b-40bf-95df-d645cc209ac4
+g
+java:S1640)"Convert this Map to an EnumMap.(Ò®Úùÿÿÿÿ8½£‘÷1J$e35673ee-c329-4420-88bc-bf6f41beec87
+m	java:S106}"+Replace this use of System.out by a logger.(ê˜å®8ö¹®÷1J$af3862ff-5289-49a7-a4c0-794bf4c1dd52
 u
-java:S1135|"2Complete the task associated to this TODO comment.(ê˜å®8ø¹®÷1J$1890448d-ce43-42b6-9c03-080c34774836
-i
-java:S1481~"&Remove this unused "t" local variable.(‹Ó“8¶‚¹®÷1J$083784af-6f9d-4986-a1f2-71e39596ee70
+java:S1135}"2Complete the task associated to this TODO comment.(ê˜å®8ø¹®÷1J$f63acd01-455e-4c89-9af5-76e4b9ae6e86
+	java:S125‚"<This block of commented-out lines of code should be removed.(Òÿ Û8„¯Ï¯÷1J$12923532-6a42-485a-96f8-44d39b182cdc
 {
-java:S1135„"2Complete the task associated to this TODO comment.(—­±¬şÿÿÿÿ8õ£‘÷1J$76f27fed-65ae-4f75-8026-945dafcce921
-{
-java:S1135ˆ"2Complete the task associated to this TODO comment.(¼“ÿãıÿÿÿÿ8ó£‘÷1J$9974e203-9b1b-4d0c-8a18-0b2e2841a474
+java:S1135†"2Complete the task associated to this TODO comment.(—­±¬şÿÿÿÿ8õ£‘÷1J$03383135-2723-4c5c-9347-6dbb346fa470
 u
-java:S1602",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8ì£‘÷1J$99686700-8dd8-4ef1-a697-e3fdbcbf3197
+java:S1602ˆ",Remove useless curly braces around statement(û•Ö¡ùÿÿÿÿ8•¯Ï¯÷1J$eb5507ac-45c6-4324-8181-000ffae5dbab
 {
-java:S1135"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8ì£‘÷1J$dbd5b173-f4e0-44b5-b3d8-98450a6f0e74
+java:S1135"2Complete the task associated to this TODO comment.(¼“ÿãıÿÿÿÿ8ó£‘÷1J$a04d3a87-d81e-4e88-9067-f2d1a30fdd02
+u
+java:S1602¥",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8ì£‘÷1J$fb5e9233-2632-4b40-8216-1859cffb88ca
+{
+java:S1135¥"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8ì£‘÷1J$8eecac89-0b8f-4235-8478-1c7aeb1c9d7c
 p
-java:S1602¢",Remove useless curly braces around statement(Ë­¢ß8ì£‘÷1J$db148715-2fa5-4e06-994d-bfa75f315e1d
+java:S1602©",Remove useless curly braces around statement(Ë­¢ß8ì£‘÷1J$8bc6b848-1e44-43a1-b401-fdaa3177aee1
 u
-java:S1602ª",Remove useless curly braces around statement(¾Ÿåşıÿÿÿÿ8î£‘÷1J$6dc0b196-eec0-45f6-b230-874891855047
+java:S1602±",Remove useless curly braces around statement(¾Ÿåşıÿÿÿÿ8î£‘÷1J$66b6e2b5-a839-4a1d-b316-4036890eba64
 {
-java:S1135²"2Complete the task associated to this TODO comment.(ÅÏ˜ïÿÿÿÿÿ8ï£‘÷1J$11b75d8b-b5c4-449f-a77a-f7526c7e1dc9
+java:S1135¹"2Complete the task associated to this TODO comment.(ÅÏ˜ïÿÿÿÿÿ8ï£‘÷1J$305ea348-7a18-4b63-852e-93fa1806330c
