@@ -81,6 +81,8 @@ public class Main extends Application {
         primaryStage.setTitle("ChaCuN");
         primaryStage.setScene(scene);
         primaryStage.show();
+        gameState = gameState.withPlacedTile(new PlacedTile(Tiles.TILES.get(11), PlayerColor.RED, Rotation.NONE, new Pos(-1, 0), null));
+        //gameState = gameState.withNewOccupant(new Occupant(Occupant.Kind.HUT, 118));
     }
 
 
@@ -124,10 +126,9 @@ public class Main extends Application {
         ObservableValue<List<String>> actions = new SimpleObjectProperty<>(List.of());
         Consumer<String> actionConsumer = a -> System.out.println(Base32.decode(a)); //TODO : ecrire le consumer
 
-        ObjectProperty<Tile> currentTile = new SimpleObjectProperty<>(gameState.getValue().tileToPlace());
-
         //Creation of the parameters for the decks
-        //ObservableValue<Tile> observableCurrentTile = new SimpleObjectProperty<>(currentTile);
+        //ObservableValue<Tile> observableCurrentTile = new SimpleObjectProperty<>(currentTile); //TODO : check si observable value ou object property
+        ObjectProperty<Tile> currentTile = new SimpleObjectProperty<>(gameState.getValue().tileToPlace());
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
         ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
         ObservableValue<String> text = new SimpleObjectProperty<>("");
