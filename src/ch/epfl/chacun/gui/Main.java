@@ -45,26 +45,25 @@ public class Main extends Application {
         }
         TextMakerFr textMaker = new TextMakerFr(playerNameMap);
 
-        //Creation of the game state
-        ObservableValue<GameState> gameState = new SimpleObjectProperty<>(
-                GameState.initial(
-                    playerNameMap.keySet().stream().toList(),
-                    tileDecks,
-                    textMaker)
-                        .withStartingTilePlaced()); //TODO : ne pas changer le gamestate avant d'voir construit le grphe de scene
+        GameState gameState = GameState.initial(
+                playerNameMap.keySet().stream().toList(),
+                tileDecks,
+                textMaker);
 
+        //Creation of the game state
+        ObservableValue<GameState> observableGameState = new SimpleObjectProperty<>(gameState);
 
         //Creation of the observable value of the messages
-        ObservableValue<List<MessageBoard.Message>> messages = gameState.map(GameState::messageBoard).map(MessageBoard::messages);
+        ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(MessageBoard::messages);
 
         //Creation of the actions and decks vbox
-        VBox actionsDecksVbox = getActionsDecksVbox(gameState);
+        VBox actionsDecksVbox = getActionsDecksVbox(observableGameState);
 
         //Creation of the root parameters
-        Node boardUI = getBoardUI(gameState);
+        Node boardUI = getBoardUI(observableGameState);
 
         BorderPane sideBorderPane = new BorderPane();
-        sideBorderPane.setTop(PlayersUI.create(gameState, textMaker));
+        sideBorderPane.setTop(PlayersUI.create(observableGameState, textMaker));
         sideBorderPane.setCenter(MessageBoardUI.create(messages, new SimpleObjectProperty<>(Set.of())));
         sideBorderPane.setBottom(actionsDecksVbox);
 
@@ -79,6 +78,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("ChaCuN");
         primaryStage.setScene(scene);
+        gameState.withStartingTilePlaced();
         primaryStage.show();
     }
 

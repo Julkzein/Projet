@@ -54,7 +54,7 @@ public class DecksUI {
         nextTileStackPane.setId("next-tile");
 
         ImageView tileImageView = new ImageView();
-        tileImageView.setImage(largeImageForTile(tile.getValue().id()));
+        //tileImageView.setImage(largeImageForTile(tile.getValue().id())); //TODO : is this necessary?
         tileImageView.setFitWidth(LARGE_TILE_FIT_SIZE);
         tileImageView.setFitHeight(LARGE_TILE_FIT_SIZE);
         nextTileStackPane.getChildren().add(tileImageView);
