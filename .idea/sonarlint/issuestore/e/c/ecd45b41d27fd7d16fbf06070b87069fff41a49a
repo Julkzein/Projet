@@ -1,7 +1,9 @@
 
-G
-java:S1602,",Remove useless curly braces around statement(Ä•°ûÿÿÿÿ
-B
-java:S16020",Remove useless curly braces around statement(ÜãÂŸ
-G
-java:S16023",Remove useless curly braces around statement(›•ø™şÿÿÿÿ
+m
+java:S1602.",Remove useless curly braces around statement(Ä•°ûÿÿÿÿJ$29219a7f-33e2-4629-a3de-2ee8367d5450
+h
+java:S16022",Remove useless curly braces around statement(ÜãÂŸJ$d9979230-17d4-4316-8701-669479bb0c93
+m
+java:S16025",Remove useless curly braces around statement(›•ø™şÿÿÿÿJ$08833318-6368-4b5d-b16f-9d3359fcc8e6
+‰
+java:S1128"ARemove this unused import 'javafx.application.Platform.runLater'.(Ïä²Ùÿÿÿÿÿ8÷…Å¯÷1J$16f635b3-2788-496c-84b3-462b338e72d6

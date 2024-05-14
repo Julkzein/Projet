@@ -35,6 +35,8 @@ public class MessageBoardUI {
         VBox vbox = new VBox();
 
         ScrollPane scrollPane = new ScrollPane(vbox);
+        scrollPane.layout();
+        scrollPane.setVvalue(1);
         scrollPane.setId("message-board");
         scrollPane.getStylesheets().add("message-board.css");
 
@@ -54,9 +56,7 @@ public class MessageBoardUI {
                 vbox.getChildren().add(newText);
             });
         });
-
-        runLater(() -> scrollPane.setVvalue(1));
-
+        
         return scrollPane;
     }
 }

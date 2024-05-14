@@ -32,11 +32,16 @@ public class PlayersUI {
         VBox vbox = new VBox();
         vbox.getStylesheets().add("players.css");
         vbox.setId("players");
+        for (PlayerColor player : gameState.getValue().players()) {
+            vbox.getChildren().add(createPlayerTextFlow(gameState, player, textMaker));
+        }
+        /**
         for (PlayerColor player : PlayerColor.ALL) {
             if (textMaker.playerName(player) != null) {
                 vbox.getChildren().add(createPlayerTextFlow(gameState, player, textMaker));
             }
         }
+         */
         return vbox;
     }
 
