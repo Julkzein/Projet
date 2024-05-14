@@ -111,3 +111,7 @@ S
 #src/ch/epfl/chacun/BoardUITest.java,7/e/7e46dbf06e9eeeb080308208154128dca8c687f4
 P
  test/ch/epfl/chacun/PosTest.java,7/6/765ed29157e473a10c4d188a6d596022d1fcccb3
+\
+,src/ch/epfl/sigcheck/SignatureChecks_11.java,3/9/393e80ea10b22a48d3868f8d514bd78afcb453c8
+[
++src/ch/epfl/sigcheck/SignatureChecks_3.java,e/f/ef20a881452a869967727b48eb78a4f12e74c84b
