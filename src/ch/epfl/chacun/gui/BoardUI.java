@@ -179,18 +179,24 @@ public class BoardUI {
         group.setEffect(blend);
 
         //click handling
-        group.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> {
+        group.setOnMouseClicked( e -> {
             if (e.isStillSincePress()) {
-                if (e.getButton() == MouseButton.PRIMARY) {
-                    if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
-                        desiredPlacement.accept(pos);
+                switch (e.getButton()) {
+                    case PRIMARY -> {
+                        if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
+                            desiredPlacement.accept(pos);
+                        }
                     }
-                }
-
-                if (e.getButton() == MouseButton.SECONDARY) {
-                    if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
-                        desiredRotation.accept(Rotation.ALL.get((rotation.getValue().ordinal() + 1) % 4)); //TODO : check quel parametre mettre
+                    case SECONDARY -> {
+                        if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
+                            if (e.isAltDown()) {
+                                desiredRotation.accept(Rotation.RIGHT);
+                            } else {
+                                desiredRotation.accept(Rotation.LEFT);
+                            }
+                        }
                     }
+                    default -> {}
                 }
             }
         });

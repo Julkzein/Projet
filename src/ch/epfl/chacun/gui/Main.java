@@ -172,7 +172,7 @@ public class Main extends Application {
         ObservableValue<Set<Integer>> evidentTiles = new SimpleObjectProperty<>(Set.of());
 
         Consumer<Rotation> rotationSetter = r -> { //TODO : check
-            currentRotation.set(currentRotation.getValue().add(Rotation.RIGHT));
+            currentRotation.set(currentRotation.getValue().add(r));
         };
 
         Consumer<Pos> desiredPlacement = pos -> {
@@ -184,7 +184,7 @@ public class Main extends Application {
         };
 
         Consumer<Occupant> desiredRetake = occupant -> {
-            gameState.getValue().withOccupantRemoved(occupant);
+            gameState.set(gameState.getValue().withOccupantRemoved(occupant));
         };
 
         Node boardUI = BoardUI.create(
