@@ -50,6 +50,8 @@ public class Main extends Application {
                 tileDecks,
                 textMaker);
 
+        gameState = gameState.withStartingTilePlaced();
+
         //Creation of the game state
         ObservableValue<GameState> observableGameState = new SimpleObjectProperty<>(gameState);
 
@@ -78,7 +80,6 @@ public class Main extends Application {
 
         primaryStage.setTitle("ChaCuN");
         primaryStage.setScene(scene);
-        gameState.withStartingTilePlaced();
         primaryStage.show();
     }
 
@@ -123,13 +124,19 @@ public class Main extends Application {
         ObservableValue<List<String>> actions = new SimpleObjectProperty<>(List.of());
         Consumer<String> actionConsumer = a -> System.out.println(Base32.decode(a)); //TODO : ecrire le consumer
 
-        Tile t = gameState.getValue().tileToPlace();
+        ObjectProperty<Tile> currentTile = new SimpleObjectProperty<>(gameState.getValue().tileToPlace());
+
         //Creation of the parameters for the decks
-        ObservableValue<Tile> currentTile = new SimpleObjectProperty<>(gameState.getValue().tileToPlace());
+        //ObservableValue<Tile> observableCurrentTile = new SimpleObjectProperty<>(currentTile);
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
         ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
         ObservableValue<String> text = new SimpleObjectProperty<>("");
         Consumer<Occupant> occupantConsumer = o -> {}; //TODO : jsp quoi mettre
+
+        gameState.addListener((_,_,nV) -> {
+            currentTile.set(nV.tileToPlace());
+        });
+
 
         //Creation of the vbox containing the actions and the decks
         VBox vbox = new VBox();
