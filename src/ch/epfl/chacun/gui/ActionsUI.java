@@ -10,16 +10,29 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
 
+
+/**
+ * This class represents the UI elements that display the encoded actions of the players.
+ *
+ * @author Louis Bernard (379724)
+ * @author Jules Delforge (372325)
+ */
 public class ActionsUI {
     //private constructor to prevent instantiation
     private ActionsUI() {}
 
+
+    /**
+     * This method creates the UI elements that display the encoded actions of the players.
+     *
+     * @param actionList the list of the last four actions
+     * @param action the consumer that will be called when the user presses enter
+     * @return the ui elements of the actions
+     */
     public static Node create(ObservableValue<List<String>> actionList,
                        Consumer<String> action) {
 
@@ -50,13 +63,21 @@ public class ActionsUI {
         }));
 
         // When the user presses enter, the consumer is called with the text field's content
-        textField.setOnAction(e -> {
+        textField.setOnAction(_ -> {  //TODO : futur check if all good
             action.accept(textField.getText());
             textField.clear();
         });
 
         return actions;
     }
+
+
+    /**
+     * This method converts the last four actions to a string.
+     *
+     * @param actionList the list of the last four actions
+     * @return the string of the last four actions
+     */
     private static String fourLastActionsToString(List<String> actionList) {
         StringJoiner joiner = new StringJoiner(", ");
         for (int i = Math.max(actionList.size() - 4, 0); i < actionList.size(); i++) {
