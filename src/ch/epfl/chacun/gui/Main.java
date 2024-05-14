@@ -191,5 +191,7 @@ public class Main extends Application {
 
         return boardUI;
     }
+
+    //TODO : check for retake 
 }
 

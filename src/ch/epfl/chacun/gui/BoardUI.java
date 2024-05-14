@@ -241,6 +241,7 @@ public class BoardUI {
                 group.getChildren().add(cancelToken);
             }
         }
+
     }
 
     //private record to store the data of a cell
