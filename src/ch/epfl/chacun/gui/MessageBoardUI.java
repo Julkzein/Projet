@@ -56,7 +56,7 @@ public class MessageBoardUI {
                 vbox.getChildren().add(newText);
             });
         });
-        
+
         return scrollPane;
     }
 }
