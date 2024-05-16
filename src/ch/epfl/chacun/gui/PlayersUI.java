@@ -56,7 +56,7 @@ public class PlayersUI {
     private static TextFlow createPlayerTextFlow(ObservableValue<GameState> gameState, PlayerColor player, TextMakerFr textMaker) {
         //points
         ObservableValue<Map<PlayerColor, Integer>> pointsO = gameState.map(GameState::messageBoard).map(MessageBoard::points);
-        ObservableValue<String> pointTextO = pointsO.map(points -> STR."\{ textMaker.playerName(player)} : \{textMaker.points(points.getOrDefault(player, 0))} \n");
+        ObservableValue<String> pointTextO = pointsO.map(points -> STR." \{textMaker.playerName(player)} : \{textMaker.points(points.getOrDefault(player, 0))} \n");
         Text playerNameAndPoints = new Text();
         playerNameAndPoints.textProperty().bind(pointTextO);
 
@@ -65,7 +65,6 @@ public class PlayersUI {
 
         //textFlow
         TextFlow textFlow =  new TextFlow(playerCircle, playerNameAndPoints);
-
 
         //icons and space
         Node[] icons = new Node[5];
