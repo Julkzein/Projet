@@ -1,6 +1,7 @@
 package ch.epfl.chacun.gui;
 
 import ch.epfl.chacun.MessageBoard;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -35,12 +36,23 @@ public class MessageBoardUI {
         VBox vbox = new VBox();
 
         ScrollPane scrollPane = new ScrollPane(vbox);
-        scrollPane.layout();
-        scrollPane.setVvalue(1);
+
         scrollPane.setId("message-board");
         scrollPane.getStylesheets().add("message-board.css");
+        scrollPane.layout();
+        scrollPane.setVvalue(1.0); //todo : vérfifier si run lter ps nécéssire
 
-        vbox.getChildren().add(new Text());
+        vbox.getChildren().add(new Text("test"));
+        vbox.getChildren().add(new Text("test"));
+        vbox.getChildren().add(new Text("test"));
+        vbox.getChildren().add(new Text("test"));
+        vbox.getChildren().add(new Text("test"));
+        vbox.getChildren().add(new Text("test"));
+        vbox.getChildren().add(new Text("test"));
+        vbox.getChildren().add(new Text("test"));
+        vbox.getChildren().add(new Text("test"));
+        vbox.getChildren().add(new Text("test"));
+        vbox.getChildren().add(new Text("test"));
 
         // When the list of messages changes, add the new messages to the VBox
         messages.addListener((o, oV, nV) -> {
@@ -56,7 +68,6 @@ public class MessageBoardUI {
                 vbox.getChildren().add(newText);
             });
         });
-
         return scrollPane;
     }
 }

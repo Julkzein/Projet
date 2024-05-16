@@ -54,19 +54,17 @@ public class Main extends Application {
         //Creation of the game state
         ObjectProperty<GameState> observableGameState = new SimpleObjectProperty<>(gameState);
 
-        //Creation of the observable value of the messages
-        ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(m-> m.messages()); //TODO : changer la mise en page des messages
+        //Creation of the parameters for the actions
+        ObjectProperty<List<String>> actions = new SimpleObjectProperty<>(new ArrayList<>());
 
-        //Creation of the actions and decks vbox
-        VBox actionsDecksVbox = getActionsDecksVbox(observableGameState);
+        //Creation of the observable value of the tile to highlight
+        ObjectProperty<Set<Integer>> tileToHighLight = new SimpleObjectProperty<>(Set.of());
+
+        //Creation of the side border pane
+        BorderPane sideBorderPane = getSideBorderPane(observableGameState, actions, textMaker, tileToHighLight);
 
         //Creation of the root parameters
-        Node boardUI = getBoardUI(observableGameState);
-
-        BorderPane sideBorderPane = new BorderPane();
-        sideBorderPane.setTop(PlayersUI.create(observableGameState, textMaker));
-        sideBorderPane.setCenter(MessageBoardUI.create(messages, new SimpleObjectProperty<>(Set.of())));
-        sideBorderPane.setBottom(actionsDecksVbox);
+        Node boardUI = getBoardUI(observableGameState, actions, tileToHighLight);
 
         //Creation of the root
         BorderPane root = new BorderPane();
@@ -82,6 +80,20 @@ public class Main extends Application {
         primaryStage.show();
 
         observableGameState.set(gameState.withStartingTilePlaced());
+    }
+
+    private static BorderPane getSideBorderPane(ObjectProperty<GameState> observableGameState, ObjectProperty<List<String>> actions, TextMakerFr textMaker, ObjectProperty<Set<Integer>> tileToHighLight) {
+        //Creation of the observable value of the messages
+        ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(m-> m.messages()); //TODO : changer la mise en page des messages
+
+        //Creation of the actions and decks vbox
+        VBox actionsDecksVbox = getActionsDecksVbox(observableGameState, actions);
+
+        BorderPane sideBorderPane = new BorderPane();
+        sideBorderPane.setTop(PlayersUI.create(observableGameState, textMaker));
+        sideBorderPane.setCenter(MessageBoardUI.create(messages, tileToHighLight));
+        sideBorderPane.setBottom(actionsDecksVbox);
+        return sideBorderPane;
     }
 
 
@@ -120,12 +132,11 @@ public class Main extends Application {
      * @param gameState the observable value of the game state
      * @return a VBox containing the actions and the decks
      */
-    private static VBox getActionsDecksVbox(ObjectProperty<GameState> gameState) {
-        //Creation of the parameters for the actions
-        ObjectProperty<List<String>> actions = new SimpleObjectProperty<>(new ArrayList<>());
+    private static VBox getActionsDecksVbox(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions) {
+
+        //Creation of the action consumer
         Consumer<String> actionConsumer = a -> System.out.println(Base32.decode(a)); //TODO : ecrire le consumer
 
-        //Creation of the parameters for the decks
         //ObservableValue<Tile> observableCurrentTile = new SimpleObjectProperty<>(currentTile); //TODO : check si observable value ou object property
         ObjectProperty<Tile> currentTile = new SimpleObjectProperty<>(gameState.getValue().tileToPlace());
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
@@ -134,13 +145,13 @@ public class Main extends Application {
         Consumer<Occupant> occupantConsumer = o -> {
             switch (gameState.getValue().nextAction()) {
                 case OCCUPY_TILE -> {
-                    ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), o);
+                    ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), null);
                     gameState.set(stateAction.gameState());
                     actions.getValue().add(stateAction.action());
                     actions.set(actions.getValue());
                 }
                 case RETAKE_PAWN -> {
-                    ActionEncoder.StateAction stateAction = ActionEncoder.withOccupantRemoved(gameState.getValue(), o);
+                    ActionEncoder.StateAction stateAction = ActionEncoder.withOccupantRemoved(gameState.getValue(), null);
                     gameState.set(stateAction.gameState());
                     actions.getValue().add(stateAction.action());
                     actions.set(actions.getValue());
@@ -181,27 +192,48 @@ public class Main extends Application {
      * @param gameState the observable value of the game state
      * @return the board UI
      */
-    private static Node getBoardUI(ObjectProperty<GameState> gameState) {
+    private static Node getBoardUI(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, ObjectProperty<Set<Integer>> evidentTiles) {
         ObjectProperty<Rotation> currentRotation = new SimpleObjectProperty<>(Rotation.NONE);
         ObservableValue<Set<Occupant>> visibleOccupants = new SimpleObjectProperty<>(Set.of());
-        ObservableValue<Set<Integer>> evidentTiles = new SimpleObjectProperty<>(Set.of());
 
         Consumer<Rotation> rotationSetter = r -> { //TODO : check
             currentRotation.set(currentRotation.getValue().add(r));
         };
 
         Consumer<Pos> desiredPlacement = pos -> {
-            gameState.set(gameState.getValue().withPlacedTile(new PlacedTile(
-                    gameState.getValue().tileToPlace(),
-                    gameState.getValue().currentPlayer(),
-                    currentRotation.getValue(),
-                    pos)));
-            currentRotation.set(Rotation.NONE);
+            //creation of the current game state
+            GameState gS = gameState.getValue();
 
+            //creation of the placed tile
+            PlacedTile pT = new PlacedTile(
+                    gS.tileToPlace(),
+                    gS.currentPlayer(),
+                    currentRotation.getValue(),
+                    pos);
+
+            if (gS.board().canAddTile(pT)) {
+                ActionEncoder.StateAction stateAction = ActionEncoder.withPlacedTile(gameState.getValue(), pT);
+                gameState.set(stateAction.gameState());
+                currentRotation.set(Rotation.NONE);
+            }
         };
 
-        Consumer<Occupant> desiredRetake = occupant -> {
-            gameState.set(gameState.getValue().withOccupantRemoved(occupant));
+        Consumer<Occupant> occupantConsumer = o -> {
+            GameState gS = gameState.getValue();
+            switch (gS.nextAction()) {
+                case OCCUPY_TILE -> {
+                    ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), o);
+                    gameState.set(stateAction.gameState());
+                    actions.getValue().add(stateAction.action());
+                    actions.set(actions.getValue());
+                }
+                case RETAKE_PAWN -> {
+                    ActionEncoder.StateAction stateAction = ActionEncoder.withOccupantRemoved(gameState.getValue(), o);
+                    gameState.set(stateAction.gameState());
+                    actions.getValue().add(stateAction.action());
+                    actions.set(actions.getValue());
+                }
+            }
         };
 
         Node boardUI = BoardUI.create(
@@ -212,7 +244,7 @@ public class Main extends Application {
                 evidentTiles,
                 rotationSetter,
                 desiredPlacement,
-                desiredRetake
+                occupantConsumer
         );
 
         return boardUI;

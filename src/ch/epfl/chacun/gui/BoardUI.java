@@ -49,7 +49,7 @@ public class BoardUI {
      * @param evidentId the observable value of the set of ids of the tiles put in evidence
      * @param desiredRotation the consumer of the desired rotation
      * @param desiredPlacement the consumer of the desired placement
-     * @param desiredRetake the consumer of the desired retake
+     * @param occupantConsumer the consumer of the desired retake
      * @return the node representing the board
      */
     public static Node create(int reach,
@@ -59,7 +59,7 @@ public class BoardUI {
                               ObservableValue<Set<Integer>> evidentId,
                               Consumer<Rotation> desiredRotation,
                               Consumer<Pos> desiredPlacement,
-                              Consumer<Occupant> desiredRetake) {
+                              Consumer<Occupant> occupantConsumer) {
 
         //initial scrollPane and gridPane setup
         ScrollPane scrollPane = new ScrollPane();
@@ -75,7 +75,7 @@ public class BoardUI {
         //initial grid creation
         for (int i = -reach; i <= reach; i++) {
             for (int j = -reach; j <= reach; j++) {
-                gridPane.add(createGroup(new Pos(i, j), gameState, rotation, occupants, evidentId, desiredRotation, desiredPlacement, desiredRetake), i+reach, j+reach);
+                gridPane.add(createGroup(new Pos(i, j), gameState, rotation, occupants, evidentId, desiredRotation, desiredPlacement, occupantConsumer), i+reach, j+reach);
             }
         }
 
@@ -93,7 +93,7 @@ public class BoardUI {
      * @param evidentId the observable value of the set of ids of the tiles put in evidence
      * @param desiredRotation the consumer of the desired rotation
      * @param desiredPlacement the consumer of the desired placement
-     * @param desiredRetake the consumer of the desired retake
+     * @param occupantConsumer the consumer of the desired retake
      * @return the group representing the tile
      */
     private static Group createGroup(Pos pos,
@@ -103,9 +103,7 @@ public class BoardUI {
                                     ObservableValue<Set<Integer>> evidentId,
                                     Consumer<Rotation> desiredRotation,
                                     Consumer<Pos> desiredPlacement,
-                                    Consumer<Occupant> desiredRetake) {
-
-
+                                    Consumer<Occupant> occupantConsumer) {
 
         Group group = new Group();
 
@@ -161,7 +159,7 @@ public class BoardUI {
         placedTile.addListener((_, _, nV) -> {
             group.rotateProperty().unbind();
             createCancelledToken(nV.id(), pos, gameState, group);
-            createOccupants(pos, gameState, group, occupants, desiredRetake);
+            createOccupants(pos, gameState, group, occupants, occupantConsumer);
         });
 
         //rotation binding
@@ -182,9 +180,11 @@ public class BoardUI {
         //click handling
         group.setOnMouseClicked( e -> {
             if (e.isStillSincePress()) {
+                GameState gS = gameState.getValue();
+                Board board = gS.board();
                 switch (e.getButton()) {
                     case PRIMARY -> {
-                        if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
+                        if (gS.nextAction() == PLACE_TILE) {
                             desiredPlacement.accept(pos);
                         }
                     }
@@ -211,14 +211,14 @@ public class BoardUI {
      * @param group the group to which the SVG paths are added
      * @param occupants the observable value of the occupants to be displayed
      */
-    private static void createOccupants(Pos pos, ObservableValue<GameState> gameState, Group group, ObservableValue<Set<Occupant>> occupants, Consumer<Occupant> desiredRetake) {
-        for (Occupant o : Objects.requireNonNull(gameState.getValue().board().tileAt(pos)).potentialOccupants()) {
+    private static void createOccupants(Pos pos, ObservableValue<GameState> gameState, Group group, ObservableValue<Set<Occupant>> occupants, Consumer<Occupant> occupantConsumer) {
+        for (Occupant o : Objects.requireNonNull(gameState.getValue().board().tileAt(pos)).potentialOccupants()) { //TODO : enlever le requireNonNull
             Node occupantSVGPath = Icon.newFor(gameState.getValue().currentPlayer(), o.kind());
             occupantSVGPath.setId(STR."\{o.kind().toString().toLowerCase()}_\{o.zoneId()}" );
             occupantSVGPath.visibleProperty().bind(occupants.map(s -> s.contains(o)));
             occupantSVGPath.setOnMouseClicked(e -> {
                 if (e.getButton() == MouseButton.PRIMARY && e.isStillSincePress()) {
-                    desiredRetake.accept(o);
+                    occupantConsumer.accept(o);
                 }
             });
             occupantSVGPath.rotateProperty().bind(group.rotateProperty().negate());
