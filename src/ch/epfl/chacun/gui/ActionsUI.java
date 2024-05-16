@@ -62,7 +62,7 @@ public class ActionsUI {
         textField.setTextFormatter(new TextFormatter<>(change -> {
             change.setText(change.getText().toUpperCase());
             change.setText(
-                (Base32.isValid(change.getText()) ? change.getText() : "")
+                (Base32.isValid(change.getText()) ? change.getText() : "") //TODO : check size
             );
             return change;
         }));
