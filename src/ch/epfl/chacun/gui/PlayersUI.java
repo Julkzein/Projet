@@ -83,10 +83,14 @@ public class PlayersUI {
         }
 
         //current player
-        ObservableValue<PlayerColor> currentPlayerO = gameState.map(GameState::currentPlayer);
-        if (currentPlayerO.getValue() == player) {
-            textFlow.getStyleClass().add("player.current");
-        }
+        ObservableValue<PlayerColor> currentPlayer = gameState.map(GameState::currentPlayer);
+        currentPlayer.addListener((_, _, nV) -> {
+            if (nV == player) {
+                textFlow.getStyleClass().add("current");
+            } else {
+                textFlow.getStyleClass().remove("current");
+            }
+        });
         textFlow.getStyleClass().add("player");
         return textFlow;
     }
