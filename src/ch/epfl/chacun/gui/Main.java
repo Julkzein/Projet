@@ -27,6 +27,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -121,7 +122,7 @@ public class Main extends Application {
      */
     private static VBox getActionsDecksVbox(ObjectProperty<GameState> gameState) {
         //Creation of the parameters for the actions
-        ObservableValue<List<String>> actions = new SimpleObjectProperty<>(List.of());
+        ObjectProperty<List<String>> actions = new SimpleObjectProperty<>(new ArrayList<>());
         Consumer<String> actionConsumer = a -> System.out.println(Base32.decode(a)); //TODO : ecrire le consumer
 
         //Creation of the parameters for the decks
@@ -132,8 +133,19 @@ public class Main extends Application {
         ObjectProperty<String> text = new SimpleObjectProperty<>("");
         Consumer<Occupant> occupantConsumer = o -> {
             switch (gameState.getValue().nextAction()) {
-                case OCCUPY_TILE -> gameState.set(gameState.getValue().withNewOccupant(null));
-                case RETAKE_PAWN -> gameState.set(gameState.getValue().withOccupantRemoved(null));
+                case OCCUPY_TILE -> {
+                    ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), o);
+                    gameState.set(stateAction.gameState());
+                    actions.getValue().add(stateAction.action());
+                    actions.set(actions.getValue());
+                }
+                case RETAKE_PAWN -> {
+                    ActionEncoder.StateAction stateAction = ActionEncoder.withOccupantRemoved(gameState.getValue(), o);
+                    gameState.set(stateAction.gameState());
+                    actions.getValue().add(stateAction.action());
+                    actions.set(actions.getValue());
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + gameState.getValue().nextAction());
             }
         }; //TODO : jsp quoi mettre
 
@@ -145,6 +157,9 @@ public class Main extends Application {
                 case RETAKE_PAWN -> text.set("Cliquez sur un pion pour le reprendre ou cliquez ici pour continuer");
             }
         });
+
+        //TODO : test
+        actions.addListener((_,_,_) -> System.out.println("test"));
 
 
         //Creation of the vbox containing the actions and the decks
@@ -181,6 +196,8 @@ public class Main extends Application {
                     gameState.getValue().currentPlayer(),
                     currentRotation.getValue(),
                     pos)));
+            currentRotation.set(Rotation.NONE);
+
         };
 
         Consumer<Occupant> desiredRetake = occupant -> {

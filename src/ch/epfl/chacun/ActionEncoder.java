@@ -40,7 +40,7 @@ public class ActionEncoder {
      * @return the encoded action
      */
     public static StateAction withNewOccupant(GameState gameState, Occupant occupant) {
-        int index = occupant.kind().ordinal() * 16 + occupant.zoneId(); //TODO : check si l'id c'est le bon où pas
+        int index = (occupant == null) ? 0x1f : occupant.kind().ordinal() * 16 + occupant.zoneId(); //TODO : check si l'id c'est le bon où pas
         return new StateAction(gameState.withNewOccupant(occupant), encodeBits5(index));
     }
 
@@ -52,7 +52,7 @@ public class ActionEncoder {
      * @return the encoded action
      */
     public static StateAction withOccupantRemoved(GameState gameState, Occupant occupant) {
-        int index = occupant.zoneId(); //TODO : vérifier si c'est le bon id ou pas
+        int index = (occupant == null) ? 0x1f : occupant.zoneId(); //TODO : vérifier si c'est le bon id ou pas
         return new StateAction(gameState.withOccupantRemoved(occupant), encodeBits5(index));
     }
 

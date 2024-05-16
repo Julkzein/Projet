@@ -136,6 +136,7 @@ public class BoardUI {
             if (placedTile == null && gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
                 if (!hoverCell) {
                     colorCell = fillColor(Objects.requireNonNull(gameState.getValue().currentPlayer()));
+                    rotationCell = Rotation.NONE; //TODO : si c fout l mrd c ici
                 } else {
                     imageCell = cache.computeIfAbsent(gameState.getValue().tileToPlace().id(), _ -> normalImageForTile(gameState.getValue().tileToPlace().id()));
                     if (!gameState.getValue().board().canAddTile(new PlacedTile(gameState.getValue().tileToPlace(), gameState.getValue().currentPlayer(), rotationCell, pos))) {

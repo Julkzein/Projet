@@ -43,11 +43,16 @@ public class ActionsUI {
         Text fourLastActions = new Text(fourLastActionsToString(actionList.getValue()));
         actions.getChildren().add(fourLastActions);
 
+        /**
         // Create a StringBinding and binds it to the Text
         StringBinding textBinding = Bindings.createStringBinding(
             () -> fourLastActionsToString(actionList.getValue()), actionList
         );
-        fourLastActions.textProperty().bind(textBinding);
+         fourLastActions.textProperty().bind(textBinding);
+         */
+        actionList.addListener((_, _, nV) ->
+                fourLastActions.setText(fourLastActionsToString(nV))
+        );
 
         TextField textField = new TextField();
         textField.setId("action-field");
