@@ -167,7 +167,6 @@ public class Main extends Application {
         Consumer<Occupant> noActionConsumer = o -> consumeOccupant(gameState, actions, o);
 
         gameState.addListener((_,_,nV) -> {
-
             switch (nV.nextAction()) {
                 case PLACE_TILE -> text.set("");
                 case OCCUPY_TILE -> text.set("Cliquez sur un occupant pour le placer ou cliquez ici pour continuer");
