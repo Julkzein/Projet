@@ -36,7 +36,61 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
-        TileDecks tileDecks = getRandomTileDecks(seedString);
+        //TileDecks tileDecks = getRandomTileDecks(seedString);
+
+        //        //Logboat Deck Normale
+//       TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(3), Tiles.TILES.get(4), Tiles.TILES.get(5), Tiles.TILES.get(6), Tiles.TILES.get(7), Tiles.TILES.get(11), Tiles.TILES.get(1)),
+//                List.of(Tiles.TILES.get(93)));
+
+//        //LogBoat limit
+//        TileDecks tileDecks = new TileDecks( //todo : cancel token de merde
+//                List.of(Tiles.TILES.get(56)),
+//                List.of( Tiles.TILES.get(14), Tiles.TILES.get(1), Tiles.TILES.get(60)),
+//                List.of(Tiles.TILES.get(93)));
+
+//        //Chaman Deck
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(36), Tiles.TILES.get(35), Tiles.TILES.get(27), Tiles.TILES.get(39), Tiles.TILES.get(37)),
+//                List.of(Tiles.TILES.get(88)));
+
+//        //Hunting trap full animaux
+        TileDecks tileDecks = new TileDecks( //todo : cancel token de merde + pit trap disparait +
+                List.of(Tiles.TILES.get(56)),
+                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
+                List.of(Tiles.TILES.get(94)));
+
+//        //Hunting trap no animal
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(4), Tiles.TILES.get(3), Tiles.TILES.get(15), Tiles.TILES.get(46), Tiles.TILES.get(29), Tiles.TILES.get(12), Tiles.TILES.get(18), Tiles.TILES.get(1), Tiles.TILES.get(37)),
+//                List.of(Tiles.TILES.get(94)));
+
+//        //Hunting trap tiger
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
+//                List.of(Tiles.TILES.get(94)));
+
+//        //Pit trap full animaux
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
+//                List.of(Tiles.TILES.get(92)));
+
+//        //Pit trap tiger et PitFire
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(15), Tiles.TILES.get(26)),
+//                List.of(Tiles.TILES.get(92), Tiles.TILES.get(85)));
+
+//        //Logboat Deck Normale
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(3), Tiles.TILES.get(4), Tiles.TILES.get(5), Tiles.TILES.get(6), Tiles.TILES.get(7), Tiles.TILES.get(11), Tiles.TILES.get(1)),
+//                List.of(Tiles.TILES.get(91)));
 
         //Creation of the playerNameMap and the textMaker
         Map<PlayerColor, String> playerNameMap = new TreeMap<>();
@@ -123,9 +177,10 @@ public class Main extends Application {
     private static TileDecks getRandomTileDecks(String seedString) {
 
         RandomGenerator random = seedString == null ? RandomGeneratorFactory.getDefault().create() : RandomGeneratorFactory.getDefault().create(parseUnsignedLong(seedString));
-        
+
 
         List<Tile> tiles = new ArrayList<>(Tiles.TILES);
+
         Collections.shuffle(tiles, random);
 
         Map<Tile.Kind, List<Tile>> tilesByKind = tiles.stream().collect(Collectors.groupingBy(Tile::kind));
