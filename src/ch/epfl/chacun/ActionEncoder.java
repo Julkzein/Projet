@@ -67,6 +67,7 @@ public class ActionEncoder {
         try {
             return decodeOrThrow(gameState, str);
         } catch (Exception e) { //TODO : check si tous les cas d'erreurs sont bien gérés
+            System.out.println("Invalid action");
             return null;
         }
     }
@@ -100,8 +101,15 @@ public class ActionEncoder {
             case OCCUPY_TILE:
                 int kind = index / 16;
                 int zoneId = index % 16;
-                Occupant occupant1 = new Occupant(Occupant.Kind.values()[kind], zoneId);
-                return withNewOccupant(gameState, occupant1);
+                if (zoneId == 15) {
+                    return withNewOccupant(gameState, null);
+                } else {
+                    Occupant occupant1 = new Occupant(Occupant.Kind.values()[kind], zoneId);
+                    return withNewOccupant(gameState, occupant1);
+                }
+                //System.out.println("id = " + zoneId);
+                //System.out.println(Zone.tileId(zoneId));
+                //return withNewOccupant(gameState, occupant1);
 
             case RETAKE_PAWN:
                 Occupant occupant2 = gameState.board().occupants().stream()
