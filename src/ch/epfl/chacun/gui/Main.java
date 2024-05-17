@@ -76,11 +76,12 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         primaryStage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         primaryStage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
-        observableGameState.set(gameState.withStartingTilePlaced());
+
         primaryStage.setTitle("ChaCuN");
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        observableGameState.set(gameState.withStartingTilePlaced()); //TODO : belek belek
 
     }
 
@@ -159,7 +160,9 @@ public class Main extends Application {
         };
 
         ObjectProperty<Tile> currentTile = new SimpleObjectProperty<>();
-        currentTile.bind(gameState.map(GameState::tileToPlace));
+        currentTile.bind(gameState.map(g -> g.tileToPlace()));
+
+
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
         ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
         ObjectProperty<String> text = new SimpleObjectProperty<>("");
