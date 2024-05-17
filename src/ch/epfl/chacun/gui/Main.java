@@ -226,7 +226,7 @@ public class Main extends Application {
      */
     private static Node getBoardUI(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, ObjectProperty<Set<Integer>> evidentTiles) {
         ObjectProperty<Rotation> currentRotation = new SimpleObjectProperty<>(Rotation.NONE);
-        ObservableValue<Set<Occupant>> visibleOccupants = new SimpleObjectProperty<>(Set.of());
+        ObjectProperty<Set<Occupant>> visibleOccupants = new SimpleObjectProperty<>(Set.of());
 
         Consumer<Rotation> rotationSetter = r -> { //TODO : check
             currentRotation.set(currentRotation.getValue().add(r));
@@ -272,11 +272,19 @@ public class Main extends Application {
             }*/
         };
 
+        gameState.addListener((_,_,nV) -> {
+            if (Objects.requireNonNull(gameState.getValue().nextAction()) == GameState.Action.OCCUPY_TILE) {
+                visibleOccupants.set(nV.board().lastPlacedTile().potentialOccupants());
+            } else {
+                visibleOccupants.set(nV.board().occupants());
+            }
+        });
+
         Node boardUI = BoardUI.create(
                 REACH,
                 gameState,
                 currentRotation,
-                visibleOccupants, //TODO : pk visible occupants ?
+                visibleOccupants,
                 evidentTiles,
                 rotationSetter,
                 desiredPlacement,

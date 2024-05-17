@@ -39,20 +39,6 @@ public class MessageBoardUI {
 
         scrollPane.setId("message-board");
         scrollPane.getStylesheets().add("message-board.css");
-        scrollPane.layout();
-        scrollPane.setVvalue(1.0); //todo : vérfifier si run lter ps nécéssire
-
-        vbox.getChildren().add(new Text("test"));
-        vbox.getChildren().add(new Text("test"));
-        vbox.getChildren().add(new Text("test"));
-        vbox.getChildren().add(new Text("test"));
-        vbox.getChildren().add(new Text("test"));
-        vbox.getChildren().add(new Text("test"));
-        vbox.getChildren().add(new Text("test"));
-        vbox.getChildren().add(new Text("test"));
-        vbox.getChildren().add(new Text("test"));
-        vbox.getChildren().add(new Text("test"));
-        vbox.getChildren().add(new Text("test"));
 
         // When the list of messages changes, add the new messages to the VBox
         messages.addListener((o, oV, nV) -> {
@@ -67,6 +53,8 @@ public class MessageBoardUI {
                 });
                 vbox.getChildren().add(newText);
             });
+            scrollPane.layout();
+            Platform.runLater(() -> scrollPane.setVvalue(1.0));
         });
         return scrollPane;
     }
