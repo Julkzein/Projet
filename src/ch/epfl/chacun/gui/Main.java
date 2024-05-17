@@ -29,7 +29,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         //Argument management
         List<String> playerNames = getParameters().getUnnamed(); //TODO : order is importnt for plyers
@@ -82,7 +82,20 @@ public class Main extends Application {
         observableGameState.set(gameState.withStartingTilePlaced());
     }
 
-    private static BorderPane getSideBorderPane(ObjectProperty<GameState> observableGameState, ObjectProperty<List<String>> actions, TextMakerFr textMaker, ObjectProperty<Set<Integer>> tileToHighLight) {
+    /**
+     * Returns a BorderPane containing the side elements of the game.
+     * @param observableGameState
+     * @param actions
+     * @param textMaker
+     * @param tileToHighLight
+     * @return
+     */
+    private static BorderPane getSideBorderPane(
+            ObjectProperty<GameState> observableGameState,
+            ObjectProperty<List<String>> actions,
+            TextMakerFr textMaker,
+            ObjectProperty<Set<Integer>> tileToHighLight) {
+
         //Creation of the observable value of the messages
         ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(m-> m.messages()); //TODO : changer la mise en page des messages
 
@@ -135,30 +148,27 @@ public class Main extends Application {
     private static VBox getActionsDecksVbox(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions) {
 
         //Creation of the action consumer
-        Consumer<String> actionConsumer = a -> System.out.println(Base32.decode(a)); //TODO : ecrire le consumer
+        Consumer<String> actionConsumer = str -> {
+            System.out.println(Base32.decode(str));
+            System.out.println(str);
+            ActionEncoder.StateAction stateAction = ActionEncoder.decodeAndApply(gameState.getValue(), str);
+            if (stateAction != null) {
+                gameState.set(stateAction.gameState());
+                List<String> newActions = new ArrayList<>(actions.getValue());
+                newActions.add(stateAction.action());
+                actions.set(newActions);
+            }
+        };
 
         //ObservableValue<Tile> observableCurrentTile = new SimpleObjectProperty<>(currentTile); //TODO : check si observable value ou object property
         ObjectProperty<Tile> currentTile = new SimpleObjectProperty<>(gameState.getValue().tileToPlace());
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
         ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
         ObjectProperty<String> text = new SimpleObjectProperty<>("");
-        Consumer<Occupant> occupantConsumer = o -> {
-            switch (gameState.getValue().nextAction()) {
-                case OCCUPY_TILE -> {
-                    ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), null);
-                    gameState.set(stateAction.gameState());
-                    actions.getValue().add(stateAction.action());
-                    actions.set(actions.getValue());
-                }
-                case RETAKE_PAWN -> {
-                    ActionEncoder.StateAction stateAction = ActionEncoder.withOccupantRemoved(gameState.getValue(), null);
-                    gameState.set(stateAction.gameState());
-                    actions.getValue().add(stateAction.action());
-                    actions.set(actions.getValue());
-                }
-                default -> throw new IllegalStateException("Unexpected value: " + gameState.getValue().nextAction());
-            }
-        }; //TODO : jsp quoi mettre
+
+        Consumer<Occupant> noActionConsumer = o -> {
+            consumeOccupant(gameState, actions, o);
+        };
 
         gameState.addListener((_,_,nV) -> {
             if (nV.tileToPlace() != null) currentTile.set(nV.tileToPlace());
@@ -169,10 +179,6 @@ public class Main extends Application {
             }
         });
 
-        //TODO : test
-        actions.addListener((_,_,_) -> System.out.println("test"));
-
-
         //Creation of the vbox containing the actions and the decks
         VBox vbox = new VBox();
         vbox.getChildren().add(ActionsUI.create(actions, actionConsumer)); //TODO
@@ -181,9 +187,35 @@ public class Main extends Application {
                 normalCount,
                 menhirCount,
                 text,
-                occupantConsumer
+                noActionConsumer
         ));
         return vbox;
+    }
+
+    /**
+     * Consumes the given occupant according to the next action of the game state.
+     *
+     * @param gameState the observable value of the game state
+     * @param actions the observable value of the actions
+     * @param o the occupant to consume
+     */
+    private static void consumeOccupant(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, Occupant o) {
+        List<String> newActions = new ArrayList<>(actions.getValue());
+        switch (gameState.getValue().nextAction()) { //TODO : repetition
+            case OCCUPY_TILE -> {
+                ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), o);
+                gameState.set(stateAction.gameState());
+                newActions.add(stateAction.action());
+                actions.set(newActions);
+            }
+            case RETAKE_PAWN -> {
+                ActionEncoder.StateAction stateAction = ActionEncoder.withOccupantRemoved(gameState.getValue(), o);
+                gameState.set(stateAction.gameState());
+                newActions.add(stateAction.action());
+                actions.set(newActions);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + gameState.getValue().nextAction());
+        }
     }
 
     /**
@@ -214,12 +246,16 @@ public class Main extends Application {
             if (gS.board().canAddTile(pT)) {
                 ActionEncoder.StateAction stateAction = ActionEncoder.withPlacedTile(gameState.getValue(), pT);
                 gameState.set(stateAction.gameState());
-                currentRotation.set(Rotation.NONE);
+                currentRotation.set(Rotation.NONE); //TODO : ps l bonne solution
+                List<String> newActions = new ArrayList<>(actions.getValue());
+                newActions.add(stateAction.action());
+                actions.set(newActions);
             }
         };
 
         Consumer<Occupant> occupantConsumer = o -> {
-            GameState gS = gameState.getValue();
+            consumeOccupant(gameState, actions, o);
+            /**GameState gS = gameState.getValue();
             switch (gS.nextAction()) {
                 case OCCUPY_TILE -> {
                     ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), o);
@@ -233,7 +269,7 @@ public class Main extends Application {
                     actions.getValue().add(stateAction.action());
                     actions.set(actions.getValue());
                 }
-            }
+            }*/
         };
 
         Node boardUI = BoardUI.create(

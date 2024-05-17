@@ -50,9 +50,7 @@ public class ActionsUI {
         );
          fourLastActions.textProperty().bind(textBinding);
          */
-        actionList.addListener((_, _, nV) ->
-                fourLastActions.setText(fourLastActionsToString(nV))
-        );
+        actionList.addListener((_, _, nV) -> fourLastActions.setText(fourLastActionsToString(nV)));
 
         TextField textField = new TextField();
         textField.setId("action-field");
