@@ -167,12 +167,8 @@ public class BoardUI {
 
         //veil color binding
         Blend blend = new Blend(SRC_OVER);
-        ColorInput colorInputBlend = new ColorInput();
+        ColorInput colorInputBlend = new ColorInput(0, 0, NORMAL_TILE_FIT_SIZE, NORMAL_TILE_FIT_SIZE, Color.TRANSPARENT);
         colorInputBlend.paintProperty().bind(cellData.map(CellData::veilColor));
-        colorInputBlend.setX(pos.x());
-        colorInputBlend.setY(pos.y());
-        colorInputBlend.setHeight(NORMAL_TILE_FIT_SIZE);
-        colorInputBlend.setWidth(NORMAL_TILE_FIT_SIZE);
         blend.setOpacity(0.5);
         blend.topInputProperty().bind(cellData.map(_ -> colorInputBlend));
         group.setEffect(blend);
