@@ -254,7 +254,9 @@ public class Main extends Application {
 
         gameState.addListener((_,_,nV) -> { //crete binding ith bord
             if (Objects.requireNonNull(gameState.getValue().nextAction()) == GameState.Action.OCCUPY_TILE) {
-                visibleOccupants.set(nV.lastTilePotentialOccupants());
+                Set<Occupant> occupantsToDisplay = new HashSet<>(nV.lastTilePotentialOccupants());
+                occupantsToDisplay.addAll(nV.board().occupants());
+                visibleOccupants.set(occupantsToDisplay);
             } else {
                 visibleOccupants.set(nV.board().occupants());
             }
