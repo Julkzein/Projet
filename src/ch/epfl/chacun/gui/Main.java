@@ -147,8 +147,6 @@ public class Main extends Application {
 
         //Creation of the action consumer
         Consumer<String> actionConsumer = str -> {
-            System.out.println(Base32.decode(str));
-            System.out.println(str);
             ActionEncoder.StateAction stateAction = ActionEncoder.decodeAndApply(gameState.getValue(), str);
             if (stateAction != null) {
                 gameState.set(stateAction.gameState());
