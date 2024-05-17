@@ -119,19 +119,10 @@ public class Main extends Application {
      * @return a new TileDecks object with the tiles shuffled according to the given seed
      */
     private static TileDecks getRandomTileDecks(String seedString) {
-<<<<<<< Updated upstream
-        RandomGeneratorFactory<RandomGenerator> rngFactory = RandomGeneratorFactory.getDefault();
-        RandomGenerator random;
 
-        if (true) {
-            long seed1 = parseUnsignedLong("2024");
-            random = rngFactory.create(seed1);
-        } else random = rngFactory.create();
-=======
         RandomGenerator random = seedString == null ? RandomGeneratorFactory.getDefault().create() : RandomGeneratorFactory.getDefault().create(parseUnsignedLong(seedString));
         
->>>>>>> Stashed changes
-        
+
         List<Tile> tiles = new ArrayList<>(Tiles.TILES);
         Collections.shuffle(tiles, random);
 
