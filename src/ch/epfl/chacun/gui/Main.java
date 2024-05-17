@@ -39,7 +39,7 @@ public class Main extends Application {
         TileDecks tileDecks = getRandomTileDecks(seedString);
 
         //Creation of the playerNameMap and the textMaker
-        Map<PlayerColor, String> playerNameMap = new HashMap<>();
+        Map<PlayerColor, String> playerNameMap = new TreeMap<>();
         for (String playerName : playerNames) {
             PlayerColor playerColor = PlayerColor.values()[playerNameMap.size()];
             playerNameMap.put(playerColor, playerName);
@@ -214,7 +214,9 @@ public class Main extends Application {
                 newActions.add(stateAction.action());
                 actions.set(newActions);
             }
-            default -> throw new IllegalStateException("Unexpected value: " + gameState.getValue().nextAction());
+            default -> {
+                return;
+            }
         }
     }
 

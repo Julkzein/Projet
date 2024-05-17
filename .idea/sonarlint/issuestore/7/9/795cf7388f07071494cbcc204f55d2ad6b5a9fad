@@ -1,42 +1,46 @@
 
-™	java:S117¥"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8¸£‘÷1J$bbd0da14-2b8d-4cc4-ac9b-86173c27ea8f
-™	java:S117¦"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8¸£‘÷1J$4784a828-9455-42df-a04f-a2bfa6f8ab26
-™	java:S117­"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8¶­Ï¯÷1J$20acd4ce-5d86-4aef-8d89-8d987051950f
-™	java:S117­"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8¶­Ï¯÷1J$75ec5a81-9c77-4558-a7a5-d0c54e5bccbb
+s	java:S117¥"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8ƒû‘³ø1
+s	java:S117¦"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8ƒû‘³ø1
+s	java:S117­"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ƒû‘³ø1
+s	java:S117­"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ƒû‘³ø1
+s	java:S117•"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ƒû‘³ø1
+s	java:S117•"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ƒû‘³ø1
 „
-java:S1488†"aImmediately return this expression instead of assigning it to the temporary variable "tileDecks".(ŒòÈ•øÿÿÿÿ8òßœ°÷1
-£
-java:S1488“"_Immediately return this expression instead of assigning it to the temporary variable "boardUI".(ùòœş8Äü¸®÷1J$9c67ed03-7b2e-4007-b850-987532ca16d2
-g
-java:S1190­"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8Ğ­Ï¯÷1J$286549ad-4b82-42c9-afc7-cc4a8d031124
-g
-java:S1190­"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8Ñ­Ï¯÷1J$f63e204c-1dcf-4d69-b118-726a1e78f181
-g
-java:S1640*"Convert this Map to an EnumMap.(Ò®Úùÿÿÿÿ8½£‘÷1J$dfdb8caf-faef-465d-8231-e05fe71f88d4
+java:S1488†"aImmediately return this expression instead of assigning it to the temporary variable "tileDecks".(ŒòÈ•øÿÿÿÿ8„û‘³ø1
+}
+java:S1488"_Immediately return this expression instead of assigning it to the temporary variable "boardUI".(ùòœş8„û‘³ø1
+A
+java:S1190­"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8†û‘³ø1
+A
+java:S1190­"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8†û‘³ø1
+A
+java:S1190•"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8†û‘³ø1
+A
+java:S1190•"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8†û‘³ø1
 T
-java:S1135#"2Complete the task associated to this TODO comment.(°…îÿÿÿÿÿ8˜Â¯ø1
+java:S1135#"2Complete the task associated to this TODO comment.(°…îÿÿÿÿÿ8û‘³ø1
 T
-java:S1135d"2Complete the task associated to this TODO comment.(è™ì»úÿÿÿÿ8ìÂ¯ø1
-M	java:S106˜"+Replace this use of System.out by a logger.(’¸äÕÿÿÿÿÿ8´Â¯ø1
-G	java:S106™"+Replace this use of System.out by a logger.(ƒÚáB8¶Â¯ø1
+java:S1135d"2Complete the task associated to this TODO comment.(è™ì»úÿÿÿÿ8¦û‘³ø1
+M	java:S106˜"+Replace this use of System.out by a logger.(’¸äÕÿÿÿÿÿ8©û‘³ø1
+G	java:S106™"+Replace this use of System.out by a logger.(ƒÚáB8©û‘³ø1
 U
-java:S1135£"2Complete the task associated to this TODO comment.(î®·ìøÿÿÿÿ8Ààœ°÷1
+java:S1135£"2Complete the task associated to this TODO comment.(î®·ìøÿÿÿÿ8Øû‘³ø1
 O
-java:S1602©",Remove useless curly braces around statement(ÿàÜèÿÿÿÿÿ8ìÂ¯ø1
-v	java:S131¯"YComplete cases by adding the missing enum constants or add a default case to this switch.(·‡Õï8Œ‘Â¯ø1
-{
-java:S1135¸"2Complete the task associated to this TODO comment.(¼“ÿãıÿÿÿÿ8ó£‘÷1J$66066703-d90e-465f-8c6e-0674fe196870
+java:S1602©",Remove useless curly braces around statement(ÿàÜèÿÿÿÿÿ8Úû‘³ø1
+v	java:S131¯"YComplete cases by adding the missing enum constants or add a default case to this switch.(·‡Õï8Ûû‘³ø1
 U
-java:S1135Ì"2Complete the task associated to this TODO comment.(İò”½øÿÿÿÿ8¸‘Â¯ø1
-u
-java:S1602ç",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8ì£‘÷1J$0b32825a-88a2-43bc-8dc3-9e577c213e78
-{
-java:S1135ç"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8ì£‘÷1J$0754de5e-db02-4c3d-bfe9-9b0cec07c357
+java:S1135¸"2Complete the task associated to this TODO comment.(¼“ÿãıÿÿÿÿ8Üû‘³ø1
+9
+java:S3626Ú"Remove this redundant jump.(ûÁİ…8Üû‘³ø1
+U
+java:S1135Ì"2Complete the task associated to this TODO comment.(İò”½øÿÿÿÿ8İû‘³ø1
+O
+java:S1602é",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8àû‘³ø1
+U
+java:S1135é"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8àû‘³ø1
 P
-java:S1135ù"2Complete the task associated to this TODO comment.(Îì¼8è‘Â¯ø1
+java:S1135û"2Complete the task associated to this TODO comment.(Îì¼8âû‘³ø1
 J
-java:S1602€",Remove useless curly braces around statement(¤úÔ¥8í‘Â¯ø1
-{
-java:S1135—"2Complete the task associated to this TODO comment.(ÅÏ˜ïÿÿÿÿÿ8ï£‘÷1J$86e82a34-a4de-442e-9cf5-59cef06240c6
-{
-java:S1135¡"2Complete the task associated to this TODO comment.(£±Òıÿÿÿÿ8¹©—°÷1J$b06e185c-5c06-4a73-9779-814dab33e0a6
+java:S1602‚",Remove useless curly braces around statement(¤úÔ¥8âû‘³ø1
+U
+java:S1135«"2Complete the task associated to this TODO comment.(£±Òıÿÿÿÿ8ãû‘³ø1
