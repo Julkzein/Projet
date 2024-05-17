@@ -36,7 +36,7 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
-        TileDecks tileDecks = getRandomTileDecks("2024");
+        TileDecks tileDecks = getRandomTileDecks(seedString);
 
         //Creation of the playerNameMap and the textMaker
         Map<PlayerColor, String> playerNameMap = new TreeMap<>();
@@ -59,12 +59,14 @@ public class Main extends Application {
 
         //Creation of the observable value of the tile to highlight
         ObjectProperty<Set<Integer>> tileToHighLight = new SimpleObjectProperty<>(Set.of());
+        
+        ObjectProperty<Rotation> visibleRotation = new SimpleObjectProperty<>(Rotation.NONE);
 
         //Creation of the side border pane
-        BorderPane sideBorderPane = getSideBorderPane(observableGameState, actions, textMaker, tileToHighLight, tileDecks);
+        BorderPane sideBorderPane = getSideBorderPane(observableGameState, actions, textMaker, tileToHighLight, tileDecks, visibleRotation);
 
         //Creation of the root parameters
-        Node boardUI = getBoardUI(observableGameState, actions, tileToHighLight);
+        Node boardUI = getBoardUI(observableGameState, actions, tileToHighLight, visibleRotation);
 
         //Creation of the root
         BorderPane root = new BorderPane();
@@ -95,13 +97,13 @@ public class Main extends Application {
             ObjectProperty<List<String>> actions,
             TextMakerFr textMaker,
             ObjectProperty<Set<Integer>> tileToHighLight,
-            TileDecks tiledecks) {
+            TileDecks tiledecks, ObjectProperty<Rotation> visibleRotation) {
 
         //Creation of the observable value of the messages
         ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(MessageBoard::messages); //TODO : changer la mise en page des messages
 
         //Creation of the actions and decks vbox
-        VBox actionsDecksVbox = getActionsDecksVbox(observableGameState, actions);
+        VBox actionsDecksVbox = getActionsDecksVbox(observableGameState, actions, visibleRotation);
 
         BorderPane sideBorderPane = new BorderPane();
         sideBorderPane.setTop(PlayersUI.create(observableGameState, textMaker));
@@ -140,16 +142,19 @@ public class Main extends Application {
      * @param gameState the observable value of the game state
      * @return a VBox containing the actions and the decks
      */
-    private static VBox getActionsDecksVbox(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions) {
+    private static VBox getActionsDecksVbox(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, ObjectProperty<Rotation> visibleRotation) {
 
         //Creation of the action consumer
         Consumer<String> actionConsumer = str -> {
             ActionEncoder.StateAction stateAction = ActionEncoder.decodeAndApply(gameState.getValue(), str);
+
             if (stateAction != null) {
+                visibleRotation.setValue(stateAction.gameState().board().lastPlacedTile().rotation());
                 gameState.set(stateAction.gameState());
                 List<String> newActions = new LinkedList<>(actions.getValue());
                 newActions.add(stateAction.action());
                 actions.set(newActions);
+
             }
         };
 
@@ -216,12 +221,11 @@ public class Main extends Application {
      * @param gameState the observable value of the game state
      * @return the board UI
      */
-    private static Node getBoardUI(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, ObjectProperty<Set<Integer>> evidentTiles) {
-        ObjectProperty<Rotation> currentRotation = new SimpleObjectProperty<>(Rotation.NONE);
+    private static Node getBoardUI(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, ObjectProperty<Set<Integer>> evidentTiles, ObjectProperty<Rotation> visbleRotation) {
         ObjectProperty<Set<Occupant>> visibleOccupants = new SimpleObjectProperty<>(Set.of());
 
         Consumer<Rotation> rotationSetter = r -> { //TODO : check
-            currentRotation.set(currentRotation.getValue().add(r));
+            visbleRotation.set(visbleRotation.getValue().add(r));
         };
 
         Consumer<Pos> desiredPlacement = pos -> {
@@ -232,13 +236,13 @@ public class Main extends Application {
             PlacedTile pT = new PlacedTile(
                     gS.tileToPlace(),
                     gS.currentPlayer(),
-                    currentRotation.getValue(),
+                    visbleRotation.getValue(),
                     pos);
 
             if (gS.board().canAddTile(pT)) {
                 ActionEncoder.StateAction stateAction = ActionEncoder.withPlacedTile(gameState.getValue(), pT);
                 gameState.set(stateAction.gameState());
-                currentRotation.set(Rotation.NONE); //TODO : ps l bonne solution
+                visbleRotation.set(Rotation.NONE); //TODO : ps l bonne solution
                 List<String> newActions = new ArrayList<>(actions.getValue());
                 newActions.add(stateAction.action());
                 actions.set(newActions);
@@ -260,7 +264,7 @@ public class Main extends Application {
         return BoardUI.create(
                 REACH,
                 gameState,
-                currentRotation,
+                visbleRotation,
                 visibleOccupants,
                 evidentTiles,
                 rotationSetter,
