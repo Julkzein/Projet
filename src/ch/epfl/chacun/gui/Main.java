@@ -36,7 +36,7 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
-        //TileDecks tileDecks = getRandomTileDecks(seedString);
+        TileDecks tileDecks = getRandomTileDecks(seedString);
 
         //        //Logboat Deck Normale
 //       TileDecks tileDecks = new TileDecks(
@@ -56,11 +56,11 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(36), Tiles.TILES.get(35), Tiles.TILES.get(27), Tiles.TILES.get(39), Tiles.TILES.get(37)),
 //                List.of(Tiles.TILES.get(88)));
 
-//        //Hunting trap full animaux
-        TileDecks tileDecks = new TileDecks( //todo : cancel token de merde + pit trap disparait +
-                List.of(Tiles.TILES.get(56)),
-                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
-                List.of(Tiles.TILES.get(94)));
+////        //Hunting trap full animaux
+//        TileDecks tileDecks = new TileDecks( //todo : cancel token de merde + pit trap disparait +
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
+//                List.of(Tiles.TILES.get(94)));
 
 //        //Hunting trap no animal
 //        TileDecks tileDecks = new TileDecks(
