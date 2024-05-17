@@ -40,7 +40,7 @@ public class ActionEncoder {
      * @return the encoded action
      */
     public static StateAction withNewOccupant(GameState gameState, Occupant occupant) {
-        int index = (occupant == null) ? 0x1f : occupant.kind().ordinal() * 16 + occupant.zoneId(); //TODO : check si l'id c'est le bon où pas
+        int index = (occupant == null) ? 0x1f : occupant.kind().ordinal() * 16 + Zone.localId(occupant.zoneId());
         return new StateAction(gameState.withNewOccupant(occupant), encodeBits5(index));
     }
 
@@ -52,7 +52,12 @@ public class ActionEncoder {
      * @return the encoded action
      */
     public static StateAction withOccupantRemoved(GameState gameState, Occupant occupant) {
-        int index = (occupant == null) ? 0x1f : occupant.zoneId(); //TODO : vérifier si c'est le bon id ou pas
+        int index = (occupant == null) ?
+                0x1f :
+                gameState.board().occupants().stream()
+                    .sorted(Comparator.comparingInt(Occupant::zoneId))
+                    .toList()
+                    .indexOf(occupant); //TODO : vérifier si c'est le bon id ou pas
         return new StateAction(gameState.withOccupantRemoved(occupant), encodeBits5(index));
     }
 
@@ -66,8 +71,7 @@ public class ActionEncoder {
     public static StateAction decodeAndApply(GameState gameState, String str) {
         try {
             return decodeOrThrow(gameState, str);
-        } catch (Exception e) { //TODO : check si tous les cas d'erreurs sont bien gérés
-            System.out.println("Invalid action");
+        } catch (Exception e) {
             return null;
         }
     }
@@ -86,8 +90,10 @@ public class ActionEncoder {
         }
 
         int index = decode(str);
-        switch(gameState.nextAction()) {
-            case PLACE_TILE:
+        System.out.println(index);
+        System.out.println(gameState.nextAction());
+        return switch(gameState.nextAction()) {
+            case PLACE_TILE -> {
                 int rotation = index % 4;
                 int posIndex = index / 4;
                 Pos pos = gameState.board().insertionPositions()
@@ -96,31 +102,32 @@ public class ActionEncoder {
                         .toList()
                         .get(posIndex);
                 PlacedTile pT = new PlacedTile(gameState.tileToPlace(), gameState.currentPlayer(), Rotation.values()[rotation], pos);
-                return withPlacedTile(gameState, pT);
+                yield withPlacedTile(gameState, pT);
+            }
 
-            case OCCUPY_TILE:
-                int kind = index / 16;
-                int zoneId = index % 16;
-                if (zoneId == 15) {
-                    return withNewOccupant(gameState, null);
-                } else {
-                    Occupant occupant1 = new Occupant(Occupant.Kind.values()[kind], zoneId);
-                    return withNewOccupant(gameState, occupant1);
+            case OCCUPY_TILE -> {
+                int kind = (index >> 4) & 1;
+                int localId = index & 0xf;
+                if (localId == 0xf) yield withNewOccupant(gameState, null);
+                else {
+                    for (Occupant o : gameState.lastTilePotentialOccupants()) {
+                        if (Zone.localId(o.zoneId()) == localId && o.kind().ordinal() == kind)
+                            yield withNewOccupant(gameState, o);
+                    }
                 }
-                //System.out.println("id = " + zoneId);
-                //System.out.println(Zone.tileId(zoneId));
-                //return withNewOccupant(gameState, occupant1);
+                throw new IllegalArgumentException();
+            }
 
-            case RETAKE_PAWN:
+            case RETAKE_PAWN -> {
                 Occupant occupant2 = gameState.board().occupants().stream()
                         .sorted(Comparator.comparingInt(Occupant::zoneId))
                         .toList()
                         .get(index);
-                return withOccupantRemoved(gameState, occupant2);
+                yield withOccupantRemoved(gameState, occupant2);
+            }
 
-            default:
-                throw new IllegalArgumentException();
-        }
+            default -> throw new IllegalArgumentException();
+        };
 
     }
 

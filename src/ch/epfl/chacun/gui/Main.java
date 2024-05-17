@@ -36,7 +36,7 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
-        TileDecks tileDecks = getRandomTileDecks(seedString);
+        TileDecks tileDecks = getRandomTileDecks("2024");
 
         //Creation of the playerNameMap and the textMaker
         Map<PlayerColor, String> playerNameMap = new TreeMap<>();
@@ -121,8 +121,8 @@ public class Main extends Application {
         RandomGeneratorFactory<RandomGenerator> rngFactory = RandomGeneratorFactory.getDefault();
         RandomGenerator random;
 
-        if (seedString != null) {
-            long seed1 = parseUnsignedLong(seedString);
+        if (true) {
+            long seed1 = parseUnsignedLong("2024");
             random = rngFactory.create(seed1);
         } else random = rngFactory.create();
         

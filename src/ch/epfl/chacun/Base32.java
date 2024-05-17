@@ -17,7 +17,7 @@ public class Base32 {
     }
 
     public static String encodeBits5(int i) {
-        return String.valueOf(ALPHABET.charAt(i & 0b11111));
+        return String.valueOf(ALPHABET.charAt(i & 0x1f));
     }
 
     public static String encodeBits10(int i) {

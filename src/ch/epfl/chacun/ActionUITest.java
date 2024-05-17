@@ -45,7 +45,6 @@ public final class ActionUITest extends Application {
         var actionListObs = new SimpleObjectProperty<>(List.of("AG","C","AM","EP", "B2", "B2"));
         var actionUINode = ActionsUI.create(actionListObs, r -> {
             System.out.println(gameState.nextAction());
-            System.out.println("enterHasBeenPressed: " + ActionEncoder.decodeAndApply(gameState,r));
         });
 
 
