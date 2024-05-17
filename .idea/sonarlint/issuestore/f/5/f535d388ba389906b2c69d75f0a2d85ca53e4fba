@@ -1,8 +1,8 @@
 
 ‡
-java:S2184"CCast one of the operands of this subtraction operation to a "long".(®™Â²8¬¥­–ö1J$c221470f-3752-4d1b-bc17-54c8e83fa99e
-™
-java:S3655£"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(–Äı’üÿÿÿÿ8¦¬­–ö1J$ad9aa17a-edd4-454e-90c0-f5289fa51212
+java:S2184"CCast one of the operands of this subtraction operation to a "long".(®™Â²8¬¥­–ö1J$c221470f-3752-4d1b-bc17-54c8e83fa99e
+s
+java:S3655¤"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(Ìı«åûÿÿÿÿ8†şÈ¯ø1
 •
 java:S3776V"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(‰œ®8¢³Ú—ö1J$324b960b-aa5c-491f-8e13-880e8497842d
 v
@@ -10,6 +10,6 @@ java:S1135—"2Complete the task associated to this TODO comment.(¦‹¡¦8¾Ÿ·ö1J$
 •
 java:S3776Ø"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(îË=8®³Ú—ö1J$9172d758-021f-4fc0-95c2-c190c0b0ec9c
 –
-java:S3776é"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ŞûÕ¦8ê¬­–ö1J$46556ffc-e8db-4a72-98ac-9093f217115e
+java:S3776ê"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ŞûÕ¦8ê¬­–ö1J$46556ffc-e8db-4a72-98ac-9093f217115e
 ‚
-java:S1144İ"9Remove this unused private "setHasOccupantOfKind" method.(ÕŸ‚Æùÿÿÿÿ8õ¬­–ö1J$6be03739-90f0-4142-b2d3-695d16d40a79
+java:S1144Ş"9Remove this unused private "setHasOccupantOfKind" method.(ÕŸ‚Æùÿÿÿÿ8õ¬­–ö1J$6be03739-90f0-4142-b2d3-695d16d40a79
