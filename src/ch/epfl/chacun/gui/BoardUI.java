@@ -212,8 +212,9 @@ public class BoardUI {
      * @param occupants the observable value of the occupants to be displayed
      */
     private static void createOccupants(Pos pos, ObservableValue<GameState> gameState, Group group, ObservableValue<Set<Occupant>> occupants, Consumer<Occupant> occupantConsumer) {
-        for (Occupant o : Objects.requireNonNull(gameState.getValue().board().tileAt(pos)).potentialOccupants()) { //TODO : enlever le requireNonNull
-            Node occupantSVGPath = Icon.newFor(gameState.getValue().currentPlayer(), o.kind());
+        GameState gS = gameState.getValue();
+        for (Occupant o : Objects.requireNonNull(gS.board().tileAt(pos)).potentialOccupants()) { //TODO : enlever le requireNonNull
+            Node occupantSVGPath = Icon.newFor(gS.board().lastPlacedTile().placer(), o.kind());
             occupantSVGPath.setId(STR."\{o.kind().toString().toLowerCase()}_\{o.zoneId()}" );
             occupantSVGPath.visibleProperty().bind(occupants.map(s -> s.contains(o)));
             occupantSVGPath.setOnMouseClicked(e -> {

@@ -197,7 +197,8 @@ public class Main extends Application {
      */
     private static void consumeOccupant(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, Occupant o) {
         List<String> newActions = new ArrayList<>(actions.getValue());
-        switch (gameState.getValue().nextAction()) { //TODO : repetition
+        GameState gS = gameState.getValue();
+        switch (gS.nextAction()) { //TODO : repetition
             case OCCUPY_TILE -> {
                 ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), o);
                 gameState.set(stateAction.gameState());
@@ -210,9 +211,7 @@ public class Main extends Application {
                 newActions.add(stateAction.action());
                 actions.set(newActions);
             }
-            default -> {
-                return;
-            }
+            default -> {}
         }
     }
 
@@ -270,7 +269,7 @@ public class Main extends Application {
             }*/
         };
 
-        gameState.addListener((_,_,nV) -> {
+        gameState.addListener((_,_,nV) -> { //crete binding ith bord
             if (Objects.requireNonNull(gameState.getValue().nextAction()) == GameState.Action.OCCUPY_TILE) {
                 visibleOccupants.set(nV.lastTilePotentialOccupants());
             } else {
