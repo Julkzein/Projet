@@ -84,11 +84,11 @@ public class Main extends Application {
 
     /**
      * Returns a BorderPane containing the side elements of the game.
-     * @param observableGameState
-     * @param actions
-     * @param textMaker
-     * @param tileToHighLight
-     * @return
+     * @param observableGameState the observable value of the game state
+     * @param actions the observable value of the actions
+     * @param textMaker the text maker
+     * @param tileToHighLight the observable value of the tile to highlight
+     * @return a BorderPane containing the side elements of the game
      */
     private static BorderPane getSideBorderPane(
             ObjectProperty<GameState> observableGameState,
@@ -97,7 +97,7 @@ public class Main extends Application {
             ObjectProperty<Set<Integer>> tileToHighLight) {
 
         //Creation of the observable value of the messages
-        ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(m-> m.messages()); //TODO : changer la mise en page des messages
+        ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(MessageBoard::messages); //TODO : changer la mise en page des messages
 
         //Creation of the actions and decks vbox
         VBox actionsDecksVbox = getActionsDecksVbox(observableGameState, actions);
@@ -131,12 +131,10 @@ public class Main extends Application {
 
         Map<Tile.Kind, List<Tile>> tilesByKind = Tiles.TILES.stream().collect(Collectors.groupingBy(Tile::kind));
 
-        TileDecks tileDecks = new TileDecks(
+        return new TileDecks(
                 tilesByKind.get(Tile.Kind.START),
                 tilesByKind.get(Tile.Kind.NORMAL),
                 tilesByKind.get(Tile.Kind.MENHIR));
-
-        return tileDecks;
     }
 
     /**
@@ -166,9 +164,7 @@ public class Main extends Application {
         ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
         ObjectProperty<String> text = new SimpleObjectProperty<>("");
 
-        Consumer<Occupant> noActionConsumer = o -> {
-            consumeOccupant(gameState, actions, o);
-        };
+        Consumer<Occupant> noActionConsumer = o -> consumeOccupant(gameState, actions, o);
 
         gameState.addListener((_,_,nV) -> {
             if (nV.tileToPlace() != null) currentTile.set(nV.tileToPlace());
@@ -276,13 +272,13 @@ public class Main extends Application {
 
         gameState.addListener((_,_,nV) -> {
             if (Objects.requireNonNull(gameState.getValue().nextAction()) == GameState.Action.OCCUPY_TILE) {
-                visibleOccupants.set(nV.board().lastPlacedTile().potentialOccupants());
+                visibleOccupants.set(nV.lastTilePotentialOccupants());
             } else {
                 visibleOccupants.set(nV.board().occupants());
             }
         });
 
-        Node boardUI = BoardUI.create(
+        return BoardUI.create(
                 REACH,
                 gameState,
                 currentRotation,
@@ -292,10 +288,6 @@ public class Main extends Application {
                 desiredPlacement,
                 occupantConsumer
         );
-
-        return boardUI;
     }
-
-    //TODO : check for retake 
 }
 
