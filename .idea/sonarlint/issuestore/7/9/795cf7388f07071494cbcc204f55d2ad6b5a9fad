@@ -1,37 +1,33 @@
 
-s	java:S117£"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8§è²´ø1
-s	java:S117¤"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8§è²´ø1
-s	java:S117©"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8§è²´ø1
-s	java:S117©"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8§è²´ø1
-s	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡ŠÑ™ıÿÿÿÿ8¨è²´ø1
-s	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡ŠÑ™ıÿÿÿÿ8¨è²´ø1
-A
-java:S1190©"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8¬è²´ø1
-A
-java:S1190©"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8¬è²´ø1
-A
-java:S1190"Use a different name than "_".(¡ŠÑ™ıÿÿÿÿ8¬è²´ø1
-A
-java:S1190"Use a different name than "_".(¡ŠÑ™ıÿÿÿÿ8¬è²´ø1
+™	java:S117Ÿ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8„‡•·ø1J$189ada83-4d36-470b-97c1-3f426ab82c27
+™	java:S117 "QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8„‡•·ø1J$6410d21c-c329-4bc4-a3a4-acf77b1b8d35
+™	java:S117¥"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8„‡•·ø1J$66e0af2d-ad1e-4ce0-8871-0716693ed8db
+™	java:S117¥"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8„‡•·ø1J$97d601da-58af-49a6-9492-af5c933afdfd
+™	java:S117ı"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡ŠÑ™ıÿÿÿÿ8„‡•·ø1J$8590cca6-53cb-4624-9c35-545e2f395ec3
+™	java:S117ı"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡ŠÑ™ıÿÿÿÿ8„‡•·ø1J$c4885147-be40-48c9-bfb8-be0b94bbcce9
+g
+java:S1190¥"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8‰‡•·ø1J$d4694258-bbb5-4a82-96a0-e4ef71a3b507
+g
+java:S1190¥"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8‰‡•·ø1J$b4605531-dbdb-45d4-9152-02f3fe68eacd
+g
+java:S1190ı"Use a different name than "_".(¡ŠÑ™ıÿÿÿÿ8‰‡•·ø1J$6b476639-dcee-43ed-bcb1-d66eb0ca9960
+g
+java:S1190ı"Use a different name than "_".(¡ŠÑ™ıÿÿÿÿ8‰‡•·ø1J$7d653418-b5d2-4ba2-b241-b85ea347a78f
+x
+java:S1172b"0Remove this unused method parameter "tiledecks".(…ÄÏ¦ÿÿÿÿÿ8–º¼·ø1J$49ba28ca-42d4-4926-a288-23277bbcf21c
 z
-java:S1135#"2Complete the task associated to this TODO comment.(°…îÿÿÿÿÿ8û‘³ø1J$d0fed027-bf95-4f47-b737-fe61202959fa
-T
-java:S1135d"2Complete the task associated to this TODO comment.(éèñûÿÿÿÿ8ùè²´ø1
-M	java:S106–"+Replace this use of System.out by a logger.(’¸äÕÿÿÿÿÿ8ƒé²´ø1
-G	java:S106—"+Replace this use of System.out by a logger.(ƒÚáB8ƒé²´ø1
-U
-java:S1135¡"2Complete the task associated to this TODO comment.(î®·ìøÿÿÿÿ8…é²´ø1
-v	java:S131«"YComplete cases by adding the missing enum constants or add a default case to this switch.(·‡Õï8é²´ø1
-U
-java:S1135´"2Complete the task associated to this TODO comment.(¼“ÿãıÿÿÿÿ8šé²´ø1
-U
-java:S1135É"2Complete the task associated to this TODO comment.(Öòâƒúÿÿÿÿ8¨é²´ø1
-F	java:S108Ö")Either remove or fill this block of code.(”ì­è8­é²´ø1
-O
-java:S1602ä",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8±é²´ø1
-U
-java:S1135ä"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8²é²´ø1
-P
-java:S1135ö"2Complete the task associated to this TODO comment.(Îì¼8¾é²´ø1
-J
-java:S1602ı",Remove useless curly braces around statement(¤úÔ¥8Áé²´ø1
+java:S1135e"2Complete the task associated to this TODO comment.(éèñûÿÿÿÿ8¸‡•·ø1J$79458c25-470c-4a55-829d-1e80457f4746
+s	java:S106’"+Replace this use of System.out by a logger.(’¸äÕÿÿÿÿÿ8¿‡•·ø1J$2491e8b8-ec15-4a21-8c10-03b6bea8bc95
+m	java:S106“"+Replace this use of System.out by a logger.(ƒÚáB8¿‡•·ø1J$e9c4adae-79ee-4316-adb8-dca805e89445
+œ	java:S131§"YComplete cases by adding the missing enum constants or add a default case to this switch.(·‡Õï8Ã‡•·ø1J$1fe83ec7-37f4-4a92-a45c-7c6aa7cdecaa
+{
+java:S1135Å"2Complete the task associated to this TODO comment.(Öòâƒúÿÿÿÿ8Å‡•·ø1J$c7ca9278-c910-49ee-966e-2b86303bf361
+l	java:S108Ò")Either remove or fill this block of code.(”ì­è8Ç‡•·ø1J$f35cd810-9caf-4b8b-804c-7298f4b4d8e9
+u
+java:S1602à",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8È‡•·ø1J$437142f8-ec05-4188-b791-75a40fefb60d
+{
+java:S1135à"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8È‡•·ø1J$521eaace-fb4e-4ca7-bc2c-e55c5d1fa0c6
+v
+java:S1135ò"2Complete the task associated to this TODO comment.(Îì¼8Í‡•·ø1J$4649cc45-e75d-4373-a02c-c67457145188
+p
+java:S1602ù",Remove useless curly braces around statement(¤úÔ¥8Î‡•·ø1J$00835a53-026f-40a0-9533-69fc4071aec5

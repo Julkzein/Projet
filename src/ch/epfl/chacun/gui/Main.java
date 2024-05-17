@@ -32,7 +32,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
 
         //Argument management
-        List<String> playerNames = getParameters().getUnnamed(); //TODO : order is importnt for plyers
+        List<String> playerNames = getParameters().getUnnamed();
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
@@ -61,7 +61,7 @@ public class Main extends Application {
         ObjectProperty<Set<Integer>> tileToHighLight = new SimpleObjectProperty<>(Set.of());
 
         //Creation of the side border pane
-        BorderPane sideBorderPane = getSideBorderPane(observableGameState, actions, textMaker, tileToHighLight);
+        BorderPane sideBorderPane = getSideBorderPane(observableGameState, actions, textMaker, tileToHighLight, tileDecks);
 
         //Creation of the root parameters
         Node boardUI = getBoardUI(observableGameState, actions, tileToHighLight);
@@ -74,12 +74,12 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         primaryStage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
         primaryStage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
-
+        observableGameState.set(gameState.withStartingTilePlaced());
         primaryStage.setTitle("ChaCuN");
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        observableGameState.set(gameState.withStartingTilePlaced());
+
     }
 
     /**
@@ -94,7 +94,8 @@ public class Main extends Application {
             ObjectProperty<GameState> observableGameState,
             ObjectProperty<List<String>> actions,
             TextMakerFr textMaker,
-            ObjectProperty<Set<Integer>> tileToHighLight) {
+            ObjectProperty<Set<Integer>> tileToHighLight,
+            TileDecks tiledecks) {
 
         //Creation of the observable value of the messages
         ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(MessageBoard::messages); //TODO : changer la mise en page des messages
@@ -118,6 +119,7 @@ public class Main extends Application {
      * @return a new TileDecks object with the tiles shuffled according to the given seed
      */
     private static TileDecks getRandomTileDecks(String seedString) {
+<<<<<<< Updated upstream
         RandomGeneratorFactory<RandomGenerator> rngFactory = RandomGeneratorFactory.getDefault();
         RandomGenerator random;
 
@@ -125,11 +127,15 @@ public class Main extends Application {
             long seed1 = parseUnsignedLong("2024");
             random = rngFactory.create(seed1);
         } else random = rngFactory.create();
+=======
+        RandomGenerator random = seedString == null ? RandomGeneratorFactory.getDefault().create() : RandomGeneratorFactory.getDefault().create(parseUnsignedLong(seedString));
+        
+>>>>>>> Stashed changes
         
         List<Tile> tiles = new ArrayList<>(Tiles.TILES);
         Collections.shuffle(tiles, random);
 
-        Map<Tile.Kind, List<Tile>> tilesByKind = Tiles.TILES.stream().collect(Collectors.groupingBy(Tile::kind));
+        Map<Tile.Kind, List<Tile>> tilesByKind = tiles.stream().collect(Collectors.groupingBy(Tile::kind));
 
         return new TileDecks(
                 tilesByKind.get(Tile.Kind.START),
@@ -150,14 +156,14 @@ public class Main extends Application {
             ActionEncoder.StateAction stateAction = ActionEncoder.decodeAndApply(gameState.getValue(), str);
             if (stateAction != null) {
                 gameState.set(stateAction.gameState());
-                List<String> newActions = new ArrayList<>(actions.getValue());
+                List<String> newActions = new LinkedList<>(actions.getValue());
                 newActions.add(stateAction.action());
                 actions.set(newActions);
             }
         };
 
-        //ObservableValue<Tile> observableCurrentTile = new SimpleObjectProperty<>(currentTile); //TODO : check si observable value ou object property
-        ObjectProperty<Tile> currentTile = new SimpleObjectProperty<>(gameState.getValue().tileToPlace());
+        ObjectProperty<Tile> currentTile = new SimpleObjectProperty<>();
+        currentTile.bind(gameState.map(GameState::tileToPlace));
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
         ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
         ObjectProperty<String> text = new SimpleObjectProperty<>("");
@@ -165,7 +171,7 @@ public class Main extends Application {
         Consumer<Occupant> noActionConsumer = o -> consumeOccupant(gameState, actions, o);
 
         gameState.addListener((_,_,nV) -> {
-            if (nV.tileToPlace() != null) currentTile.set(nV.tileToPlace());
+
             switch (nV.nextAction()) {
                 case PLACE_TILE -> text.set("");
                 case OCCUPY_TILE -> text.set("Cliquez sur un occupant pour le placer ou cliquez ici pour continuer");
@@ -175,7 +181,7 @@ public class Main extends Application {
 
         //Creation of the vbox containing the actions and the decks
         VBox vbox = new VBox();
-        vbox.getChildren().add(ActionsUI.create(actions, actionConsumer)); //TODO
+        vbox.getChildren().add(ActionsUI.create(actions, actionConsumer));
         vbox.getChildren().add(DecksUI.create(
                 currentTile,
                 normalCount,
@@ -250,21 +256,6 @@ public class Main extends Application {
 
         Consumer<Occupant> occupantConsumer = o -> {
             consumeOccupant(gameState, actions, o);
-            /**GameState gS = gameState.getValue();
-            switch (gS.nextAction()) {
-                case OCCUPY_TILE -> {
-                    ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), o);
-                    gameState.set(stateAction.gameState());
-                    actions.getValue().add(stateAction.action());
-                    actions.set(actions.getValue());
-                }
-                case RETAKE_PAWN -> {
-                    ActionEncoder.StateAction stateAction = ActionEncoder.withOccupantRemoved(gameState.getValue(), o);
-                    gameState.set(stateAction.gameState());
-                    actions.getValue().add(stateAction.action());
-                    actions.set(actions.getValue());
-                }
-            }*/
         };
 
         gameState.addListener((_,_,nV) -> { //crete binding ith bord

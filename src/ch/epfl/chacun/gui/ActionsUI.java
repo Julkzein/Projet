@@ -71,11 +71,10 @@ public class ActionsUI {
 
         int ENCODED_ACTION_SIZE = 2;
         textField.setTextFormatter(new TextFormatter<>(change -> {
-            var existingText = change.getControlText();
+            String existingText = change.getControlText();
             //if(existingText.length() == ENCODED_ACTION_SIZE)  return null;
-            var spaceRemaining = ENCODED_ACTION_SIZE - existingText.length();
-            var newText = change.getText().chars()
-                    //.filter(Character::isLetterOrDigit) why ça
+            int spaceRemaining = ENCODED_ACTION_SIZE - existingText.length();
+            String newText = change.getText().chars()
                     .map(Character::toUpperCase)
                     .mapToObj(c -> String.valueOf((char) c))
                     .filter(Base32::isValid)
