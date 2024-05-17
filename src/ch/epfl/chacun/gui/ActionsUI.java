@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 
 /**
@@ -56,12 +57,31 @@ public class ActionsUI {
         textField.setId("action-field");
         actions.getChildren().add(textField);
 
+
+        /**
         // Checks if the input character is valid
         textField.setTextFormatter(new TextFormatter<>(change -> {
             change.setText(change.getText().toUpperCase());
             change.setText(
                 (Base32.isValid(change.getText()) ? change.getText() : "") //TODO : check size
             );
+            return change;
+        }));
+        */
+
+        int ENCODED_ACTION_SIZE = 2;
+        textField.setTextFormatter(new TextFormatter<>(change -> {
+            var existingText = change.getControlText();
+            //if(existingText.length() == ENCODED_ACTION_SIZE)  return null;
+            var spaceRemaining = ENCODED_ACTION_SIZE - existingText.length();
+            var newText = change.getText().chars()
+                    //.filter(Character::isLetterOrDigit) why ça
+                    .map(Character::toUpperCase)
+                    .mapToObj(c -> String.valueOf((char) c))
+                    .filter(Base32::isValid)
+                    .limit(spaceRemaining)
+                    .collect(Collectors.joining());
+            change.setText(newText);
             return change;
         }));
 
