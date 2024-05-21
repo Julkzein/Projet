@@ -1246,6 +1246,7 @@ public final class Tiles {
             assert tiles.size() == 94;
             tiles.add(new Tile(94, Tile.Kind.MENHIR, sN, sE, sS, sW));
         }
+
         tiles.trimToSize();
         return Collections.unmodifiableList(tiles);
     }

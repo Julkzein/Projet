@@ -20,9 +20,13 @@ import java.util.random.RandomGeneratorFactory;
 import java.util.stream.Collectors;
 
 import static ch.epfl.chacun.Board.REACH;
+import static ch.epfl.chacun.Tiles.TILES;
 import static java.lang.Long.parseUnsignedLong;
 
 public class Main extends Application {
+
+    private static final int HEIGHT = 1080;
+    private static final int WIDTH = 1440;
 
     public static void main(String[] args) {
         launch(args);
@@ -128,7 +132,7 @@ public class Main extends Application {
         root.setRight(sideBorderPane);
 
         Scene scene = new Scene(root);
-        primaryStage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
+        primaryStage.setHeight(Screen.getPrimary().getVisualBounds().getHeight()); //TODO : avant rendu, mettre les constantes
         primaryStage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 
         primaryStage.setTitle("ChaCuN");
@@ -180,16 +184,23 @@ public class Main extends Application {
         RandomGenerator random = seedString == null ? RandomGeneratorFactory.getDefault().create() : RandomGeneratorFactory.getDefault().create(parseUnsignedLong(seedString));
 
 
-        List<Tile> tiles = new ArrayList<>(Tiles.TILES);
+        List<Tile> tiles = new ArrayList<>(TILES);
 
         Collections.shuffle(tiles, random);
 
         Map<Tile.Kind, List<Tile>> tilesByKind = tiles.stream().collect(Collectors.groupingBy(Tile::kind));
 
+        List<Tile> menhir = tilesByKind.get(Tile.Kind.MENHIR);
+        menhir.clear();
+        menhir = List.of(TILES.get(94), TILES.get(92), TILES.get(88));
+
+        List<Tile> norml = tilesByKind.get(Tile.Kind.NORMAL);
+        norml = norml.subList(0,15);
+
         return new TileDecks(
                 tilesByKind.get(Tile.Kind.START),
-                tilesByKind.get(Tile.Kind.NORMAL),
-                tilesByKind.get(Tile.Kind.MENHIR));
+                norml,
+                menhir);
     }
 
     /**
@@ -214,8 +225,11 @@ public class Main extends Application {
             }
         };
 
-        ObjectProperty<Tile> currentTile = new SimpleObjectProperty<>();
-        currentTile.bind(gameState.map(g -> g.tileToPlace()));
+        gameState.addListener((_,_,_) -> System.out.println("game state changed"));
+
+        ObservableValue<Tile> currentTile = gameState.map(GameState::tileToPlace);
+
+        currentTile.addListener((_,_,_) -> System.out.println("current tile changed"));
 
 
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));

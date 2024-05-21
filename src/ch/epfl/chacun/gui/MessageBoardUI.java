@@ -37,11 +37,11 @@ public class MessageBoardUI {
 
         ScrollPane scrollPane = new ScrollPane(vbox);
 
-        scrollPane.setId("message-board");
         scrollPane.getStylesheets().add("message-board.css");
+        scrollPane.setId("message-board");
 
-        // When the list of messages changes, add the new messages to the VBox
-        messages.addListener((o, oV, nV) -> {
+        //When the list of messages changes, add the new messages to the VBox
+        messages.addListener((_, oV, nV) -> {
             nV.subList(oV.size(), nV.size()).forEach(message -> {
                 Text newText = new Text(message.text());
                 newText.setWrappingWidth(LARGE_TILE_FIT_SIZE);
@@ -54,6 +54,7 @@ public class MessageBoardUI {
                 vbox.getChildren().add(newText);
             });
             scrollPane.layout();
+            //Here we use runLater because on Windows, the scrollPane does not update correctly without runLater
             Platform.runLater(() -> scrollPane.setVvalue(1.0));
         });
         return scrollPane;
