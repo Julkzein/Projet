@@ -71,7 +71,7 @@ public class ActionEncoder {
     public static StateAction decodeAndApply(GameState gameState, String str) {
         try {
             return decodeOrThrow(gameState, str);
-        } catch (Exception e) {
+        } catch (DecoderException e) {
             return null;
         }
     }
@@ -81,17 +81,15 @@ public class ActionEncoder {
      *
      * @param gameState the current state of the game
      * @param str the encoded action
-     * @throws IllegalArgumentException if the code isn't valid
+     * @throws DecoderException if the code isn't valid
      * @return the decoded action
      */
-    private static StateAction decodeOrThrow(GameState gameState, String str) {
+    private static StateAction decodeOrThrow(GameState gameState, String str) throws DecoderException {
         if (!isValid(str) || (str.length() != 1 && str.length() != 2) || gameState.nextAction() == null) {
-            throw new IllegalArgumentException();
+            throw new DecoderException();
         }
 
         int index = decode(str);
-        System.out.println(index);
-        System.out.println(gameState.nextAction());
         return switch(gameState.nextAction()) {
             case PLACE_TILE -> {
                 int rotation = index % 4;
@@ -115,7 +113,7 @@ public class ActionEncoder {
                             yield withNewOccupant(gameState, o);
                     }
                 }
-                throw new IllegalArgumentException();
+                throw new DecoderException();
             }
 
             case RETAKE_PAWN -> {
@@ -126,11 +124,19 @@ public class ActionEncoder {
                 yield withOccupantRemoved(gameState, occupant2);
             }
 
-            default -> throw new IllegalArgumentException();
+            default -> throw new DecoderException();
         };
 
     }
 
+    /**
+     * This exception is thrown when the code isn't valid.
+     */
+    private static class DecoderException extends Exception{}
+
+    /**
+     * This class represents a state action, which is a pair of a game state and an action.
+     */
     public record StateAction(GameState gameState, String action) {}
 }
 //TODO : static

@@ -158,7 +158,7 @@ public class BoardUI {
         //when the tile changes (and a tile is placed), we change the image and create the cancel token and the occupants
         placedTile.addListener((_, _, nV) -> {
             group.rotateProperty().unbind();
-            createCancelledToken(nV.id(), pos, gameState, group);
+            createCancelledToken(pos, gameState, group);
             createOccupants(pos, gameState, group, occupants, occupantConsumer);
         });
 
@@ -225,19 +225,17 @@ public class BoardUI {
 
     /**
      * Creates the image views of the cancel token for the animals of a tile
-     * @param id the id of the placed tile
      * @param pos the position of the tile on the board
      * @param gameState the observable value of the game state
      * @param group the group to which the image views of the cancel tokens are added
      */
-    private static void createCancelledToken(int id, Pos pos, ObservableValue<GameState> gameState, Group group) {
+    private static void createCancelledToken(Pos pos, ObservableValue<GameState> gameState, Group group) {
         ObservableValue<Board> boardObservableValue = gameState.map(GameState::board);
         ObservableValue<Set<Animal>> cancelledAnimals = boardObservableValue.map(Board::cancelledAnimals);
-
         for (Zone.Meadow meadow : Objects.requireNonNull(boardObservableValue.getValue().tileAt(pos)).meadowZones()) {
             for (Animal a : meadow.animals()) {
-                ImageView cancelToken = new ImageView();
-                cancelToken.setId(STR."marker_\{id}");
+                ImageView cancelToken = new ImageView("marker.png"); //TODO : check si png nécéssire
+                cancelToken.setId(STR."marker_\{a.id()}");
                 cancelToken.getStyleClass().add("marker");
                 cancelToken.setFitWidth(MARKER_FIT_SIZE);
                 cancelToken.setFitHeight(MARKER_FIT_SIZE);

@@ -141,14 +141,14 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         if (tile.specialPowerZone() != null) {
             switch (tile.specialPowerZone().specialPower()) {
                 case SHAMAN:
-                    if (board.occupantCount(tile.placer(), Occupant.Kind.PAWN) != 0)
+                    if (newBoard.occupantCount(tile.placer(), Occupant.Kind.PAWN) != 0)
                         return new GameState(players, tileDecks, null, newBoard, Action.RETAKE_PAWN, messageBoard);
                     break;
                 case LOGBOAT:
                     newMessageBoard = messageBoard.withScoredLogboat(currentPlayer(), newBoard.riverSystemArea((Zone.Water) tile.specialPowerZone()));
                     break;
                 case HUNTING_TRAP:
-                    newBoard = board.withMoreCancelledAnimals(animals(newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals())); //TODO : check if it works
+                    newBoard = newBoard.withMoreCancelledAnimals(animals(newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals()));
                     newMessageBoard = messageBoard.withScoredHuntingTrap(currentPlayer(), newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals());
                     break;
                 default:

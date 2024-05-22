@@ -195,7 +195,6 @@ public class Main extends Application {
         menhir = List.of(TILES.get(94), TILES.get(92), TILES.get(88));
 
         List<Tile> norml = tilesByKind.get(Tile.Kind.NORMAL);
-        norml = norml.subList(0,15);
 
         return new TileDecks(
                 tilesByKind.get(Tile.Kind.START),
@@ -221,16 +220,10 @@ public class Main extends Application {
                 List<String> newActions = new LinkedList<>(actions.getValue());
                 newActions.add(stateAction.action());
                 actions.set(newActions);
-
             }
         };
 
-        gameState.addListener((_,_,_) -> System.out.println("game state changed"));
-
         ObservableValue<Tile> currentTile = gameState.map(GameState::tileToPlace);
-
-        currentTile.addListener((_,_,_) -> System.out.println("current tile changed"));
-
 
         ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
         ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
@@ -309,6 +302,7 @@ public class Main extends Application {
                     gS.currentPlayer(),
                     visbleRotation.getValue(),
                     pos);
+
 
             if (gS.board().canAddTile(pT)) {
                 ActionEncoder.StateAction stateAction = ActionEncoder.withPlacedTile(gameState.getValue(), pT);
