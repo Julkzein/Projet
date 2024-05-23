@@ -1,4 +1,4 @@
-package ch.epfl.chacun.etape10;
+package ch.epfl.chacun;
 
 import ch.epfl.chacun.Base32;
 import org.junit.jupiter.api.Test;

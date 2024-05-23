@@ -26,7 +26,7 @@ public class ActionEncoder {
     public static StateAction withPlacedTile(GameState gameState, PlacedTile placedTile) {
         List<Pos> list = gameState.board().insertionPositions()
                 .stream()
-                .sorted(Comparator.comparingInt(p -> p.x() * (REACH * 2 + 1) + p.y()))
+                .sorted(Comparator.comparing(Pos::x).thenComparing(Pos::y))
                 .toList();
         int index = (list.indexOf(placedTile.pos()) * 4) + placedTile.rotation().ordinal();
         return new StateAction(gameState.withPlacedTile(placedTile), encodeBits10(index));
@@ -55,9 +55,10 @@ public class ActionEncoder {
         int index = (occupant == null) ?
                 0x1f :
                 gameState.board().occupants().stream()
-                    .sorted(Comparator.comparingInt(Occupant::zoneId))
-                    .toList()
-                    .indexOf(occupant); //TODO : vérifier si c'est le bon id ou pas
+                        .filter(o -> o.kind() == Occupant.Kind.PAWN)
+                        .sorted(Comparator.comparingInt(Occupant::zoneId))
+                        .toList()
+                        .indexOf(occupant); //TODO : vérifier si c'est le bon id ou pas
         return new StateAction(gameState.withOccupantRemoved(occupant), encodeBits5(index));
     }
 
@@ -96,11 +97,15 @@ public class ActionEncoder {
                 int posIndex = index / 4;
                 Pos pos = gameState.board().insertionPositions()
                         .stream()
-                        .sorted(Comparator.comparingInt(p -> p.x() * (REACH * 2 + 1) + p.y()))
+                        .sorted(Comparator.comparing(Pos::x).thenComparing(Pos::y))
                         .toList()
                         .get(posIndex);
                 PlacedTile pT = new PlacedTile(gameState.tileToPlace(), gameState.currentPlayer(), Rotation.values()[rotation], pos);
-                yield withPlacedTile(gameState, pT);
+                if (gameState.board().canAddTile(pT)) { //TODO : ne ps thro decoder exception
+                    yield withPlacedTile(gameState, pT);
+                } else {
+                    throw new DecoderException();
+                }
             }
 
             case OCCUPY_TILE -> {
@@ -118,6 +123,7 @@ public class ActionEncoder {
 
             case RETAKE_PAWN -> {
                 Occupant occupant2 = gameState.board().occupants().stream()
+                        .filter(o -> o.kind() == Occupant.Kind.PAWN)
                         .sorted(Comparator.comparingInt(Occupant::zoneId))
                         .toList()
                         .get(index);
