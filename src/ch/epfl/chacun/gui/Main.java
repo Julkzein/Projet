@@ -192,7 +192,7 @@ public class Main extends Application {
 
         List<Tile> menhir = tilesByKind.get(Tile.Kind.MENHIR);
         menhir.clear();
-        menhir = List.of(TILES.get(94), TILES.get(92), TILES.get(88));
+        menhir = List.of(TILES.get(88), TILES.get(92), TILES.get(94));
 
         List<Tile> norml = tilesByKind.get(Tile.Kind.NORMAL);
 
@@ -264,16 +264,24 @@ public class Main extends Application {
         GameState gS = gameState.getValue();
         switch (gS.nextAction()) { //TODO : repetition
             case OCCUPY_TILE -> {
-                ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), o);
-                gameState.set(stateAction.gameState());
-                newActions.add(stateAction.action());
-                actions.set(newActions);
+                if (gS.lastTilePotentialOccupants().contains(o)) {
+                    ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), o);
+                    gameState.set(stateAction.gameState());
+                    newActions.add(stateAction.action());
+                    actions.set(newActions);
+                }
             }
             case RETAKE_PAWN -> {
-                ActionEncoder.StateAction stateAction = ActionEncoder.withOccupantRemoved(gameState.getValue(), o);
-                gameState.set(stateAction.gameState());
-                newActions.add(stateAction.action());
-                actions.set(newActions);
+                if (o == null ||
+                        (gS.board().occupants().contains(o)
+                        && o.kind() == Occupant.Kind.PAWN
+                        && gS.currentPlayer() == gS.board().tileWithId(Zone.tileId(o.zoneId())).placer())) {
+
+                    ActionEncoder.StateAction stateAction = ActionEncoder.withOccupantRemoved(gameState.getValue(), o);
+                    gameState.set(stateAction.gameState());
+                    newActions.add(stateAction.action());
+                    actions.set(newActions);
+                }
             }
             default -> {}
         }
