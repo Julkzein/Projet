@@ -16,8 +16,8 @@ public class ImageLoader {
     public static final int LARGE_TILE_FIT_SIZE = 256;
     public static final int NORMAL_TILE_PIXEL_SIZE = 256;
     public static final int NORMAL_TILE_FIT_SIZE = 128;
-    public static final int MARKER_PIXEL_SIZE = 96; //TODO : check if used
-    public static final int MARKER_FIT_SIZE = 48;
+    public static final int MARKER_PIXEL_SIZE = 96;
+    public static final int MARKER_FIT_SIZE = MARKER_PIXEL_SIZE / 2;
 
     /**
      * This method returns the image of the tile with the given id in normal size.
