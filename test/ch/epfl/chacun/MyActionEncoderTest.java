@@ -410,6 +410,8 @@ class MyActionEncoderTest {
         );
     }
 
+    
+
     @Test
     void decodeAndApplyReturnsNull() {
         var list = List.of(PlayerColor.RED, PlayerColor.BLUE, PlayerColor.GREEN, PlayerColor.YELLOW, PlayerColor.PURPLE);

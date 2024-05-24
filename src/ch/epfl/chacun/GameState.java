@@ -148,8 +148,8 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     newMessageBoard = messageBoard.withScoredLogboat(currentPlayer(), newBoard.riverSystemArea((Zone.Water) tile.specialPowerZone()));
                     break;
                 case HUNTING_TRAP:
-                    newBoard = newBoard.withMoreCancelledAnimals(animals(newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals()));
                     newMessageBoard = messageBoard.withScoredHuntingTrap(currentPlayer(), newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals());
+                    newBoard = newBoard.withMoreCancelledAnimals(animals(newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals()));
                     break;
                 default:
             }
