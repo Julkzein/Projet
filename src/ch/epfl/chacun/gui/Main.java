@@ -50,11 +50,11 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(3), Tiles.TILES.get(4), Tiles.TILES.get(5), Tiles.TILES.get(6), Tiles.TILES.get(7), Tiles.TILES.get(11), Tiles.TILES.get(1)),
 //                List.of(Tiles.TILES.get(93)));
 
-        //LogBoat limit
-        TileDecks tileDecks = new TileDecks(
-                List.of(Tiles.TILES.get(56)),
-                List.of( Tiles.TILES.get(14), Tiles.TILES.get(1), Tiles.TILES.get(60)),
-                List.of());
+//        //LogBoat limit
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of( Tiles.TILES.get(14), Tiles.TILES.get(1), Tiles.TILES.get(60)),
+//                List.of());
 
 //        //Chaman Deck
 //        TileDecks tileDecks = new TileDecks(
@@ -83,11 +83,11 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
 //                List.of(Tiles.TILES.get(94)));
 
-//        //Pit trap full animaux
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
-//                List.of(Tiles.TILES.get(92)));
+        //Pit trap full animaux
+        TileDecks tileDecks = new TileDecks(
+                List.of(Tiles.TILES.get(56)),
+                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
+                List.of(Tiles.TILES.get(92)));
 
 //        //Pit trap tiger et PitFire
 //        TileDecks tileDecks = new TileDecks(
@@ -113,6 +113,7 @@ public class Main extends Application {
                 playerNameMap.keySet().stream().toList(),
                 tileDecks,
                 textMaker);
+
 
         //Creation of the game state
         ObjectProperty<GameState> observableGameState = new SimpleObjectProperty<>(gameState);
