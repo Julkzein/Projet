@@ -5,8 +5,6 @@ java:S2184"CCast one of the operands of this subtraction operation to a "long
 java:S3655¤"PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(Ìı«åûÿÿÿÿ8†şÈ¯ø1J$1edfb815-a424-492d-9fcb-92e02ac92658
 •
 java:S3776V"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(‰œ®8¢³Ú—ö1J$245165c8-c24f-46a1-8993-0e496dd66f84
-v
-java:S1135—"2Complete the task associated to this TODO comment.(¦‹¡¦8¾Ÿ·ö1J$166a494d-7dbb-4514-a4f8-53b05f146a58
 •
 java:S3776Ø"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(îË=8®³Ú—ö1J$726ad307-3af5-4381-bee5-cf82f1d2f1b6
 –
