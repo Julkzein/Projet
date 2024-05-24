@@ -1,8 +1,6 @@
 package ch.epfl.chacun.gui;
 
 import ch.epfl.chacun.Base32;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringBinding;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;

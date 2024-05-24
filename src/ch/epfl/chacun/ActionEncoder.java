@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import static ch.epfl.chacun.Base32.*;
-import static ch.epfl.chacun.Board.REACH;
 
 /**
  * This class encodes and decodes the actions of the players.

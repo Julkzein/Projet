@@ -70,7 +70,7 @@ public class DecksUI {
         tileImageView.visibleProperty().bind(text.map(String::isEmpty)); // visible when text is empty
 
         newText.setOnMouseClicked(_ -> {
-            if (textVisible.getValue()) occupantConsumer.accept(null); //TODO : is the if really necessary?
+            if (textVisible.getValue()) occupantConsumer.accept(null);
         });
 
         tile.addListener((_, _, nV) -> {
