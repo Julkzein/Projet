@@ -68,13 +68,13 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
 //                List.of(Tiles.TILES.get(94)));
 
-//        //Hunting trap no animal
+        //Hunting trap no animal
 
-//
-//        TileDecks tileDecks = new TileDecks(  //todo check pb animaux cancel (pas de point good)
+
+//        TileDecks tileDecks = new TileDecks(
 //                List.of(Tiles.TILES.get(56)),
 //                List.of(Tiles.TILES.get(4), Tiles.TILES.get(3), Tiles.TILES.get(15), Tiles.TILES.get(46), Tiles.TILES.get(29), Tiles.TILES.get(12), Tiles.TILES.get(18), Tiles.TILES.get(1), Tiles.TILES.get(37), Tiles.TILES.get(7), Tiles.TILES.get(8), Tiles.TILES.get(9), Tiles.TILES.get(22), Tiles.TILES.get(23)),
-//                List.of(Tiles.TILES.get(88)));
+//                List.of(Tiles.TILES.get(94)));
 
 
 //        //Hunting trap tiger
@@ -83,11 +83,11 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
 //                List.of(Tiles.TILES.get(94)));
 
-        //Pit trap full animaux
-        TileDecks tileDecks = new TileDecks(
-                List.of(Tiles.TILES.get(56)),
-                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
-                List.of(Tiles.TILES.get(92)));
+//        //Pit trap full animaux
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
+//                List.of(Tiles.TILES.get(92)));
 
 //        //Pit trap tiger et PitFire
 //        TileDecks tileDecks = new TileDecks(
@@ -197,9 +197,7 @@ public class Main extends Application {
         Map<Tile.Kind, List<Tile>> tilesByKind = tiles.stream().collect(Collectors.groupingBy(Tile::kind));
 
         List<Tile> menhir = tilesByKind.get(Tile.Kind.MENHIR);
-
-        menhir.clear();
-        menhir = List.of(TILES.get(88), TILES.get(93), TILES.get(94)); //todo change back
+        
 
         List<Tile> norml = tilesByKind.get(Tile.Kind.NORMAL);
 
