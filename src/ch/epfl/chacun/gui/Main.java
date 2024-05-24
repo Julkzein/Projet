@@ -77,17 +77,17 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(88)));
 
 
-//        //Hunting trap tiger
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
-//                List.of(Tiles.TILES.get(94)));
-
-        //Pit trap full animaux
+        //Hunting trap tiger
         TileDecks tileDecks = new TileDecks(
                 List.of(Tiles.TILES.get(56)),
-                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
-                List.of(Tiles.TILES.get(92)));
+                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
+                List.of(Tiles.TILES.get(94)));
+
+//        //Pit trap full animaux
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
+//                List.of(Tiles.TILES.get(92)));
 
 //        //Pit trap tiger et PitFire
 //        TileDecks tileDecks = new TileDecks(

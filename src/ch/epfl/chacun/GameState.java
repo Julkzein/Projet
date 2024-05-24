@@ -378,7 +378,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                 if (animal.kind() == Animal.Kind.DEER) deer.add(animal);
                 if (animal.kind() == Animal.Kind.TIGER) tigers.add(animal);
             }
-            cancelledAnimals.addAll(tigers);
 
             if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.WILD_FIRE) == null) { //If there isn't any fire, we deal with the deer to cancel
                 if (deer.size() <= tigers.size()) {
