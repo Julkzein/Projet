@@ -91,8 +91,24 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         //Checks if the corresponding area is occupied and if the player has enough pawns or huts to place
         if (lastPlacedTile.occupant() == null) {
             for (Occupant occupant : lastPlacedTile.potentialOccupants()) {
+                if (lastPlacedTile.zoneWithId(occupant.zoneId()) instanceof Zone.River river && occupant.kind() == Occupant.Kind.HUT) {
+                    if (!board.riverSystemArea(river).isOccupied() && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
+                        potentialOccupantsSet.add(occupant);
+                    }
+                } else {
+                    Area<?> area = areaOfZoneOnBoard(lastPlacedTile.zoneWithId(occupant.zoneId()), board);
+                    if (!area.isOccupied() && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
+                        potentialOccupantsSet.add(occupant);
+                    }
+                }
+            }
+
+
+            /**
+            for (Occupant occupant : lastPlacedTile.potentialOccupants()) {
                 Zone zone = lastPlacedTile.zoneWithId(occupant.zoneId());
-                if (!areaOfZoneOnBoard(zone, board).isOccupied()
+                Area area = areaOfZoneOnBoard(zone, board);
+                if ((!areaOfZoneOnBoard(zone, board).isOccupied() || occupant.kind().equals(Occupant.Kind.HUT))
                         && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
                     if (occupant.kind().equals(Occupant.Kind.HUT) && zone instanceof Zone.River) {
                         if (!board.riverSystemArea((Zone.Water) zone).isOccupied()) {
@@ -102,7 +118,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                         potentialOccupantsSet.add(occupant);
                     }
                 }
-            }
+            } */
         }
         return potentialOccupantsSet;
     }

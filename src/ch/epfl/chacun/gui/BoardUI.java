@@ -176,7 +176,6 @@ public class BoardUI {
         group.setOnMouseClicked( e -> {
             if (e.isStillSincePress()) {
                 GameState gS = gameState.getValue();
-                Board board = gS.board();
                 switch (e.getButton()) {
                     case PRIMARY -> {
                         if (gS.nextAction() == PLACE_TILE) {
