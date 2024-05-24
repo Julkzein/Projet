@@ -323,9 +323,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                 .collect(Collectors.toSet());
     }
 
-    public GameState withMoreCancelledAnimals(Set<Animal> animals) {
-        return new GameState(players, tileDecks, tileToPlace, board.withMoreCancelledAnimals(animals), nextAction, messageBoard);
-    }
 
 
     /**
