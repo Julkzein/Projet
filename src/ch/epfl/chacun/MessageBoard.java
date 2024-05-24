@@ -125,7 +125,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
         Set<Animal> animals = Area.animals(adjacentMeadow, cancelledAnimals);
         Map<Animal.Kind, Integer> animalMap = getAnimalMap(animals);
         for (Animal animal : animals) {
-            if (animalMap.get(TIGER) == 0) {
+            if (animalMap.get(TIGER) == 0) { //si il n'y a plus de tigre
                 break;
             } else if (animal.kind() == DEER) {
                 animalMap.put(DEER, animalMap.get(DEER) - 1);
@@ -269,7 +269,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      * @param animals the set of animals we want to count
      * @return the map that associates to all animal kinds the amount of animals of that kind
      */
-    private Map<Animal.Kind, Integer> getAnimalMap(Set<Animal> animals) {
+    private static Map<Animal.Kind, Integer> getAnimalMap(Set<Animal> animals) {
         Map<Animal.Kind, Integer> animalMap = new HashMap<>();
         for (Animal.Kind kind : Animal.Kind.values()) {
             animalMap.put(kind, 0);
