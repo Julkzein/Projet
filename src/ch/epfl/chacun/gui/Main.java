@@ -40,8 +40,8 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
-        //TileDecks tileDecks = getRandomTileDecks(seedString);
-        x  
+        TileDecks tileDecks = getRandomTileDecks(seedString);
+
         //        //Logboat Deck Normale
 //       TileDecks tileDecks = new TileDecks(
 //                List.of(Tiles.TILES.get(56)),
@@ -49,7 +49,7 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(93)));
 
 //        //LogBoat limit
-//        TileDecks tileDecks = new TileDecks( //todo : cancel token de merde
+//        TileDecks tileDecks = new TileDecks(
 //                List.of(Tiles.TILES.get(56)),
 //                List.of( Tiles.TILES.get(14), Tiles.TILES.get(1), Tiles.TILES.get(60)),
 //                List.of(Tiles.TILES.get(93)));
@@ -68,10 +68,10 @@ public class Main extends Application {
 
 //        //Hunting trap no animal
 
-        TileDecks tileDecks = new TileDecks(  //todo check pb animaux cancel (pas de point good)
-                List.of(Tiles.TILES.get(56)),
-                List.of(Tiles.TILES.get(4), Tiles.TILES.get(3), Tiles.TILES.get(15), Tiles.TILES.get(46), Tiles.TILES.get(29), Tiles.TILES.get(12), Tiles.TILES.get(18), Tiles.TILES.get(1), Tiles.TILES.get(37)),
-                List.of(Tiles.TILES.get(94)));
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(4), Tiles.TILES.get(3), Tiles.TILES.get(15), Tiles.TILES.get(46), Tiles.TILES.get(29), Tiles.TILES.get(12), Tiles.TILES.get(18), Tiles.TILES.get(1), Tiles.TILES.get(37), Tiles.TILES.get(28)),
+//                List.of(Tiles.TILES.get(94), Tiles.TILES.get(88)));
 
 //        //Hunting trap tiger
 //        TileDecks tileDecks = new TileDecks(
@@ -192,8 +192,7 @@ public class Main extends Application {
         Map<Tile.Kind, List<Tile>> tilesByKind = tiles.stream().collect(Collectors.groupingBy(Tile::kind));
 
         List<Tile> menhir = tilesByKind.get(Tile.Kind.MENHIR);
-        menhir.clear();
-        menhir = List.of(TILES.get(92), TILES.get(93), TILES.get(94)); //todo change back
+
 
         List<Tile> norml = tilesByKind.get(Tile.Kind.NORMAL);
 
