@@ -332,7 +332,7 @@ public class Main extends Application {
             consumeOccupant(gameState, actions, o);
         };
 
-        gameState.addListener((_,_,nV) -> { //crete binding ith bord
+        gameState.addListener((_,_,nV) -> { //crete binding with board
             if (Objects.requireNonNull(gameState.getValue().nextAction()) == GameState.Action.OCCUPY_TILE) {
                 Set<Occupant> occupantsToDisplay = new HashSet<>(nV.lastTilePotentialOccupants());
                 occupantsToDisplay.addAll(nV.board().occupants());
