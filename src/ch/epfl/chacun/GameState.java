@@ -287,22 +287,27 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
             }
         }
 
-        //Gets the maximum number of points among the message board points and determines the winners
-        Set<PlayerColor> winners = new HashSet<>();
-        int maxPoints = 0;
-        Optional<Integer> maxPointsIfExists = newMessageBoard.points().values().stream().max(Comparator.naturalOrder());
-        if (maxPointsIfExists.isPresent())
-            maxPoints = maxPointsIfExists.get();
-
-        for (Map.Entry<PlayerColor, Integer> entry : newMessageBoard.points().entrySet()) {
-            if (entry.getValue() == maxPoints) winners.add(entry.getKey());
-        }
-        if (newMessageBoard.points().entrySet().isEmpty()) {
-            winners.addAll(PlayerColor.ALL.stream().filter(Objects::nonNull).collect(Collectors.toSet()));
-        }
-        newMessageBoard = newMessageBoard.withWinners(winners, maxPoints);
+        newMessageBoard = getWinnerMessageBoard(newMessageBoard);
 
         return new GameState(players, tileDecks, null, newBoard, Action.END_GAME, newMessageBoard);
+    }
+
+    private MessageBoard getWinnerMessageBoard(MessageBoard newMessageBoard) {
+        //Gets the maximum number of points among the message board points and determines the winners
+        Set<PlayerColor> winners = new HashSet<>();
+        int maxPoints;
+        Optional<Integer> maxPointsIfExists = newMessageBoard.points().values().stream().max(Comparator.naturalOrder());
+        if (maxPointsIfExists.isPresent()) {
+            maxPoints = maxPointsIfExists.get();
+            for (Map.Entry<PlayerColor, Integer> entry : newMessageBoard.points().entrySet()) {
+                if (entry.getValue() == maxPoints) winners.add(entry.getKey());
+            }
+        } else {
+            maxPoints = 0;
+            winners.addAll(players());
+        }
+
+        return newMessageBoard.withWinners(winners, maxPoints);
     }
 
     /**
