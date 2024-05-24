@@ -93,36 +93,38 @@ public class ActionEncoder {
         int index = decode(str);
         return switch(gameState.nextAction()) {
             case PLACE_TILE -> {
-                int rotation = index % 4;
+                if (str.length() != 2) throw new DecoderException();
+                int rotation = index % 4; //TODO : fire des shifts
                 int posIndex = index / 4;
+                if (posIndex >= gameState.board().insertionPositions().size()) throw new DecoderException();
                 Pos pos = gameState.board().insertionPositions()
                         .stream()
                         .sorted(Comparator.comparing(Pos::x).thenComparing(Pos::y))
                         .toList()
                         .get(posIndex);
+
                 PlacedTile pT = new PlacedTile(gameState.tileToPlace(), gameState.currentPlayer(), Rotation.values()[rotation], pos);
-                if (gameState.board().canAddTile(pT)) { //TODO : ne ps thro decoder exception
+                if (gameState.board().canAddTile(pT)) //TODO : ne ps thro decoder exception
                     yield withPlacedTile(gameState, pT);
-                } else {
-                    throw new DecoderException();
-                }
+
+                throw new DecoderException();
             }
 
             case OCCUPY_TILE -> {
+                if (index == 0x1f) yield withNewOccupant(gameState, null);
                 int kind = (index >> 4) & 1;
                 int localId = index & 0xf;
-                if (localId == 0xf) yield withNewOccupant(gameState, null);
-                else {
-                    for (Occupant o : gameState.lastTilePotentialOccupants()) {
-                        if (Zone.localId(o.zoneId()) == localId && o.kind().ordinal() == kind)
-                            yield withNewOccupant(gameState, o);
-                    }
+                if (str.length() != 1 || localId >= 10) throw new DecoderException();
+                for (Occupant o : gameState.lastTilePotentialOccupants()) {
+                    if (Zone.localId(o.zoneId()) == localId && o.kind().ordinal() == kind)
+                        yield withNewOccupant(gameState, o);
                 }
                 throw new DecoderException();
             }
 
             case RETAKE_PAWN -> {
                 if (index == 0x1f) yield withOccupantRemoved(gameState, null);
+                if (str.length() != 1 || index >= 25) throw new DecoderException();
                 Occupant occupant2 = gameState.board().occupants().stream()
                         .filter(o -> o.kind() == Occupant.Kind.PAWN)
                         .sorted(Comparator.comparingInt(Occupant::zoneId))
@@ -131,9 +133,8 @@ public class ActionEncoder {
                 yield withOccupantRemoved(gameState, occupant2);
             }
 
-            default -> throw new IllegalArgumentException();
+            default -> throw new DecoderException();
         };
-
     }
 
     /**

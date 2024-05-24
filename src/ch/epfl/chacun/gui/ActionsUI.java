@@ -58,17 +58,8 @@ public class ActionsUI {
         actions.getChildren().add(textField);
 
 
-        /**
-        // Checks if the input character is valid
-        textField.setTextFormatter(new TextFormatter<>(change -> {
-            change.setText(change.getText().toUpperCase());
-            change.setText(
-                (Base32.isValid(change.getText()) ? change.getText() : "") //TODO : check size
-            );
-            return change;
-        }));
-        */
 
+        // Checks if the input character is valid
         int ENCODED_ACTION_SIZE = 2;
         textField.setTextFormatter(new TextFormatter<>(change -> {
             String existingText = change.getControlText();

@@ -6,7 +6,7 @@ public class Base32 {
 
     public static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
-    public static boolean isValid(String s) { //TODO : check if null
+    public static boolean isValid(String s) {
         if (s.isEmpty())
             return false;
         for (int i = 0; i < s.length(); i++) {
