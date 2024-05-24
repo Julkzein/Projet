@@ -287,12 +287,18 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
             }
         }
 
+        //Gets the maximum number of points among the message board points and determines the winners
         Set<PlayerColor> winners = new HashSet<>();
-        int maxPoints; //Gets the maximum number of points among the message board points
-        maxPoints = newMessageBoard.points().values().stream().max(Comparator.naturalOrder()).get();
+        int maxPoints = 0;
+        Optional<Integer> maxPointsIfExists = newMessageBoard.points().values().stream().max(Comparator.naturalOrder());
+        if (maxPointsIfExists.isPresent())
+            maxPoints = maxPointsIfExists.get();
 
         for (Map.Entry<PlayerColor, Integer> entry : newMessageBoard.points().entrySet()) {
             if (entry.getValue() == maxPoints) winners.add(entry.getKey());
+        }
+        if (newMessageBoard.points().entrySet().isEmpty()) {
+            winners.addAll(PlayerColor.ALL.stream().filter(Objects::nonNull).collect(Collectors.toSet()));
         }
         newMessageBoard = newMessageBoard.withWinners(winners, maxPoints);
 

@@ -40,7 +40,9 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
+
         TileDecks tileDecks = getRandomTileDecks(seedString);
+
 
         //        //Logboat Deck Normale
 //       TileDecks tileDecks = new TileDecks(
@@ -68,10 +70,12 @@ public class Main extends Application {
 
 //        //Hunting trap no animal
 
+
 //        TileDecks tileDecks = new TileDecks(
 //                List.of(Tiles.TILES.get(56)),
 //                List.of(Tiles.TILES.get(4), Tiles.TILES.get(3), Tiles.TILES.get(15), Tiles.TILES.get(46), Tiles.TILES.get(29), Tiles.TILES.get(12), Tiles.TILES.get(18), Tiles.TILES.get(1), Tiles.TILES.get(37), Tiles.TILES.get(28)),
 //                List.of(Tiles.TILES.get(94), Tiles.TILES.get(88)));
+
 
 //        //Hunting trap tiger
 //        TileDecks tileDecks = new TileDecks(
@@ -212,7 +216,6 @@ public class Main extends Application {
 
         //Creation of the action consumer
         Consumer<String> actionConsumer = str -> {
-            System.out.println("string :" + str);
             ActionEncoder.StateAction stateAction = ActionEncoder.decodeAndApply(gameState.getValue(), str);
 
             if (stateAction != null) {

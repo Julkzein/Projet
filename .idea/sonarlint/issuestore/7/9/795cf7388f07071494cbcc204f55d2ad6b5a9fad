@@ -1,53 +1,52 @@
 
-™	java:S117å"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8Èº°Ôú1J$3f5f381c-82f5-45c8-9d32-4dac657defd2
-™	java:S117æ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8Èº°Ôú1J$e660e68d-7840-4dfb-86c5-72e9b93725a5
-™	java:S117ë"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8Èº°Ôú1J$77769e4f-4299-4861-b059-2b2083c81f49
-™	java:S117ë"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8Èº°Ôú1J$2888feb0-01ec-447d-a9b3-320361e9f9f0
-™	java:S117Ê"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡ŠÑ™ýÿÿÿÿ8Èº°Ôú1J$880196f5-0b9b-492e-9a68-52aca4aba76b
-™	java:S117Ê"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡ŠÑ™ýÿÿÿÿ8Èº°Ôú1J$edf00e04-07e8-45b2-92bd-4083b90e3829
-g
-java:S1190ë"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8Íº°Ôú1J$294297ee-f8a1-4fd3-b499-754443414835
-g
-java:S1190ë"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8Íº°Ôú1J$ca06c561-cb9a-46c7-8f11-f4152e04e338
-g
-java:S1190Ê"Use a different name than "_".(¡ŠÑ™ýÿÿÿÿ8Íº°Ôú1J$81d8ef51-51d3-4c32-8f68-8c4eccbd8f4b
-g
-java:S1190Ê"Use a different name than "_".(¡ŠÑ™ýÿÿÿÿ8Íº°Ôú1J$5a6e335b-de7e-439c-afd2-da62cdf14e72
-~	java:S1251"<This block of commented-out lines of code should be removed.(»½î8‚»°Ôú1J$7458ece5-8e50-4a77-8214-46047de94989
-~	java:S1257"<This block of commented-out lines of code should be removed.(»½î8áµÅÔú1J$3fcf24df-42e8-40b2-a60d-7603b80901b9
-~	java:S125="<This block of commented-out lines of code should be removed.(¶˜”ó8‚»°Ôú1J$08a6e370-1eff-4529-bcf0-c5bd9b583bd6
-ƒ	java:S125C"<This block of commented-out lines of code should be removed.(Æ±¥ÿÿÿÿÿ8‚»°Ôú1J$5e3bdab6-fa27-4905-94f8-35dc02f393bd
-~	java:S125J"<This block of commented-out lines of code should be removed.(ŸŠ·ü8÷„¾Ôú1J$46669544-9679-44e8-84ea-393c83823323
-ƒ	java:S125P"<This block of commented-out lines of code should be removed.(Æ±¥ÿÿÿÿÿ8‡»°Ôú1J$f6eefead-f1ed-4872-b0e6-8c938b5a0ff1
-~	java:S125V"<This block of commented-out lines of code should be removed.(¿Öµ›8‡»°Ôú1J$49232940-5350-409d-8a95-392c5187e90f
-}	java:S125\"<This block of commented-out lines of code should be removed.(ÉŽä8‡»°Ôú1J$22a1beb6-dc7b-458e-a7f0-023adfe295f4
-~	java:S125b"<This block of commented-out lines of code should be removed.(šßÝŽ8‡»°Ôú1J$cbd0d1f8-2fbc-4a58-9817-815632e75e52
-{
-java:S1135ˆ"2Complete the task associated to this TODO comment.(‘„þØûÿÿÿÿ8•»°Ôú1J$30b2fc6e-599b-45fd-b1ea-651b28751742
-{
-java:S1135"2Complete the task associated to this TODO comment.(Àà°‚ÿÿÿÿÿ8—»°Ôú1J$6798f8da-19b2-401b-8797-fc5765e5cfb1
-t
-java:S1172 "0Remove this unused method parameter "tiledecks".(¨Šââ8˜»°Ôú1J$e14d9d2c-4d6e-414a-ac9b-2ffc81862180
-{
-java:S1135£"2Complete the task associated to this TODO comment.(éèñûÿÿÿÿ8™»°Ôú1J$108e7688-b976-457c-954a-91d80939c926
-s	java:S106×"+Replace this use of System.out by a logger.(Ðòéöþÿÿÿÿ8¢»°Ôú1J$18077a39-ee37-405a-8181-70875baa5ce4
-œ	java:S131ì"YComplete cases by adding the missing enum constants or add a default case to this switch.(·‡Õï8¨»°Ôú1J$5c1b5100-8388-45f6-b6d1-1908ef88af9d
-€
-java:S6916Œ"7Replace this "if" statement with a pattern match guard.(øîÀ”ùÿÿÿÿ8®»°Ôú1J$5a994171-a4a0-4814-9ffa-3229d1ca519e
-{
-java:S1135Š"2Complete the task associated to this TODO comment.(Öòâƒúÿÿÿÿ8®»°Ôú1J$2d1f0618-4ce3-4acc-9e6d-f113cd7a432b
-{
-java:S6916”"7Replace this "if" statement with a pattern match guard.(­ÂÙ‰8°»°Ôú1J$ecf75721-1a5d-41ed-afb8-d70c18038841
-l	java:S108Ÿ")Either remove or fill this block of code.(”ì­è8´»°Ôú1J$d8ca3d0b-2044-44ce-a3bf-c5220c0fa507
-u
-java:S1602¬",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8¶»°Ôú1J$a2a69218-c362-4bb3-a80b-c54050d90594
-{
-java:S1135¬"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8¶»°Ôú1J$47405679-6d3f-49dd-9206-3c15ec9686b6
-{
-java:S1135¿"2Complete the task associated to this TODO comment.(‚ÇëÁúÿÿÿÿ8º»°Ôú1J$241a2afd-4567-4f95-aced-f8a9a5e6ba1f
-p
-java:S1602Æ",Remove useless curly braces around statement(¤úÔ¥8»»°Ôú1J$05f5f1ca-f1c4-4690-bd5a-672589fb3573
-r
-java:S1068"*Remove this unused "HEIGHT" private field.(¦çÆ–þÿÿÿÿ8¿»°Ôú1J$bf036f89-ae00-4b05-ae75-fd715ed1d14c
-q
-java:S1068")Remove this unused "WIDTH" private field.(¯Ö…Ðþÿÿÿÿ8À»°Ôú1J$021491a9-d0d0-41f5-9409-e7c85fb6928d
+s	java:S117è"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8ÉˆýÖú1
+s	java:S117é"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8ÊˆýÖú1
+s	java:S117î"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ÊˆýÖú1
+s	java:S117î"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ÊˆýÖú1
+s	java:S117Í"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡ŠÑ™ýÿÿÿÿ8ÊˆýÖú1
+s	java:S117Í"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¡ŠÑ™ýÿÿÿÿ8ÊˆýÖú1
+A
+java:S1190î"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8”‰ýÖú1
+A
+java:S1190î"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8”‰ýÖú1
+A
+java:S1190Í"Use a different name than "_".(¡ŠÑ™ýÿÿÿÿ8”‰ýÖú1
+A
+java:S1190Í"Use a different name than "_".(¡ŠÑ™ýÿÿÿÿ8”‰ýÖú1
+X	java:S1253"<This block of commented-out lines of code should be removed.(»½î8¾‰ýÖú1
+X	java:S1259"<This block of commented-out lines of code should be removed.(»½î8¿‰ýÖú1
+X	java:S125?"<This block of commented-out lines of code should be removed.(¶˜”ó8¿‰ýÖú1
+]	java:S125E"<This block of commented-out lines of code should be removed.(Æ±¥ÿÿÿÿÿ8¿‰ýÖú1
+X	java:S125M"<This block of commented-out lines of code should be removed.(ŸŠ·ü8¿‰ýÖú1
+]	java:S125T"<This block of commented-out lines of code should be removed.(Æ±¥ÿÿÿÿÿ8¿‰ýÖú1
+X	java:S125Z"<This block of commented-out lines of code should be removed.(¿Öµ›8¿‰ýÖú1
+W	java:S125`"<This block of commented-out lines of code should be removed.(ÉŽä8¿‰ýÖú1
+X	java:S125f"<This block of commented-out lines of code should be removed.(šßÝŽ8¿‰ýÖú1
+U
+java:S1135Œ"2Complete the task associated to this TODO comment.(‘„þØûÿÿÿÿ8È‰ýÖú1
+U
+java:S1135“"2Complete the task associated to this TODO comment.(Àà°‚ÿÿÿÿÿ8É‰ýÖú1
+N
+java:S1172¤"0Remove this unused method parameter "tiledecks".(¨Šââ8É‰ýÖú1
+U
+java:S1135§"2Complete the task associated to this TODO comment.(éèñûÿÿÿÿ8Ê‰ýÖú1
+v	java:S131ï"YComplete cases by adding the missing enum constants or add a default case to this switch.(·‡Õï8Ð‰ýÖú1
+Z
+java:S6916"7Replace this "if" statement with a pattern match guard.(øîÀ”ùÿÿÿÿ8Ó‰ýÖú1
+U
+java:S1135"2Complete the task associated to this TODO comment.(Öòâƒúÿÿÿÿ8Ó‰ýÖú1
+U
+java:S6916—"7Replace this "if" statement with a pattern match guard.(­ÂÙ‰8Ô‰ýÖú1
+F	java:S108¢")Either remove or fill this block of code.(”ì­è8Ö‰ýÖú1
+O
+java:S1602¯",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8×‰ýÖú1
+U
+java:S1135¯"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8×‰ýÖú1
+U
+java:S1135Â"2Complete the task associated to this TODO comment.(‚ÇëÁúÿÿÿÿ8Ú‰ýÖú1
+J
+java:S1602É",Remove useless curly braces around statement(¤úÔ¥8Ú‰ýÖú1
+L
+java:S1068"*Remove this unused "HEIGHT" private field.(¦çÆ–þÿÿÿÿ8Ý‰ýÖú1
+K
+java:S1068")Remove this unused "WIDTH" private field.(¯Ö…Ðþÿÿÿÿ8Ý‰ýÖú1

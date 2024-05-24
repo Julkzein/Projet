@@ -44,26 +44,17 @@ public class ActionsUI {
         Text fourLastActions = new Text(fourLastActionsToString(actionList.getValue()));
         actions.getChildren().add(fourLastActions);
 
-        /**
-        // Create a StringBinding and binds it to the Text
-        StringBinding textBinding = Bindings.createStringBinding(
-            () -> fourLastActionsToString(actionList.getValue()), actionList
-        );
-         fourLastActions.textProperty().bind(textBinding);
-         */
+
         actionList.addListener((_, _, nV) -> fourLastActions.setText(fourLastActionsToString(nV)));
 
         TextField textField = new TextField();
         textField.setId("action-field");
         actions.getChildren().add(textField);
 
-
-
         // Checks if the input character is valid
-        int ENCODED_ACTION_SIZE = 2;
+        final int ENCODED_ACTION_SIZE = 2;
         textField.setTextFormatter(new TextFormatter<>(change -> {
             String existingText = change.getControlText();
-            //if(existingText.length() == ENCODED_ACTION_SIZE)  return null;
             int spaceRemaining = ENCODED_ACTION_SIZE - existingText.length();
             String newText = change.getText().chars()
                     .map(Character::toUpperCase)
