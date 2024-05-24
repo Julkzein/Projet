@@ -21,11 +21,13 @@ public class Base32 {
     }
 
     public static String encodeBits10(int i) {
+        if (! (0 <= i && i < 1024)) throw new IllegalArgumentException();
         return encodeBits5(i >>> 5) + encodeBits5(i & 0x1f);
     }
 
     public static int decode(String s) {
-        if (s == null) throw new IllegalArgumentException();
+        if (s == "") throw new IllegalArgumentException();
+        if (! isValid(s)) throw new IllegalArgumentException();
         return ((s.length() == 1) ?
                 ALPHABET.indexOf(s.charAt(0)) :
                 32 * ALPHABET.indexOf(s.charAt(0)) + ALPHABET.indexOf(s.charAt(1)));
