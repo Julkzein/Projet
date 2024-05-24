@@ -83,7 +83,7 @@ public final class TextMakerFr implements TextMaker{
      * @return the verb in the plural form and the points won if the condition is true
      */
     private String pluralStartSentence(Set<PlayerColor> players, int points) {
-        return STR."\{orderPlayer(players)} \{players.size() > 1 ? "ont remporté" : "a remporté"} \{points(points)} en"
+        return STR."\{orderPlayer(players)} \{players.size() > 1 ? "ont remporté" : "a remporté"} \{points(points)} en "
         + STR."tant qu'occupant·e\{pluralScorer(players.size() > 1)} majoritaire\{plural(players.size() > 1)}";
     }
 
