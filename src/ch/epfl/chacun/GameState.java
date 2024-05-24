@@ -232,7 +232,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         for(Area<Zone.Forest> forest : board.forestsClosedByLastTile()) {
             if (hasMenhir(forest)) {
                 newMessageBoard = newMessageBoard.withClosedForestWithMenhir(currentPlayer(), forest);
-                if (lastPlacedTile.kind() == Tile.Kind.NORMAL) canPlayAgain = true;
+                if (lastPlacedTile.kind() == Tile.Kind.NORMAL && !tileDecks.menhirTiles().isEmpty()) canPlayAgain = true;
                 break;
             }
         }

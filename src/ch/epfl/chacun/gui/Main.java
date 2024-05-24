@@ -40,7 +40,7 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
-        TileDecks tileDecks = getRandomTileDecks(seedString);
+        //TileDecks tileDecks = getRandomTileDecks(seedString);
 
 
 
@@ -50,11 +50,11 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(3), Tiles.TILES.get(4), Tiles.TILES.get(5), Tiles.TILES.get(6), Tiles.TILES.get(7), Tiles.TILES.get(11), Tiles.TILES.get(1)),
 //                List.of(Tiles.TILES.get(93)));
 
-//        //LogBoat limit
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of( Tiles.TILES.get(14), Tiles.TILES.get(1), Tiles.TILES.get(60)),
-//                List.of(Tiles.TILES.get(93)));
+        //LogBoat limit
+        TileDecks tileDecks = new TileDecks(
+                List.of(Tiles.TILES.get(56)),
+                List.of( Tiles.TILES.get(14), Tiles.TILES.get(1), Tiles.TILES.get(60)),
+                List.of());
 
 //        //Chaman Deck
 //        TileDecks tileDecks = new TileDecks(
