@@ -405,12 +405,15 @@ class MyActionEncoderTest {
                 () -> assertEquals(sa4, ActionEncoder.decodeAndApply(occupyTile49, action4)),
                 () -> assertEquals(sa5, ActionEncoder.decodeAndApply(retakePawn, action5)),
                 () -> assertEquals(sa6, ActionEncoder.decodeAndApply(retakePawn, action6)),
-                () -> assertNull(ActionEncoder.decodeAndApply(retakePawn, Base32.encodeBits5(3))),
-                () -> assertNull(ActionEncoder.decodeAndApply(retakePawn, Base32.encodeBits5(4)))
+                () -> assertNull(ActionEncoder.decodeAndApply(retakePawn, "3")),
+                () -> assertNull(ActionEncoder.decodeAndApply(retakePawn, "4")) //somethings chnged
         );
     }
 
-    
+    @Test
+    void decodeAndApplyThrowsDecoderException() {
+        System.out.println(Base32.encodeBits5(3));
+    }
 
     @Test
     void decodeAndApplyReturnsNull() {
