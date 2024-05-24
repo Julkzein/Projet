@@ -21,7 +21,7 @@ public class Base32 {
     }
 
     public static String encodeBits10(int i) {
-        return encodeBits5(i >>> 5) + encodeBits5(i);
+        return encodeBits5(i >>> 5) + encodeBits5(i & 0x1f);
     }
 
     public static int decode(String s) {
