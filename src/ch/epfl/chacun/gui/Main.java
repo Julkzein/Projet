@@ -40,7 +40,7 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
-        //TileDecks tileDecks = getRandomTileDecks(seedString);
+        TileDecks tileDecks = getRandomTileDecks(seedString);
 
 
 
@@ -197,7 +197,7 @@ public class Main extends Application {
         Map<Tile.Kind, List<Tile>> tilesByKind = tiles.stream().collect(Collectors.groupingBy(Tile::kind));
 
         List<Tile> menhir = tilesByKind.get(Tile.Kind.MENHIR);
-        
+
 
         List<Tile> norml = tilesByKind.get(Tile.Kind.NORMAL);
 

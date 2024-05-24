@@ -1,59 +1,52 @@
 
-™	java:S117é"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8ÉˆýÖú1J$205d28f3-89ab-453e-8b46-b9a343f99693
-™	java:S117ê"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8ÊˆýÖú1J$965158d0-0216-4c26-abe5-80bc8eb9b993
-™	java:S117ï"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ÊˆýÖú1J$b133f8eb-8001-4c7a-ba4f-92674db0a9bc
-™	java:S117ï"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ÊˆýÖú1J$e91a053f-89d5-4ed2-97df-23134a171f00
-”	java:S117Î"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ž§íÊ8ÊˆýÖú1J$46b54809-8bec-47e0-84b2-000df13dc0f9
-”	java:S117Î"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ž§íÊ8ÊˆýÖú1J$eb16a7dd-862c-418b-9995-f78c62a47af3
+™	java:S117é"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ššùëûÿÿÿÿ8ÉˆýÖú1J$6fe775df-c199-4ffc-a9df-f829d5a82b89
+™	java:S117ê"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(´‰è§øÿÿÿÿ8ÊˆýÖú1J$4a656eb3-fc5d-4f4e-97f6-e64821d92737
+™	java:S117ï"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ÊˆýÖú1J$8831604e-9346-4daf-afaa-8c1b4c0b9db7
+™	java:S117ï"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ÊˆýÖú1J$d033aa59-aaa7-480f-b706-ddc370691b77
+”	java:S117Î"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ž§íÊ8ÊˆýÖú1J$d9d5e7ca-91b0-4364-8666-b2849074d004
+”	java:S117Î"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ž§íÊ8ÊˆýÖú1J$364ed60a-b7c8-424b-896f-46f48ca5c851
 g
-java:S1190ï"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8”‰ýÖú1J$ed8b8109-2d9d-4b02-96cf-d39c39383f5c
+java:S1190ï"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8”‰ýÖú1J$dac0bee5-e7de-4675-9be4-3222f37c3bfa
 g
-java:S1190ï"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8”‰ýÖú1J$80dda0a3-37a1-43d0-8713-0f3018368bc0
+java:S1190ï"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8”‰ýÖú1J$635869d2-d267-41ec-8af6-644ff28a3508
 b
-java:S1190Î"Use a different name than "_".(Ž§íÊ8”‰ýÖú1J$781e8e07-e024-45b5-8271-6728d15903b6
+java:S1190Î"Use a different name than "_".(Ž§íÊ8”‰ýÖú1J$3e2fac82-3dd4-4ffc-b0c8-b1081060b66d
 b
-java:S1190Î"Use a different name than "_".(Ž§íÊ8”‰ýÖú1J$5fae799b-7abc-4656-8b7c-663b680d9c62
-
-java:S1854(">Remove this useless assignment to local variable "seedString".(ß’ÑÜ8ç›Ã×ú1J$d86552db-b7b1-4976-9699-1149bcb58b64
-r
-java:S1481("/Remove this unused "seedString" local variable.(ß’ÑÜ8ê›Ã×ú1J$4dac51a1-d0bb-4355-92dd-9e4097674d1b
-ƒ	java:S125+"<This block of commented-out lines of code should be removed.(­ßîÚùÿÿÿÿ8ë›Ã×ú1J$07f0b43b-3e82-462b-a84e-02359ff6421b
-~	java:S1253"<This block of commented-out lines of code should be removed.(»½î8ë›Ã×ú1J$c59282a9-7e7b-4860-9fd0-148465d213da
-ƒ	java:S1259"<This block of commented-out lines of code should be removed.(Ñ¼³™ûÿÿÿÿ8µ¨Ùú1J$5aa7671b-d860-4388-bf70-b03be88337c1
-~	java:S125?"<This block of commented-out lines of code should be removed.(¶˜”ó8µ¨Ùú1J$91a8ac0d-babd-4006-96c3-27f4d7cafcfc
-ƒ	java:S125E"<This block of commented-out lines of code should be removed.(Æ±¥ÿÿÿÿÿ8¶¨Ùú1J$c96e90d7-bb2b-4cfe-b442-1ae2b442ff7d
-ƒ	java:S125M"<This block of commented-out lines of code should be removed.(Æ±¥ÿÿÿÿÿ8²œÆÙú1J$83a0a144-98f5-4b74-a0c8-fb17a20fc273
-ƒ	java:S125T"<This block of commented-out lines of code should be removed.(Æ±¥ÿÿÿÿÿ8žôÎÙú1J$1d4688fa-af2e-4c63-a81d-c33cc1b99ff0
-~	java:S125Z"<This block of commented-out lines of code should be removed.(¿Öµ›8Í·½Ùú1J$7acb30e7-a72a-40cc-a044-593f195d6ee6
-}	java:S125`"<This block of commented-out lines of code should be removed.(ÉŽä8¸¨Ùú1J$586307ec-96ca-43ed-95d3-052d80595530
-~	java:S125f"<This block of commented-out lines of code should be removed.(šßÝŽ8¹¨Ùú1J$547fcb6e-c231-474c-b095-0e9f213e479c
+java:S1190Î"Use a different name than "_".(Ž§íÊ8”‰ýÖú1J$0bcf0b4f-3bca-4ad8-bd80-70b08a21465a
+~	java:S1253"<This block of commented-out lines of code should be removed.(»½î8ë›Ã×ú1J$98b7ac35-afa8-4877-a232-23785e11b26b
+ƒ	java:S1259"<This block of commented-out lines of code should be removed.(Ñ¼³™ûÿÿÿÿ8µ¨Ùú1J$ba3470a3-01ad-4678-b1ca-f4244662222b
+~	java:S125?"<This block of commented-out lines of code should be removed.(¶˜”ó8µ¨Ùú1J$94187182-b125-4415-b067-2d6c0d9b3882
+ƒ	java:S125E"<This block of commented-out lines of code should be removed.(Æ±¥ÿÿÿÿÿ8¶¨Ùú1J$6a796740-93d2-4f02-ad8c-1ab27aebf901
+ƒ	java:S125M"<This block of commented-out lines of code should be removed.(Æ±¥ÿÿÿÿÿ8²œÆÙú1J$bb85e320-6a5b-4a7f-a3ec-03dd78a1dc70
+ƒ	java:S125T"<This block of commented-out lines of code should be removed.(Æ±¥ÿÿÿÿÿ8žôÎÙú1J$1e365611-0e59-473b-ab89-e18838fd8251
+~	java:S125Z"<This block of commented-out lines of code should be removed.(¿Öµ›8Í·½Ùú1J$18add527-ab1c-416e-8711-9db3e5cd1233
+}	java:S125`"<This block of commented-out lines of code should be removed.(ÉŽä8¸¨Ùú1J$3d834bea-1a6d-47f1-ae48-f36d0f0e1262
+~	java:S125f"<This block of commented-out lines of code should be removed.(šßÝŽ8¹¨Ùú1J$7311e199-4470-44a7-8367-eb6710dd436c
 {
-java:S1135"2Complete the task associated to this TODO comment.(‘„þØûÿÿÿÿ8‚œÃ×ú1J$a01d3817-703b-4f32-bf4c-c09eb009d348
+java:S1135"2Complete the task associated to this TODO comment.(‘„þØûÿÿÿÿ8‚œÃ×ú1J$156f6659-4ada-4fb5-a518-3db581d572ef
 {
-java:S1135”"2Complete the task associated to this TODO comment.(Àà°‚ÿÿÿÿÿ8ƒœÃ×ú1J$62d572c1-52cf-48b7-9895-1d183e10d9ff
+java:S1135”"2Complete the task associated to this TODO comment.(Àà°‚ÿÿÿÿÿ8ƒœÃ×ú1J$198e81e5-18c6-4f79-a77f-32ef7cfa4333
 t
-java:S1172¥"0Remove this unused method parameter "tiledecks".(¨Šââ8…œÃ×ú1J$f6520eeb-2495-4a4e-8064-d850d94e1e45
+java:S1172¥"0Remove this unused method parameter "tiledecks".(¨Šââ8…œÃ×ú1J$cc54fda2-f2c8-4e14-bd41-dd336a9b0d0c
 {
-java:S1135¨"2Complete the task associated to this TODO comment.(éèñûÿÿÿÿ8†œÃ×ú1J$3616f395-f85c-40bc-911f-d23deed6f5a5
-œ	java:S131ð"YComplete cases by adding the missing enum constants or add a default case to this switch.(·‡Õï8Ð‰ýÖú1J$0786958c-bd28-4938-8c32-a8b10f138e47
+java:S1135¨"2Complete the task associated to this TODO comment.(éèñûÿÿÿÿ8†œÃ×ú1J$0d8759dd-ba65-4452-b490-668bd233ba37
+œ	java:S131ð"YComplete cases by adding the missing enum constants or add a default case to this switch.(·‡Õï8Ð‰ýÖú1J$1bcf6845-10dc-4b2c-b068-7caaae423b36
 €
-java:S6916"7Replace this "if" statement with a pattern match guard.(øîÀ”ùÿÿÿÿ8Ó‰ýÖú1J$e39ae526-3737-48c1-985e-1abb5f80fc2a
+java:S6916"7Replace this "if" statement with a pattern match guard.(øîÀ”ùÿÿÿÿ8Ó‰ýÖú1J$02f65d85-737d-408d-a384-bde9f8c55c61
 {
-java:S1135Ž"2Complete the task associated to this TODO comment.(Öòâƒúÿÿÿÿ8Ó‰ýÖú1J$eea6e1b1-dec8-4a0a-8c6c-8691641ecacb
+java:S1135Ž"2Complete the task associated to this TODO comment.(Öòâƒúÿÿÿÿ8Ó‰ýÖú1J$215738ba-5434-412a-9976-16010250f60b
 {
-java:S6916˜"7Replace this "if" statement with a pattern match guard.(­ÂÙ‰8Ô‰ýÖú1J$cb5f73cd-7ca9-452f-8033-cdab92b0fe7a
-l	java:S108£")Either remove or fill this block of code.(”ì­è8Ö‰ýÖú1J$e3478263-5ecf-407a-9289-add94e68db1a
+java:S6916˜"7Replace this "if" statement with a pattern match guard.(­ÂÙ‰8Ô‰ýÖú1J$c906da6c-2608-4e03-8f14-b089024aa4c4
+l	java:S108£")Either remove or fill this block of code.(”ì­è8Ö‰ýÖú1J$91f02764-8fd5-4c12-9478-9f5171a94eac
 u
-java:S1602°",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8×‰ýÖú1J$eca79df1-db33-4f68-a5a0-6d237bec180d
+java:S1602°",Remove useless curly braces around statement(Ê«åÂÿÿÿÿÿ8×‰ýÖú1J$23c67bed-6873-4cbe-9ccb-adabcceebfee
 {
-java:S1135°"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8×‰ýÖú1J$5835d578-a690-478a-86a4-f91f3288626e
+java:S1135°"2Complete the task associated to this TODO comment.(Ê«åÂÿÿÿÿÿ8×‰ýÖú1J$fe87e871-76fa-42d2-ba65-40a7d30591c0
 {
-java:S1135Ã"2Complete the task associated to this TODO comment.(‚ÇëÁúÿÿÿÿ8Ú‰ýÖú1J$e17ff89c-21ad-468c-903a-e9c3a0f6a8af
+java:S1135Ã"2Complete the task associated to this TODO comment.(‚ÇëÁúÿÿÿÿ8Ú‰ýÖú1J$a95ced5c-58df-4e3e-ae8a-476d6c07ca82
 p
-java:S1602Ê",Remove useless curly braces around statement(¤úÔ¥8Ú‰ýÖú1J$9c83e90f-b018-4562-be3f-ea509ae40046
+java:S1602Ê",Remove useless curly braces around statement(¤úÔ¥8Ú‰ýÖú1J$b00dee5e-2b3a-44a6-a582-26ba56de2b95
 r
-java:S1068"*Remove this unused "HEIGHT" private field.(¦çÆ–þÿÿÿÿ8Ý‰ýÖú1J$4fde525c-7af6-497c-87dc-0613949c5241
+java:S1068"*Remove this unused "HEIGHT" private field.(¦çÆ–þÿÿÿÿ8Ý‰ýÖú1J$4e0b45c1-dca5-48fc-90ca-c08056645322
 q
-java:S1068")Remove this unused "WIDTH" private field.(¯Ö…Ðþÿÿÿÿ8Ý‰ýÖú1J$d32e2217-f43c-4ba9-9f69-d6853c86560c
-{
-java:S1144¼"7Remove this unused private "getRandomTileDecks" method.(¬«¥Ê8žœÃ×ú1J$50d9a8ec-379a-4fe4-a650-5a923f15d3b5
+java:S1068")Remove this unused "WIDTH" private field.(¯Ö…Ðþÿÿÿÿ8Ý‰ýÖú1J$ff952859-c648-45d9-bde3-a6fdaa28974a
