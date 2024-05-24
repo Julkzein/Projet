@@ -411,11 +411,6 @@ class MyActionEncoderTest {
     }
 
     @Test
-    void decodeAndApplyThrowsDecoderException() {
-        System.out.println(Base32.encodeBits5(3));
-    }
-
-    @Test
     void decodeAndApplyReturnsNull() {
         var list = List.of(PlayerColor.RED, PlayerColor.BLUE, PlayerColor.GREEN, PlayerColor.YELLOW, PlayerColor.PURPLE);
         var start = List.of(tile56);
