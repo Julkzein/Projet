@@ -81,8 +81,6 @@ U
 %test/ch/epfl/chacun/TileSideTest.java,4/5/4525afe9e3a0ff24f31a1457e236cdb83bac7c21
 V
 &test/ch/epfl/chacun/PlayersUITest.java,b/8/b86abe98676589c36f3e93514a23d1e109035741
-U
-%src/ch/epfl/chacun/PlayersUITest.java,d/8/d85b46fcba408afb1e8a8b62d916aa57fea42e4d
 M
 src/ch/epfl/chacun/Tiles.java,c/b/cbdd83a21e0a9e2ffc91ba4c682857995d936a67
 S
@@ -91,12 +89,6 @@ S
 #src/ch/epfl/chacun/gui/DecksUI.java,c/e/ceddb55abacbe7a40f8ff30e17516fd84b60de2b
 Z
 *src/ch/epfl/chacun/gui/MessageBoardUI.java,e/c/ecd45b41d27fd7d16fbf06070b87069fff41a49a
-S
-#src/ch/epfl/chacun/DecksUITest.java,c/f/cfe1e88fcf37eb7d66d4f787c1ea6a60e2f98c0b
-U
-%src/ch/epfl/chacun/BoardUITest22.java,0/4/04f914e52f0f03ff12d4a8351f744553491e7c87
-Z
-*src/ch/epfl/chacun/MessageBoardUITest.java,9/a/9a9adb3d773f5a35c9e488d8d9ffd752bc25577c
 U
 %src/ch/epfl/chacun/ActionEncoder.java,2/4/242e2bf52f018e69902a0fc3338a8c61e81f80bd
 T
@@ -107,8 +99,6 @@ N
 src/ch/epfl/chacun/Base32.java,5/4/54af8c20aafe6c65eff8274a44211058155eaed9
 P
  src/ch/epfl/chacun/gui/Main.java,7/9/795cf7388f07071494cbcc204f55d2ad6b5a9fad
-S
-#src/ch/epfl/chacun/BoardUITest.java,7/e/7e46dbf06e9eeeb080308208154128dca8c687f4
 P
  test/ch/epfl/chacun/PosTest.java,7/6/765ed29157e473a10c4d188a6d596022d1fcccb3
 \
