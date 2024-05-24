@@ -35,13 +35,6 @@ public class PlayersUI {
         for (PlayerColor player : gameState.getValue().players()) {
             vbox.getChildren().add(createPlayerTextFlow(gameState, player, textMaker));
         }
-        /**
-        for (PlayerColor player : PlayerColor.ALL) {
-            if (textMaker.playerName(player) != null) {
-                vbox.getChildren().add(createPlayerTextFlow(gameState, player, textMaker));
-            }
-        }
-         */
         return vbox;
     }
 

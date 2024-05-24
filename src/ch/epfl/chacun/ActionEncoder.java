@@ -57,7 +57,7 @@ public class ActionEncoder {
                         .filter(o -> o.kind() == Occupant.Kind.PAWN)
                         .sorted(Comparator.comparingInt(Occupant::zoneId))
                         .toList()
-                        .indexOf(occupant); //TODO : vérifier si c'est le bon id ou pas
+                        .indexOf(occupant);
         return new StateAction(gameState.withOccupantRemoved(occupant), encodeBits5(index));
     }
 
