@@ -122,6 +122,7 @@ public class ActionEncoder {
             }
 
             case RETAKE_PAWN -> {
+                if (index == 0x1f) yield withOccupantRemoved(gameState, null);
                 Occupant occupant2 = gameState.board().occupants().stream()
                         .filter(o -> o.kind() == Occupant.Kind.PAWN)
                         .sorted(Comparator.comparingInt(Occupant::zoneId))
@@ -130,7 +131,7 @@ public class ActionEncoder {
                 yield withOccupantRemoved(gameState, occupant2);
             }
 
-            default -> throw new DecoderException();
+            default -> throw new IllegalArgumentException();
         };
 
     }
