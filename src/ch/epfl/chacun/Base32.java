@@ -8,8 +8,6 @@ public class Base32 {
 
     public static boolean isValid(String s) {
         if (s == null) return false;
-        if (s.isEmpty())
-            return false;
         for (int i = 0; i < s.length(); i++) {
             if (!ALPHABET.contains(String.valueOf(s.charAt(i))))
                 return false;
@@ -18,6 +16,7 @@ public class Base32 {
     }
 
     public static String encodeBits5(int i) {
+        if (! (0 <= i && i < 32)) throw new IllegalArgumentException();
         return String.valueOf(ALPHABET.charAt(i & 0x1f));
     }
 
@@ -26,6 +25,7 @@ public class Base32 {
     }
 
     public static int decode(String s) {
+        if (s == null) throw new IllegalArgumentException();
         return ((s.length() == 1) ?
                 ALPHABET.indexOf(s.charAt(0)) :
                 32 * ALPHABET.indexOf(s.charAt(0)) + ALPHABET.indexOf(s.charAt(1)));

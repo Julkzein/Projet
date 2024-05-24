@@ -105,3 +105,5 @@ P
 ,src/ch/epfl/sigcheck/SignatureChecks_11.java,3/9/393e80ea10b22a48d3868f8d514bd78afcb453c8
 [
 +src/ch/epfl/sigcheck/SignatureChecks_3.java,e/f/ef20a881452a869967727b48eb78a4f12e74c84b
+S
+#test/ch/epfl/chacun/Base32Test.java,2/8/28d9e6b5873b1001a749dbfd163f9470e4752824
