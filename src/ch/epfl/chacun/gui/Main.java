@@ -264,7 +264,7 @@ public class Main extends Application {
         GameState gS = gameState.getValue();
         switch (gS.nextAction()) { //TODO : repetition
             case OCCUPY_TILE -> {
-                if (gS.lastTilePotentialOccupants().contains(o)) {
+                if (o == null || gS.lastTilePotentialOccupants().contains(o)) {
                     ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), o);
                     gameState.set(stateAction.gameState());
                     newActions.add(stateAction.action());
