@@ -104,10 +104,9 @@ public class ActionEncoder {
                         .get(posIndex);
 
                 PlacedTile pT = new PlacedTile(gameState.tileToPlace(), gameState.currentPlayer(), Rotation.values()[rotation], pos);
-                if (gameState.board().canAddTile(pT)) //TODO : ne ps thro decoder exception
-                    yield withPlacedTile(gameState, pT);
+                if (!gameState.board().canAddTile(pT)) throw new DecoderException();
 
-                throw new DecoderException();
+                yield withPlacedTile(gameState, pT);
             }
 
             case OCCUPY_TILE -> {
