@@ -21,12 +21,8 @@ public class Base32 {
     }
 
     public static String encodeBits10(int i) {
-<<<<<<< Updated upstream
-        return encodeBits5(i >>> 5) + encodeBits5(i & 0x1f);
-=======
         if (! (0 <= i && i < 1024)) throw new IllegalArgumentException();
-        return encodeBits5(i >>> 5) + encodeBits5(i);
->>>>>>> Stashed changes
+        return encodeBits5(i >>> 5) + encodeBits5(i & 0x1f);
     }
 
     public static int decode(String s) {
