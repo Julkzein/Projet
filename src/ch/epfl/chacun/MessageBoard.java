@@ -3,8 +3,8 @@ package ch.epfl.chacun;
 
 import java.util.*;
 
-import static ch.epfl.chacun.Points.*;
 import static ch.epfl.chacun.Animal.Kind.*;
+import static ch.epfl.chacun.Points.*;
 
 /**
  * Represent the messages that will be sent by the game at the different
