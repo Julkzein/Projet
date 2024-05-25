@@ -46,7 +46,9 @@ public final class TextMakerFr implements TextMaker{
         StringJoiner orderedPlayersString = new StringJoiner(", ", "", "");
         List<Integer> animalIntList = animalList.stream().map(animals::get).toList();
         for (int i = 0; i < animalList.size() - 1; i++) {
-            orderedPlayersString.add(STR."\{animalIntList.get(i)} \{frName.get(animalList.get(i))}\{plural(animalIntList.get(i) > 1)}");
+            if (animalIntList.get(i) > 0) {
+                orderedPlayersString.add(STR."\{animalIntList.get(i)} \{frName.get(animalList.get(i))}\{plural(animalIntList.get(i) > 1)}");
+            }
         }
         if (animals.keySet().size() > 1) {
             return STR."\{orderedPlayersString.toString()} et \{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{plural(animalIntList.getLast() > 1)}";
