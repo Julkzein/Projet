@@ -150,6 +150,8 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         Preconditions.checkArgument(nextAction == Action.PLACE_TILE);
         Preconditions.checkArgument(tile.occupant() == null);
 
+        System.out.println("cncelled nimls before with new tile : " + board.cancelledAnimals());
+
         Board newBoard = board.withNewTile(tile);
         MessageBoard newMessageBoard = messageBoard;
 
@@ -164,8 +166,10 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     newMessageBoard = messageBoard.withScoredLogboat(currentPlayer(), newBoard.riverSystemArea((Zone.Water) tile.specialPowerZone()));
                     break;
                 case HUNTING_TRAP:
+                    System.out.println("Czncelled nimls before ; " + newBoard.cancelledAnimals());
                     newMessageBoard = messageBoard.withScoredHuntingTrap(currentPlayer(), newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals());
                     newBoard = newBoard.withMoreCancelledAnimals(animals(newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals()));
+                    System.out.println("Czncelled nimls after ; " + newBoard.cancelledAnimals());
                     break;
                 default:
             }
@@ -287,6 +291,7 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         MessageBoard newMessageBoard = messageBoard;
         Set<Animal> cancelledAnimals = cancelledAnimals(board.meadowAreas());
         Board newBoard = board.withMoreCancelledAnimals(cancelledAnimals);
+        cancelledAnimals = newBoard.cancelledAnimals();
 
         //Updates the message board with the scored meadows and river systems taking into account the cancelled animals and the special powers
         for (Area<Zone.Meadow> meadowArea : newBoard.meadowAreas()) {
@@ -390,9 +395,15 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
             Set<Animal> deer = new HashSet<>();
             Set<Animal> tigers = new HashSet<>();
 
-            for (Animal animal : Area.animals(meadowArea, Set.of())) {
-                if (animal.kind() == Animal.Kind.DEER) deer.add(animal);
-                if (animal.kind() == Animal.Kind.TIGER) tigers.add(animal);
+            for (Animal animal : Area.animals(meadowArea, board.cancelledAnimals())) {
+                if (animal.kind() == Animal.Kind.DEER) {
+                    deer.add(animal);
+                    System.out.println("deer counted : " + animal.id());
+                }
+                if (animal.kind() == Animal.Kind.TIGER) {
+                    tigers.add(animal);
+                    System.out.println("tiger counted : " + animal.id());
+                }
             }
 
             if (meadowArea.zoneWithSpecialPower(Zone.SpecialPower.WILD_FIRE) == null) { //If there isn't any fire, we deal with the deer to cancel
