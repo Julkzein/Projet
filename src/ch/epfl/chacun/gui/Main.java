@@ -122,26 +122,27 @@ public class Main extends Application {
 
 
         //Creation of the game state
-        ObjectProperty<GameState> observableGameState = new SimpleObjectProperty<>(gameState);
+        ObjectProperty<GameState> obsGameState = new SimpleObjectProperty<>(gameState);
 
         //Creation of the parameters for the actions
         ObjectProperty<List<String>> actions = new SimpleObjectProperty<>(new ArrayList<>());
 
         //Creation of the observable value of the tile to highlight
         ObjectProperty<Set<Integer>> tileToHighLight = new SimpleObjectProperty<>(Set.of());
-        
+
+        //Creation of the observable value of the visible rotation
         ObjectProperty<Rotation> visibleRotation = new SimpleObjectProperty<>(Rotation.NONE);
 
         //Creation of the side border pane
-        BorderPane sideBorderPane = getSideBorderPane(observableGameState, actions, textMaker, tileToHighLight, tileDecks, visibleRotation);
+        BorderPane sideBPane = getSideBorderPane(obsGameState, actions, textMaker, tileToHighLight, visibleRotation);
 
         //Creation of the root parameters
-        Node boardUI = getBoardUI(observableGameState, actions, tileToHighLight, visibleRotation);
+        Node boardUI = getBoardUI(obsGameState, actions, tileToHighLight, visibleRotation);
 
         //Creation of the root
         BorderPane root = new BorderPane();
         root.setCenter(boardUI);
-        root.setRight(sideBorderPane);
+        root.setRight(sideBPane);
 
         Scene scene = new Scene(root);
         primaryStage.setHeight(Screen.getPrimary().getVisualBounds().getHeight()); //TODO : avant rendu, mettre les constantes
@@ -151,7 +152,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        observableGameState.set(gameState.withStartingTilePlaced()); //TODO : belek belek
+        obsGameState.set(gameState.withStartingTilePlaced()); //TODO : belek belek
 
     }
 
@@ -168,10 +169,12 @@ public class Main extends Application {
             ObjectProperty<List<String>> actions,
             TextMakerFr textMaker,
             ObjectProperty<Set<Integer>> tileToHighLight,
-            TileDecks tiledecks, ObjectProperty<Rotation> visibleRotation) {
+            ObjectProperty<Rotation> visibleRotation) {
 
         //Creation of the observable value of the messages
-        ObservableValue<List<MessageBoard.Message>> messages = observableGameState.map(GameState::messageBoard).map(MessageBoard::messages); //TODO : changer la mise en page des messages
+        ObservableValue<List<MessageBoard.Message>> messages = observableGameState
+                .map(GameState::messageBoard)
+                .map(MessageBoard::messages);
 
         //Creation of the actions and decks vbox
         VBox actionsDecksVbox = getActionsDecksVbox(observableGameState, actions, visibleRotation);
@@ -192,25 +195,20 @@ public class Main extends Application {
      * @return a new TileDecks object with the tiles shuffled according to the given seed
      */
     private static TileDecks getRandomTileDecks(String seedString) {
+        //Creation of the random generator
+        RandomGenerator random = seedString == null ?
+                RandomGeneratorFactory.getDefault().create() :
+                RandomGeneratorFactory.getDefault().create(parseUnsignedLong(seedString));
 
-        RandomGenerator random = seedString == null ? RandomGeneratorFactory.getDefault().create() : RandomGeneratorFactory.getDefault().create(parseUnsignedLong(seedString));
-
-
+        //Shuffling the tiles and grouping them by kind
         List<Tile> tiles = new ArrayList<>(TILES);
-
         Collections.shuffle(tiles, random);
-
         Map<Tile.Kind, List<Tile>> tilesByKind = tiles.stream().collect(Collectors.groupingBy(Tile::kind));
-
-        List<Tile> menhir = tilesByKind.get(Tile.Kind.MENHIR);
-
-
-        List<Tile> norml = tilesByKind.get(Tile.Kind.NORMAL);
 
         return new TileDecks(
                 tilesByKind.get(Tile.Kind.START),
-                norml,
-                menhir);
+                tilesByKind.get(Tile.Kind.NORMAL),
+                tilesByKind.get(Tile.Kind.MENHIR));
     }
 
     /**
@@ -219,14 +217,16 @@ public class Main extends Application {
      * @param gameState the observable value of the game state
      * @return a VBox containing the actions and the decks
      */
-    private static VBox getActionsDecksVbox(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, ObjectProperty<Rotation> visibleRotation) {
+    private static VBox getActionsDecksVbox(ObjectProperty<GameState> gameState,
+                                            ObjectProperty<List<String>> actions,
+                                            ObjectProperty<Rotation> visibleRotation) {
 
         //Creation of the action consumer
         Consumer<String> actionConsumer = str -> {
             ActionEncoder.StateAction stateAction = ActionEncoder.decodeAndApply(gameState.getValue(), str);
 
             if (stateAction != null) {
-                visibleRotation.setValue(stateAction.gameState().board().lastPlacedTile().rotation());
+                visibleRotation.setValue(Objects.requireNonNull(stateAction.gameState().board().lastPlacedTile()).rotation());
                 gameState.set(stateAction.gameState());
                 List<String> newActions = new LinkedList<>(actions.getValue());
                 newActions.add(stateAction.action());

@@ -168,7 +168,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      */
     public MessageBoard withScoredMeadow(Area<Zone.Meadow> meadow, Set<Animal> cancelledAnimals) {
         if (meadow.isOccupied()) {
-            Set<Animal> animals = meadow.animals(meadow, cancelledAnimals);
+            Set<Animal> animals = Area.animals(meadow, cancelledAnimals);
             Map<Animal.Kind, Integer> animalMap = getAnimalMap(animals);
             int points = pointsForMeadow(animalMap);
             if (points > 0) {
@@ -211,7 +211,7 @@ public record MessageBoard(TextMaker textMaker, List<Message> messages) {
      */
     public MessageBoard withScoredPitTrap(Area<Zone.Meadow> adjacentMeadow, Set<Animal> cancelledAnimals) {
         if (adjacentMeadow.isOccupied()) {
-            Set<Animal> animals = adjacentMeadow.animals(adjacentMeadow, cancelledAnimals);
+            Set<Animal> animals = Area.animals(adjacentMeadow, cancelledAnimals);
             Map<Animal.Kind, Integer> animalMap = getAnimalMap(animals);
             int points = pointsForMeadow(animalMap);
             if (points > 0) {
