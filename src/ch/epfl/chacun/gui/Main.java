@@ -40,7 +40,7 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
-        //TileDecks tileDecks = getRandomTileDecks(seedString);
+        TileDecks tileDecks = getRandomTileDecks(seedString);
 
 
 
@@ -204,11 +204,12 @@ public class Main extends Application {
         List<Tile> tiles = new ArrayList<>(TILES);
         Collections.shuffle(tiles, random);
         Map<Tile.Kind, List<Tile>> tilesByKind = tiles.stream().collect(Collectors.groupingBy(Tile::kind));
-
+        
         return new TileDecks(
                 tilesByKind.get(Tile.Kind.START),
                 tilesByKind.get(Tile.Kind.NORMAL),
                 tilesByKind.get(Tile.Kind.MENHIR));
+
     }
 
     /**
