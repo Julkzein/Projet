@@ -121,26 +121,44 @@ public class BoardUI {
 
             Image imageCell = placedTile == null ? emptyTileImage : cache.computeIfAbsent(placedTile.id(), _ -> normalImageForTile(placedTile.tile().id()));
 
-
             //color data
             Color colorCell = Color.TRANSPARENT;
             Boolean hoverCell = group.hoverProperty().getValue();
-            if (!evidentId.getValue().isEmpty()) {
-                if (placedTile != null && !evidentId.getValue().contains(placedTile.id())) {
-                    colorCell = Color.BLACK;
-                }
+            GameState currentGameState = gameState.getValue();
+            Board currentBoard = currentGameState.board();
+
+            if (!evidentId.getValue().isEmpty() && placedTile != null && !evidentId.getValue().contains(placedTile.id())) {
+                colorCell = Color.BLACK;
             }
-            if (placedTile == null && gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
-                if (!hoverCell) {
-                    colorCell = fillColor(Objects.requireNonNull(gameState.getValue().currentPlayer()));
-                    rotationCell = Rotation.NONE; //TODO : si c fout l mrd c ici
+            //todo: check que égal que block commenté
+            if (placedTile == null && currentGameState.nextAction() == PLACE_TILE && currentBoard.insertionPositions().contains(pos)) {
+                if (hoverCell) {
+                    imageCell = cache.computeIfAbsent(currentGameState.tileToPlace().id(), _ -> normalImageForTile(currentGameState.tileToPlace().id()));
+                    colorCell = currentBoard.canAddTile(new PlacedTile(currentGameState.tileToPlace(), currentGameState.currentPlayer(), rotationCell, pos)) ? colorCell : Color.WHITE;
                 } else {
-                    imageCell = cache.computeIfAbsent(gameState.getValue().tileToPlace().id(), _ -> normalImageForTile(gameState.getValue().tileToPlace().id()));
-                    if (!gameState.getValue().board().canAddTile(new PlacedTile(gameState.getValue().tileToPlace(), gameState.getValue().currentPlayer(), rotationCell, pos))) {
-                        colorCell = Color.WHITE;
-                    }
+                    colorCell = fillColor(Objects.requireNonNull(currentGameState.currentPlayer()));
+                    rotationCell = Rotation.NONE;
                 }
             }
+//            //color data
+//            Color colorCell = Color.TRANSPARENT;
+//            Boolean hoverCell = group.hoverProperty().getValue();
+//            if (!evidentId.getValue().isEmpty()) {
+//                if (placedTile != null && !evidentId.getValue().contains(placedTile.id())) {
+//                    colorCell = Color.BLACK;
+//                }
+//            }
+//            if (placedTile == null && gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
+//                if (!hoverCell) {
+//                    colorCell = fillColor(Objects.requireNonNull(gameState.getValue().currentPlayer()));
+//                    rotationCell = Rotation.NONE;
+//                } else {
+//                    imageCell = cache.computeIfAbsent(gameState.getValue().tileToPlace().id(), _ -> normalImageForTile(gameState.getValue().tileToPlace().id()));
+//                    if (!gameState.getValue().board().canAddTile(new PlacedTile(gameState.getValue().tileToPlace(), gameState.getValue().currentPlayer(), rotationCell, pos))) {
+//                        colorCell = Color.WHITE;
+//                    }
+//                }
+//            }
             return new CellData(imageCell, rotationCell, colorCell);
         }, gameState, rotation, evidentId, group.hoverProperty());
 
@@ -154,8 +172,9 @@ public class BoardUI {
         //the placed tile concerned by the group
         ObservableValue<PlacedTile> placedTile = gameState.map(GameState::board).map(Board -> Board.tileAt(pos));
 
-        //when the tile changes (and a tile is placed), we change the image and create the cancel token and the occupants
-        placedTile.addListener((_, _, nV) -> {
+        //when the tile changes (and a tile is placed), we change the image and create the cancel token and the
+        // occupants
+        placedTile.addListener((_, _, _) -> {
             group.rotateProperty().unbind();
             createCancelledToken(pos, gameState, group);
             createOccupants(pos, gameState, group, occupants, occupantConsumer);
@@ -200,6 +219,7 @@ public class BoardUI {
 
     /**
      * Creates the SVG paths for the potential occupants of a tile
+     *
      * @param pos the position of the tile on the board
      * @param gameState the observable value of the game state
      * @param group the group to which the SVG paths are added
@@ -207,7 +227,7 @@ public class BoardUI {
      */
     private static void createOccupants(Pos pos, ObservableValue<GameState> gameState, Group group, ObservableValue<Set<Occupant>> occupants, Consumer<Occupant> occupantConsumer) {
         GameState gS = gameState.getValue();
-        for (Occupant o : Objects.requireNonNull(gS.board().tileAt(pos)).potentialOccupants()) { //TODO : enlever le requireNonNull
+        for (Occupant o : Objects.requireNonNull(gS.board().tileAt(pos)).potentialOccupants()) {
             Node occupantSVGPath = Icon.newFor(gS.board().lastPlacedTile().placer(), o.kind());
             occupantSVGPath.setId(STR."\{o.kind().toString().toLowerCase()}_\{o.zoneId()}" );
             occupantSVGPath.visibleProperty().bind(occupants.map(s -> s.contains(o)));
@@ -223,6 +243,7 @@ public class BoardUI {
 
     /**
      * Creates the image views of the cancel token for the animals of a tile
+     *
      * @param pos the position of the tile on the board
      * @param gameState the observable value of the game state
      * @param group the group to which the image views of the cancel tokens are added
@@ -232,7 +253,7 @@ public class BoardUI {
         ObservableValue<Set<Animal>> cancelledAnimals = boardObservableValue.map(Board::cancelledAnimals);
         for (Zone.Meadow meadow : Objects.requireNonNull(boardObservableValue.getValue().tileAt(pos)).meadowZones()) {
             for (Animal a : meadow.animals()) {
-                ImageView cancelToken = new ImageView("marker.png"); //TODO : check si png nécéssire
+                ImageView cancelToken = new ImageView("marker.png");
                 cancelToken.setId(STR."marker_\{a.id()}");
                 cancelToken.getStyleClass().add("marker");
                 cancelToken.setFitWidth(MARKER_FIT_SIZE);
@@ -244,7 +265,13 @@ public class BoardUI {
 
     }
 
-    //private record to store the data of a cell
+    /**
+     * private record to store the data of a cell
+     *
+     * @param image
+     * @param rotation
+     * @param veilColor
+     */
     private record CellData (Image image, Rotation rotation, Color veilColor) {}
 
 }

@@ -41,8 +41,6 @@ public class ActionsUI {
 
         Text fourLastActions = new Text(fourLastActionsToString(actionList.getValue()));
         actions.getChildren().add(fourLastActions);
-
-
         actionList.addListener((_, _, nV) -> fourLastActions.setText(fourLastActionsToString(nV)));
 
         TextField textField = new TextField();
@@ -54,22 +52,23 @@ public class ActionsUI {
         textField.setTextFormatter(new TextFormatter<>(change -> {
             String existingText = change.getControlText();
             int spaceRemaining = ENCODED_ACTION_SIZE - existingText.length();
-            String newText = change.getText().chars()
+            String newText =
+                    change.getText().chars()
                     .map(Character::toUpperCase)
                     .mapToObj(c -> String.valueOf((char) c))
                     .filter(Base32::isValid)
                     .limit(spaceRemaining)
                     .collect(Collectors.joining());
             change.setText(newText);
+
             return change;
         }));
 
         // When the user presses enter, the consumer is called with the text field's content
-        textField.setOnAction(_ -> {  //TODO : futur check if all good
+        textField.setOnAction(_ -> {
             action.accept(textField.getText());
             textField.clear();
         });
-
         return actions;
     }
 
@@ -87,5 +86,4 @@ public class ActionsUI {
         }
         return joiner.toString();
     }
-
 }

@@ -10,7 +10,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -40,72 +39,7 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
-        //TileDecks tileDecks = getRandomTileDecks(seedString);
-
-
-
-//                //Logboat Deck Normale
-//       TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(3), Tiles.TILES.get(4), Tiles.TILES.get(5), Tiles.TILES.get(6), Tiles.TILES.get(7), Tiles.TILES.get(11), Tiles.TILES.get(1)),
-//                List.of(Tiles.TILES.get(93)));
-
-        //LogBoat limit
-        TileDecks tileDecks = new TileDecks(
-                List.of(Tiles.TILES.get(56)),
-                List.of( Tiles.TILES.get(14), Tiles.TILES.get(1), Tiles.TILES.get(60)),
-                List.of());
-
-//        //Chaman Deck
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(36), Tiles.TILES.get(35), Tiles.TILES.get(27), Tiles.TILES.get(39), Tiles.TILES.get(37)),
-//                List.of(Tiles.TILES.get(88)));
-
-//////        //Hunting trap full animaux
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
-//                List.of(Tiles.TILES.get(94)));
-
-        //Hunting trap no animal
-
-
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(4), Tiles.TILES.get(3), Tiles.TILES.get(15), Tiles.TILES.get(46), Tiles.TILES.get(29), Tiles.TILES.get(12), Tiles.TILES.get(18), Tiles.TILES.get(1), Tiles.TILES.get(37), Tiles.TILES.get(7), Tiles.TILES.get(8), Tiles.TILES.get(9), Tiles.TILES.get(22), Tiles.TILES.get(23)),
-//                List.of(Tiles.TILES.get(94)));
-
-
-////Hunting trap tiger
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
-//                List.of(Tiles.TILES.get(94)));
-
-//        //Hunting trap tiger
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
-//                List.of(Tiles.TILES.get(94)));
-
-//        //Pit trap full animaux
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
-//                List.of(Tiles.TILES.get(92)));
-
-        //Pit trap tiger et PitFire
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(15), Tiles.TILES.get(26)),
-//                List.of(Tiles.TILES.get(85), Tiles.TILES.get(92)));
-
-//        //Logboat Deck Normale
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(3), Tiles.TILES.get(4), Tiles.TILES.get(5), Tiles.TILES.get(6), Tiles.TILES.get(7), Tiles.TILES.get(11), Tiles.TILES.get(1)),
-//                List.of(Tiles.TILES.get(91)));
+        TileDecks tileDecks = getRandomTileDecks(seedString);
 
         //Creation of the playerNameMap and the textMaker
         Map<PlayerColor, String> playerNameMap = new TreeMap<>();
@@ -145,15 +79,14 @@ public class Main extends Application {
         root.setRight(sideBPane);
 
         Scene scene = new Scene(root);
-        primaryStage.setHeight(Screen.getPrimary().getVisualBounds().getHeight()); //TODO : avant rendu, mettre les constantes
-        primaryStage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
+        primaryStage.setHeight(HEIGHT);
+        primaryStage.setWidth(WIDTH);
 
         primaryStage.setTitle("ChaCuN");
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        obsGameState.set(gameState.withStartingTilePlaced()); //TODO : belek belek
-
+        obsGameState.set(gameState.withStartingTilePlaced());
     }
 
     /**
@@ -200,6 +133,7 @@ public class Main extends Application {
                 RandomGeneratorFactory.getDefault().create() :
                 RandomGeneratorFactory.getDefault().create(parseUnsignedLong(seedString));
 
+
         //Shuffling the tiles and grouping them by kind
         List<Tile> tiles = new ArrayList<>(TILES);
         Collections.shuffle(tiles, random);
@@ -209,14 +143,13 @@ public class Main extends Application {
                 tilesByKind.get(Tile.Kind.START),
                 tilesByKind.get(Tile.Kind.NORMAL),
                 tilesByKind.get(Tile.Kind.MENHIR));
-
     }
 
     /**
      * Returns a VBox containing the actions and the decks.
      *
      * @param gameState the observable value of the game state
-     * @param textMaker
+     * @param textMaker the text maker
      * @return a VBox containing the actions and the decks
      */
     private static VBox getActionsDecksVbox(ObjectProperty<GameState> gameState,
@@ -239,8 +172,10 @@ public class Main extends Application {
 
         ObservableValue<Tile> currentTile = gameState.map(GameState::tileToPlace);
 
-        ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
-        ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks).map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
+        ObservableValue<Integer> normalCount = gameState.map(GameState::tileDecks)
+                .map(TileDecks -> TileDecks.deckSize(Tile.Kind.NORMAL));
+        ObservableValue<Integer> menhirCount = gameState.map(GameState::tileDecks)
+                .map(TileDecks -> TileDecks.deckSize(Tile.Kind.MENHIR));
         ObjectProperty<String> text = new SimpleObjectProperty<>("");
 
         Consumer<Occupant> noActionConsumer = o -> consumeOccupant(gameState, actions, o);
@@ -273,7 +208,8 @@ public class Main extends Application {
      * @param actions the observable value of the actions
      * @param o the occupant to consume
      */
-    private static void consumeOccupant(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, Occupant o) {
+    private static void consumeOccupant(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions,
+                                        Occupant o) {
         List<String> newActions = new ArrayList<>(actions.getValue());
         GameState gS = gameState.getValue();
         switch (gS.nextAction()) { //TODO : repetition
@@ -297,7 +233,7 @@ public class Main extends Application {
                     actions.set(newActions);
                 }
             }
-            default -> {}
+            default -> {} //todo: chekc
         }
     }
 
@@ -307,10 +243,11 @@ public class Main extends Application {
      * @param gameState the observable value of the game state
      * @return the board UI
      */
-    private static Node getBoardUI(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, ObjectProperty<Set<Integer>> evidentTiles, ObjectProperty<Rotation> visbleRotation) {
+    private static Node getBoardUI(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions,
+                                   ObjectProperty<Set<Integer>> evidentTiles, ObjectProperty<Rotation> visbleRotation) {
         ObjectProperty<Set<Occupant>> visibleOccupants = new SimpleObjectProperty<>(Set.of());
 
-        Consumer<Rotation> rotationSetter = r -> { //TODO : check
+        Consumer<Rotation> rotationSetter = r -> {
             visbleRotation.set(visbleRotation.getValue().add(r));
         };
 
@@ -329,7 +266,7 @@ public class Main extends Application {
             if (gS.board().canAddTile(pT)) {
                 ActionEncoder.StateAction stateAction = ActionEncoder.withPlacedTile(gameState.getValue(), pT);
                 gameState.set(stateAction.gameState());
-                visbleRotation.set(Rotation.NONE); //TODO : ps l bonne solution
+                visbleRotation.set(Rotation.NONE);
                 List<String> newActions = new ArrayList<>(actions.getValue());
                 newActions.add(stateAction.action());
                 actions.set(newActions);
