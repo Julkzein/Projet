@@ -41,16 +41,14 @@ public final class TextMakerFr implements TextMaker{
      * @return the string with the animals' names and their number
      */
     private String orderAnimal(Map<Animal.Kind, Integer> animals) {
-        List<Animal.Kind> animalList = Arrays.stream(Animal.Kind.values()).filter(animals::containsKey).toList();
-        Map<Animal.Kind, String> frName = Map.of(Animal.Kind.DEER, "cerf", Animal.Kind.AUROCHS, "auroch", Animal.Kind.MAMMOTH, "mammouth", Animal.Kind.TIGER, "tigre");
+        List<Animal.Kind> animalList = Arrays.stream(Animal.Kind.values()).filter(a -> a != Animal.Kind.TIGER).filter(k -> animals.get(k) != 0).toList();
+        Map<Animal.Kind, String> frName = Map.of(Animal.Kind.DEER, "cerf", Animal.Kind.AUROCHS, "auroch", Animal.Kind.MAMMOTH, "mammouth");
         StringJoiner orderedPlayersString = new StringJoiner(", ", "", "");
         List<Integer> animalIntList = animalList.stream().map(animals::get).toList();
         for (int i = 0; i < animalList.size() - 1; i++) {
-            if (animalIntList.get(i) > 0) {
-                orderedPlayersString.add(STR."\{animalIntList.get(i)} \{frName.get(animalList.get(i))}\{plural(animalIntList.get(i) > 1)}");
-            }
+            orderedPlayersString.add(STR."\{animalIntList.get(i)} \{frName.get(animalList.get(i))}\{plural(animalIntList.get(i) > 1)}");
         }
-        if (animals.keySet().size() > 1) {
+        if (animalList.size() > 1) {
             return STR."\{orderedPlayersString.toString()} et \{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{plural(animalIntList.getLast() > 1)}";
         }
         return STR."\{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{plural(animalIntList.getLast() > 1)}";
