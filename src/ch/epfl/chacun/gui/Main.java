@@ -40,7 +40,7 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
-        TileDecks tileDecks = getRandomTileDecks(seedString);
+        //TileDecks tileDecks = getRandomTileDecks(seedString);
 
 
 
@@ -50,11 +50,11 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(3), Tiles.TILES.get(4), Tiles.TILES.get(5), Tiles.TILES.get(6), Tiles.TILES.get(7), Tiles.TILES.get(11), Tiles.TILES.get(1)),
 //                List.of(Tiles.TILES.get(93)));
 
-//        //LogBoat limit
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of( Tiles.TILES.get(14), Tiles.TILES.get(1), Tiles.TILES.get(60)),
-//                List.of());
+        //LogBoat limit
+        TileDecks tileDecks = new TileDecks(
+                List.of(Tiles.TILES.get(56)),
+                List.of( Tiles.TILES.get(14), Tiles.TILES.get(1), Tiles.TILES.get(60)),
+                List.of());
 
 //        //Chaman Deck
 //        TileDecks tileDecks = new TileDecks(
@@ -96,10 +96,10 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(92)));
 
         //Pit trap tiger et PitFire
-        TileDecks tileDecks = new TileDecks(
-                List.of(Tiles.TILES.get(56)),
-                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(15), Tiles.TILES.get(26)),
-                List.of(Tiles.TILES.get(85), Tiles.TILES.get(92)));
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(15), Tiles.TILES.get(26)),
+//                List.of(Tiles.TILES.get(85), Tiles.TILES.get(92)));
 
 //        //Logboat Deck Normale
 //        TileDecks tileDecks = new TileDecks(
@@ -177,7 +177,7 @@ public class Main extends Application {
                 .map(MessageBoard::messages);
 
         //Creation of the actions and decks vbox
-        VBox actionsDecksVbox = getActionsDecksVbox(observableGameState, actions, visibleRotation);
+        VBox actionsDecksVbox = getActionsDecksVbox(observableGameState, actions, visibleRotation, textMaker);
 
         BorderPane sideBorderPane = new BorderPane();
         sideBorderPane.setTop(PlayersUI.create(observableGameState, textMaker));
@@ -204,7 +204,7 @@ public class Main extends Application {
         List<Tile> tiles = new ArrayList<>(TILES);
         Collections.shuffle(tiles, random);
         Map<Tile.Kind, List<Tile>> tilesByKind = tiles.stream().collect(Collectors.groupingBy(Tile::kind));
-        
+
         return new TileDecks(
                 tilesByKind.get(Tile.Kind.START),
                 tilesByKind.get(Tile.Kind.NORMAL),
@@ -216,11 +216,13 @@ public class Main extends Application {
      * Returns a VBox containing the actions and the decks.
      *
      * @param gameState the observable value of the game state
+     * @param textMaker
      * @return a VBox containing the actions and the decks
      */
     private static VBox getActionsDecksVbox(ObjectProperty<GameState> gameState,
                                             ObjectProperty<List<String>> actions,
-                                            ObjectProperty<Rotation> visibleRotation) {
+                                            ObjectProperty<Rotation> visibleRotation,
+                                            TextMakerFr textMaker) {
 
         //Creation of the action consumer
         Consumer<String> actionConsumer = str -> {
@@ -246,8 +248,8 @@ public class Main extends Application {
         gameState.addListener((_,_,nV) -> {
             switch (nV.nextAction()) {
                 case PLACE_TILE -> text.set("");
-                case OCCUPY_TILE -> text.set("Cliquez sur un occupant pour le placer ou cliquez ici pour continuer");
-                case RETAKE_PAWN -> text.set("Cliquez sur un pion pour le reprendre ou cliquez ici pour continuer");
+                case OCCUPY_TILE -> text.set(textMaker.clickToOccupy());
+                case RETAKE_PAWN -> text.set(textMaker.clickToUnoccupy());
             }
         });
 

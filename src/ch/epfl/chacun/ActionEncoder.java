@@ -12,7 +12,7 @@ import static ch.epfl.chacun.Base32.*;
  * @author Jules Delforge (372325)
  */
 public class ActionEncoder {
-    //private constructor to prevent instantiation
+    //Private constructor to prevent instantiation
     private ActionEncoder() {}
 
     /**
@@ -23,10 +23,7 @@ public class ActionEncoder {
      * @return the encoded action
      */
     public static StateAction withPlacedTile(GameState gameState, PlacedTile placedTile) {
-        List<Pos> list = gameState.board().insertionPositions()
-                .stream()
-                .sorted(Comparator.comparing(Pos::x).thenComparing(Pos::y))
-                .toList();
+        List<Pos> list = getPosList(gameState);
         int index = (list.indexOf(placedTile.pos()) * 4) + placedTile.rotation().ordinal();
         return new StateAction(gameState.withPlacedTile(placedTile), encodeBits10(index));
     }
@@ -51,13 +48,7 @@ public class ActionEncoder {
      * @return the encoded action
      */
     public static StateAction withOccupantRemoved(GameState gameState, Occupant occupant) {
-        int index = (occupant == null) ?
-                0x1f :
-                gameState.board().occupants().stream()
-                        .filter(o -> o.kind() == Occupant.Kind.PAWN)
-                        .sorted(Comparator.comparingInt(Occupant::zoneId))
-                        .toList()
-                        .indexOf(occupant);
+        int index = (occupant == null) ? 0x1f : getOccupantList(gameState).indexOf(occupant);
         return new StateAction(gameState.withOccupantRemoved(occupant), encodeBits5(index));
     }
 
@@ -66,7 +57,7 @@ public class ActionEncoder {
      *
      * @param gameState the current state of the game
      * @param str the encoded action
-     * @return the decoded and applied action
+     * @return the decoded and applied action or null if the code isn't valid
      */
     public static StateAction decodeAndApply(GameState gameState, String str) {
         try {
@@ -93,16 +84,17 @@ public class ActionEncoder {
         return switch(gameState.nextAction()) {
             case PLACE_TILE -> {
                 if (str.length() != 2) throw new DecoderException();
-                int rotation = index % 4; //TODO : fire des shifts
-                int posIndex = index / 4;
+                int rotation = index % 4; //the last 2 bits
+                int posIndex = index >> 2; //the first 8 bits
                 if (posIndex >= gameState.board().insertionPositions().size()) throw new DecoderException();
-                Pos pos = gameState.board().insertionPositions()
-                        .stream()
-                        .sorted(Comparator.comparing(Pos::x).thenComparing(Pos::y))
-                        .toList()
-                        .get(posIndex);
 
-                PlacedTile pT = new PlacedTile(gameState.tileToPlace(), gameState.currentPlayer(), Rotation.values()[rotation], pos);
+                Pos pos = getPosList(gameState).get(posIndex);
+                PlacedTile pT = new PlacedTile(
+                        gameState.tileToPlace(),
+                        gameState.currentPlayer(),
+                        Rotation.values()[rotation],
+                        pos
+                );
                 if (!gameState.board().canAddTile(pT)) throw new DecoderException();
 
                 yield withPlacedTile(gameState, pT);
@@ -110,7 +102,7 @@ public class ActionEncoder {
 
             case OCCUPY_TILE -> {
                 if (index == 0x1f) yield withNewOccupant(gameState, null);
-                int kind = (index >> 4) & 1;
+                int kind = (index >> 4) & 1; //
                 int localId = index & 0xf;
                 if (str.length() != 1 || localId >= 10) throw new DecoderException();
                 for (Occupant o : gameState.lastTilePotentialOccupants()) {
@@ -123,16 +115,36 @@ public class ActionEncoder {
             case RETAKE_PAWN -> {
                 if (index == 0x1f) yield withOccupantRemoved(gameState, null);
                 if (str.length() != 1 || index >= 25) throw new DecoderException();
-                Occupant occupant2 = gameState.board().occupants().stream()
-                        .filter(o -> o.kind() == Occupant.Kind.PAWN)
-                        .sorted(Comparator.comparingInt(Occupant::zoneId))
-                        .toList()
-                        .get(index);
+                Occupant occupant2 = getOccupantList(gameState).get(index);
                 yield withOccupantRemoved(gameState, occupant2);
             }
 
             default -> throw new DecoderException();
         };
+    }
+
+    /**
+     * Returns the list of insertion positions sorted by x and y coordinates.
+     * @param gameState the current state of the game
+     * @return the list of insertion positions sorted by x and y coordinates
+     */
+    private static List<Pos> getPosList(GameState gameState) {
+        return gameState.board().insertionPositions()
+                .stream()
+                .sorted(Comparator.comparing(Pos::x).thenComparing(Pos::y))
+                .toList();
+    }
+
+    /**
+     * Returns the list of pawn occupants sorted by zone id.
+     * @param gameState the current state of the game
+     * @return the list of pawn occupants sorted by zone id
+     */
+    private static List<Occupant> getOccupantList(GameState gameState) {
+        return gameState.board().occupants().stream()
+                .filter(o -> o.kind() == Occupant.Kind.PAWN)
+                .sorted(Comparator.comparingInt(Occupant::zoneId))
+                .toList();
     }
 
     /**
@@ -145,4 +157,3 @@ public class ActionEncoder {
      */
     public record StateAction(GameState gameState, String action) {}
 }
-//TODO : static

@@ -9,7 +9,8 @@ import javafx.scene.image.Image;
  * @author Jules Delforge (372325)
  */
 public class ImageLoader {
-    //private constructor to prevent instantiation
+
+    //Private constructor to prevent instantiation
     private ImageLoader() {}
 
     public static final int LARGE_TILE_PIXEL_SIZE = 512;

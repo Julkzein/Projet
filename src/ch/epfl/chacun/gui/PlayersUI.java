@@ -18,64 +18,69 @@ import java.util.Map;
  * @author Jules Delforge (372325)
  */
 public class PlayersUI {
-    //private constructor to prevent instantiation
+    //Private constructor to prevent instantiation
     private PlayersUI() {}
 
     /**
      * This method creates the UI elements that display the players' names, points and remaining pawns and huts.
      *
-     * @param gameState the current state of the game
+     * @param gameState the observable value of the current state of the game
      * @param textMaker the text maker used to generate the text in French
-     * @return the ui elements of the players
+     * @return the node that displays the players
      */
     public static Node create(ObservableValue<GameState> gameState, TextMakerFr textMaker) {
         VBox vbox = new VBox();
         vbox.getStylesheets().add("players.css");
         vbox.setId("players");
-        for (PlayerColor player : gameState.getValue().players()) {
+        for (PlayerColor player : gameState.getValue().players())
             vbox.getChildren().add(createPlayerTextFlow(gameState, player, textMaker));
-        }
+
         return vbox;
     }
 
     /**
      * This method creates the text flow that displays the name, points and remaining pawns and huts of a player.
      *
-     * @param gameState the current state of the game
+     * @param gameState the observable value of the current state of the game
      * @param player the color of the player
      * @param textMaker the text maker used to generate the text in French
-     * @return the ui element of the given player
+     * @return the text flow that displays the name, points and remaining pawns and huts of the player
      */
-    private static TextFlow createPlayerTextFlow(ObservableValue<GameState> gameState, PlayerColor player, TextMakerFr textMaker) {
-        //points
-        ObservableValue<Map<PlayerColor, Integer>> pointsO = gameState.map(GameState::messageBoard).map(MessageBoard::points);
-        ObservableValue<String> pointTextO = pointsO.map(points -> STR." \{textMaker.playerName(player)} : \{textMaker.points(points.getOrDefault(player, 0))} \n");
-        Text playerNameAndPoints = new Text();
-        playerNameAndPoints.textProperty().bind(pointTextO);
+    private static TextFlow createPlayerTextFlow(ObservableValue<GameState> gameState,
+                                                 PlayerColor player,
+                                                 TextMakerFr textMaker) {
+        //Player name and points
+        ObservableValue<Map<PlayerColor, Integer>> pointsMap =
+                gameState.map(GameState::messageBoard).map(MessageBoard::points);
 
-        //player circle
+        ObservableValue<String> pointsString = pointsMap.map(points ->
+            STR." \{textMaker.playerName(player)} : \{textMaker.points(points.getOrDefault(player, 0))} \n"
+        );
+
+        Text playerNameAndPoints = new Text();
+        playerNameAndPoints.textProperty().bind(pointsString);
+
+        //Player circle
         Circle playerCircle = new Circle(5, ColorMap.fillColor(player));
 
-        //textFlow
+        //TextFlow with player circle, name and points
         TextFlow textFlow =  new TextFlow(playerCircle, playerNameAndPoints);
 
-        //icons and space
+        //Icons and space
         Node[] icons = new Node[5];
         for (int i = 0; i < 3; i++) {
             icons[i] = Icon.newFor(player, Occupant.Kind.HUT);
-            final int finalI1 = i;
-            icons[i].opacityProperty().bind(gameState.map(gameState1 -> gameState1.freeOccupantsCount(player, Occupant.Kind.HUT) > finalI1 ? 1 : 0.1));
+            icons[i].opacityProperty().bind(getOpacity(gameState, player, Occupant.Kind.HUT, i));
             textFlow.getChildren().add(icons[i]);
         }
         textFlow.getChildren().add(new Text("   "));
         for (int i = 0; i < 5; i++) {
             icons[i] = Icon.newFor(player, Occupant.Kind.PAWN);
-            final int finalI2 = i;
-            icons[i].opacityProperty().bind(gameState.map(gameState1 -> gameState1.freeOccupantsCount(player, Occupant.Kind.PAWN) > finalI2 ? 1 : 0.1));
+            icons[i].opacityProperty().bind(getOpacity(gameState, player, Occupant.Kind.PAWN, i));
             textFlow.getChildren().add(icons[i]);
         }
 
-        //current player
+        //Current player style
         ObservableValue<PlayerColor> currentPlayer = gameState.map(GameState::currentPlayer);
         currentPlayer.addListener((_, _, nV) -> {
             if (nV == player) textFlow.getStyleClass().add("current");
@@ -83,5 +88,21 @@ public class PlayersUI {
         });
         textFlow.getStyleClass().add("player");
         return textFlow;
+    }
+
+    /**
+     * This method returns the opacity to use for the icon of the given player and kind.
+     *
+     * @param gameState the observable value of the current state of the game
+     * @param player the color of the player
+     * @param kind the kind of the occupant
+     * @param finalI2 the index of the icon
+     * @return the opacity to use for the icon of the given player and kind
+     */
+    private static ObservableValue<Double> getOpacity(ObservableValue<GameState> gameState,
+                                                      PlayerColor player,
+                                                      Occupant.Kind kind,
+                                                      int finalI2) {
+        return gameState.map(gS -> gS.freeOccupantsCount(player, kind) > finalI2 ? 1 : 0.1);
     }
 }

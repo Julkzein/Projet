@@ -4,7 +4,7 @@ import java.util.*;
 
 
 /**
- * This class creates the texts,  in French, for the different events of the game.
+ * This class creates the texts, in French, for the different events of the game.
  *
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
@@ -28,9 +28,9 @@ public final class TextMakerFr implements TextMaker{
 
         if (playersList.size() == 1) return STR."\{playerMap.get(playersList.get(0))}";
 
-        for (int i = 0; i < playersList.size() - 1; i++) {
+        for (int i = 0; i < playersList.size() - 1; i++)
             orderedPlayersString.add(STR."\{playerMap.get(playersList.get(i))}");
-        }
+
         return STR."\{orderedPlayersString.toString()} et \{playerMap.get(playersList.getLast())}";
     }
 
@@ -41,17 +41,28 @@ public final class TextMakerFr implements TextMaker{
      * @return the string with the animals' names and their number
      */
     private String orderAnimal(Map<Animal.Kind, Integer> animals) {
-        List<Animal.Kind> animalList = Arrays.stream(Animal.Kind.values()).filter(a -> a != Animal.Kind.TIGER).filter(k -> animals.get(k) != 0).toList();
-        Map<Animal.Kind, String> frName = Map.of(Animal.Kind.DEER, "cerf", Animal.Kind.AUROCHS, "auroch", Animal.Kind.MAMMOTH, "mammouth");
+        List<Animal.Kind> animalList = Arrays
+                .stream(Animal.Kind.values()).filter(a -> a != Animal.Kind.TIGER) // We don't want to display the tiger
+                .filter(k -> animals.get(k) != 0).toList();
+
+        Map<Animal.Kind, String> frName = Map.of(
+                Animal.Kind.DEER, "cerf",
+                Animal.Kind.AUROCHS, "auroch",
+                Animal.Kind.MAMMOTH, "mammouth");
+
         StringJoiner orderedPlayersString = new StringJoiner(", ", "", "");
         List<Integer> animalIntList = animalList.stream().map(animals::get).toList();
-        for (int i = 0; i < animalList.size() - 1; i++) {
-            orderedPlayersString.add(STR."\{animalIntList.get(i)} \{frName.get(animalList.get(i))}\{plural(animalIntList.get(i) > 1)}");
+        for (int i = 0; i < animalList.size() - 1; i++) orderedPlayersString.add(
+            STR."\{animalIntList.get(i)} \{frName.get(animalList.get(i))}\{plural(animalIntList.get(i) > 1)}"
+        );
+
+
+        if (animalList.size() > 1) { return
+            STR."\{orderedPlayersString.toString()} et \{animalIntList.getLast()} \{frName.get(animalList.getLast())}" +
+            STR."\{plural(animalIntList.getLast() > 1)}";
         }
-        if (animalList.size() > 1) {
-            return STR."\{orderedPlayersString.toString()} et \{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{plural(animalIntList.getLast() > 1)}";
-        }
-        return STR."\{animalIntList.getLast()} \{frName.get(animalList.getLast())}\{plural(animalIntList.getLast() > 1)}";
+        return STR."\{animalIntList.getLast()} \{frName.get(animalList.getLast())}" +
+                STR."\{plural(animalIntList.getLast() > 1)}";
     }
 
     /**
@@ -84,7 +95,8 @@ public final class TextMakerFr implements TextMaker{
      */
     private String pluralStartSentence(Set<PlayerColor> players, int points) {
         return STR."\{orderPlayer(players)} \{players.size() > 1 ? "ont remporté" : "a remporté"} \{points(points)} en "
-        + STR."tant qu'occupant·e\{pluralScorer(players.size() > 1)} majoritaire\{plural(players.size() > 1)}";
+        + STR."tant qu'occupant·e\{pluralScorer(players.size() > 1)}"
+        + STR." majoritaire\{plural(players.size() > 1)}";
     }
 
     /**
@@ -122,7 +134,8 @@ public final class TextMakerFr implements TextMaker{
 
     /**
      * This method returns the text of a message declaring that the majority occupants of a newly closed forest,
-     * consisting of a certain number of tiles and containing a certain number of mushroom groups, have won the corresponding points.
+     * consisting of a certain number of tiles and containing a certain number of mushroom groups, have won the 
+     * corresponding points.
      *
      * @param scorers the majority occupants of the forest
      * @param points the points won
@@ -132,13 +145,16 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredForest(Set<PlayerColor> scorers, int points, int mushroomGroupCount, int tileCount) {
-        String mushroomString = mushroomGroupCount > 0 ? STR." et de \{mushroomGroupCount} groupe\{plural(mushroomGroupCount > 1)} de champignons" : "";
-        return STR."\{pluralStartSentence(scorers, points)} d'une forêt composée de \{tileCount} tuiles\{mushroomString}.";
+        String mushroomString = mushroomGroupCount > 0 ? 
+                STR." et de \{mushroomGroupCount} groupe\{plural(mushroomGroupCount > 1)} de champignons" : "";
+        return STR."\{pluralStartSentence(scorers, points)} d'une forêt composée de \{tileCount}" + 
+                STR." tuiles\{mushroomString}.";
     }
 
     /**
      * This method returns the text of a message declaring that the majority occupants of a newly closed river,
-     * consisting of a certain number of tiles and containing a certain number of fish, have won the corresponding points.
+     * consisting of a certain number of tiles and containing a certain number of fish, have won the corresponding 
+     * points.
      *
      * @param scorers the majority occupants of the river
      * @param points the points won
@@ -148,13 +164,15 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredRiver(Set<PlayerColor> scorers, int points, int fishCount, int tileCount) {
-        String fishString = fishCount > 0 ? STR." et contenant \{fishCount} poisson\{plural(fishCount > 1)}" : "";
-        return STR."\{pluralStartSentence(scorers, points)} d'une rivière composée de \{tileCount} tuile\{plural(tileCount > 1)}\{fishString}.";
+        String fishString = fishCount > 0 ? 
+                STR." et contenant \{fishCount} poisson\{plural(fishCount > 1)}" : "";
+        return STR."\{pluralStartSentence(scorers, points)} d'une rivière composée de \{tileCount}" + 
+                STR." tuile\{plural(tileCount > 1)}\{fishString}.";
     }
 
     /**
-     * This method returns the text of a message declaring that a player has placed the hunting trap in a meadow containing,
-     * on the 8 neighboring tiles of the trap, certain animals, and won the corresponding points.
+     * This method returns the text of a message declaring that a player has placed the hunting trap in a meadow 
+     * containing, on the 8 neighboring tiles of the trap, certain animals, and won the corresponding points.
      *
      * @param scorer the player who placed the hunting trap
      * @param points the points won
@@ -163,11 +181,13 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playerScoredHuntingTrap(PlayerColor scorer, int points, Map<Animal.Kind, Integer> animals) {
-        return STR."\{playerName(scorer)} a remporté \{points(points)} en plaçant la fosse à pieux dans un pré dans lequel elle est entourée de \{orderAnimal(animals)}.";
+        return STR."\{playerName(scorer)} a remporté \{points(points)} en plaçant la fosse à pieux dans un pré dans" + 
+                STR." lequel elle est entourée de \{orderAnimal(animals)}.";
     }
 
     /**
-     * This method returns the text of a message declaring that a player has placed the logboat in a river system containing a certain number of lakes, and won the corresponding points.
+     * This method returns the text of a message declaring that a player has placed the logboat in a river system 
+     * containing a certain number of lakes, and won the corresponding points.
      *
      * @param scorer the player who placed the logboat
      * @param points the points won
@@ -176,11 +196,13 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playerScoredLogboat(PlayerColor scorer, int points, int lakeCount) {
-        return STR."\{playerName(scorer)} a remporté \{points(points)} en plaçant la pirogue dans un réseau hydrographique contenant \{lakeCount} lac\{lakeCount > 1 ? "s" : ""}.";
+        return STR."\{playerName(scorer)} a remporté \{points(points)} en plaçant la pirogue dans un réseau" + 
+                STR." hydrographique contenant \{lakeCount} lac\{lakeCount > 1 ? "s" : ""}.";
     }
 
     /**
-     * This method returns the text of a message declaring that the majority occupants of a meadow containing certain animals have won the corresponding points.
+     * This method returns the text of a message declaring that the majority occupants of a meadow containing certain 
+     * animals have won the corresponding points.
      *
      * @param scorers the majority occupants of the meadow
      * @param points the points won
@@ -193,7 +215,8 @@ public final class TextMakerFr implements TextMaker{
     }
 
     /**
-     * This method returns the text of a message declaring that the majority occupants of a river system containing a certain number of fish have won the corresponding points.
+     * This method returns the text of a message declaring that the majority occupants of a river system containing a 
+     * certain number of fish have won the corresponding points.
      *
      * @param scorers the majority occupants of the river system
      * @param points the points won
@@ -202,11 +225,13 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredRiverSystem(Set<PlayerColor> scorers, int points, int fishCount) {
-        return STR."\{pluralStartSentence(scorers, points)} d'un réseau hydrographique contenant \{fishCount} poisson\{plural(fishCount > 1)}.";
+        return STR."\{pluralStartSentence(scorers, points)} d'un réseau hydrographique contenant \{fishCount}" + 
+                STR." poisson\{plural(fishCount > 1)}.";
     }
 
     /**
-     * This method returns the text of a message declaring that the majority occupants of a meadow containing the pit trap and, on the 8 neighboring tiles of it, certain animals, have won the corresponding points.
+     * This method returns the text of a message declaring that the majority occupants of a meadow containing the pit 
+     * trap and, on the 8 neighboring tiles of it, certain animals, have won the corresponding points.
      *
      * @param scorers the majority occupants of the meadow containing the pit trap
      * @param points the points won
@@ -215,11 +240,13 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredPitTrap(Set<PlayerColor> scorers, int points, Map<Animal.Kind, Integer> animals) {
-        return STR."\{pluralStartSentence(scorers, points)} d'un pré contenant la grande fosse à pieux entourée de \{orderAnimal(animals)}.";
+        return STR."\{pluralStartSentence(scorers, points)} d'un pré contenant la grande fosse à pieux entourée de" + 
+                STR." \{orderAnimal(animals)}.";
     }
 
     /**
-     * This method returns the text of a message declaring that the majority occupants of a river system containing the raft have won the corresponding points.
+     * This method returns the text of a message declaring that the majority occupants of a river system containing the 
+     * raft have won the corresponding points.
      *
      * @param scorers the majority occupants of the river system containing the raft
      * @param points the points won
@@ -228,7 +255,8 @@ public final class TextMakerFr implements TextMaker{
      */
     @Override
     public String playersScoredRaft(Set<PlayerColor> scorers, int points, int lakeCount) {
-        return STR."\{pluralStartSentence(scorers, points)} d'un réseau hydrographique contenant le radeau et \{lakeCount} lac\{plural(lakeCount > 1)}.";
+        return STR."\{pluralStartSentence(scorers, points)} d'un réseau hydrographique contenant le radeau" + 
+                STR." et \{lakeCount} lac\{plural(lakeCount > 1)}.";
     }
 
     /**
@@ -240,12 +268,13 @@ public final class TextMakerFr implements TextMaker{
      */
    @Override
    public String playersWon(Set<PlayerColor> winners, int points) {
-        return STR."\{orderPlayer(winners)} \{winners.size() > 1 ? "ont remporté" : "a remporté"} la partie avec \{points(points)} !";
+        return STR."\{orderPlayer(winners)} \{winners.size() > 1 ? "ont remporté" : "a remporté"} la partie" + 
+                STR." avec \{points(points)} !";
    }
 
    /**
-    * This method returns the text of a message asking the current player to click on the occupant it wants to place or the
-    * message if he doesn't want to place any occupant.
+    * This method returns the text of a message asking the current player to click on the occupant it wants to place or 
+    * the message if he doesn't want to place any occupant.
     *
     * @return the string with the message
     */
@@ -255,8 +284,8 @@ public final class TextMakerFr implements TextMaker{
    }
 
    /**
-    * This method returns the text of a message asking the current player to click on the pawn it wants to take back or the
-    * message if he doesn't want to take back any pawn.
+    * This method returns the text of a message asking the current player to click on the pawn it wants to take back or 
+    * the message if he doesn't want to take back any pawn.
     *
     * @return the string with the message
     */
