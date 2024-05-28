@@ -40,7 +40,7 @@ public class Main extends Application {
         String seedString = getParameters().getNamed().get("seed");
 
         //Gets the random tile decks
-        //TileDecks tileDecks = getRandomTileDecks(seedString);
+        TileDecks tileDecks = getRandomTileDecks(seedString);
 
 
 
@@ -83,11 +83,11 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
 //                List.of(Tiles.TILES.get(94)));
 
-        //Hunting trap tiger
-        TileDecks tileDecks = new TileDecks(
-                List.of(Tiles.TILES.get(56)),
-                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
-                List.of(Tiles.TILES.get(94)));
+//        //Hunting trap tiger
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
+//                List.of(Tiles.TILES.get(94)));
 
 //        //Pit trap full animaux
 //        TileDecks tileDecks = new TileDecks(
@@ -205,12 +205,12 @@ public class Main extends Application {
         List<Tile> menhir = tilesByKind.get(Tile.Kind.MENHIR);
 
 
-        List<Tile> norml = tilesByKind.get(Tile.Kind.NORMAL);
+        List<Tile> normal = tilesByKind.get(Tile.Kind.NORMAL);
 
         return new TileDecks(
                 tilesByKind.get(Tile.Kind.START),
-                norml,
-                menhir);
+                normal,
+                List.of(Tiles.TILES.get(85), Tiles.TILES.get(94), Tiles.TILES.get(92), Tiles.TILES.get(88)));
     }
 
     /**
