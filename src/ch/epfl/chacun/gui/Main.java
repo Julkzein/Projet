@@ -83,11 +83,11 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
 //                List.of(Tiles.TILES.get(94)));
 
-        //Hunting trap tiger
-        TileDecks tileDecks = new TileDecks(
-                List.of(Tiles.TILES.get(56)),
-                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
-                List.of(Tiles.TILES.get(94)));
+//        //Hunting trap tiger
+//        TileDecks tileDecks = new TileDecks(
+//                List.of(Tiles.TILES.get(56)),
+//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
+//                List.of(Tiles.TILES.get(94)));
 
 //        //Pit trap full animaux
 //        TileDecks tileDecks = new TileDecks(
@@ -95,11 +95,11 @@ public class Main extends Application {
 //                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(15), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(76), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(1)),
 //                List.of(Tiles.TILES.get(92)));
 
-//        //Pit trap tiger et PitFire
-//        TileDecks tileDecks = new TileDecks(
-//                List.of(Tiles.TILES.get(56)),
-//                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(15), Tiles.TILES.get(26)),
-//                List.of(Tiles.TILES.get(85), Tiles.TILES.get(92)));
+        //Pit trap tiger et PitFire
+        TileDecks tileDecks = new TileDecks(
+                List.of(Tiles.TILES.get(56)),
+                List.of(Tiles.TILES.get(61), Tiles.TILES.get(62), Tiles.TILES.get(18), Tiles.TILES.get(35), Tiles.TILES.get(16), Tiles.TILES.get(36),  Tiles.TILES.get(37), Tiles.TILES.get(31), Tiles.TILES.get(64), Tiles.TILES.get(68), Tiles.TILES.get(15), Tiles.TILES.get(26)),
+                List.of(Tiles.TILES.get(85), Tiles.TILES.get(92)));
 
 //        //Logboat Deck Normale
 //        TileDecks tileDecks = new TileDecks(

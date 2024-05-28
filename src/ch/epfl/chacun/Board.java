@@ -21,7 +21,8 @@ public final class Board {
     private final ZonePartitions partition; //all the partitions of the board
     private final Set<Animal> cancelledAnimals; //a set of all the canceled animals
     public static final int REACH = 12; //the distance in tiles separating the middle tile from the sides
-    private static final int TOTAL_TILE_COUNT = 625; //the total amount of tiles of the board
+    public static final int WIDTH = 2 * REACH + 1; //the width of the board
+    private static final int TOTAL_TILE_COUNT = WIDTH * WIDTH; //the total amount of tiles of the board
     public static final Board EMPTY = new Board(new PlacedTile[TOTAL_TILE_COUNT] , new int[0], ZonePartitions.EMPTY, Set.of()); //a totally empty board
 
 
@@ -48,7 +49,7 @@ public final class Board {
      * @return the index of the tile at the given position
      */
     private int index(Pos pos) {
-        return (pos.x() + REACH) + (REACH + pos.y()) * (REACH * 2 + 1);
+        return (pos.x() + REACH) + (REACH + pos.y()) * WIDTH;
     }
 
     private boolean invalidPos(Pos pos) {
@@ -266,16 +267,16 @@ public final class Board {
             if (placedTile != null) {
                 int x = placedTile.pos().x();
                 int y = placedTile.pos().y();
-                if ((tileAt(new Pos(x - 1, y)) == null) && Math.abs(x-1) <= 12 && Math.abs(y) <= 12) {
+                if ((tileAt(new Pos(x - 1, y)) == null) && Math.abs(x-1) <= REACH && Math.abs(y) <= REACH) {
                     positions.add(new Pos(x - 1, y));
                 }
-                if (tileAt(new Pos(x + 1, y)) == null && Math.abs(x+1) <= 12 && Math.abs(y) <= 12) {
+                if (tileAt(new Pos(x + 1, y)) == null && Math.abs(x+1) <= REACH && Math.abs(y) <= REACH) {
                     positions.add(new Pos(x + 1, y));
                 }
-                if (tileAt(new Pos(x, y - 1)) == null && Math.abs(x) <= 12 && Math.abs(y-1) <= 12) {
+                if (tileAt(new Pos(x, y - 1)) == null && Math.abs(x) <= REACH && Math.abs(y-1) <= REACH) {
                     positions.add(new Pos(x, y - 1));
                 }
-                if (tileAt(new Pos(x, y + 1)) == null && Math.abs(x) <= 12 && Math.abs(y+1) <= 12) {
+                if (tileAt(new Pos(x, y + 1)) == null && Math.abs(x) <= REACH && Math.abs(y+1) <= REACH) {
                     positions.add(new Pos(x, y + 1));
                 }
             }

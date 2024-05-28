@@ -150,8 +150,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         Preconditions.checkArgument(nextAction == Action.PLACE_TILE);
         Preconditions.checkArgument(tile.occupant() == null);
 
-        System.out.println("cncelled nimls before with new tile : " + board.cancelledAnimals());
-
         Board newBoard = board.withNewTile(tile);
         MessageBoard newMessageBoard = messageBoard;
 
@@ -166,10 +164,8 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
                     newMessageBoard = messageBoard.withScoredLogboat(currentPlayer(), newBoard.riverSystemArea((Zone.Water) tile.specialPowerZone()));
                     break;
                 case HUNTING_TRAP:
-                    System.out.println("Czncelled nimls before ; " + newBoard.cancelledAnimals());
                     newMessageBoard = messageBoard.withScoredHuntingTrap(currentPlayer(), newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals());
                     newBoard = newBoard.withMoreCancelledAnimals(animals(newBoard.adjacentMeadow(tile.pos(), (Zone.Meadow) tile.specialPowerZone()), newBoard.cancelledAnimals()));
-                    System.out.println("Czncelled nimls after ; " + newBoard.cancelledAnimals());
                     break;
                 default:
             }
@@ -398,11 +394,9 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
             for (Animal animal : Area.animals(meadowArea, board.cancelledAnimals())) {
                 if (animal.kind() == Animal.Kind.DEER) {
                     deer.add(animal);
-                    System.out.println("deer counted : " + animal.id());
                 }
                 if (animal.kind() == Animal.Kind.TIGER) {
                     tigers.add(animal);
-                    System.out.println("tiger counted : " + animal.id());
                 }
             }
 

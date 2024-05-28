@@ -51,8 +51,6 @@ public final class PlayersUITest extends Application {
         primaryStage.setScene(new Scene(rootNode));
         */
 
-        System.out.println("test");
-
         ObservableValue<List<MessageBoard.Message>> messages = new SimpleObjectProperty<>(List.of(new MessageBoard.Message("test text", 3, Set.of(PlayerColor.RED, PlayerColor.GREEN), Set.of())));
         ObjectProperty<Set<Integer>> tileIds = new SimpleObjectProperty<>(Set.of());
         var messageBoardNode = MessageBoardUI.create(messages, tileIds);
