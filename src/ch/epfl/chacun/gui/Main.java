@@ -143,6 +143,7 @@ public class Main extends Application {
                 tilesByKind.get(Tile.Kind.START),
                 tilesByKind.get(Tile.Kind.NORMAL),
                 tilesByKind.get(Tile.Kind.MENHIR));
+
     }
 
     /**
