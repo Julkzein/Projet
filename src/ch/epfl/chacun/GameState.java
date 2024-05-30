@@ -104,21 +104,6 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
             }
 
 
-            /**
-            for (Occupant occupant : lastPlacedTile.potentialOccupants()) {
-                Zone zone = lastPlacedTile.zoneWithId(occupant.zoneId());
-                Area area = areaOfZoneOnBoard(zone, board);
-                if ((!areaOfZoneOnBoard(zone, board).isOccupied() || occupant.kind().equals(Occupant.Kind.HUT))
-                        && freeOccupantsCount(currentPlayer(), occupant.kind()) > 0) {
-                    if (occupant.kind().equals(Occupant.Kind.HUT) && zone instanceof Zone.River) {
-                        if (!board.riverSystemArea((Zone.Water) zone).isOccupied()) {
-                            potentialOccupantsSet.add(occupant);
-                        }
-                    } else {
-                        potentialOccupantsSet.add(occupant);
-                    }
-                }
-            } */
         }
         return potentialOccupantsSet;
     }
@@ -246,10 +231,9 @@ public record GameState(List<PlayerColor> players, TileDecks tileDecks, Tile til
         }
 
         for(Area<Zone.Forest> forest : board.forestsClosedByLastTile()) {
-            if (hasMenhir(forest)) {
+            if (!canPlayAgain && hasMenhir(forest) && lastPlacedTile.kind() == Tile.Kind.NORMAL && !tileDecks.menhirTiles().isEmpty()) {
                 newMessageBoard = newMessageBoard.withClosedForestWithMenhir(currentPlayer(), forest);
-                if (lastPlacedTile.kind() == Tile.Kind.NORMAL && !tileDecks.menhirTiles().isEmpty()) canPlayAgain = true;
-                break;
+                canPlayAgain = true;
             }
         }
 

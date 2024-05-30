@@ -1,29 +1,30 @@
 
-™	java:S117±"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(³Î—şÿÿÿÿ8ÿÉ¡Ïü1J$e684aa66-3baf-4ac3-825b-791122118a8b
-™	java:S117³"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ĞÀ£ÿÿÿÿÿ8ÿÉ¡Ïü1J$6feb2f6a-51f7-4e9f-b43d-d0369e789f6e
-™	java:S117¸"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8€Ê¡Ïü1J$53a073b7-0e63-40e4-acf3-ecf8d3eb783e
-™	java:S117¸"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8€Ê¡Ïü1J$797072af-7581-4b2c-b1c3-22366fe7e635
-”	java:S117™"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(§íÊ8€Ê¡Ïü1J$9a2490ac-13d4-434a-b8f4-ab15d6153d65
-”	java:S117™"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(§íÊ8€Ê¡Ïü1J$89cf0c26-45f6-4d30-91b9-395f67922ef8
-g
-java:S1190¸"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8…Ê¡Ïü1J$5ccd789c-68b9-4a32-bb0a-127a6a1a347d
-g
-java:S1190¸"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8…Ê¡Ïü1J$f5a7b347-aa52-4cce-b2c5-66b94d7c9faf
-b
-java:S1190™"Use a different name than "_".(§íÊ8†Ê¡Ïü1J$5ed3d8b7-a977-4f7d-b666-812cd78178a8
-b
-java:S1190™"Use a different name than "_".(§íÊ8†Ê¡Ïü1J$d60db8d5-f9f8-4988-8e66-e084648f626a
-œ	java:S131¹"YComplete cases by adding the missing enum constants or add a default case to this switch.(·‡Õï8³Ë¡Ïü1J$42601c90-48ec-4f14-85e5-3df4492d5661
-€
-java:S6916Ú"7Replace this "if" statement with a pattern match guard.(øîÀ”ùÿÿÿÿ8¾Ë¡Ïü1J$ddacbbb4-ff02-4953-b9f7-657273653906
-{
-java:S1135Ø"2Complete the task associated to this TODO comment.(Öòâƒúÿÿÿÿ8¿Ë¡Ïü1J$a8320b7e-a547-4b1a-ba65-bbaa21b83aae
-{
-java:S6916â"7Replace this "if" statement with a pattern match guard.(­ÂÙ‰8ÃË¡Ïü1J$49289d54-38d7-4d31-91f2-ae3896ecb7b8
-l	java:S108í")Either remove or fill this block of code.(Åß¯ë8ÊË¡Ïü1J$0f44990e-bc53-4dd5-aa0c-57a6485c2a2c
-v
-java:S1135í"2Complete the task associated to this TODO comment.(Åß¯ë8ËË¡Ïü1J$2787708b-550f-46ad-8795-10f1191ff298
-u
-java:S1602û",Remove useless curly braces around statement(ÿõ”™ùÿÿÿÿ8ÎË¡Ïü1J$f7fa8644-2c6b-4839-a37a-ddd0632ed50e
-p
-java:S1602•",Remove useless curly braces around statement(¤úÔ¥8ÙË¡Ïü1J$b518f94c-bee2-4012-ba20-28c1360a1c4c
+s	java:S117²"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(³Î—şÿÿÿÿ8‹üÈÓü1
+s	java:S117´"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ĞÀ£ÿÿÿÿÿ8ŒüÈÓü1
+s	java:S117¹"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ŒüÈÓü1
+s	java:S117¹"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(û•Ö¡ùÿÿÿÿ8ŒüÈÓü1
+n	java:S117š"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(§íÊ8ŒüÈÓü1
+n	java:S117š"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(§íÊ8ŒüÈÓü1
+A
+java:S1190¹"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8™üÈÓü1
+A
+java:S1190¹"Use a different name than "_".(û•Ö¡ùÿÿÿÿ8™üÈÓü1
+<
+java:S1190š"Use a different name than "_".(§íÊ8™üÈÓü1
+<
+java:S1190š"Use a different name than "_".(§íÊ8™üÈÓü1
+Y	java:S125’"<This block of commented-out lines of code should be removed.(œÙËö8ëüÈÓü1
+v	java:S131º"YComplete cases by adding the missing enum constants or add a default case to this switch.(·‡Õï8ôüÈÓü1
+Z
+java:S6916Û"7Replace this "if" statement with a pattern match guard.(øîÀ”ùÿÿÿÿ8üüÈÓü1
+U
+java:S1135Ù"2Complete the task associated to this TODO comment.(Öòâƒúÿÿÿÿ8ıüÈÓü1
+U
+java:S6916ã"7Replace this "if" statement with a pattern match guard.(­ÂÙ‰8‚ıÈÓü1
+F	java:S108î")Either remove or fill this block of code.(Åß¯ë8ˆıÈÓü1
+P
+java:S1135î"2Complete the task associated to this TODO comment.(Åß¯ë8ˆıÈÓü1
+O
+java:S1602ü",Remove useless curly braces around statement(ÿõ”™ùÿÿÿÿ8‹ıÈÓü1
+J
+java:S1602–",Remove useless curly braces around statement(¤úÔ¥8ıÈÓü1
