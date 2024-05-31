@@ -142,7 +142,9 @@ public class Main extends Application {
         return new TileDecks(
                 tilesByKind.get(Tile.Kind.START),
                 tilesByKind.get(Tile.Kind.NORMAL),
-                tilesByKind.get(Tile.Kind.MENHIR));
+                List.of());
+                //tilesByKind.get(Tile.Kind.MENHIR));
+
     }
 
     /**

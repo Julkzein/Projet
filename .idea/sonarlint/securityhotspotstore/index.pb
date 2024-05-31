@@ -91,8 +91,6 @@ Z
 *src/ch/epfl/chacun/gui/MessageBoardUI.java,e/c/ecd45b41d27fd7d16fbf06070b87069fff41a49a
 U
 %src/ch/epfl/chacun/ActionEncoder.java,2/4/242e2bf52f018e69902a0fc3338a8c61e81f80bd
-T
-$src/ch/epfl/chacun/ActionUITest.java,8/4/849a171f4685ec1c7851c3357e4bb4d47d3ee443
 U
 %src/ch/epfl/chacun/gui/ActionsUI.java,5/7/5700521c3b0c2031663ea4d3bfb146a2cf70af1f
 N

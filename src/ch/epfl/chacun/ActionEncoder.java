@@ -15,6 +15,8 @@ public class ActionEncoder {
     //Private constructor to prevent instantiation
     private ActionEncoder() {}
 
+    private static int nullOccupant = 0x1f;
+
     /**
      * This method encodes the action of placing a tile.
      *
@@ -36,7 +38,7 @@ public class ActionEncoder {
      * @return the encoded action
      */
     public static StateAction withNewOccupant(GameState gameState, Occupant occupant) {
-        int index = (occupant == null) ? 0x1f : occupant.kind().ordinal() * 16 + Zone.localId(occupant.zoneId());
+        int index = (occupant == null) ? nullOccupant : occupant.kind().ordinal() * 16 + Zone.localId(occupant.zoneId());
         return new StateAction(gameState.withNewOccupant(occupant), encodeBits5(index));
     }
 
@@ -48,7 +50,7 @@ public class ActionEncoder {
      * @return the encoded action
      */
     public static StateAction withOccupantRemoved(GameState gameState, Occupant occupant) {
-        int index = (occupant == null) ? 0x1f : getOccupantList(gameState).indexOf(occupant);
+        int index = (occupant == null) ? nullOccupant : getOccupantList(gameState).indexOf(occupant);
         return new StateAction(gameState.withOccupantRemoved(occupant), encodeBits5(index));
     }
 
@@ -101,7 +103,7 @@ public class ActionEncoder {
             }
 
             case OCCUPY_TILE -> {
-                if (index == 0x1f) yield withNewOccupant(gameState, null);
+                if (index == nullOccupant) yield withNewOccupant(gameState, null);
                 int kind = (index >> 4) & 1; //
                 int localId = index & 0xf;
                 if (str.length() != 1 || localId >= 10) throw new DecoderException();
@@ -113,7 +115,7 @@ public class ActionEncoder {
             }
 
             case RETAKE_PAWN -> {
-                if (index == 0x1f) yield withOccupantRemoved(gameState, null);
+                if (index == nullOccupant) yield withOccupantRemoved(gameState, null);
                 if (str.length() != 1 || index >= 25) throw new DecoderException();
                 Occupant occupant2 = getOccupantList(gameState).get(index);
                 yield withOccupantRemoved(gameState, occupant2);
