@@ -141,9 +141,8 @@ public class Main extends Application {
 
         return new TileDecks(
                 tilesByKind.get(Tile.Kind.START),
-                tilesByKind.get(Tile.Kind.NORMAL),
-                List.of());
-                //tilesByKind.get(Tile.Kind.MENHIR));
+                tilesByKind.get(Tile.Kind.NORMAL).subList(0, 5),
+                tilesByKind.get(Tile.Kind.MENHIR)); //todo : enlever vnt rendu
 
     }
 
@@ -187,6 +186,7 @@ public class Main extends Application {
                 case PLACE_TILE -> text.set("");
                 case OCCUPY_TILE -> text.set(textMaker.clickToOccupy());
                 case RETAKE_PAWN -> text.set(textMaker.clickToUnoccupy());
+                case END_GAME -> text.set("Fin du jeu");
             }
         });
 
@@ -214,29 +214,37 @@ public class Main extends Application {
                                         Occupant o) {
         List<String> newActions = new ArrayList<>(actions.getValue());
         GameState gS = gameState.getValue();
-        switch (gS.nextAction()) { //TODO : repetition
+        switch (gS.nextAction()) {
             case OCCUPY_TILE -> {
                 if (o == null || gS.lastTilePotentialOccupants().contains(o)) {
                     ActionEncoder.StateAction stateAction = ActionEncoder.withNewOccupant(gameState.getValue(), o);
-                    gameState.set(stateAction.gameState());
-                    newActions.add(stateAction.action());
-                    actions.set(newActions);
+                    nextActionUpdate(gameState, actions, stateAction, newActions);
                 }
             }
             case RETAKE_PAWN -> {
-                if (o == null ||
-                        (gS.board().occupants().contains(o)
-                        && o.kind() == Occupant.Kind.PAWN
+                if (o == null || (gS.board().occupants().contains(o) && o.kind() == Occupant.Kind.PAWN
                         && gS.currentPlayer() == gS.board().tileWithId(Zone.tileId(o.zoneId())).placer())) {
 
                     ActionEncoder.StateAction stateAction = ActionEncoder.withOccupantRemoved(gameState.getValue(), o);
-                    gameState.set(stateAction.gameState());
-                    newActions.add(stateAction.action());
-                    actions.set(newActions);
+                    nextActionUpdate(gameState, actions, stateAction, newActions);
                 }
             }
-            default -> {} //todo: chekc
+            default -> {} 
         }
+    }
+
+    /**
+     * Updates the game state and the actions with the given state action.
+     *
+     * @param gameState the observable value of the game state
+     * @param actions the observable value of the actions
+     * @param stateAction the state action to apply
+     * @param newActions the new actions
+     */
+    private static void nextActionUpdate(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, ActionEncoder.StateAction stateAction, List<String> newActions) {
+        gameState.set(stateAction.gameState());
+        newActions.add(stateAction.action());
+        actions.set(newActions);
     }
 
     /**

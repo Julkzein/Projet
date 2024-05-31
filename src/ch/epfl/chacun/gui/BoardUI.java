@@ -127,10 +127,11 @@ public class BoardUI {
             GameState currentGameState = gameState.getValue();
             Board currentBoard = currentGameState.board();
 
-            if (!evidentId.getValue().isEmpty() && placedTile != null && !evidentId.getValue().contains(placedTile.id())) {
+            if (!evidentId.getValue().isEmpty() && placedTile != null
+                    && !evidentId.getValue().contains(placedTile.id())) {
                 colorCell = Color.BLACK;
             }
-            //todo: check que égal que block commenté
+
             if (placedTile == null && currentGameState.nextAction() == PLACE_TILE && currentBoard.insertionPositions().contains(pos)) {
                 if (hoverCell) {
                     imageCell = cache.computeIfAbsent(currentGameState.tileToPlace().id(), _ -> normalImageForTile(currentGameState.tileToPlace().id()));
@@ -140,25 +141,7 @@ public class BoardUI {
                     rotationCell = Rotation.NONE;
                 }
             }
-//            //color data
-//            Color colorCell = Color.TRANSPARENT;
-//            Boolean hoverCell = group.hoverProperty().getValue();
-//            if (!evidentId.getValue().isEmpty()) {
-//                if (placedTile != null && !evidentId.getValue().contains(placedTile.id())) {
-//                    colorCell = Color.BLACK;
-//                }
-//            }
-//            if (placedTile == null && gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
-//                if (!hoverCell) {
-//                    colorCell = fillColor(Objects.requireNonNull(gameState.getValue().currentPlayer()));
-//                    rotationCell = Rotation.NONE;
-//                } else {
-//                    imageCell = cache.computeIfAbsent(gameState.getValue().tileToPlace().id(), _ -> normalImageForTile(gameState.getValue().tileToPlace().id()));
-//                    if (!gameState.getValue().board().canAddTile(new PlacedTile(gameState.getValue().tileToPlace(), gameState.getValue().currentPlayer(), rotationCell, pos))) {
-//                        colorCell = Color.WHITE;
-//                    }
-//                }
-//            }
+
             return new CellData(imageCell, rotationCell, colorCell);
         }, gameState, rotation, evidentId, group.hoverProperty());
 
