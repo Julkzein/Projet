@@ -142,7 +142,7 @@ public class Main extends Application {
 
         return new TileDecks(
                 tilesByKind.get(Tile.Kind.START),
-                tilesByKind.get(Tile.Kind.NORMAL).subList(0, 5),
+                tilesByKind.get(Tile.Kind.NORMAL),
                 tilesByKind.get(Tile.Kind.MENHIR)); //todo : enlever vnt rendu
 
     }
@@ -187,7 +187,7 @@ public class Main extends Application {
                 case PLACE_TILE -> text.set("");
                 case OCCUPY_TILE -> text.set(textMaker.clickToOccupy());
                 case RETAKE_PAWN -> text.set(textMaker.clickToUnoccupy());
-                case END_GAME -> text.set("Fin du jeu");
+                case END_GAME -> text.set(" ");
             }
         });
 
