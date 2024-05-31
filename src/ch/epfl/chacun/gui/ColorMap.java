@@ -38,7 +38,8 @@ public class ColorMap {
      */
     public static javafx.scene.paint.Color strokeColor(PlayerColor color) {
         return switch (color) {
-            case GREEN, YELLOW -> fillColor(color).deriveColor(0, 1, 0.6, 1);
+            case GREEN, YELLOW -> fillColor(color).deriveColor(0, 1, 0.6,
+                    1);
             default -> Color.WHITE;
         };
     }

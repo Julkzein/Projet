@@ -106,7 +106,8 @@ public class DecksUI {
      * @param imageView the image view that displays the image
      * @param image the image of the tile deck
      */
-    private static void createDeck(StackPane stack, HBox hBox, Text tileCountText, ObservableValue<Integer> tileCount, ImageView imageView, Image image) {
+    private static void createDeck(StackPane stack, HBox hBox, Text tileCountText, ObservableValue<Integer> tileCount,
+                                   ImageView imageView, Image image) {
         hBox.getChildren().add(stack);
         tileCountText.textProperty().bind(tileCount.map(String::valueOf));
         imageView.setImage(image);

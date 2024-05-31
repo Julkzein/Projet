@@ -1,8 +1,14 @@
 
-m	java:S117+"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®Çİ8ø€×ú1
+m	java:S117,"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®Çİ8ø€×ú1
+r	java:S1170"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÕÅ×îúÿÿÿÿ8”¶»øü1
+r	java:S1171"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğÁÁúÿÿÿÿ8”¶»øü1
 ;
-java:S1190+"Use a different name than "_".(®Çİ8ù€×ú1
-h
-java:S1602/",Remove useless curly braces around statement(ÜãÂŸJ$1eb1b657-0de4-4d4e-80d8-83afead9384b
-m
-java:S16022",Remove useless curly braces around statement(›•ø™şÿÿÿÿJ$b17a64a6-042b-4ed6-babf-4e8ea5b8c921
+java:S1190,"Use a different name than "_".(®Çİ8ù€×ú1
+@
+java:S11900"Use a different name than "_".(ÕÅ×îúÿÿÿÿ8–¶»øü1
+@
+java:S11901"Use a different name than "_".(ğÁÁúÿÿÿÿ8–¶»øü1
+N
+java:S16020",Remove useless curly braces around statement(ÕÅ×îúÿÿÿÿ8¬¶»øü1
+N
+java:S16021",Remove useless curly braces around statement(ğÁÁúÿÿÿÿ8­¶»øü1

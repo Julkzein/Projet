@@ -74,7 +74,8 @@ public class BoardUI {
         //initial grid creation
         for (int i = -reach; i <= reach; i++) {
             for (int j = -reach; j <= reach; j++) {
-                gridPane.add(createGroup(new Pos(i, j), gameState, rotation, occupants, evidentId, desiredRotation, desiredPlacement, occupantConsumer), i+reach, j+reach);
+                gridPane.add(createGroup(new Pos(i, j), gameState, rotation, occupants, evidentId, desiredRotation,
+                        desiredPlacement, occupantConsumer), i+reach, j+reach);
             }
         }
 
@@ -119,7 +120,8 @@ public class BoardUI {
                     .getPixelWriter()
                     .setColor(0, 0, Color.gray(0.98));
 
-            Image imageCell = placedTile == null ? emptyTileImage : cache.computeIfAbsent(placedTile.id(), _ -> normalImageForTile(placedTile.tile().id()));
+            Image imageCell = placedTile == null ? emptyTileImage : cache.computeIfAbsent(placedTile.id(), _ ->
+                    normalImageForTile(placedTile.tile().id()));
 
             //color data
             Color colorCell = Color.TRANSPARENT;
@@ -132,10 +134,13 @@ public class BoardUI {
                 colorCell = Color.BLACK;
             }
 
-            if (placedTile == null && currentGameState.nextAction() == PLACE_TILE && currentBoard.insertionPositions().contains(pos)) {
+            if (placedTile == null && currentGameState.nextAction() == PLACE_TILE && currentBoard.insertionPositions()
+                    .contains(pos)) {
                 if (hoverCell) {
-                    imageCell = cache.computeIfAbsent(currentGameState.tileToPlace().id(), _ -> normalImageForTile(currentGameState.tileToPlace().id()));
-                    colorCell = currentBoard.canAddTile(new PlacedTile(currentGameState.tileToPlace(), currentGameState.currentPlayer(), rotationCell, pos)) ? colorCell : Color.WHITE;
+                    imageCell = cache.computeIfAbsent(currentGameState.tileToPlace().id(), _
+                            -> normalImageForTile(currentGameState.tileToPlace().id()));
+                    colorCell = currentBoard.canAddTile(new PlacedTile(currentGameState.tileToPlace(),
+                            currentGameState.currentPlayer(), rotationCell, pos)) ? colorCell : Color.WHITE;
                 } else {
                     colorCell = fillColor(Objects.requireNonNull(currentGameState.currentPlayer()));
                     rotationCell = Rotation.NONE;
@@ -168,7 +173,8 @@ public class BoardUI {
 
         //veil color binding
         Blend blend = new Blend(SRC_OVER);
-        ColorInput colorInputBlend = new ColorInput(0, 0, NORMAL_TILE_FIT_SIZE, NORMAL_TILE_FIT_SIZE, Color.TRANSPARENT);
+        ColorInput colorInputBlend = new ColorInput(0, 0, NORMAL_TILE_FIT_SIZE, NORMAL_TILE_FIT_SIZE,
+                Color.TRANSPARENT);
         colorInputBlend.paintProperty().bind(cellData.map(CellData::veilColor));
         blend.setOpacity(0.5);
         blend.topInputProperty().bind(cellData.map(_ -> colorInputBlend));
@@ -185,7 +191,8 @@ public class BoardUI {
                         }
                     }
                     case SECONDARY -> {
-                        if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().insertionPositions().contains(pos)) {
+                        if (gameState.getValue().nextAction() == PLACE_TILE && gameState.getValue().board().
+                                insertionPositions().contains(pos)) {
                             if (e.isAltDown()) {
                                 desiredRotation.accept(Rotation.RIGHT);
                             } else {
@@ -208,7 +215,8 @@ public class BoardUI {
      * @param group the group to which the SVG paths are added
      * @param occupants the observable value of the occupants to be displayed
      */
-    private static void createOccupants(Pos pos, ObservableValue<GameState> gameState, Group group, ObservableValue<Set<Occupant>> occupants, Consumer<Occupant> occupantConsumer) {
+    private static void createOccupants(Pos pos, ObservableValue<GameState> gameState, Group group,
+                                        ObservableValue<Set<Occupant>> occupants, Consumer<Occupant> occupantConsumer) {
         GameState gS = gameState.getValue();
         for (Occupant o : Objects.requireNonNull(gS.board().tileAt(pos)).potentialOccupants()) {
             Node occupantSVGPath = Icon.newFor(gS.board().lastPlacedTile().placer(), o.kind());
