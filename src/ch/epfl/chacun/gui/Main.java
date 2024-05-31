@@ -91,6 +91,7 @@ public class Main extends Application {
 
     /**
      * Returns a BorderPane containing the side elements of the game.
+     *
      * @param observableGameState the observable value of the game state
      * @param actions the observable value of the actions
      * @param textMaker the text maker
@@ -162,8 +163,8 @@ public class Main extends Application {
         Consumer<String> actionConsumer = str -> {
             ActionEncoder.StateAction stateAction = ActionEncoder.decodeAndApply(gameState.getValue(), str);
 
-            if (stateAction != null) {
-                visibleRotation.setValue(Objects.requireNonNull(stateAction.gameState().board().lastPlacedTile()).rotation());
+            if (stateAction != null && stateAction.gameState().board().lastPlacedTile() != null) {
+                visibleRotation.setValue(stateAction.gameState().board().lastPlacedTile().rotation());
                 gameState.set(stateAction.gameState());
                 List<String> newActions = new LinkedList<>(actions.getValue());
                 newActions.add(stateAction.action());
@@ -193,13 +194,7 @@ public class Main extends Application {
         //Creation of the vbox containing the actions and the decks
         VBox vbox = new VBox();
         vbox.getChildren().add(ActionUI.create(actions, actionConsumer));
-        vbox.getChildren().add(DecksUI.create(
-                currentTile,
-                normalCount,
-                menhirCount,
-                text,
-                noActionConsumer
-        ));
+        vbox.getChildren().add(DecksUI.create(currentTile, normalCount, menhirCount, text, noActionConsumer));
         return vbox;
     }
 
@@ -229,7 +224,7 @@ public class Main extends Application {
                     nextActionUpdate(gameState, actions, stateAction, newActions);
                 }
             }
-            default -> {} 
+            default -> {}
         }
     }
 
@@ -241,7 +236,9 @@ public class Main extends Application {
      * @param stateAction the state action to apply
      * @param newActions the new actions
      */
-    private static void nextActionUpdate(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions, ActionEncoder.StateAction stateAction, List<String> newActions) {
+    private static void nextActionUpdate(ObjectProperty<GameState> gameState, ObjectProperty<List<String>> actions,
+                                         ActionEncoder.StateAction stateAction, List<String> newActions) {
+
         gameState.set(stateAction.gameState());
         newActions.add(stateAction.action());
         actions.set(newActions);
@@ -257,21 +254,14 @@ public class Main extends Application {
                                    ObjectProperty<Set<Integer>> evidentTiles, ObjectProperty<Rotation> visbleRotation) {
         ObjectProperty<Set<Occupant>> visibleOccupants = new SimpleObjectProperty<>(Set.of());
 
-        Consumer<Rotation> rotationSetter = r -> {
-            visbleRotation.set(visbleRotation.getValue().add(r));
-        };
+        Consumer<Rotation> rotationSetter = r -> visbleRotation.set(visbleRotation.getValue().add(r));
 
         Consumer<Pos> desiredPlacement = pos -> {
             //creation of the current game state
             GameState gS = gameState.getValue();
 
             //creation of the placed tile
-            PlacedTile pT = new PlacedTile(
-                    gS.tileToPlace(),
-                    gS.currentPlayer(),
-                    visbleRotation.getValue(),
-                    pos);
-
+            PlacedTile pT = new PlacedTile(gS.tileToPlace(), gS.currentPlayer(), visbleRotation.getValue(), pos);
 
             if (gS.board().canAddTile(pT)) {
                 ActionEncoder.StateAction stateAction = ActionEncoder.withPlacedTile(gameState.getValue(), pT);
