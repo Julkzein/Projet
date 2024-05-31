@@ -190,7 +190,7 @@ public class Main extends Application {
 
         //Creation of the vbox containing the actions and the decks
         VBox vbox = new VBox();
-        vbox.getChildren().add(ActionsUI.create(actions, actionConsumer));
+        vbox.getChildren().add(ActionUI.create(actions, actionConsumer));
         vbox.getChildren().add(DecksUI.create(
                 currentTile,
                 normalCount,

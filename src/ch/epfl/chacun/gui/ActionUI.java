@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
  * @author Louis Bernard (379724)
  * @author Jules Delforge (372325)
  */
-public class ActionsUI {
+public class ActionUI {
     //private constructor to prevent instantiation
-    private ActionsUI() {}
+    private ActionUI() {}
 
 
     /**
